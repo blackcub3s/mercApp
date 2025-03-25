@@ -8,11 +8,11 @@
 		<version>3.3.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>pirapp</groupId>
+	<groupId>mercApp</groupId>
 	<artifactId>app</artifactId>      <!--ES EL NOM QUE TINDRA EL .jar EN FER mvn package -->
 	<version>0.0.1-SNAPSHOT</version> <!--ES CONCATENARA AL .jar DESPRES DE artifactId-->
 	<name>app</name>
-	<description>Aplicacio web de preguntes del pir</description>
+	<description>back-end mercApp</description>
 	<url/>
 	<licenses>
 		<license/>

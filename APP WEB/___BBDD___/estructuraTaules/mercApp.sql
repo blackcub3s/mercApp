@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS pirApp;
-CREATE DATABASE pirApp;
-USE pirApp;
+DROP DATABASE IF EXISTS mercApp;
+CREATE DATABASE mercApp;
+USE mercApp;
 
 CREATE TABLE usuari (  -- aquesta es la info que es guarda quan un usuari posa la seva contrassenya encara que no pagui (igual a netflix)
 	id_usuari INTEGER AUTO_INCREMENT,
