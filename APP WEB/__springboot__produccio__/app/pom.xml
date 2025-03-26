@@ -80,7 +80,7 @@
 		</dependency>
 
 		<!--Spring security permet que posis un hash a la contrasenya i protegir endpoints. Sense això la classe
-		encriptaContrasenyes del package utils no funcionaria i no odrias guardar els hashos!
+		encriptaContrasenyes del package utils no funcionaria i no podries guardar els hashos!
 		COMPTE. PER DEFECTE ET PROTEGEIX TOTS ELS ENDPOINTS I FA QUE DONI ERROR 401 TOTES LES CRIDES A API.
 		PER A PERMETRE QUE LES CRIDES SIGUIN PERMESES HAS DE CONFGURAR LA SEGURITY FILTER CHAIN DINS
 		seguretat-->
@@ -89,6 +89,13 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+
+		<!--Per a autenticar i autoritzar farem servir jwt -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.12.6</version> <!-- mvnrepository diu que es la mes utiltizada, de l any 2018-->
+		</dependency>
 
 
 	</dependencies>
