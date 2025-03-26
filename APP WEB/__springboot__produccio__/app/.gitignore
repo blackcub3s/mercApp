@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### evito que es guardin els logs
+logs/
