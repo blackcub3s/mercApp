@@ -99,7 +99,7 @@ public class UsuariServei {
             nouUsuari.setCorreuElectronic(correuElectronic);
             nouUsuari.setHashContrasenya(hashContrasenya);
             nouUsuari.setAlies(alies);
-            nouUsuari.setPlaSuscripcioActual(plaSuscripcioActual);
+            nouUsuari.setPermisos(plaSuscripcioActual);
 
             // Attempt to save the user to the database
             repoUsuari.save(nouUsuari);
@@ -142,7 +142,7 @@ public class UsuariServei {
         usuari.setCorreuElectronic(dto.getCorreuElectronic());
         usuari.setHashContrasenya(encriptador.hashejaContrasenya(dto.getContrasenya()));   //VERSIO SENSE HASH --> usuari.setHashContrasenya(dto.getContrasenya());
         usuari.setAlies(dto.getAlies());
-        usuari.setPlaSuscripcioActual(dto.getPlaSuscripcioActual());
+        usuari.setPermisos(dto.getPlaSuscripcioActual());
 
         if (repoUsuari.trobaStringUsuariPerCorreu(usuari.getCorreuElectronic()).isPresent()) {
             return Optional.empty(); // Si l'usuari ja existeix, torna un optional buit.
@@ -180,7 +180,7 @@ public class UsuariServei {
             //usuariActualitzat.setHashContrasenya(dto.getContrasenya());   //NOVA CONTRA SENSE HASH (HO DEIXO COMENTAT PER SI MAI HE DE VERIFICAR QUE ENTRA B LA CONTRA)
             usuariActualitzat.setHashContrasenya(encriptador.hashejaContrasenya(dto.getContrasenya()));    //NOVA CONTRA (EL SEU HASH AMB BCRYPT)
             usuariActualitzat.setAlies(dto.getAlies()); //poso el nou alies
-            usuariActualitzat.setPlaSuscripcioActual(dto.getPlaSuscripcioActual());    //poso el nou pla de suscripcio
+            usuariActualitzat.setPermisos(dto.getPlaSuscripcioActual());    //poso el nou pla de suscripcio
 
             //guardo l'usuari actualitzat i el que ja s'ha guardat el passo al controlador per veure'l
             Usuari usuariActualitzatGUARDAT = repoUsuari.save(usuariActualitzat);

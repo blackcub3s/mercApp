@@ -38,8 +38,8 @@ public class Usuari {
     @Column(name = "alies")
     private String alies;
 
-    @Column(name = "pla_suscripcio_actual", nullable = false) //Byte es el tipus de dades de hibernate que mapeja al tipus TINYINT de mysql (nota que tinyint justament acupa un byte jeje)
-    private Byte plaSuscripcioActual; //0 es persona que no esta pagant res ara mateix (no registrat o baixa). Si es 1, 2, 3 son plans que seran d pago segurament.
+    @Column(name = "permisos", nullable = false) //Byte es el tipus de dades de hibernate que mapeja al tipus TINYINT de mysql (nota que tinyint justament acupa un byte jeje)
+    private Byte permisos; //0 es persona que no esta pagant res ara mateix (no registrat o baixa). Si es 1, 2, 3 son plans que seran d pago segurament.
 
 
     //COMPTE QUE NO HE ACONSEGIT MAPEJAR EL CAMP DE JAVA A LA COLUMNA CORRESPONENT PER A LA DATA DE REGISTRE... AIXI QUE HO DEIXO COMENTAT
