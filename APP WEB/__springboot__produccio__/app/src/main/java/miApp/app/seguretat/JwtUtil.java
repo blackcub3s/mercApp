@@ -11,7 +11,8 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private static String clauSecreta = "a8f7d9g0b6c3e5h2i4j7k1l0m9n8p6q3r5s2t1u4v0w9x8y7z"; //es una clau privada
+    //es la clau privada de 256 bits com a minim per encriptar el token
+    private static String clauSecreta = "a8f7d9g0b6c3e5h2i4j7k1l0m9n8p6q3r5s2t1u4v0w9x8y7z";
 
     public static String generateToken(String username, long tempsExpiracioMS) {
         return Jwts.builder()
@@ -31,7 +32,8 @@ public class JwtUtil {
     }
 
     public static void main(String[] args) {
-        String strJWT = generateToken("blackcub3s", 10*60);
+        int escala = 1000;
+        String strJWT = generateToken("blackcub3s", escala*60); //60 segons
         System.out.println(strJWT);
     }
 }
