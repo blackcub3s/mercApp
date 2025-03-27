@@ -105,9 +105,9 @@ public class JwtUtil {
 
         //PROVO D OBTENIR DADES DE LES CLAIMS (DELS PARELLS CLAU VALOR DEL PAYLOAD)
         try {
-            System.out.println(JwtUtil.getClaims(accesJWT).get("sub")); //TOKEN EXPIRAT PER PROVES --> eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MiwianRpIjoiMiIsInN1YiI6ImJsYWNrY3ViM3MiLCJpYXQiOjE3NDMwODg0MTEsImV4cCI6MTc0MzA4ODQ3MX0.EnZfMtmcokoncHx_oT4Q5D49ZkVU9NRuXs14e_Sr9mk
-            System.out.println(JwtUtil.getClaims("eyJhbGciOiI1NiJ9.eyJwZXJtaXNvcyI6MiwianRpIjoiMiIsInN1YiI6ImJsYWNrY3ViM3MiLCJpYXQiOjE3NDMwODg0MTEsImV4cCI6MTc0MzA4ODQ3MX0.EnZfMtmcokoncHx_oT4Q5D49ZkVU9NRuXs14e_Sr9mk").get("sub"));
-            System.out.println(JwtUtil.getClaims(refreshJWT).get("sub")); //TOKEN EXPIRAT PER PROVES --> eyJhbGciOiJIUzI1NiJ9.eyJpZFVzdWFyaSI6MiwianRpIjoiYjlmNzhiNjgtYjI2Yy00NTA5LWFmYjEtMThiZDU5MGVkYzcwIiwic3ViIjoic2FudG9AZ21haWwuY29tIiwiaWF0IjoxNzQzMDk1MjM4LCJleHAiOjE3NDMxODE2Mzh9.C1UArYlwFyilwshH7H3CxARqgqfer4RUhKAFxdq9F3M
+            System.out.println(JwtUtil.getClaims(accesJWT).get("sub"));
+            System.out.println(JwtUtil.getClaims("eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MSwiaWRVc3VhcmkiOjIsInN1YiI6InNhbnRvQGdtYWlsLmNvbSIsImlhdCI6MTc0MzEwOTY4OCwiZXhwIjoxNzQzMTA5NzQ4fQ.D6pJVH88D6LlW2YKPkvAC5ZIkWLUboazjNbVOROCI3M").get("sub"));
+            System.out.println(JwtUtil.getClaims(refreshJWT).get("sub"));
         } catch (ExpiredJwtException e) {
             System.out.println("___Token Expirat___:        "+e.getMessage());
         } catch (Exception e) {
@@ -119,26 +119,28 @@ public class JwtUtil {
 
 
 /*
-PAYLOAD D UN ACCESS TOKEN PER A USUARI DE idUsuari 2 en bbdd
-{
-  "idUsuari": 2,
-  "jti": "b9f78b68-b26c-4509-afb1-18bd590edc70",
-  "sub": "santo@gmail.com",
-  "iat": 1743095238,
-  "exp": 1743181638
-}
-*/
+TOKEN ACCÉS EXPIRAT PER PROVES --> eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MSwiaWRVc3VhcmkiOjIsInN1YiI6InNhbnRvQGdtYWlsLmNvbSIsImlhdCI6MTc0MzEwOTY4OCwiZXhwIjoxNzQzMTA5NzQ4fQ.D6pJVH88D6LlW2YKPkvAC5ZIkWLUboazjNbVOROCI3M
+EL SEU PAYLOAD PER A idUsuari 2 en bbdd:
 
+    {
+      "permisos": 1,
+      "idUsuari": 2,
+      "sub": "santo@gmail.com",
+      "iat": 1743109688,
+      "exp": 1743109748
+    }
 
-/*
-PAYLOAD D UN ACCES TOKEN PER A USUARI DE idUsuari 2 en bbdd
-{
-  "idUsuari": 2,
-  "jti": "b9f78b68-b26c-4509-afb1-18bd590edc70",
-  "sub": "santo@gmail.com",
-  "iat": 1743095238,
-  "exp": 1743181638
-}
+REFRESH TOKEN PER A PROVES --> eyJhbGciOiJIUzI1NiJ9.eyJpZFVzdWFyaSI6MiwianRpIjoiYTNmNTk2YmYtZjRkZi00YjljLWI4ZTEtMzM0ODAyZTE5YWM3Iiwic3ViIjoic2FudG9AZ21haWwuY29tIiwiaWF0IjoxNzQzMTA5Njg4LCJleHAiOjE3NDMxOTYwODh9.l_35h4F047xzAoeymU_wYls6vY4qol-ZMb8n6cbr9cE
+PAYLOAD D'UN REFRESH TOKEN PER A idUsuari 2 també:
+
+    {
+      "idUsuari": 2,
+      "jti": "a3f596bf-f4df-4b9c-b8e1-334802e19ac7",
+      "sub": "santo@gmail.com",
+      "iat": 1743109688,
+      "exp": 1743196088
+    }
+
 */
 
 
