@@ -363,7 +363,7 @@
 				
 				\subsubsection{¿Qué compone un JWT?}
 				
-				\noindent El JWT se compone de tres partes. \textbf{los headers}, \textbf{el payload} y \textbf{la signatura}. En la página \href{https://jwt.io/}{https://jwt.io/}, como veremos después, se pueden validar tokens \cite{jwtio} y ver su estructura interna.
+				\noindent El JWT se compone de tres partes. \textbf{los headers}, \textbf{el payload} y \textbf{la signatura}. En la página \href{https://jwt.io/}{https://jwt.io/}, como veremos después, se pueden validar tokens \cite{jwtio} y ver su estructura interna, a saber:
 				
 
 				\begin{itemize}
@@ -406,11 +406,6 @@
 		\begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 				
 //FINALITAT: Generar un JWT d'acces.
-//
-//PRE: correu usuari, temps d'expiracio en minuts,
-//     idUsuari de la base de dades i un byte amb els permisos.
-//POST: String JWT valid durant els minuts indicats a tExpM.
-//      En el payload incloura: idUsuari, correu i permisos.
 public static String generaAccesToken(String correu, 
                                       int tExpM, 
                                       int idUsuari, 
