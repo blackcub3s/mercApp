@@ -5,8 +5,9 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
 
 
+//NO INSTANCIEM AQUESTA CLASSE MAI. LA FEM ABSTRACTA
 @Component
-public class JwtUtil {
+public abstract class JwtUtil {
 
     //es la clau privada de 256 bits com a minim per encriptar el token (tant el d'acces com el de refresh)
     //a stackoverflow es pot veure un debat sobre si compartir la mateixa clauSecreta pel d'acces com pel de
