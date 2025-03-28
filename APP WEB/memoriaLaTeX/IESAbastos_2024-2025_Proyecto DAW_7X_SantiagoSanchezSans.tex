@@ -316,9 +316,13 @@
 			
 				\subsection{Estructura de la aplicacion}
 				
-				TO DO pom.xml application.properties controller service etc.
+				TO DO pom.xml application.properties, usuari, repository, service, controller.
 				
-				\subsection{Autenticacion}
+				TO DO Parlar de les validacions i les anotacions 
+				
+				Parlar dels apartats de seguretat (segurity filter chain i JWT pero només de passada perque els mencionem despres)
+				
+				\subsection{Autenticacion y Autorización}
 				
 				\subsubsection{método utilizado: JWT}
 				
@@ -477,8 +481,31 @@ String accesJWT = accessToken.genera(
 		Hemos utilizado herencia porque la clave privada es la misma para ambos tipos de token, mientras que los métodos para generar cada uno de los dos tipos de JWT cambian. En StackOverflow existe un debate para ver si hay que tener una clave privada distinta para cada tipo de token, por si el lector está interesado \cite{stackoverflow_jwt_refresh_token_secret}.Después de ver la entrada en stackOverflow Se ha optado por compartir claves para ambos tipos.
 		
 		
-		
 		En la clase \textbf{JwtUtil} tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar y autorizar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link}). Se recomienda encarecidamente al lector optar por esta última opción\footnote{Al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.}.
+		
+		
+		\subsubsection{Pasos para implementar JWT con la aplicación}
+		
+		Después de crear estas tres clases podemos empezar a 
+		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de acceso a un endpoint. Queremos conseguir que ese endpoint permita acceso al usuario que lo pida o no en función del valor que hay en la columna ``permisos'' de la tabla usuaris (es decir en función de la variable permisos del model de la @Entity class de usuari: ver 
+		
+		\noindent Hay \textbf{tres} pasos:
+		
+		
+		
+		\begin{itemize}
+			\setlength{\itemsep}{-1.5em}
+			\item \textbf{PASO 1:} Extraer la información del usuario autenticado desde \textbf{el payload} del token JWT entrante: para ello crearemos un \textbf{Filtro de Autenticacion}\\
+			\item \textbf{PASO 2:} Configurar el contexto de seguridad \textbf{(la security filter chain)} para que Spring Security reconozca los permisos. \\
+			\item \textbf{PASO 3:} Aplicar restricciones con \textbf{@PreAuthorize} en cada \textit{endpoint} que queramos proteger en el controlador.
+		\end{itemize}
+		
+		\paragraph{Extracción del payload}
+		
+
+		
+		
+		
 		
 	\chapter{Evaluación y Conclusiones Finales} %OBLIGAT
 	
@@ -488,6 +515,44 @@ String accesJWT = accessToken.genera(
 	
 	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	\chapter{ANEXO}

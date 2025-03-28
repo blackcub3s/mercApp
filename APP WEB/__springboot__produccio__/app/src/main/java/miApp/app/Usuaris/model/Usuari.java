@@ -39,7 +39,7 @@ public class Usuari {
     private String alies;
 
     @Column(name = "permisos", nullable = false) //Byte es el tipus de dades de hibernate que mapeja al tipus TINYINT de mysql (nota que tinyint justament acupa un byte jeje)
-    private Byte permisos; //0 es persona que no esta pagant res ara mateix (no registrat o baixa). Si es 1, 2, 3 son plans que seran d pago segurament.
+    private Byte permisos; //0 es persona que nomes tenim mail i contrasenya (pero no te acces a recursos). Si es 1 aleshores te acces als seus recursos. Si es 2 es el superusuari i pot accedir a tot.
 
 
     //COMPTE QUE NO HE ACONSEGIT MAPEJAR EL CAMP DE JAVA A LA COLUMNA CORRESPONENT PER A LA DATA DE REGISTRE... AIXI QUE HO DEIXO COMENTAT
