@@ -28,7 +28,7 @@ public abstract class JwtUtil {
     //      Si el token es invalido (manipulado, firma incorrecta)
     //      tira excepcio (en poden haver varies SignatureException una d elles).
     //      Si el token este expirado, llansa una excepcion ExpiredJwtException. VERIFICAT!
-    protected Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         return Jwts.parser()
             .setSigningKey(clauSecreta.getBytes())
             .build()
