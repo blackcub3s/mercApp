@@ -180,16 +180,7 @@
 
 
 		
-		%imagen barra navegación nuestra (emulando accenture)
-		\setlength{\belowcaptionskip}{10pt}
-		\FloatBarrier
-		\begin{figure}[H]
-			\centering
-			\caption{nuestra ``NavBar": fondo negro, letra blanca y un solo desplegable.}
-			\includegraphics[width=1\textwidth]{img/sampleta.png}
-			\label{fig:etiquetaNavBarNuestra} 
-		\end{figure}
-		\FloatBarrier
+
 		
 		
 		
@@ -398,39 +389,94 @@
 				\end{lstlisting}
 				
 				
-		En el proyecto se ha creado una clase dentro de \texttt{src/main/java/miApp.app/} \texttt{seguretat} denominada \textbf{JwtUtil}. En esta clase hemos creado tres métodos que trabajan con funciones de la librería \texttt{io.jsonwebtoken} concretamente con el módulo \textbf{Jwts}. La primera de estas funciones
-		nos genera el \texttt{access token} a partir de la \textit{secret key} o contraseña secreta del servidor que tenemos en el atributo de la clase:
+		En el proyecto se han creado tres clases dentro de la ruta \texttt{src/main/java/} \texttt{miApp.app/seguretat/jwtseguretat} denominadas \textbf{JwtUtil}, \textbf{AccessToken} y \textbf{RefreshToken} . 
+		
+		En la primera clase hemos creado un método que obtiene las claims (pares clave valor, la carga útil) de un JWT y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que hagamos con esa contraseña-. De esta hemos heretado las otras dos: La subclase que nos genera el \textbf{token de acceso}, \texttt{AccessToken}; y la que nos genera el \textbf{token de refresco}, \texttt{RefreshToken}. A continuacion podéis ver la clase AccessToken:
 		
 		
 		
-		\begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+\begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 				
-//FINALITAT: Generar un JWT d'acces.
-public static String generaAccesToken(String correu, 
-                                      int tExpM, 
-                                      int idUsuari, 
-                                      byte permisos) {
+@Component
+public class AccessToken extends JwtUtil {
+	
+  private static int tExpM; //minuts per a exprirar el token
+	
+  public AccessToken() {this.tExpM = 10;}
+	
+  //FINALITAT: Generar un JWT d'acces.
+  public String genera(String correu, int idUsuari, byte permisos) {
 	Map<String, Object> dadesExtraApayload = new HashMap<>();
 	dadesExtraApayload.put("permisos", permisos);
 	dadesExtraApayload.put("idUsuari", idUsuari);
-	//posar mes dades si vols
-	
+		
 	return Jwts.builder()
-	.setClaims(dadesExtraApayload)   //dades customitzades
-	.setSubject(correu)              //guardo nom subjecte (clau "sub")
-	.setIssuedAt(new Date())         //data creacio (clau "iat" payload)
-	.setExpiration(new Date(System.currentTimeMillis() + (tExpM*60*1000)))  //(clau "exp")
-	.signWith(SignatureAlgorithm.HS256, clauSecreta.getBytes())
-	.compact();
+	 .setClaims(dadesExtraApayload) //dades customitzades
+	 .setSubject(correu)            //guardo nom subjecte (clau "sub")
+	 .setIssuedAt(new Date())       //data creacio (clau "iat" payload)
+	 .setExpiration(new Date(System.currentTimeMillis() + (tExpM*60*1000)))
+	 .signWith(SignatureAlgorithm.HS256, clauSecreta.getBytes())
+	 .compact();
 }
-		
 
-		\end{lstlisting}
+
+\end{lstlisting}
 		
 		
-		La segunda función crea un refresh token (no la usaremos en este proyecto pero la hemos hecho para implementarla en un futuro) y la tercera permite obtener el payload (las Claims) y trabajar con la informacion que hay dentro. 
 		
-		La tercera función \texttt{getClaims()} es la que utilizaremos en el Service de nuestra aplicación para poder autenticar usuarios. La clase puede ser consultada en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/JwtUtil.java}{link}). Se recomienda encarecidamente al lector optar por esta última opción\footnote{En esta memoria, al poner la clase JwtUtil.java se omitió la función main donde se testeaban las dos funciones de creación de tokens con control de excepciones, por falta de espacio en el DIN A4.}.
+		Y con la función \textbf{genera()} de la clase AccessToken, con los parámetros necesarios, podemos generar un token de acceso en ``accesJWT'':
+		
+		
+		
+\begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+
+AccessToken accessToken = new AccessToken();
+String accesJWT = accessToken.genera(
+	"santo@gmail.com",  //campoSub
+	2, //idUsuari
+	1  //permisos
+);
+
+
+\end{lstlisting}
+		
+		El token de AccessJWT, que es el que visualizamos a la izquierda, podremos ver que está estructurado en sus tres partes a la derecha de la figura \ref{fig:jwtioMostraPayload}) siendo la más importante la que está en color rosa, la payload:
+		
+	
+			\setlength{\abovecaptionskip}{3pt}
+			\FloatBarrier
+			\begin{figure}[H]
+				\centering
+
+				\includegraphics[width=1\textwidth]{img/jwtio_mostra_payload.png}
+				\caption{Decodificación de un token de acceso generado con la función genera de la clase AccessToken mediante \href{https://www.jwt.io}{jwt.io}}
+				\label{fig:jwtioMostraPayload} 
+			\end{figure}
+			\FloatBarrier
+
+		
+\begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+			
+		
+		{
+		    "permisos": 1,
+		    "idUsuari": 2,
+		    "sub": "santo@gmail.com",
+		    "iat": 1743152350,
+		    "exp": 1743152950
+		}
+			
+\end{lstlisting}
+		
+		
+		
+		
+		
+		Hemos utilizado herencia porque la clave privada es la misma para ambos tipos de token, mientras que los métodos para generar cada uno de los dos tipos de JWT cambian. En StackOverflow existe un debate para ver si hay que tener una clave privada distinta para cada tipo de token, por si el lector está interesado \cite{stackoverflow_jwt_refresh_token_secret}. Se ha optado por compartir claves para ambos tipos.
+		
+		
+		
+		En la clase JwtUtils tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link}). Se recomienda encarecidamente al lector optar por esta última opción\footnote{Al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.}.
 		
 	\chapter{Evaluación y Conclusiones Finales} %OBLIGAT
 	
@@ -514,51 +560,63 @@ git push origin main
 			\FloatBarrier
 	
 		\pagebreak
-		\section{Clase para crear Access tokens, refresh tokens y verificarlos}
+		
+		
+		\section{Clases para crear y verificar JWTs}
 		\label{sec:anexoCreacionYverificacionJWT}
 	
 	
-			\begin{lstlisting}[language=Java, basicstyle=\ttfamily\tiny, keywordstyle=\color{magenta}]
-				
-package miApp.app.seguretat;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+\subsection{Clase JWT}
 
 
+\begin{lstlisting}[language=Java, basicstyle=\ttfamily\tiny, keywordstyle=\color{magenta}]
+	
+//NO INSTANCIEM AQUESTA CLASSE MAI. LA FEM ABSTRACTA
 @Component
-public class JwtUtil {
-	//es la clau privada de 256 bits com a minim per encriptar el token
-	private static String clauSecreta = "a8f7d9g0b6c3e5h2i4j7k1l0m9n8p6q3r5s2t1u4v0w9x8y7z";
+public abstract class JwtUtil {
 	
+	//es la clau privada de 256 bits com a minim per encriptar el token (tant el d'acces com el de refresh)
+	//veure debat http://bit.ly/3RmBGIK
+	protected static String clauSecreta;
 	
-	//FINALITAT: Generar un JWT d'acces.
-	public static String generaAccesToken(String correu, int tExpM, int idUsuari, byte permisos) {
-		Map<String, Object> dadesExtraApayload = new HashMap<>();
-		dadesExtraApayload.put("permisos", permisos);
-		dadesExtraApayload.put("idUsuari", idUsuari);
-		//posar mes dades si vols
-		
-		return Jwts.builder()
-		.setClaims(dadesExtraApayload)   //dades customitzades
-		.setSubject(correu)              //guardo nom subjecte (clau "sub")
-		.setIssuedAt(new Date())         //data creacio (clau "iat" payload)
-		.setExpiration(new Date(System.currentTimeMillis() + (tExpM*60*1000)))  //(clau "exp")
-		.signWith(SignatureAlgorithm.HS256, clauSecreta.getBytes())
-		.compact();
+	public JwtUtil() {
+		this.clauSecreta = "a8f7d9g0b6c3e5h2i4j7k1l0m9n8p6q3r5s2t1u4v0w9x8y7z";
 	}
 	
+	//METODE QUE PARSEJA EL TOKEN JWT COMPLET. VERIFICA LA FIRMA I EXTRAU LES CLAIMS (parells clau valor en el payload).
+	protected Claims getClaims(String token) {
+		return Jwts.parser()
+		.setSigningKey(clauSecreta.getBytes())
+		.build()
+		.parseClaimsJws(token)
+		.getBody();
+	}
 	
-	// FINALITAT: Refrescar el token d'acces que genera generaAccesToken().
-	public static String generaRefreshToken(String correu, int tExpDies, int idUsuari) {
+}
+
+
+
+
+
+
+\end{lstlisting}
+
+
+				
+
+\subsection{Clase Refresh Token}
+
+\begin{lstlisting}[language=Java, basicstyle=\ttfamily\tiny, keywordstyle=\color{magenta}]
+
+@Component
+public class RefreshToken extends JwtUtil {
+	
+	private static int tExpDies;
+	
+	public RefreshToken() {this.tExpDies = 7;}
+	
+	// FINALITAT DEL METODE: Refrescar el token d'acces que genera generaAccesToken().
+	public String generaRefreshToken(String correu, int idUsuari) {
 		Map<String, Object> dadesExtraApayload = new HashMap<>();
 		dadesExtraApayload.put("idUsuari", idUsuari);
 		//posar mes dades al payload si es necessari
@@ -572,24 +630,39 @@ public class JwtUtil {
 		.signWith(SignatureAlgorithm.HS256, clauSecreta.getBytes())
 		.compact();
 	}
-	
-	//METODE QUE PARSEJA EL TOKEN JWT COMPLET.
-	//VERIFICA LA FIRMA I EXTRAU LES CLAIMS (parells
-	//clau valor en el payload).
-	private static Claims getClaims(String token) {
-		return Jwts.parser()
-		.setSigningKey(clauSecreta.getBytes())
-		.build()
-		.parseClaimsJws(token)
-		.getBody();
-	}
-	
-
 }
 
+\end{lstlisting}
+
+
+\subsection{Clase Access Token}
+\begin{lstlisting}[language=Java, basicstyle=\ttfamily\tiny, keywordstyle=\color{magenta}]
+
+@Component
+public class AccessToken extends JwtUtil {
+	
+	private static int tExpM; //minuts per a exprirar el token
+	
+	public AccessToken() {this.tExpM = 10;}
+	
+	//FINALITAT: Generar un JWT d'acces.
+	public String genera(String correu, int idUsuari, byte permisos) {
+		Map<String, Object> dadesExtraApayload = new HashMap<>();
+		dadesExtraApayload.put("permisos", permisos);
+		dadesExtraApayload.put("idUsuari", idUsuari);
+		
+		return Jwts.builder()
+		.setClaims(dadesExtraApayload) //dades customitzades
+		.setSubject(correu)            //guardo nom subjecte (clau "sub")
+		.setIssuedAt(new Date())       //data creacio (clau "iat" payload)
+		.setExpiration(new Date(System.currentTimeMillis() + (tExpM*60*1000)))
+		.signWith(SignatureAlgorithm.HS256, clauSecreta.getBytes())
+		.compact();
+	}
+}
 	
 				
-			\end{lstlisting}
+\end{lstlisting}
 	
 
 	

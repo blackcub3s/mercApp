@@ -11,7 +11,12 @@ import java.util.Map;
 
 @Component
 public class AccessToken extends JwtUtil {
-    private static int tExpM = 10;
+
+    private static int tExpM; //expiracio en minuts
+
+    public AccessToken() {
+        this.tExpM = 10;
+    }
 
     //FINALITAT: Generar un JWT d'acces.
     //
@@ -19,7 +24,7 @@ public class AccessToken extends JwtUtil {
     //     idUsuari de la base de dades i un byte amb els permisos.
     //POST: String JWT valid durant els minuts indicats a tExpM.
     //      En el payload incloura: idUsuari, correu i permisos.
-    public static String generaAccesToken(String correu, int idUsuari, byte permisos) {
+    public String genera(String correu, int idUsuari, byte permisos) {
         Map<String, Object> dadesExtraApayload = new HashMap<>();
         dadesExtraApayload.put("permisos", permisos);
         dadesExtraApayload.put("idUsuari", idUsuari);
@@ -44,7 +49,8 @@ public class AccessToken extends JwtUtil {
         int permisos = 1;
 
         //GENERO EL ACCESS TOKEN
-        String accesJWT = generaAccesToken("santo@gmail.com",
+        AccessToken accessToken = new AccessToken();
+        String accesJWT = accessToken.genera("santo@gmail.com",
                 2, //id usuari
                 (byte) permisos
         );
@@ -57,8 +63,8 @@ public class AccessToken extends JwtUtil {
 
         //PROVO D OBTENIR DADES DE LES CLAIMS (DELS PARELLS CLAU VALOR DEL PAYLOAD)
         try {
-            System.out.println(JwtUtil.getClaims(accesJWT).get("sub"));
-            System.out.println(JwtUtil.getClaims("eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MSwiaWRVc3VhcmkiOjIsInN1YiI6InNhbnRvQGdtYWlsLmNvbSIsImlhdCI6MTc0MzEwOTY4OCwiZXhwIjoxNzQzMTA5NzQ4fQ.D6pJVH88D6LlW2YKPkvAC5ZIkWLUboazjNbVOROCI3M").get("sub"));
+            System.out.println(accessToken.getClaims(accesJWT).get("sub"));
+            System.out.println(accessToken.getClaims("eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MSwiaWRVc3VhcmkiOjIsInN1YiI6InNhbnRvQGdtYWlsLmNvbSIsImlhdCI6MTc0MzEwOTY4OCwiZXhwIjoxNzQzMTA5NzQ4fQ.D6pJVH88D6LlW2YKPkvAC5ZIkWLUboazjNbVOROCI3M").get("sub"));
         } catch (ExpiredJwtException e) {
             System.out.println("___Token Expirat___:        "+e.getMessage());
         } catch (Exception e) {

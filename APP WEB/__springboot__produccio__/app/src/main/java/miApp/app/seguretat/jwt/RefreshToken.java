@@ -13,7 +13,11 @@ import java.util.UUID;
 @Component
 public class RefreshToken extends JwtUtil {
 
-    private static int tExpDies = 7;
+    private static int tExpDies;
+
+    public RefreshToken() {
+        this.tExpDies = 7;
+    }
 
 
     // FINALITAT DEL METODE: Refrescar el token d'acces
@@ -23,7 +27,7 @@ public class RefreshToken extends JwtUtil {
     //      dies i idUsuari de base de dades (respectivament).
     //POST: String token d'acces JWT. En el payload s'incloura idUsuari
     //      identificador de token UUID v4 (mai repetible).
-    public static String generaRefreshToken(String correu, int idUsuari) {
+    public String generaRefreshToken(String correu, int idUsuari) {
         Map<String, Object> dadesExtraApayload = new HashMap<>();
         dadesExtraApayload.put("idUsuari", idUsuari);
         //posar mes dades al payload si es necessari
@@ -49,15 +53,16 @@ public class RefreshToken extends JwtUtil {
 
 
         //GENERO EL REFRESH TOKEN
-        String refreshJWT = generaRefreshToken("santo@gmail.com", 2);
+        RefreshToken refreshToken = new RefreshToken();
+        String refreshJWT = refreshToken.generaRefreshToken("santo@gmail.com", 2);
 
         //DONA EXCEPCIO SI EL TOKEN HA EXPIRAT, COMPTE!
         System.out.println("token refresh: \n"+refreshJWT);
 
         //PROVO D OBTENIR DADES DE LES CLAIMS (DELS PARELLS CLAU VALOR DEL PAYLOAD)
         try {
-            System.out.println(JwtUtil.getClaims("eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MSwiaWRVc3VhcmkiOjIsInN1YiI6InNhbnRvQGdtYWlsLmNvbSIsImlhdCI6MTc0MzEwOTY4OCwiZXhwIjoxNzQzMTA5NzQ4fQ.D6pJVH88D6LlW2YKPkvAC5ZIkWLUboazjNbVOROCI3M").get("sub"));
-            System.out.println(JwtUtil.getClaims(refreshJWT).get("sub"));
+            System.out.println(refreshToken.getClaims("eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MSwiaWRVc3VhcmkiOjIsInN1YiI6InNhbnRvQGdtYWlsLmNvbSIsImlhdCI6MTc0MzEwOTY4OCwiZXhwIjoxNzQzMTA5NzQ4fQ.D6pJVH88D6LlW2YKPkvAC5ZIkWLUboazjNbVOROCI3M").get("sub"));
+            System.out.println(refreshToken.getClaims(refreshJWT).get("sub"));
         } catch (ExpiredJwtException e) {
             System.out.println("___Token Expirat___:        "+e.getMessage());
         } catch (Exception e) {
