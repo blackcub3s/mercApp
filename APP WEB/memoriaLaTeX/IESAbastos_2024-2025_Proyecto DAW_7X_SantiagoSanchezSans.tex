@@ -487,7 +487,7 @@ String accesJWT = accessToken.genera(
 		\subsubsection{Pasos para implementar JWT con la aplicación}
 		
 		Después de crear estas tres clases podemos empezar a 
-		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de acceso a un endpoint. Queremos conseguir que ese endpoint permita acceso al usuario que lo pida o no en función del valor que hay en la columna ``permisos'' de la tabla usuaris (es decir en función de la variable permisos del model de la @Entity class de usuari: ver 
+		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de acceso a un endpoint. Queremos conseguir que ese endpoint permita acceso al usuario que lo pida o no en función del valor que hay en la columna ``permisos'' de la tabla usuaris (es decir en función de la variable permisos del model de la @Entity class de usuari: ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L42}{linea github}).
 		
 		\noindent Hay \textbf{tres} pasos:
 		
@@ -496,7 +496,7 @@ String accesJWT = accessToken.genera(
 		\begin{itemize}
 			\setlength{\itemsep}{-1.5em}
 			\item \textbf{PASO 1:} Extraer la información del usuario autenticado desde \textbf{el payload} del token JWT entrante: para ello crearemos un \textbf{Filtro de Autenticacion}\\
-			\item \textbf{PASO 2:} Configurar el contexto de seguridad \textbf{(la security filter chain)} para que Spring Security reconozca los permisos. \\
+			\item \textbf{PASO 2:} Configurar el contexto de seguridad \textbf{(en la security filter chain)} para que Spring Security reconozca los permisos. \\
 			\item \textbf{PASO 3:} Aplicar restricciones con \textbf{@PreAuthorize} en cada \textit{endpoint} que queramos proteger en el controlador.
 		\end{itemize}
 		
