@@ -45,7 +45,7 @@ public class RefreshToken extends JwtUtil {
 
 
 
-
+    //PROVEM LA CLASSE
     public static void main(String[] args) {
 
         //ES BYTE A LA BBDD, OKO
