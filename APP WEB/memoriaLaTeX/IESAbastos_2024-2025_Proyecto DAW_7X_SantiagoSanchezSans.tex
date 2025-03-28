@@ -487,20 +487,26 @@ String accesJWT = accessToken.genera(
 		\subsubsection{Pasos para implementar JWT con la aplicación}
 		
 		Después de crear estas tres clases podemos empezar a 
-		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de acceso a un endpoint. Queremos conseguir que ese endpoint permita acceso al usuario que lo pida o no en función del valor que hay en la columna ``permisos'' de la tabla usuaris (es decir en función de la variable permisos del model de la @Entity class de usuari: ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L42}{linea github}).
-		
-		\noindent Hay \textbf{tres} pasos:
+		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de acceso a un endpoint. Queremos conseguir que ese endpoint permita acceso al usuario que lo pida o no en función del valor que hay en la columna ``permisos'' de la tabla usuaris (es decir en función de la variable permisos del model de la @Entity class de usuari: ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L42}{linea github}). Para ello hay \textbf{tres} pasos:
 		
 		
 		
-		\begin{itemize}
+		
+		\begin{itemize} 
 			\setlength{\itemsep}{-1.5em}
-			\item \textbf{PASO 1:} Extraer la información del usuario autenticado desde \textbf{el payload} del token JWT entrante: para ello crearemos un \textbf{Filtro de Autenticacion}\\
-			\item \textbf{PASO 2:} Configurar el contexto de seguridad \textbf{(en la security filter chain)} para que Spring Security reconozca los permisos. \\
-			\item \textbf{PASO 3:} Aplicar restricciones con \textbf{@PreAuthorize} en cada \textit{endpoint} que queramos proteger en el controlador.
+			\item \textbf{PASO 1:} Extraer la información del usuario autenticado desde \textbf{el payload} del token JWT entrante. Para ello crearemos un \textbf{Filtro de Autenticacion} dentro de \texttt{FiltreAutenticacio.java}\\
+			\item \textbf{PASO 2:} Configurar el contexto de seguridad para que Spring Security reconozca los permisos dentro de  \texttt{ConfiguracioSeguretat.java}. \\ 	
+			\item \textbf{PASO 3:} Aplicar restricciones con \textbf{@PreAuthorize} en cada \textit{endpoint} que queramos proteger en el controlador dentro \texttt{UsuariControlador.java}
 		\end{itemize}
 		
-		\paragraph{Extracción del payload}
+
+		\paragraph{PASO 1: Extracción del payload}
+		Esta parte del código está llena de boilerplate. La programación se ha hecho con mucha ayuda de chatGPT y de claudeAI sonnet. La clase FiltreAuntenticacio.java extiende de OncePerRequestFilter \cite{oncePerRequestFilter}, que el lector ávido puede consultar si desea tener una muerte prematura.
+		
+		\paragraph{PASO 2: Configuración contexto seguridad}
+		
+		\paragraph{PASO 3: restricciones en el controlador}
+		
 		
 
 		
