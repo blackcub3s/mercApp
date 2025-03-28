@@ -11,7 +11,6 @@ public abstract class JwtUtil {
 
 
 
-
     //es la clau privada de 256 bits com a minim per encriptar el token (tant el d'acces com el de refresh)
     //veure debat http://bit.ly/3RmBGIK
     protected static String clauSecreta;

@@ -30,7 +30,7 @@ public interface UsuariRepositori extends JpaRepository<Usuari, Integer> {
     Optional<String> trobaStringHashContraPerCorreu(@Param("hashetContra") String hashContra, @Param("emailete") String eMail);
 
     /*PER VEURE SI ALGU TE ACCES ALS RECURSOS O NO*/
-    @Query(value="SELECT pla_suscripcio_actual FROM usuari WHERE correu_electronic = :emailete", nativeQuery = true)
+    @Query(value="SELECT permisos FROM usuari WHERE correu_electronic = :emailete", nativeQuery = true)
     Optional<Byte> trobaSiUsuariTeAccesArecursosDePago_PerCorreu(@Param("emailete") String eMail); //Opcional perque pot ser que estigui buida la consulta i sigui null no usuari.
 
     @Query(value="SELECT id_usuari FROM usuari WHERE id_usuari = :idenete", nativeQuery = true)
