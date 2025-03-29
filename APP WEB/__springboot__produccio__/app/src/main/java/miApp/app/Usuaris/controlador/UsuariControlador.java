@@ -65,7 +65,7 @@ public class UsuariControlador {
     //PRE: Un correu i contrasenya entren pel frontend
     //POST: Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos: "true", contrasenyaCorrecta:"true"} o false segons sigui el cas
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
-    @PostMapping("/usuariContraLogIn")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
+    @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
     public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody HashMap<String, String> requestDelBody) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
 
         //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
@@ -80,10 +80,11 @@ public class UsuariControlador {
         boolean usuariTeAcces = serveiUPP.usuariTeAcces(eMail);
         mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
 
-        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT COINCIDEIX EL HASH DE LA CONTRASENYA DE LA BBDD AMB EL HASH DE LA QUE HA POSAT PEL FRONT
-        String hashContra = requestDelBody.get("contra");  //FER AQUI EL HASHING que no esta fet encara
-        boolean contraCorrecta = serveiUPP.contraCoincideix(hashContra, eMail);
-        mapJSONlike.put("contrasenyaCorrecta", contraCorrecta);
+        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT COINCIDEIX EL HASH DE LA CONTRASENYA DE LA BBDD
+        // AMB EL HASH DE LA QUE ES GENERA DEL QUE HA POSAT L'USUARI PEL FRONT
+        String contraPlana = requestDelBody.get("contra");
+        boolean EsContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
+        mapJSONlike.put("contrasenyaCorrecta", EsContraCorrecta);
         /*
             AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
          */
@@ -111,8 +112,8 @@ public class UsuariControlador {
             mapJSONlike.put("existiaUsuari", true); //posem el clau valor al hashmap infromant que no registrem l'usuari obviament (pq ja esta registrat)
             mapJSONlike.put("usuariShaRegistrat", false);
         } else { //L'USUARI N OEXISTIA, ERGO L'AFEGEIXO
-            String contrasenya = requestDelBody.get("contra");
-            boolean usuariAfegitCorrectament = serveiUPP.afegirUsuari(eMail, contrasenya, "aliesAleatoritzat", (byte) 0);
+            String contrasenyaPlana = requestDelBody.get("contra");
+            boolean usuariAfegitCorrectament = serveiUPP.afegirUsuari(eMail, contrasenyaPlana, "aliesAleatoritzat", (byte) 0);
             mapJSONlike.put("usuariShaRegistrat", usuariAfegitCorrectament); //posem el clau valor al hashmap
             mapJSONlike.put("existiaUsuari", false);
         }

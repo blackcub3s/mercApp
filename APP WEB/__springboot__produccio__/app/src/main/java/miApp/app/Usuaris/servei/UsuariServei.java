@@ -53,12 +53,18 @@ public class UsuariServei {
         Optional<Byte> judiciAcces = repoUsuari.trobaSiUsuariTeAccesArecursosDePago_PerCorreu(eMail);
         return judiciAcces.isPresent() && judiciAcces.get() > 0;
     }
-    //PRE: un hash d'una contrasenya i un correu electornic
-    //POST: Si troba els DPS parametres pre a la mateixa fila, aleshores tornara cert. En cas contrari tornara false.
-    public boolean contraCoincideix(String hashContra, String email) {
-        Optional<String> hashet = repoUsuari.trobaStringHashContraPerCorreu(hashContra, email);    //Optional ajuda a manejar el tipus de dades (si no troba res estara buit i si torna algo sera Usuari). va bé per manejar els valors nuls.
-        System.out.println(hashet.toString());  //per veure les dades de la persona que ha entrat
-        return hashet.isPresent();
+    //PRE: una contrasenya plana i un correu electornic
+    //POST: Si troba els parametres pre a la mateixa fila, aleshores tornara cert. En cas contrari tornara false.
+    public boolean contraCoincideix(String contraPlana, String email) {
+        Optional<String> hashExistentBBDD = repoUsuari.trobaHashPerCorreu(email);    //Optional ajuda a manejar el tipus de dades (si no troba res estara buit i si torna algo sera Usuari). va bé per manejar els valors nuls.
+
+        if (hashExistentBBDD.isPresent()) { //si he trobat un hash perque hi havia un usuari...
+            EncriptaContrasenyes encriptador = new EncriptaContrasenyes();
+            return encriptador.verificaContrasenya(contraPlana, hashExistentBBDD.get()); //tornara cert si els dos hashos coincideixen. False altrament.
+        } else {
+            return false;
+        }
+
     }
 
 
@@ -90,21 +96,23 @@ public class UsuariServei {
 
     //OPERACIONS PER GUARDAR
 
-    //pre: l'usuari NO existeix a la taula usuari.
-    //post: l'usuari queda afegit a la base de dades si retorna true.
-    //      si la query de guardat fallés i no el pogués afegir aleshores reotrnaria false
-    public boolean afegirUsuari(String correuElectronic, String hashContrasenya, String alies, Byte plaSuscripcioActual) {
+    //PRE: l'usuari NO existeix a la taula usuari.
+    //POST: retorna True si l'usuari queda afegit a la base de dades.
+    //      retorna False si la query de guardat fallés i no el pogués afegir.
+    public boolean afegirUsuari(String correuElectronic, String contrasenyaPlana, String alies, Byte plaSuscripcioActual) {
         try {
             Usuari nouUsuari = new Usuari();
+            EncriptaContrasenyes encriptador = new EncriptaContrasenyes();
+
             nouUsuari.setCorreuElectronic(correuElectronic);
-            nouUsuari.setHashContrasenya(hashContrasenya);
+            nouUsuari.setHashContrasenya(encriptador.hashejaContrasenya(contrasenyaPlana));
             nouUsuari.setAlies(alies);
             nouUsuari.setPermisos(plaSuscripcioActual);
 
             // Attempt to save the user to the database
             repoUsuari.save(nouUsuari);
 
-            return true; // guardat dusuari exitos
+            return true; // guardat d usuari exitos
         } catch (Exception e) {
             // SI HI HA ERRORS DE CONNEXIO PER EXEMPLE, DONARA ERROR I RETORNARA EL BOLLEA FALSE
             System.err.println("Error saving user: " + e.getMessage());

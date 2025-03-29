@@ -26,11 +26,11 @@ CREATE TABLE usuari_ampliat ( -- nomes usuaris quan JA HAN PAGAT o han pagat alg
 );
 
 
-INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) 
-VALUES ('acces@gmail.com', "123","blackcub3s",1);
+/*INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) 
+VALUES ('acces@gmail.com', "123","blackcub3s",1);*/
 
-INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) 
-VALUES ('noacces@gmail.com', "123","whitecub3s",0);
+/*INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) 
+VALUES ('noacces@gmail.com', "123","whitecub3s",0);*/
 -- INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) VALUES ('sant.44@gmail.com', "asd","copernic",0);
 -- INSERT INTO usuari_ampliat (id_usuari, nom, primer_cognom, segon_cognom) VALUES (4, "santi", "sanchez","sans");
 

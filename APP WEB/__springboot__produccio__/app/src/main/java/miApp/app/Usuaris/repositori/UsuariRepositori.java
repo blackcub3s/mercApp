@@ -25,9 +25,9 @@ public interface UsuariRepositori extends JpaRepository<Usuari, Integer> {
     @Query(value="SELECT correu_electronic FROM usuari WHERE correu_electronic = :emailete", nativeQuery = true)
     Optional<String> trobaStringUsuariPerCorreu(@Param("emailete") String eMail); //Opcional perque pot ser que estigui buida la consulta i sigui null no usuari.
 
-    //SI TORNA ALGO ES QUE L'USUARI EXISTEIX I LA CONTRASENYA COINCIDEIXEN. EN CAS CONTRARI NO.
-    @Query(value="SELECT hash_contrasenya FROM usuari WHERE correu_electronic = :emailete AND hash_contrasenya = :hashetContra", nativeQuery = true)
-    Optional<String> trobaStringHashContraPerCorreu(@Param("hashetContra") String hashContra, @Param("emailete") String eMail);
+    //SI TORNA EL HASH DINS L'OPTIONAL ES QUE L'USUARI EXISTEIX. EN CAS CONTRARI NO EXISTEIX.
+    @Query(value="SELECT hash_contrasenya FROM usuari WHERE correu_electronic = :emailete", nativeQuery = true)
+    Optional<String> trobaHashPerCorreu(@Param("emailete") String eMail);
 
     /*PER VEURE SI ALGU TE ACCES ALS RECURSOS O NO*/
     @Query(value="SELECT permisos FROM usuari WHERE correu_electronic = :emailete", nativeQuery = true)
