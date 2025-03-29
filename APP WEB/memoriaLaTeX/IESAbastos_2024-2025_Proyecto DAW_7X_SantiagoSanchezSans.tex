@@ -484,10 +484,12 @@ String accesJWT = accessToken.genera(
 		En la clase \textbf{JwtUtil} tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar y autorizar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link}). Se recomienda encarecidamente al lector optar por esta última opción\footnote{Al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.}.
 		
 		
-		\subsubsection{Pasos para implementar JWT con la aplicación}
+		\subsubsection{Pasos para implementar JWT con la aplicación SpringBoot}
 		
 		Después de crear estas tres clases podemos empezar a 
-		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de acceso a un endpoint. Queremos conseguir que ese endpoint permita acceso al usuario que lo pida o no en función del valor que hay en la columna ``permisos'' de la tabla usuaris (es decir en función de la variable permisos del model de la @Entity class de usuari: ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L42}{linea github}). Para ello hay \textbf{tres} pasos:
+		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de acceso a un endpoint protegido. Queremos conseguir que ese endpoint permita en cada solicitud \textbf{Autenticarlo}, es decir, determinar que dice ser quien es mediante el hecho de encontrar en el token verificado su idUsuari correspondiente; y a su vez \textbf{Autorizarlo}, es decir, dar acceso a ese usuario a los recursos a los que se le permita acceso.
+		
+		 Estos dos pasos irán en función del valor de la variable que haya emanado de la base de datos al conceder el token mediante \textit{idUsuari} para el caso de la \textbf{Autenticación} -ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L30}{linea github}-, y de la variable \textit{permisos} del model de la @Entity class Usuari - ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L42}{linea github}- para el caso de la \textbf{autorización}). Para ello hay \textbf{tres} pasos:
 		
 		
 		
