@@ -33,8 +33,8 @@ public interface UsuariRepositori extends JpaRepository<Usuari, Integer> {
     @Query(value="SELECT permisos FROM usuari WHERE correu_electronic = :emailete", nativeQuery = true)
     Optional<Byte> trobaSiUsuariTeAccesArecursosDePago_PerCorreu(@Param("emailete") String eMail); //Opcional perque pot ser que estigui buida la consulta i sigui null no usuari.
 
-    @Query(value="SELECT id_usuari FROM usuari WHERE id_usuari = :idenete", nativeQuery = true)
-    Integer trobaId(@Param("idenete") Integer idUsuari);
+    @Query(value="SELECT id_usuari FROM usuari WHERE correu_electronic = :correu", nativeQuery = true)
+    Integer trobaIdPerCorreu(@Param("correu") String correu);
 
     @Query(value="SELECT correu_electronic FROM usuari", nativeQuery = true)
     List<String> trobaTotsElsCorreusDelsUsuarisRegistrats();

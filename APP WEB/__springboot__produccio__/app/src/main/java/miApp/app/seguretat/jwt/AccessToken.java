@@ -58,7 +58,7 @@ public class AccessToken extends JwtUtil {
 
 
         //DONA EXCEPCIO SI EL TOKEN HA EXPIRAT, COMPTE!
-        System.out.println("token acces: \n"+accesJWT);
+        System.out.println("token acces generat: \n"+accesJWT);
 
 
         //PROVO D OBTENIR DADES DE LES CLAIMS (DELS PARELLS CLAU VALOR DEL PAYLOAD)

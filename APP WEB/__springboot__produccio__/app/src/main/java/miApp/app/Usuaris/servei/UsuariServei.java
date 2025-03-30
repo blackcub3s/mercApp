@@ -2,9 +2,11 @@
 
 package miApp.app.Usuaris.servei;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import miApp.app.Usuaris.dto.ActualitzaContrasenyaDTO;
 import miApp.app.Usuaris.dto.UsuariDTO;
 import miApp.app.Usuaris.repositori.UsuariAmpliatRepositori;
+import miApp.app.seguretat.jwt.AccessToken;
 import miApp.app.utils.EncriptaContrasenyes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -222,6 +224,20 @@ public class UsuariServei {
             Usuari usuariPostActualitzacio_GUARDAT = repoUsuari.save(usuariPreActualitzacio);
             return Optional.of(usuariPostActualitzacio_GUARDAT);
         }
+    }
+
+    public String generaTokenAccesPerUsuariParticular(String eMail) {
+        AccessToken accessToken = new AccessToken();
+        Integer idUsuari = repoUsuari.trobaIdPerCorreu(eMail);
+        Byte permisos = repoUsuari.trobaSiUsuariTeAccesArecursosDePago_PerCorreu(eMail).get(); //TROBA PER idUsuari mes facil
+
+
+
+        String accesJWT = accessToken.genera(eMail,
+                                            idUsuari, //id usuari
+                                            permisos  //0 si no te acces a res, 1 si te acces a recursos de l aplicacio, 2 si superusuari
+        );
+        return accesJWT;
     }
 
 

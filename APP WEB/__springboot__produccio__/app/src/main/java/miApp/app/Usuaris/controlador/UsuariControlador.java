@@ -12,7 +12,9 @@ import miApp.app.Usuaris.dto.UsuariDTO;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
 import miApp.app.Usuaris.servei.UsuariServei;
+import miApp.app.seguretat.jwt.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,7 +65,8 @@ public class UsuariControlador {
 
 
     //PRE: Un correu i contrasenya entren pel frontend
-    //POST: Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos: "true", contrasenyaCorrecta:"true"} o false segons sigui el cas
+    //POST: Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos: "true", contrasenyaCorrecta:"true"} o false segons sigui el cas.
+    //      Si existeixUsuari i contrasenyaCorrecta es true, ALESHORES es generara un token d'acces que sortira per la Heather HTTP "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR"
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
     public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody HashMap<String, String> requestDelBody) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
@@ -83,12 +86,27 @@ public class UsuariControlador {
         //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT COINCIDEIX EL HASH DE LA CONTRASENYA DE LA BBDD
         // AMB EL HASH DE LA QUE ES GENERA DEL QUE HA POSAT L'USUARI PEL FRONT
         String contraPlana = requestDelBody.get("contra");
-        boolean EsContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
-        mapJSONlike.put("contrasenyaCorrecta", EsContraCorrecta);
-        /*
-            AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
-         */
-        return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //torno la response
+        boolean esContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
+
+        if (esContraCorrecta) {
+            /*
+                AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
+            */
+            //POSO MISSATGE INFORMATIU
+            mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
+
+            //POSO EL TOKEN!
+            HttpHeaders capsaleraHTTP = new HttpHeaders();
+            String tokenJWTgenerat = serveiUPP.generaTokenAccesPerUsuariParticular(eMail);
+            System.out.println("TOKENETE ACCESETE "+tokenJWTgenerat);
+            capsaleraHTTP.set("Access-Control-Expose-Headers", "Authorization"); //PERMETO EXPOSAR LES HEADERS (CORS)
+            capsaleraHTTP.set("Authorization", "Bearer "+tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
+            return new ResponseEntity<>(mapJSONlike, capsaleraHTTP, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike i la capsalera amb el token!!
+
+        } else { //NO TORNO TOKEN SI LA CONTRASENYA DE L'USUARI NO ES CORRECTA PERO SI HAS DE PROCESSAR IGUALENT EL BODY EN EL FRONTEND
+            return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //  --> peticio no autoritzada per mala contrasenya
+        }
+
     }
 
 
