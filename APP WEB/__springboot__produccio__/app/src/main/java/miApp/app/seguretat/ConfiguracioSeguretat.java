@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 //AQUESTA CLASSE PERMET PROTEGIR O DESPROTEGIR ELS ENDPOINTS. ES NECESSARIA PERQUÈ ELS ENDPOINTS, EN AFEGIR
@@ -13,15 +14,23 @@ import org.springframework.security.web.SecurityFilterChain;
 //@EnableWebSecurity  //L'anotacio @EnableWebSecurity ja no cal posar-la (en versions noves spring boot no es necessaria, pero la pots posar si vols)
 public class ConfiguracioSeguretat {
 
+    private final FiltreAutenticacioJwt jwtAuthenticationFilter;
+
+    public ConfiguracioSeguretat(FiltreAutenticacioJwt jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         //.requestMatchers("/api/usuaris").authenticated()  //ENDPOINT PROTEGIT
-                        .requestMatchers("/api/nreUsuaris").authenticated() //ENDPOINT PROTEGIT
+                        .requestMatchers("/api/usuaris").hasRole("ADMIN") //ENDPOINT PROTEGIT
+                        .requestMatchers("/api/nreUsuaris").hasRole("USER") //ENDPOINT PROTEGIT
                         .requestMatchers("/api/**").permitAll()  // PERMET QUE LA RESTA D'ENDPOINTS dins /api/ SIGUIN PUBLICS
                 )
-                .csrf(csrf -> csrf.disable());
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
