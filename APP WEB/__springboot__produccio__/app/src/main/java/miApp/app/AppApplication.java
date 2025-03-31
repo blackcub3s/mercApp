@@ -20,11 +20,11 @@ public class AppApplication {
 
 		//TESTEJO AFEGIR USUARI (EL PRIMER TÉ ACCÉS A RECURSOS, EL SEGON NO TÉ ACCÉS -es un usuari que ha registrat nom pero mai ha arribat a guanyar permisos-)
 		boolean afegit = usuariServei.afegirUsuari("acces@gmail.com",
-													new EncriptaContrasenyes().hashejaContrasenya("123"),
+													"123",
 												"blackcub3s",
 													(byte) 1);
 		boolean afegitdos = usuariServei.afegirUsuari("noacces@gmail.com",
-				  									   new EncriptaContrasenyes().hashejaContrasenya("123"),
+				  									   "123",
 				                                 "pincub3s",
 				                                       (byte) 0);
 
