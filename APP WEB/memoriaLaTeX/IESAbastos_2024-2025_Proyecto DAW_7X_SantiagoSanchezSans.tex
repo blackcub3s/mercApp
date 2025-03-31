@@ -642,15 +642,15 @@ fetch("'http://localhost:8080/usuaris/{id}/endpointTikets'", {
 		  
 		  \end{lstlisting}
 		  
+		  Importante es mencionar que en el fragmento de código anterior, al llamar la el método $getClaims(token)$  se lanzará una excepción de tipo \textit{ExpiredJwtException} en caso que el token haya expirado, que recogemeremos en el primer bloque Catch; y si el token está manipulado y no es válido, entonces se lanzará otra excepción que se recogerá en el segundo bloque Catch. Todo ello se informará como una response al cliente ( \href{https://github.com/blackcub3s/mercApp/blob/89efcf854d8bbab2addde3f7e817eb97f7737b95/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L96-L115}{ver rango codigo}).
 		  
 		  
-		  
-		  Y finalmente hay que crear un objeto de tipo UsernamePasswordAuthenticationToken ya definido dentro de SpringBoot. Su constructor permitirá tres parámetros: 
+		  Y finalmente hay que crear un objeto de tipo \textit{UsernamePasswordAuthenticationToken} ya definido dentro de SpringBoot. Su constructor permitirá tres parámetros: 
 		 
 		 	\begin{itemize}
 		 	\setlength{\itemsep}{-.5em}
 
-			  \item \textbf{el principal}, el primero, al que le pasaremos el idUsuari-
+			  \item \textbf{el principal}, el primero, al que le pasaremos el \textcolor{red}{idUsuari}
 			 \item  \textbf{credentials}, el segundo, que lo dejamos a null porque en JWT no se debe manejar credenciales ya que están contenidas dentro del token. 
 			  \item \textbf{una collection con el role}, el tercero, que contendrá los roles que definimos antes. 
 		  \end{itemize}
@@ -680,6 +680,10 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 \end{lstlisting}
 	
+	
+	
+
+
 		\noindent \textbf{PASO 2: Configuración contexto de seguridad}
 		\hrule
 		
