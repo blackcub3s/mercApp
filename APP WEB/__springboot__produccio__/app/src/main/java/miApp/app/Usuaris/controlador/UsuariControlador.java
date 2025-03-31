@@ -163,9 +163,9 @@ public class UsuariControlador {
 
 
 
-    //------------------------------------
-    //AFEGIT MENTRE VAIG FENT CURS (CRUD)
-    //------------------------------------
+    //-----------------------------------------------------
+    //AFEGIT MENTRE VAIG FENT CURS (CRUD) -- ENDPOINTS REST
+    //-----------------------------------------------------
 
 
 
@@ -236,7 +236,7 @@ public class UsuariControlador {
             }
     */
     @PutMapping("/usuaris/{id}")
-    public ResponseEntity<Usuari> actualitzaUsuari(@RequestBody UsuariDTO dto, @PathVariable("id") int id) {
+    public ResponseEntity<Usuari> actualitzaUsuari(@RequestBody @Valid UsuariDTO dto, @PathVariable("id") int id) {
         Optional<Usuari> usuariActualitzatOPTIONAL = serveiUPP.actualitzaUsuari(dto, id);
 
         if (usuariActualitzatOPTIONAL.isPresent()) { //si usuari s'ha afegit, aquest tipus Optional tindrà un usuari dins
