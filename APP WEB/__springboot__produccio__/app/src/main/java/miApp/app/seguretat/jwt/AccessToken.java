@@ -15,7 +15,7 @@ public class AccessToken extends JwtUtil {
     private static int tExpM; //expiracio en minuts
 
     public AccessToken() {
-        this.tExpM = 10;
+        this.tExpM = 15; //15 minuts
     }
 
     //FINALITAT: Generar un JWT d'acces.

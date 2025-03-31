@@ -25,13 +25,16 @@ public class ConfiguracioSeguretat {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/api/usuaris").authenticated()  //ENDPOINT PROTEGIT
-                        .requestMatchers("/api/usuaris").hasRole("ADMIN")   //ENDPOINT PROTEGIT (ADMIN es permisos == 2 de la bbdd veure FiltreAutenticacioJwt)
-                        .requestMatchers("/api/nreUsuaris").hasRole("USER") //ENDPOINT PROTEGIT (USER es permisos==1 de la bbdd) TESTEJAT! VA BE I QUAN EXPIRA TOKEN PARA AACCES!
+                        //.requestMatchers("/api/usuaris").authenticated()  //ENDPOINT PROTEGIT  || NOTA: PROVAR hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/usuaris/*").hasRole("USER")  //PROTEGEIXO RUTA /api/usuaris/{ID}. SI VOLGUES PROTEGIR TOTES LES SUBRUTES POSTERIORS (POSARIA DOS ASTERISCS EN COMPTES DE UN)
+                        .requestMatchers("/api/usuaris").hasRole("ADMIN")   //TESTEJAT! ENDPOINT PROTEGIT (ADMIN es permisos == 2 de la bbdd veure FiltreAutenticacioJwt)
+                        .requestMatchers("/api/nreUsuaris").hasAnyRole("USER", "ADMIN") //TESTEJAT! ENDPOINT PROTEGIT (USER es permisos==1 de la bbdd) TESTEJAT! NOMES DEIXA ACCEDIR USERS I ADMIN
                         .requestMatchers("/api/**").permitAll()  // PERMET QUE LA RESTA D'ENDPOINTS dins /api/ SIGUIN PUBLICS
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+
 }

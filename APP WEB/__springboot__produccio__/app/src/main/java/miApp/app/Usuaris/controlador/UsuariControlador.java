@@ -181,7 +181,9 @@ public class UsuariControlador {
     }
 
     //METODE PER TROBAR UN USUARI PER ID --------------------------------> LA R DEL CRUD
+
     @GetMapping("/usuaris/{id}")
+    //@PreAuthorize("#id == authentication.principal")  //NO FUNCIONA
     public ResponseEntity<Usuari> obtinguesUsuari(@PathVariable("id") int id) {
         Optional<Usuari> usuari = serveiUPP.trobaPerId(id);
         if (usuari.isEmpty()) {
