@@ -70,7 +70,7 @@
 			
 			\vspace*{5cm} 
 
-			\LARGE{Creación de un dashboard para usuarios del ticket digital de Mercadona: que permita consultara evolución de productos habitualmente adquiridos, el coste de sus compras por períodos temporales y el monto de gastos por áreas de producto}
+			\LARGE{Creación de un dashboard para usuarios del ticket digital de Mercadona con consultas visuales a la evolución de productos habitualmente adquiridos, costes de compras por intervalos temporales y gastos por áreas de producto}
 			
 			\vfill
 			
@@ -202,15 +202,23 @@
 		
 		\section{Requisitos Funcionales}
 		
+			NOTA: Los requisitos aquí presentes se suman a los requisitos que se sobreentiende que tiene la aplicación de un proyecto final de grado superior y que esta aplicación, por supuesto, cumple: tener un front-end, un back-end con sistema de registro de usuarios y un login con buenas prácticas en materia de seguridad y una base de datos.
+		
+		
 			\subsection{Requisitos de la aplicación}
 			
+		
+
+			
+
+			
+		
 			
 			\textbf{REQUISITO A:} Mostrar evolución de los precios de los productos unitarios adquiridos con más frecuencia (visualizable en un gráfico donde en X tendremos el tiempo y en Y el precio en euros). Para los productos de precios muy variables (productos a granel, como frutas, etc.), se mostrará la evolución del precio por kg a lo largo del tiempo.
 			
 			\textbf{REQUISITO B:} Coste total de la cesta de la compra del usuario a lo largo de distintas ventanas temporales (por meses, períodos de 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
 			
-			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en B), se incluirá un diagrama de queso (o de sectores) desglosando qué porcentaje del dinero se ha destinado a cada una de las siguientes categorías: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carnes, pescado, hogar e higiene personal.
-			Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.
+			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un diagrama de queso (o de sectores) desglosando qué porcentaje del dinero se ha destinado a cada una de las siguientes categorías: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carnes, pescado, hogar e higiene personal.Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.
 			
 			
 			
@@ -313,9 +321,51 @@
 		
 			\section{desarrollo del front-end}
 		
-			\section{desarrollo back-end}
+			\subsection{Manejar vistas en función de Autenticación y autorización}
 			
-				\subsection{Estructura de la aplicacion}
+			
+			Podemos considerar que cada archivo HTML y su CSS asociado es una ``vista'' de nuestra aplicación.  La autenticación y la autorización se hace en el backend y el control de las vistas (en función de si el usuario está autorizado y autenticado) se hará en el front-end mediante JavaScript puro.
+			
+			Si bien SpringBoot permite servir los archivos estáticos\footnote{HTML, CSS y JS son archivos estáticos.}  de dentro del mismo back-end de Spring Boot y utilizar un sistema de plantillas (Thymeleaf) esto realmente no es, para nada, lo ideal. Lo ideal es definir un front-end y un back-end separados y así lo hemos hecho en este proyecto\footnote{Si tenemos ambas partes desacopladas podremos hacer modificaciones independientes en ambas. Por ejemplo, podremos cargar los archivos front-end en una CDN o un Proxy o tenerlos cacheados en un servidor que los sirva mucho más rápido, como Nginx. Es más, lo óptimo sería generar los archivos del front-end mediante un sistema de desarrollo por componentes (como Angular, React o Vue) para facilitar el desarrollo cuando la aplicación crezca y utilizar una paradigma \textit{SPA} (\textit{Single Page Application}). Sin embargo, en este caso, por el tiempo disponible y el tamaño de la aplicación se ha optado por hacerlo con HTML, CSS y JS puros.}.
+
+			
+			
+			Al tener el front-end y el back-end desacoplados esto también aumenta la complejidad inicial en el desarrollo: la protección de las vistas se hace más compleja. Así las cosas, del mismo modo que los endpoints de nuestra API del back-end en SpringBoot están protegidos y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado), ciertas páginas del front-end no podrán obtener la información deseada: En este caso deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesion y/o bien redirigir al usuario a la página de login, por ejemplo.
+			
+			Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica.
+			
+			\subsubsection{Protegiendo las vistas}
+			
+			\textbf{TO DO: POSAR EXEMPLE DE CASOS PARTICULARS}
+			
+			\subsubsection{Recibir el Access Token desde el back-end}
+			\label{sec:recibirAccesTokenENFRONTEND}.
+			
+			El token de acceso se recibe por primera vez desde el backend cuando el usuario se loguea con éxito en \textbf{pas2Clogin.html}. Para entender de donde viene el token desde el back-end podéis ver la sección \ref{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}, pror en esta sección nos centraremos en el front.
+			
+			El token se recibe en la vista definida por \textbf{pas2Clogin.html}, cuando des de el script hacemos una solicitud POST con fetch() hacia el endpoint del back-end SpringBoot \textit{``/api/login''}.
+			
+			\textbf{TO DO: POSAR JUST AQUI LINK A GITHUB pas2Clogin.html la part del fetch A TOT EL CODI (LO MATEIX QUE LA IMATGE DE SOTA PERQUE LECTORS PUGUIN VEURE-HO)}
+			
+			Como se puede ver desde el JavaScript embedido en el HTML en la figura \ref{fig:figuraLoginFetch}, cuando el usuario se loguee correctamente al recibir el código 200 OK hemos programado la función \textit{fetch()} para que guarde el token de Autenticación y Autorización recién creado desde el back-end de Spring Boot en el cliente. Es decir, para que se guarde el Access Token JWT en nuestro \textit{localStorage}.
+			
+			\setlength{\belowcaptionskip}{3pt}
+			\FloatBarrier
+			\begin{figure}[H]
+				\centering
+				\caption{Fragmento de codigo en pas2B\_login.html dentro del codigo javascript para obtener el token de acceso (detalle en rojo).}
+				\includegraphics[width=1\textwidth]{img/jwtFetchLoginFront.png}
+				
+				\label{fig:figuraLoginFetch} 
+			\end{figure}
+			\FloatBarrier
+			
+			
+
+			
+			\section{desarrollo back-end (Spring Boot)}
+			
+				\subsection{Estructura de la aplicación}
 				\label{sec:estructuraAplicacion}
 				
 				TO DO pom.xml application.properties, usuari, repository, service, controller.
@@ -382,7 +432,7 @@
 				
 				
 				\subsubsection{Implementación de JWT en java SpringBoot}
-				
+				\label{sec:implementacionJWTjava}
 				Para poder implementarlo añadimos la dependencia \textbf{jjwt} en \texttt{pom.xml} que es la que nos permite definirlo.
 				
 				
@@ -397,11 +447,20 @@
 				\end{lstlisting}
 				
 				
-		En el proyecto se han creado tres clases dentro de la ruta \texttt{src/main/java/} \texttt{miApp.app/seguretat/jwtseguretat} denominadas \textbf{JwtUtil}, \textbf{AccessToken} y \textbf{RefreshToken} . 
+		En el proyecto se han creado tres clases dentro de sus respectivos archivos en la ruta \texttt{src/main/java/} \texttt{miApp.app/seguretat/jwtseguretat} denominadas:
 		
-		En la primera clase hemos creado un método que obtiene las claims (pares clave valor, la carga útil) de un JWT y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que hagamos con esa contraseña-. De esta hemos heretado las otras dos: La subclase que nos genera el \textbf{token de acceso}, \texttt{AccessToken}; y la que nos genera el \textbf{token de refresco}, \texttt{RefreshToken}. A continuacion podéis ver la clase AccessToken:
+		\begin{itemize}
+			\setlength{\itemsep}{-.4em}
+			\item \textbf{JwtUtil}
+			\item \textbf{AccessToken}
+			\item \textbf{RefreshToken}
+		\end{itemize}
+		  
+		
+		En la clase \textbf{JwtUtil} hemos creado un método que obtiene las \textit{claims} (pares clave valor que contienen la carga útil de un JWT) y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que se cifren con esa contraseña-. De esta clase hemos heretado las otras dos: La subclase que nos genera el \textit{token de acceso}, \textbf{AccessToken}; y la que nos genera el \textit{token de refresco}, \textbf{RefreshToken}. A continuacion podéis, de estas tres, la más importante: 
 		
 		
+
 		
 \begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 				
@@ -432,7 +491,7 @@ public class AccessToken extends JwtUtil {
 		
 		
 		
-		Y con la función \textbf{genera()} de la clase AccessToken, con los parámetros necesarios, podemos generar un token de acceso en ``accesJWT'':
+		Con la función \textbf{genera()} de la clase AccessToken arriba mostrada, y con los parámetros necesarios que serán necesarios para autorizar (idUsuari) y autenticar (permisos), podemos generar un token de acceso en ``accesJWT'':
 		
 		
 		
@@ -448,7 +507,7 @@ String accesJWT = accessToken.genera(
 
 \end{lstlisting}
 		
-		El token de AccessJWT, que es el que visualizamos a la izquierda, podremos ver que está estructurado en sus tres partes a la derecha de la figura \ref{fig:jwtioMostraPayload}) siendo la más importante la que está en color rosa, la payload:
+		Si vemos la figura \ref{fig:jwtioMostraPayload} que tenemos a continuación, veremos en la mitad izquierda un token de acceso generado por la función anterior. Fijémonos que internamente ese token está estructurado en las tres partes de la parte derecha de la imagen, siendo la payload la más importante:
 		
 	
 			\setlength{\belowcaptionskip}{3pt}
@@ -480,19 +539,30 @@ String accesJWT = accessToken.genera(
 		
 		
 		
-		Hemos utilizado herencia porque la clave privada es la misma para ambos tipos de token, mientras que los métodos para generar cada uno de los dos tipos de JWT cambian. En StackOverflow existe un debate para ver si hay que tener una clave privada distinta para cada tipo de token, por si el lector está interesado \cite{stackoverflow_jwt_refresh_token_secret}.Después de ver la entrada en stackOverflow Se ha optado por compartir claves para ambos tipos.
+		Al generar las tres clases hemos utilizado herencia porque la clave privada es la misma para ambos tipos de token (tanto el de acceso como el de refresco), mientras que los métodos para generar cada uno de los dos tipos de token cambian. En StackOverflow existe un debate para ver si hay que tener una clave privada distinta para cada tipo de token, por si el lector está interesado \cite{stackoverflow_jwt_refresh_token_secret}. Después de ver la entrada en stackOverflow Se ha optado por compartir claves para ambos tipos.
 		
 		
 		En la clase \textbf{JwtUtil} tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar y autorizar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link}). Se recomienda encarecidamente al lector optar por esta última opción\footnote{Al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.}.
 		
-		\subsubsection{Crear el JWT en el back-end, mandarlo al front-end y guardarlo en el navegador}
+		\subsubsection{Enviar por primera vez el Access Token hacia el front-end}
+		\label{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}
+		
+		Cuando el usuario consigue poner la contraseña correcta en la página del front-end \textbf{pas2C\_login.html} se manda de vuelta del back-end (desde el controlador de endpoint \texttt{/login}) hasta el front-end en el localStorage (¡por ahora lo hemos hecho así por simplicidad, pero en producción debería estar en una cookie segura!).
+		
+		La parte de recepción del token en el front-end y de su manejo podéis encontrarla en el apartado \ref{sec:recibirAccesTokenENFRONTEND}
+
 		
 		
 		
-		\subsubsection{Pasos para leer el JWT (desde el frontend) con la aplicación SpringBoot}
 		
-		Después de crear estas tres clases en Java y haber mandado el token de acceso al front, podemos empezar a 
-		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de un usuario que ya acaba de recibir el token y quiere acceder al dashword de visualización (a través de la heather ``Authorization'') (\texttt{'usuaris/{id}/endpoinTikets'}) (ver subseccion \ref{sec:estructuraAplicacion}, en ControladorUsuari.java). 
+		
+		
+		\textbf{TO DO: Referenciar endpont login springboot (que cal millorar)}
+		
+		\subsubsection{Recibir el JWT enviado por el front-end, interpretarlo desde el back-end y con ello securizar un endpoint de la API desde el back-end}
+		
+		Después de crear las tres clases en Java de las que hemos hablado en el apartado \ref{sec:implementacionJWTjava} anterior y haber mandado el token de acceso al front, podemos empezar a 
+		implementar la protección de endpoints con JWT. Asumamos que nos llega un token de acceso en una solicitud HTTP de un usuario que ya acaba de recibir el token y quiere acceder al dashboard de visualización (a través de la heather ``Authorization'') (\texttt{'usuaris/{id}/endpoinTikets'}) (ver subseccion \ref{sec:estructuraAplicacion}, en ControladorUsuari.java). 
 		
 		En javascript puro, desde el cliente, esta solicitud HTTP la pondríamos conseguir de la función fetch(), poniéndole uno de los pares clave valor con el inicio ``Bearer'' (por convenio) tal que así:
 		
@@ -534,7 +604,7 @@ fetch("'http://localhost:8080/usuaris/{id}/endpointTikets'", {
 		
 
 		
-		
+	\section{desarrollo back-end (microservicio con Python)}
 		
 		
 	\chapter{Evaluación y Conclusiones Finales} %OBLIGAT
