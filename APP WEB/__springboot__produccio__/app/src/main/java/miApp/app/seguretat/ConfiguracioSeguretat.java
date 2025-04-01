@@ -32,7 +32,7 @@ public class ConfiguracioSeguretat {
                         .requestMatchers("/api/usuaris").hasRole("ADMIN")   //TESTEJAT! ENDPOINT PROTEGIT (ADMIN es permisos == 2 de la bbdd veure FiltreAutenticacioJwt)
                         .requestMatchers("/api/nreUsuaris").hasAnyRole("USER", "ADMIN") //TESTEJAT! ENDPOINT PROTEGIT (USER es permisos==1 de la bbdd) TESTEJAT! NOMES DEIXA ACCEDIR USERS I ADMIN
                         .requestMatchers("/api/**").permitAll()  // PERMET QUE LA RESTA D'ENDPOINTS dins /api/ SIGUIN PUBLICS
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**", "/v3/api-docs").permitAll() //AFEGEIXO ACCES ALS ENDPOINTS DE SWAGGER!
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**", "/v3/api-docs","/v3/api-docs/**").permitAll() //AFEGEIXO ACCES ALS ENDPOINTS DE SWAGGER!
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
