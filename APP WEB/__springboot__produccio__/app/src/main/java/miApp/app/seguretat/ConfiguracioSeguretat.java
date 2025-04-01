@@ -2,6 +2,7 @@ package miApp.app.seguretat;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -10,8 +11,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 //AQUESTA CLASSE PERMET PROTEGIR O DESPROTEGIR ELS ENDPOINTS. ES NECESSARIA PERQUÈ ELS ENDPOINTS, EN AFEGIR
 //LA DEPENDÈNCIA spring-boot-starter-security QUEDEN PROTEGITS I QUALSEVOL CRIDA A ELLS DÓNA ERROR 401
+//L'anotacio @EnableWebSecurity ja no cal posar-la (en versions noves spring boot no es necessaria)
 @Configuration
-//@EnableWebSecurity  //L'anotacio @EnableWebSecurity ja no cal posar-la (en versions noves spring boot no es necessaria, pero la pots posar si vols)
+@EnableMethodSecurity  //CRUCIAL! Sense aquesta anotació no pots activar valicadions a nivell de method de controlador, tal com @PreAuthorise per poder autoritzar l'usuari de idUsuari en el principal de authentication en /usuaris/1
 public class ConfiguracioSeguretat {
 
     private final FiltreAutenticacioJwt jwtAuthenticationFilter;
