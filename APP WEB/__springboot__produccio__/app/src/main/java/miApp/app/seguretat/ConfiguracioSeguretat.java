@@ -28,9 +28,9 @@ public class ConfiguracioSeguretat {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         //.requestMatchers("/api/usuaris").authenticated()  //ENDPOINT PROTEGIT  || NOTA: PROVAR hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/api/usuaris/*").hasRole("USER")  //PROTEGEIXO RUTA /api/usuaris/{ID}. SI VOLGUES PROTEGIR TOTES LES SUBRUTES POSTERIORS (POSARIA DOS ASTERISCS EN COMPTES DE UN)
-                        .requestMatchers("/api/usuaris").hasRole("ADMIN")   //TESTEJAT! ENDPOINT PROTEGIT (ADMIN es permisos == 2 de la bbdd veure FiltreAutenticacioJwt)
-                        .requestMatchers("/api/nreUsuaris").hasAnyRole("USER", "ADMIN") //TESTEJAT! ENDPOINT PROTEGIT (USER es permisos==1 de la bbdd) TESTEJAT! NOMES DEIXA ACCEDIR USERS I ADMIN
+                        //.requestMatchers("/api/usuaris/*").hasRole("USER")  //PROTEGEIXO RUTA /api/usuaris/{ID}. SI VOLGUES PROTEGIR TOTES LES SUBRUTES POSTERIORS (POSARIA DOS ASTERISCS EN COMPTES DE UN)
+                        //.requestMatchers("/api/usuaris").hasRole("ADMIN")   //TESTEJAT! ENDPOINT PROTEGIT (ADMIN es permisos == 2 de la bbdd veure FiltreAutenticacioJwt)
+                        //.requestMatchers("/api/nreUsuaris").hasAnyRole("USER", "ADMIN") //TESTEJAT! ENDPOINT PROTEGIT (USER es permisos==1 de la bbdd) TESTEJAT! NOMES DEIXA ACCEDIR USERS I ADMIN
                         .requestMatchers("/api/**").permitAll()  // PERMET QUE LA RESTA D'ENDPOINTS dins /api/ SIGUIN PUBLICS
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**", "/v3/api-docs","/v3/api-docs/**").permitAll() //AFEGEIXO ACCES ALS ENDPOINTS DE SWAGGER!
                 )
