@@ -183,7 +183,7 @@ public class UsuariControlador {
     //METODE PER TROBAR UN USUARI PER ID --------------------------------> LA R DEL CRUD
 
     @GetMapping("/usuaris/{id}")
-    @PreAuthorize("#id == principal")  //FA AUTENTICACIÓ! RESTRINGEIX ACCÉS A UN SOL ID D'USUARI: EL QUE PASSA PEL "principal" DE UsernamePasswordAuthenticationToken authentication DINS FiltreAutenticacioJwt.
+    @PreAuthorize("hasRole('ADMIN') or #id == principal")  //FA AUTENTICACIÓ AMB id==principal (RESTRINGEIX ACCÉS A UN SOL ID D'USUARI: EL QUE PASSA PEL "principal" DE UsernamePasswordAuthenticationToken authentication DINS FiltreAutenticacioJwt. També permet accedir-hi a admins sense importar quin id tinguin.
     public ResponseEntity<Usuari> obtinguesUsuari(@PathVariable("id") int id) {
         Optional<Usuari> usuari = serveiUPP.trobaPerId(id);
         if (usuari.isEmpty()) {
@@ -238,6 +238,7 @@ public class UsuariControlador {
             }
     */
     @PutMapping("/usuaris/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal") //testejat (assegurem nomes admin o id de usuari puguin accedir
     public ResponseEntity<Usuari> actualitzaUsuari(@RequestBody @Valid UsuariDTO dto, @PathVariable("id") int id) {
         Optional<Usuari> usuariActualitzatOPTIONAL = serveiUPP.actualitzaUsuari(dto, id);
 
@@ -257,6 +258,7 @@ public class UsuariControlador {
     //      SI S'HA ESBORRAT USUARI -------> torno un 204 (no content, ok)
     //      SI NO S'HA ESBORRAT L'USUARI --> torno un 404 (recurs no trobat)
     @DeleteMapping("/usuaris/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal") //testejat (assegurem nomes admin o id de usuari puguin borrar)
     public ResponseEntity<Void> esborraUsuari(@PathVariable("id") int id) { //compte al void, que no pots usar el tipus primitiu. Has d'usar la wrapper class (Void)
         boolean usuariEsborrat = serveiUPP.esborraUsuari(id);
         if (usuariEsborrat) {
