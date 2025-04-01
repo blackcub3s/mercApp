@@ -181,7 +181,9 @@ public class UsuariControlador {
     }
 
     //METODE PER TROBAR UN USUARI PER ID --------------------------------> LA R DEL CRUD
+
     @GetMapping("/usuaris/{id}")
+    @PreAuthorize("#id == principal")  //FA AUTENTICACIÓ! RESTRINGEIX ACCÉS A UN SOL ID D'USUARI: EL QUE PASSA PEL "principal" DE UsernamePasswordAuthenticationToken authentication DINS FiltreAutenticacioJwt.
     public ResponseEntity<Usuari> obtinguesUsuari(@PathVariable("id") int id) {
         Optional<Usuari> usuari = serveiUPP.trobaPerId(id);
         if (usuari.isEmpty()) {
