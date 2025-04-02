@@ -113,20 +113,17 @@ public class UsuariControlador {
 
         //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
         String eMail = dto.getEmail();
+        String contraPlana = dto.getContra();
+
         boolean existeixUsuari = serveiUPP.usuariRegistrat(eMail);
+        boolean usuariTeAcces = serveiUPP.usuariTeAcces(eMail);
+        boolean esContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
 
         //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
         HashMap<String, Object> mapJSONlike = new HashMap<>();
         mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hashmap
-
-        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT TÉ ACCES ALS RECURSOS DE L'APP (I.E. USUARI QUE PAGA)
-        boolean usuariTeAcces = serveiUPP.usuariTeAcces(eMail);
         mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
 
-        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT COINCIDEIX EL HASH DE LA CONTRASENYA DE LA BBDD
-        // AMB EL HASH DE LA QUE ES GENERA DEL QUE HA POSAT L'USUARI PEL FRONT
-        String contraPlana = dto.getContra();
-        boolean esContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
 
         if (esContraCorrecta) {
             /*
