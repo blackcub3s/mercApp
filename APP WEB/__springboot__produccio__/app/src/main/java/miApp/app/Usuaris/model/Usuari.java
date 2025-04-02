@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.List;
 
 
 //PAS 1: Faig una Entity per mapejar la taula de la informació que s'emmagatzemarà de l'usuari abans de fer pagament
@@ -24,6 +25,7 @@ import java.sql.Date;
 @Data
 public class Usuari {
 
+
     @Id                                                     //CLAU PRIMARIA
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //ES GENERA INCREMENTALMENT
     @Column(name = "id_usuari")
@@ -40,6 +42,9 @@ public class Usuari {
 
     @Column(name = "permisos", nullable = false) //Byte es el tipus de dades de hibernate que mapeja al tipus TINYINT de mysql (nota que tinyint justament acupa un byte jeje)
     private Byte permisos; //0 es persona que nomes tenim mail i contrasenya (pero no te acces a recursos). Si es 1 aleshores te acces als seus recursos. Si es 2 es el superusuari i pot accedir a tot.
+
+    @OneToMany(mappedBy = "usuari", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TiketsPdf> tiketsPdf; // Los tickets asociados a un usuario
 
 
     //COMPTE QUE NO HE ACONSEGIT MAPEJAR EL CAMP DE JAVA A LA COLUMNA CORRESPONENT PER A LA DATA DE REGISTRE... AIXI QUE HO DEIXO COMENTAT

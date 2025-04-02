@@ -26,9 +26,9 @@ CREATE TABLE usuari_ampliat ( -- nomes usuaris quan JA HAN PAGAT o han pagat alg
 );
 
 CREATE TABLE tikets_pdf(
-	nre_factura_simplificada VARCHAR(15),   -- es el que sera la clau primaria de la taula de l' estil 2423-020-511489 (identificara cada ticket) 
-    id_usuari INTEGER,
-    pdf BLOB NOT NULL,
+	nre_factura_simplificada VARCHAR(15) NOT NULL,   -- es el que sera la clau primaria de la taula de l' estil 2423-020-511489 (identificara cada ticket) 
+    id_usuari INTEGER NOT NULL,
+    tiket_pdf BLOB NOT NULL,
     PRIMARY KEY(nre_factura_simplificada),
     FOREIGN KEY(id_usuari) REFERENCES usuari(id_usuari)
 		ON DELETE CASCADE
