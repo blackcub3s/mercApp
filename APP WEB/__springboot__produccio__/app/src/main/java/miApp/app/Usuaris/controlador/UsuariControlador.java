@@ -65,8 +65,14 @@ public class UsuariControlador {
 
 
     //PRE: Un correu i contrasenya entren pel frontend
-    //POST: Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos: "true", contrasenyaCorrecta:"true"} o false segons sigui el cas.
-    //      Si existeixUsuari i contrasenyaCorrecta es true, ALESHORES es generara un token d'acces que sortira per la Heather HTTP "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR"
+
+    //          {"email" : "asas@gmail.com", "contra" : "1213414124Mm }
+
+    //POST: - Un hashmap que es passara per response POST en el body amb
+    //          {"existeixUsuari":"True", teAccesArecursos: "true", contrasenyaCorrecta:"true"} o false segons sigui el cas.
+    //      - Si login correcte (E usuari i E contra) es genera i s'envia el token d'accés a través de
+    //        la Heather HTTP "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR".
+    //
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
     public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody HashMap<String, String> requestDelBody) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
