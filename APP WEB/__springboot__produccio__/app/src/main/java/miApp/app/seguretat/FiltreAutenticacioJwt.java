@@ -87,7 +87,7 @@ public class FiltreAutenticacioJwt extends OncePerRequestFilter {
 
                 //GUARDEM l'objecte creat tipus UsernamePasswordAuthenticationToken (autentication) DINS SecurityContextHolder.
                 //AQUESTA LINIA ES MOLT IMPORTANT: ES LA QUE DETERMINA SI L'USUARI ESTA AUTENTICAT (que no
-                // autoritzat, sino autenticat) QUAN FEM .authenticated() en la ConfiguracioSeguretat.java:
+                // autoritzat, sino autenticat) QUAN FEM .authenticated() en la ConfiguracioSeguretatPROD.java:
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
