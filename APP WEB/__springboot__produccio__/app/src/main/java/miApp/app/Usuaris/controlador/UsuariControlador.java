@@ -66,12 +66,28 @@ public class UsuariControlador {
 
     //PRE: Un correu i contrasenya entren pel frontend
 
-    //          {"email" : "asas@gmail.com", "contra" : "1213414124Mm }
+    //          {"email" : "asas@gmail.com", "contra" : "1213414124Mm" }
 
-    //POST: - Un hashmap que es passara per response POST en el body amb
-    //          {"existeixUsuari":"True", teAccesArecursos: "true", contrasenyaCorrecta:"true"} o false segons sigui el cas.
-    //      - Si login correcte (E usuari i E contra) es genera i s'envia el token d'accés a través de
-    //        la Heather HTTP "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR".
+    //POST: - Si no existeix l'usuari a la bbdd es retorna PEL BODY:
+    //
+    //       {
+    //          "existeixUsuari": false,
+    //          "teAccesArecursos": false
+    //       }
+    //      - Si l'usuari existeix i TÉ ACCÉS a recursos es retorna:
+
+    //            {"existeixUsuari": true, "teAccesArecursos": true}
+
+    //      - Si l'usuari existeix i NO té accés a recursos es retorna:
+
+    //             {"existeixUsuari": true, "teAccesArecursos": false}
+    //      ---------------------------------------------------------------
+    //
+    //      - Si login correcte (E usuari i E contra) es retorna...
+    //
+    //          * Pel body:     {"existeixUsuari": true, "teAccesArecursos": true, "contrasenyaCorrecta": true}
+    //          * Pel header:   "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR". (es torna token d'accés)
+    //
     //
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
