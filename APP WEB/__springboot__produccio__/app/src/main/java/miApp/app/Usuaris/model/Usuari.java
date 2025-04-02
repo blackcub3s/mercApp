@@ -43,7 +43,7 @@ public class Usuari {
     @Column(name = "permisos", nullable = false) //Byte es el tipus de dades de hibernate que mapeja al tipus TINYINT de mysql (nota que tinyint justament acupa un byte jeje)
     private Byte permisos; //0 es persona que nomes tenim mail i contrasenya (pero no te acces a recursos). Si es 1 aleshores te acces als seus recursos. Si es 2 es el superusuari i pot accedir a tot.
 
-    @OneToMany(mappedBy = "usuari", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuari", cascade = CascadeType.ALL, orphanRemoval = true) //per defecte es fa fetch type lazy.
     private List<TiketsPdf> tiketsPdf; // Los tickets asociados a un usuario
 
 
