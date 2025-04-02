@@ -92,9 +92,18 @@ public class UsuariControlador {
     //             {"existeixUsuari": true, "teAccesArecursos": false}
     //      ---------------------------------------------------------------
     //
-    //      - Si login correcte (E usuari i es contra correcta) es retorna:
+    //      - Si login correcte (E usuari i es contra correcta)
     //
-    //          * Pel body:     {"existeixUsuari": true, "teAccesArecursos": true, "contrasenyaCorrecta": true}
+    //          * Pel body:     {
+    //                              "existeixUsuari": true,
+    //                              "teAccesArecursos": true,
+    //                              "contrasenyaCorrecta": true,
+    //                              "usuari" : {
+    //                                  "alies" :  VALORALIES,
+    //                                  "permisos" : VALOR PERMISOS
+    //                                  "idUsuari" : VALOR ID USUARI,
+    //                              }
+    //                          }
     //          * Pel header:   "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR". (es torna token d'accés)
     //
     //
@@ -124,9 +133,17 @@ public class UsuariControlador {
                 AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
             */
             //POSO MISSATGE INFORMATIU
-            mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
+            HashMap<String, Object> mapUsuariIntern = new HashMap<>();
+            Usuari usuariLoguejat = serveiUPP.trobaUsuariPerEmail(eMail);
+            mapUsuariIntern.put("idUsuari", usuariLoguejat.getIdUsuari());
+            mapUsuariIntern.put("alies", usuariLoguejat.getAlies());
+            mapUsuariIntern.put("permisos", usuariLoguejat.getPermisos());
 
-            //POSO EL TOKEN!
+            mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
+            mapJSONlike.put("usuari", mapUsuariIntern);
+
+            //POSO EL TOKEN A LA CAPÇALERA HTTP PER TORNAR-LO AL CLIENT (FIX: EN PAS server --> client millor passar-lo
+            // pel body -reimplementar-ho, ara passa pel header-. NOTA: en client --> server si va per header, al contrari).
             HttpHeaders capsaleraHTTP = new HttpHeaders();
             String tokenJWTgenerat = serveiUPP.generaTokenAccesPerUsuariParticular(eMail);
             System.out.println("TOKENETE ACCESETE "+tokenJWTgenerat);
