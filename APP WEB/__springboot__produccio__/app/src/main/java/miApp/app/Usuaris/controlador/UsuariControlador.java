@@ -8,6 +8,7 @@ package miApp.app.Usuaris.controlador;
 
 import jakarta.validation.Valid;
 import miApp.app.Usuaris.dto.ActualitzaContrasenyaDTO;
+import miApp.app.Usuaris.dto.LoginDTO;
 import miApp.app.Usuaris.dto.UsuariDTO;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
@@ -64,26 +65,34 @@ public class UsuariControlador {
 
 
 
-    //PRE: Un correu i contrasenya entren pel frontend
+    //PRE: Un correu i contrasenya entren pel frontend.
 
     //          {"email" : "asas@gmail.com", "contra" : "1213414124Mm" }
+    //
 
-    //POST: - Si no existeix l'usuari a la bbdd es retorna PEL BODY:
+    //POST:
+    // - CAS 1: Si qualsevol de les validacions activades amb @Valid del LoginDTO  falla:
+    //          es retornarà {"email" : "error que sigui"}, etc i 400 Bad Request.
+    //
+    //
+    // - CAS 2: Si les validacions no FALLEN aleshores torna el flux habitual del programa:
+    //
+    //      - Si NO existeix l'usuari a la bbdd es retornarà PEL BODY:
     //
     //       {
-    //          "existeixUsuari": false,
+    //          "existeixUsuari" : false,
     //          "teAccesArecursos": false
     //       }
-    //      - Si l'usuari existeix i TÉ ACCÉS a recursos es retorna:
+    //      - Si l'usuari existeix (dins BBDD) i TÉ ACCÉS a recursos("permis" >= 1 en BBDD) es retorna:
 
-    //            {"existeixUsuari": true, "teAccesArecursos": true}
+    //            {"existeixUsuari" : true, "teAccesArecursos" : true}
 
-    //      - Si l'usuari existeix i NO té accés a recursos es retorna:
+    //      - Si l'usuari existeix i NO té accés a recursos (permis bbdd == 0) es retorna:
 
     //             {"existeixUsuari": true, "teAccesArecursos": false}
     //      ---------------------------------------------------------------
     //
-    //      - Si login correcte (E usuari i E contra) es retorna...
+    //      - Si login correcte (E usuari i es contra correcta) es retorna:
     //
     //          * Pel body:     {"existeixUsuari": true, "teAccesArecursos": true, "contrasenyaCorrecta": true}
     //          * Pel header:   "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR". (es torna token d'accés)
@@ -91,10 +100,10 @@ public class UsuariControlador {
     //
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
-    public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody HashMap<String, String> requestDelBody) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
+    public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
 
         //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
-        String eMail = requestDelBody.get("email");
+        String eMail = dto.getEmail();
         boolean existeixUsuari = serveiUPP.usuariRegistrat(eMail);
 
         //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
@@ -107,7 +116,7 @@ public class UsuariControlador {
 
         //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT COINCIDEIX EL HASH DE LA CONTRASENYA DE LA BBDD
         // AMB EL HASH DE LA QUE ES GENERA DEL QUE HA POSAT L'USUARI PEL FRONT
-        String contraPlana = requestDelBody.get("contra");
+        String contraPlana = dto.getContra();
         boolean esContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
 
         if (esContraCorrecta) {
