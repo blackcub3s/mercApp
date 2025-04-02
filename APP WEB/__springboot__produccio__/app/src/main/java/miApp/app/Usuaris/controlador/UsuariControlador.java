@@ -274,7 +274,7 @@ public class UsuariControlador {
     //     LA CLASSE ManejadorExcepcions.java IMPRIMEIX LES EXCEPCIONS QUE GENERI LA CLASSE DTO en questió.
     //   - TO DO --> Ho usaré per a fer el canvi de contrasenya quan l'usuari se n'oblidi i en vulgui una altra
     @PatchMapping("usuaris/{id}/contrasenya")
-    //@PreAuthorize("hasRole('ADMIN') or #id == principal") //paraula CLAU PRINCIPAL es idUsuari autenticat de SpringSecurity (es refereix a la paraula clau principal de l'objete autenticado (UsernamePasswordAuthenticationToken) en Spring Security, que s'emmagatzema en l objecte SecurityContextHolder (creat dins FiltreAutenticacio.java)
+    @PreAuthorize("hasRole('ADMIN') or #id == principal") //paraula CLAU PRINCIPAL es idUsuari autenticat de SpringSecurity (es refereix a la paraula clau principal de l'objete autenticado (UsernamePasswordAuthenticationToken) en Spring Security, que s'emmagatzema en l objecte SecurityContextHolder (creat dins FiltreAutenticacio.java)
     public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(@PathVariable("id") int id, @Valid @RequestBody ActualitzaContrasenyaDTO dto) { //hi ha més validacions que generen excepcions per l'antoacio @Valid. Veure ActiaotzaCmtrasemuaDTO i les anotacions amb arroba (congruents amb el front)
         Optional<Usuari> usuariActualitzatOPTIONAL = serveiUPP.actualitzaContrasenya(dto, id);
         HashMap<String, String> resposta = new HashMap<>(); //posem un hashmap per tornar la resposta serialitzada amb json
