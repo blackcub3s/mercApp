@@ -25,6 +25,15 @@ CREATE TABLE usuari_ampliat ( -- nomes usuaris quan JA HAN PAGAT o han pagat alg
         ON UPDATE CASCADE
 );
 
+CREATE TABLE tikets_pdf(
+	nre_factura_simplificada VARCHAR(15),   -- es el que sera la clau primaria de la taula de l' estil 2423-020-511489 (identificara cada ticket) 
+    id_usuari INTEGER,
+    pdf BLOB NOT NULL,
+    PRIMARY KEY(nre_factura_simplificada),
+    FOREIGN KEY(id_usuari) REFERENCES usuari(id_usuari)
+		ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
 
 /*INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) 
 VALUES ('acces@gmail.com', "123","blackcub3s",1);*/
