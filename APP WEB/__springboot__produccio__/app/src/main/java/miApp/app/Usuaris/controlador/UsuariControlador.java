@@ -75,7 +75,7 @@ public class UsuariControlador {
     //          es retornarà {"email" : "error que sigui"}, etc i 400 Bad Request.
     //
     //
-    // - CAS 2: Si les validacions NO FALLEN aleshores torna el flux habitual del programa:
+    // - CAS 2: Si les validacions NO FALLEN (no som a CAS 1) aleshores torna el flux habitual del programa:
     //
     //      - Si NO existeix l'usuari a la bbdd es retornarà PEL BODY:
     //
@@ -110,46 +110,9 @@ public class UsuariControlador {
     */
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
-    public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
-
-        //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
-        String eMail = dto.getEmail();
-        String contraPlana = dto.getContra();
-
-        boolean existeixUsuari = serveiUPP.usuariRegistrat(eMail);
-        boolean usuariTeAcces = serveiUPP.usuariTeAcces(eMail);
-        boolean esContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
-
-        //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
-        HashMap<String, Object> mapJSONlike = new HashMap<>();
-        mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hashmap
-        mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
-        mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
-
-        if (esContraCorrecta) {
-            /*
-                AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
-            */
-            //POSO MISSATGE INFORMATIU
-            HashMap<String, Object> mapUsuariIntern = new HashMap<>();
-            Usuari usuariLoguejat = serveiUPP.trobaUsuariPerEmail(eMail);
-            mapUsuariIntern.put("idUsuari", usuariLoguejat.getIdUsuari());
-            mapUsuariIntern.put("alies", usuariLoguejat.getAlies());
-            mapUsuariIntern.put("permisos", usuariLoguejat.getPermisos());
-
-
-            mapJSONlike.put("usuari", mapUsuariIntern);
-
-            //POSO EL TOKEN A LA CAPÇALERA HTTP PER TORNAR-LO AL CLIENT (FIX: EN PAS server --> client millor passar-lo
-            // pel body -reimplementar-ho, ara passa pel header-. NOTA: en client --> server si va per header, al contrari).
-
-            String tokenJWTgenerat = serveiUPP.generaTokenAccesPerUsuariParticular(eMail);
-            System.out.println("TOKENETE ACCESETE "+tokenJWTgenerat);
-
-            mapJSONlike.put("AccessToken", tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
-        }
+    public ResponseEntity<HashMap<String, Object>> login(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
+        HashMap<String, Object> mapJSONlike = serveiUPP.generaBodyLogin(dto.getEmail(), dto.getContra());
         return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike (amb el token d'accés)!
-
     }
 
 

@@ -14,6 +14,7 @@ import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.model.UsuariAmpliat;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -246,8 +247,41 @@ public class UsuariServei {
         return repoUsuari.findById(repoUsuari.trobaIdPerCorreu(eMail)).get(); //sempre sera is present!
     }
 
+    //PRE: un correu electronic i una contrasenya plana
+    //POST: un hashmap amb les dades segons s'hagi trobat o no s'hagi trobat en BBDD.
+    public HashMap<String, Object> generaBodyLogin(String eMail, String contraPlana) {
+        boolean existeixUsuari = this.usuariRegistrat(eMail);
+        boolean usuariTeAcces = this.usuariTeAcces(eMail);
+        boolean esContraCorrecta = this.contraCoincideix(contraPlana, eMail);
+
+        //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
+        HashMap<String, Object> mapJSONlike = new HashMap<>();
+        mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hashmap
+        mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
+        mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
+
+        if (esContraCorrecta) {
+            /*
+                AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
+            */
+            //POSO MISSATGE INFORMATIU
+            HashMap<String, Object> mapUsuariIntern = new HashMap<>();
+            Usuari usuariLoguejat = this.trobaUsuariPerEmail(eMail);
+            mapUsuariIntern.put("idUsuari", usuariLoguejat.getIdUsuari());
+            mapUsuariIntern.put("alies", usuariLoguejat.getAlies());
+            mapUsuariIntern.put("permisos", usuariLoguejat.getPermisos());
 
 
+            mapJSONlike.put("usuari", mapUsuariIntern);
+
+            //EL TOKEN VIATJARÀ DEL BODY AL CLIENT PEL BODY!
+            String tokenJWTgenerat = this.generaTokenAccesPerUsuariParticular(eMail);
+            System.out.println("TOKENETE ACCESETE "+tokenJWTgenerat);
+
+            mapJSONlike.put("AccessToken", tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
+        }
+        return mapJSONlike;
+    }
 
 
 
