@@ -3,8 +3,7 @@
 package miApp.app.Usuaris.controlador;
 
 
-//PAS4: Controlador Rest. Amb aixo exposarem l'endpoint que creem al servei UsuariPrePago. Injectarem
-// la dependència del Servei.
+//PAS4: Controlador Rest. Aquí injectarem dependencia del servei
 
 import jakarta.validation.Valid;
 import miApp.app.Usuaris.dto.ActualitzaContrasenyaDTO;

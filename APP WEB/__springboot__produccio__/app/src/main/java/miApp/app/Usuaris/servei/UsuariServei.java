@@ -248,7 +248,7 @@ public class UsuariServei {
     }
 
     //PRE: un correu electronic i una contrasenya plana
-    //POST: un hashmap amb les dades segons s'hagi trobat o no s'hagi trobat en BBDD.
+    //POST: un hashmap amb les dades segons els casos descrits en funcio login() del controlador.
     public HashMap<String, Object> generaBodyLogin(String eMail, String contraPlana) {
         boolean existeixUsuari = this.usuariRegistrat(eMail);
         boolean usuariTeAcces = this.usuariTeAcces(eMail);
