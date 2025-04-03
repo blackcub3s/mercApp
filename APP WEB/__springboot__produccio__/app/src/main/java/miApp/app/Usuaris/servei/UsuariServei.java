@@ -276,7 +276,7 @@ public class UsuariServei {
 
             //EL TOKEN VIATJARÀ DEL BODY AL CLIENT PEL BODY!
             String tokenJWTgenerat = this.generaTokenAccesPerUsuariParticular(eMail);
-            System.out.println("TOKENETE ACCESETE "+tokenJWTgenerat);
+            System.out.println("TOKENETE ACCESETE per a "+usuariLoguejat.getAlies()+": "+tokenJWTgenerat);
 
             mapJSONlike.put("AccessToken", tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
         }
