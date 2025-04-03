@@ -81,15 +81,16 @@ public class UsuariControlador {
     //
     //       {
     //          "existeixUsuari" : false,
-    //          "teAccesArecursos": false
+    //          "teAccesArecursos": false,
+    //          "contrasenyaCorrecta": false
     //       }
     //      - Si l'usuari existeix (dins BBDD) i TÉ ACCÉS a recursos("permis" >= 1 en BBDD) es retorna:
 
-    //            {"existeixUsuari" : true, "teAccesArecursos" : true}
+    //            {"existeixUsuari" : true, "teAccesArecursos" : true, "contrasenyaCorrecta": ????}  -? pot ser True o false-
 
     //      - Si l'usuari existeix i NO té accés a recursos (permis bbdd == 0) es retorna:
 
-    //             {"existeixUsuari": true, "teAccesArecursos": false}
+    //             {"existeixUsuari": true, "teAccesArecursos": false, "contrasenyaCorrecta": ????}
     //      ---------------------------------------------------------------
     //
     //      - Si login correcte (E usuari i es contra correcta)
@@ -123,7 +124,7 @@ public class UsuariControlador {
         HashMap<String, Object> mapJSONlike = new HashMap<>();
         mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hashmap
         mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
-
+        mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
 
         if (esContraCorrecta) {
             /*
@@ -136,7 +137,7 @@ public class UsuariControlador {
             mapUsuariIntern.put("alies", usuariLoguejat.getAlies());
             mapUsuariIntern.put("permisos", usuariLoguejat.getPermisos());
 
-            mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
+
             mapJSONlike.put("usuari", mapUsuariIntern);
 
             //POSO EL TOKEN A LA CAPÇALERA HTTP PER TORNAR-LO AL CLIENT (FIX: EN PAS server --> client millor passar-lo
@@ -146,11 +147,8 @@ public class UsuariControlador {
             System.out.println("TOKENETE ACCESETE "+tokenJWTgenerat);
 
             mapJSONlike.put("AccessToken", tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
-            return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike (amb el token d'accés)!
-
-        } else { //NO TORNO TOKEN SI LA CONTRASENYA DE L'USUARI NO ES CORRECTA PERO SI HAS DE PROCESSAR IGUALENT EL BODY EN EL FRONTEND
-            return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //  --> peticio no autoritzada per mala contrasenya
         }
+        return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike (amb el token d'accés)!
 
     }
 
