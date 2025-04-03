@@ -75,7 +75,7 @@ public class UsuariControlador {
     //          es retornarà {"email" : "error que sigui"}, etc i 400 Bad Request.
     //
     //
-    // - CAS 2: Si les validacions no FALLEN aleshores torna el flux habitual del programa:
+    // - CAS 2: Si les validacions NO FALLEN aleshores torna el flux habitual del programa:
     //
     //      - Si NO existeix l'usuari a la bbdd es retornarà PEL BODY:
     //
