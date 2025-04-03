@@ -341,7 +341,7 @@
 			\subsubsection{Recibir el Access Token desde el back-end}
 			\label{sec:recibirAccesTokenENFRONTEND}.
 			
-			El token de acceso se recibe por primera vez desde el backend cuando el usuario se loguea con éxito en \textbf{pas2Clogin.html}. Para entender de dónde viene el token desde el back-end podéis ver la sección \ref{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}, dado que en la sección que ocupa el lector ahora mismo nos centraremos en el front.
+			El token de acceso se recibe por primera vez desde el backend cuando el usuario se loguea con éxito en \textbf{pas2Clogin.html}. Para entender de dónde viene el token desde el back-end redirigimos al lector a la sección \ref{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}, donde se trata ese aspecto. En la presente sección nos ocuparemos de JavaScript en el front.
 			
 			El token se recibe en la vista definida por \textbf{pas2Clogin.html}, cuando des de el script hacemos una solicitud POST con fetch() hacia el endpoint del back-end SpringBoot \textit{``/api/login''}.
 			
@@ -349,7 +349,11 @@
 			
 			Como se puede ver desde el JavaScript embedido en el HTML en la figura \ref{fig:figuraLoginFetch}, cuando el usuario se loguee correctamente al recibir el código 200 OK hemos programado la función \textit{fetch()} para que guarde el token de Autenticación y Autorización recién creado desde el back-end de Spring Boot en el cliente. Es decir, para que se guarde el Access Token JWT en nuestro \textit{localStorage}.
 			
-			Existe un debate para ver si el token de acceso se debe mandar del cliente al servidor (cuando se hace el login) en el body de la response POST o bien en la header ``Authorization''. 
+			En este trabajo no implementaremos cookies ya que implica configuración extra tanto en el cliente como en el servidor. Vamos a guardar el token en el cliente en el localStorage (que es, de hecho, una práctica habitual en aplicaciones que no requieren un alto grado de seguridad).
+			
+			En este caso, existe un debate para ver si en ese logIn el token de acceso recién generado en el servidor se debe mandar al cliente en el body de la respuesta de la solicitud POST o bien en la header ``Authorization''. 
+			
+			Es práctica común mandarlo en el body. También veremos que para el paso inverso 
 			
 			\setlength{\belowcaptionskip}{3pt}
 			\FloatBarrier

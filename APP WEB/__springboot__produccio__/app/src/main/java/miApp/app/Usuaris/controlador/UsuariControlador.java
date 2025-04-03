@@ -93,20 +93,20 @@ public class UsuariControlador {
     //      ---------------------------------------------------------------
     //
     //      - Si login correcte (E usuari i es contra correcta)
-    //
-    //          * Pel body:     {
-    //                              "existeixUsuari": true,
-    //                              "teAccesArecursos": true,
-    //                              "contrasenyaCorrecta": true,
-    //                              "usuari" : {
-    //                                  "alies" :  VALORALIES,
-    //                                  "permisos" : VALOR PERMISOS
-    //                                  "idUsuari" : VALOR ID USUARI,
-    //                              }
-    //                          }
-    //          * Pel header:   "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR". (es torna token d'accés)
-    //
-    //
+    /*
+                 * Pel Body s'enviarà:
+                        {
+                            "usuari": {
+                                "alies": "the protein kingdom",
+                                "permisos": 2,
+                                "idUsuari": 1
+                            },
+                            "existeixUsuari": true,
+                            "AccessToken": "eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MiwiaWRVc3VhcmkiOjEsInN1YiI6InN1cGVyYWNjZXNAZ21haWwuY29tIiwiaWF0IjoxNzQzNjc2ODcyLCJleHAiOjE3NDM2Nzc3NzJ9.8X-Y78Wzcntao3H6SrPhk2nDWMUOIdI8RuB9WMKBgQw",
+                            "teAccesArecursos": true,
+                            "contrasenyaCorrecta": true
+                        }
+    */
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
     public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
@@ -141,12 +141,12 @@ public class UsuariControlador {
 
             //POSO EL TOKEN A LA CAPÇALERA HTTP PER TORNAR-LO AL CLIENT (FIX: EN PAS server --> client millor passar-lo
             // pel body -reimplementar-ho, ara passa pel header-. NOTA: en client --> server si va per header, al contrari).
-            HttpHeaders capsaleraHTTP = new HttpHeaders();
+
             String tokenJWTgenerat = serveiUPP.generaTokenAccesPerUsuariParticular(eMail);
             System.out.println("TOKENETE ACCESETE "+tokenJWTgenerat);
-            capsaleraHTTP.set("Access-Control-Expose-Headers", "Authorization"); //PERMETO EXPOSAR LES HEADERS (CORS)
-            capsaleraHTTP.set("Authorization", "Bearer "+tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
-            return new ResponseEntity<>(mapJSONlike, capsaleraHTTP, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike i la capsalera amb el token!!
+
+            mapJSONlike.put("AccessToken", tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
+            return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike (amb el token d'accés)!
 
         } else { //NO TORNO TOKEN SI LA CONTRASENYA DE L'USUARI NO ES CORRECTA PERO SI HAS DE PROCESSAR IGUALENT EL BODY EN EL FRONTEND
             return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //  --> peticio no autoritzada per mala contrasenya
