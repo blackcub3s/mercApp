@@ -72,7 +72,7 @@ public class UsuariServei {
 
 
     //PRE: res
-    //POST: enter amb el nombre d'usuaris que hi ha a la app.
+    //POST: enter amb el nombre d'usuaris que hi ha a la app. Sera un endpoint public!
     public int nreUsuarisApp() {
         return repoUsuari.trobaTotsElsCorreusDelsUsuarisRegistrats().size();
     }
@@ -248,7 +248,8 @@ public class UsuariServei {
     }
 
     //PRE: un correu electronic i una contrasenya plana
-    //POST: un hashmap amb les dades segons els casos descrits en funcio login() del controlador.
+    //POST: un hashmap amb les dades segons els casos descrits en funcio login() del controlador
+    //      que generarà el contingut del body de les solicituds POST que consumeixin l'endpoint /api/login.
     public HashMap<String, Object> generaBodyLogin(String eMail, String contraPlana) {
         boolean existeixUsuari = this.usuariRegistrat(eMail);
         boolean usuariTeAcces = this.usuariTeAcces(eMail);

@@ -107,7 +107,7 @@ public class UsuariControlador {
                             "contrasenyaCorrecta": true
                         }
     */
-    @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
+    @CrossOrigin(origins = "http://127.0.0.1:5500") //permeto comunicacio amb vsCode
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
     public ResponseEntity<HashMap<String, Object>> login(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
         HashMap<String, Object> mapJSONlike = serveiUPP.generaBodyLogin(dto.getEmail(), dto.getContra());
@@ -146,8 +146,9 @@ public class UsuariControlador {
 
     //PRE: existeix la bbdd i la taula de usuaris (no hi ha parametres d'entrada)
     //POST: Obtens el nombre d'usuaris que hi ha a la teva aplicacio a l'endpoint.
+    @PreAuthorize("hasRole('ADMIN')") //NOMES ADMINISTRADORS PODRAN VEURE-HO (NO DEFINIT A ConfigSeguretat pero te mateix efecte)
     @GetMapping("/correusUsuaris")
-    public ResponseEntity<List<String>> mostraLlistaUsuaris() { //ni RequestBody ni RequestParam, perque no hi ha dades d'entrada.
+    public ResponseEntity<List<String>> mostraLlista() { //ni RequestBody ni RequestParam, perque no hi ha dades d'entrada.
         return new ResponseEntity<>(serveiUPP.correusUsuarisApp(), HttpStatus.OK);
     }
 
