@@ -20,17 +20,17 @@ public class AppApplication {
 
 		//TESTEJO AFEGIR USUARI (EL PRIMER TÉ ACCÉS A RECURSOS, EL SEGON NO TÉ ACCÉS -es un usuari que ha registrat nom pero mai ha arribat a guanyar permisos-)
 		boolean afegit = usuariServei.afegirUsuari("superacces@gmail.com",
-													"123",
-													"blackcub3s",
+													"12345678Mm_",
+													"the protein kingdom",
 													(byte) 2); //ES ADMIN
 
 		boolean afegitDos = usuariServei.afegirUsuari("acces@gmail.com",
-													"123",
-												"whitecub3s",
+													"12345678Mm_",
+												"blackcub3s",
 													(byte) 1); //ES USER
 
 		boolean afegitTres = usuariServei.afegirUsuari("noacces@gmail.com",
-				  									   "123",
+				  									   "12345678Mm_",
 				                                 "pinkcub3s",
 				                                       (byte) 0); //JA TENIM MAIL I CONTRA GUARDATS, PERO NO TE RECURSOS
 

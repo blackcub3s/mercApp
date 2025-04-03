@@ -240,8 +240,11 @@ public class UsuariServei {
         return accesJWT;
     }
 
-
-
+    //PRE: eMail pertany a un usuari EXISTENT a la BBDD
+    //POST: es torna l'objecte Usuari complet que té aquest correu
+    public Usuari trobaUsuariPerEmail(String eMail) {
+        return repoUsuari.findById(repoUsuari.trobaIdPerCorreu(eMail)).get(); //sempre sera is present!
+    }
 
 
 

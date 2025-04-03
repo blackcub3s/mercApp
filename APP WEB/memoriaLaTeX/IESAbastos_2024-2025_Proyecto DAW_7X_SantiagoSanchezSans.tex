@@ -341,13 +341,15 @@
 			\subsubsection{Recibir el Access Token desde el back-end}
 			\label{sec:recibirAccesTokenENFRONTEND}.
 			
-			El token de acceso se recibe por primera vez desde el backend cuando el usuario se loguea con éxito en \textbf{pas2Clogin.html}. Para entender de donde viene el token desde el back-end podéis ver la sección \ref{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}, pror en esta sección nos centraremos en el front.
+			El token de acceso se recibe por primera vez desde el backend cuando el usuario se loguea con éxito en \textbf{pas2Clogin.html}. Para entender de dónde viene el token desde el back-end podéis ver la sección \ref{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}, dado que en la sección que ocupa el lector ahora mismo nos centraremos en el front.
 			
 			El token se recibe en la vista definida por \textbf{pas2Clogin.html}, cuando des de el script hacemos una solicitud POST con fetch() hacia el endpoint del back-end SpringBoot \textit{``/api/login''}.
 			
 			\textbf{TO DO: POSAR JUST AQUI LINK A GITHUB pas2Clogin.html la part del fetch A TOT EL CODI (LO MATEIX QUE LA IMATGE DE SOTA PERQUE LECTORS PUGUIN VEURE-HO)}
 			
 			Como se puede ver desde el JavaScript embedido en el HTML en la figura \ref{fig:figuraLoginFetch}, cuando el usuario se loguee correctamente al recibir el código 200 OK hemos programado la función \textit{fetch()} para que guarde el token de Autenticación y Autorización recién creado desde el back-end de Spring Boot en el cliente. Es decir, para que se guarde el Access Token JWT en nuestro \textit{localStorage}.
+			
+			Existe un debate para ver si el token de acceso se debe mandar del cliente al servidor (cuando se hace el login) en el body de la response POST o bien en la header ``Authorization''. 
 			
 			\setlength{\belowcaptionskip}{3pt}
 			\FloatBarrier

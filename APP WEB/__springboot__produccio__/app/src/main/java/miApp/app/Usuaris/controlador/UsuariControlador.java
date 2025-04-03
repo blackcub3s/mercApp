@@ -8,6 +8,7 @@ package miApp.app.Usuaris.controlador;
 
 import jakarta.validation.Valid;
 import miApp.app.Usuaris.dto.ActualitzaContrasenyaDTO;
+import miApp.app.Usuaris.dto.LoginDTO;
 import miApp.app.Usuaris.dto.UsuariDTO;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
@@ -64,60 +65,82 @@ public class UsuariControlador {
 
 
 
-    //PRE: Un correu i contrasenya entren pel frontend
+    //PRE: Un correu i contrasenya entren pel frontend.
 
     //          {"email" : "asas@gmail.com", "contra" : "1213414124Mm" }
+    //
 
-    //POST: - Si no existeix l'usuari a la bbdd es retorna PEL BODY:
+    //POST:
+    // - CAS 1: Si qualsevol de les validacions activades amb @Valid del LoginDTO  falla:
+    //          es retornarà {"email" : "error que sigui"}, etc i 400 Bad Request.
+    //
+    //
+    // - CAS 2: Si les validacions NO FALLEN aleshores torna el flux habitual del programa:
+    //
+    //      - Si NO existeix l'usuari a la bbdd es retornarà PEL BODY:
     //
     //       {
-    //          "existeixUsuari": false,
+    //          "existeixUsuari" : false,
     //          "teAccesArecursos": false
     //       }
-    //      - Si l'usuari existeix i TÉ ACCÉS a recursos es retorna:
+    //      - Si l'usuari existeix (dins BBDD) i TÉ ACCÉS a recursos("permis" >= 1 en BBDD) es retorna:
 
-    //            {"existeixUsuari": true, "teAccesArecursos": true}
+    //            {"existeixUsuari" : true, "teAccesArecursos" : true}
 
-    //      - Si l'usuari existeix i NO té accés a recursos es retorna:
+    //      - Si l'usuari existeix i NO té accés a recursos (permis bbdd == 0) es retorna:
 
     //             {"existeixUsuari": true, "teAccesArecursos": false}
     //      ---------------------------------------------------------------
     //
-    //      - Si login correcte (E usuari i E contra) es retorna...
+    //      - Si login correcte (E usuari i es contra correcta)
     //
-    //          * Pel body:     {"existeixUsuari": true, "teAccesArecursos": true, "contrasenyaCorrecta": true}
+    //          * Pel body:     {
+    //                              "existeixUsuari": true,
+    //                              "teAccesArecursos": true,
+    //                              "contrasenyaCorrecta": true,
+    //                              "usuari" : {
+    //                                  "alies" :  VALORALIES,
+    //                                  "permisos" : VALOR PERMISOS
+    //                                  "idUsuari" : VALOR ID USUARI,
+    //                              }
+    //                          }
     //          * Pel header:   "Authorization" : "Bearer QWROIASOFDNAIOSFNQWR". (es torna token d'accés)
     //
     //
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
-    public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody HashMap<String, String> requestDelBody) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
+    public ResponseEntity<HashMap<String, Object>> verificarUsuariIcontrasenya_perA_logIn(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
 
         //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
-        String eMail = requestDelBody.get("email");
+        String eMail = dto.getEmail();
+        String contraPlana = dto.getContra();
+
         boolean existeixUsuari = serveiUPP.usuariRegistrat(eMail);
+        boolean usuariTeAcces = serveiUPP.usuariTeAcces(eMail);
+        boolean esContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
 
         //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
         HashMap<String, Object> mapJSONlike = new HashMap<>();
         mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hashmap
-
-        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT TÉ ACCES ALS RECURSOS DE L'APP (I.E. USUARI QUE PAGA)
-        boolean usuariTeAcces = serveiUPP.usuariTeAcces(eMail);
         mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
 
-        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT COINCIDEIX EL HASH DE LA CONTRASENYA DE LA BBDD
-        // AMB EL HASH DE LA QUE ES GENERA DEL QUE HA POSAT L'USUARI PEL FRONT
-        String contraPlana = requestDelBody.get("contra");
-        boolean esContraCorrecta = serveiUPP.contraCoincideix(contraPlana, eMail);
 
         if (esContraCorrecta) {
             /*
                 AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
             */
             //POSO MISSATGE INFORMATIU
-            mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
+            HashMap<String, Object> mapUsuariIntern = new HashMap<>();
+            Usuari usuariLoguejat = serveiUPP.trobaUsuariPerEmail(eMail);
+            mapUsuariIntern.put("idUsuari", usuariLoguejat.getIdUsuari());
+            mapUsuariIntern.put("alies", usuariLoguejat.getAlies());
+            mapUsuariIntern.put("permisos", usuariLoguejat.getPermisos());
 
-            //POSO EL TOKEN!
+            mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
+            mapJSONlike.put("usuari", mapUsuariIntern);
+
+            //POSO EL TOKEN A LA CAPÇALERA HTTP PER TORNAR-LO AL CLIENT (FIX: EN PAS server --> client millor passar-lo
+            // pel body -reimplementar-ho, ara passa pel header-. NOTA: en client --> server si va per header, al contrari).
             HttpHeaders capsaleraHTTP = new HttpHeaders();
             String tokenJWTgenerat = serveiUPP.generaTokenAccesPerUsuariParticular(eMail);
             System.out.println("TOKENETE ACCESETE "+tokenJWTgenerat);
