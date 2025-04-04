@@ -27,15 +27,16 @@ public class ConfiguracioSeguretat {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuaris/*").hasAnyRole("USER", "ADMIN")  //TESTEJAT!      PROTEGEIXO RUTA /api/usuaris/{ID}. SI VOLGUES PROTEGIR TOTES LES SUBRUTES POSTERIORS (POSARIA DOS ASTERISCS EN COMPTES DE UN). HE AFINAT PER RESTRINGIT ALS USUARIS AMB PreAuthorise
-                        .requestMatchers("/api/usuaris").hasRole("ADMIN")   //TESTEJAT!                         AQUEST ENDPOINT NOMES L'HA DE VEURE L'ADMINISTRADOR. ENDPOINT PROTEGIT (ADMIN es permisos == 2 de la bbdd veure FiltreAutenticacioJwt)
-                        .requestMatchers("/api/nreUsuaris").hasAnyRole("USER", "ADMIN") //TESTEJAT!         ENDPOINT PROTEGIT (USER es permisos==1 de la bbdd) TESTEJAT! NOMES DEIXA ACCEDIR USERS I ADMIN
-                        .requestMatchers("/api/*/contrasenya").hasAnyRole("USER", "ADMIN") //TESTEJAT!      Veure @PreAuthorize
-                        // PARA CONSEGUIR QUE SWAGGER FUNCIONE ES NECESARIO
-                        // COMENTAR LAS LINEAS DE requestMatchers anteriores que definen roles o autorizaciones
-                        // , DESCOMENTAR las dos siguientes Y TAMBIÉN comentar todos los @PRE-AUTHORISE del controlador
-                        .requestMatchers("/api/**").permitAll()  // PERMET QUE LA RESTA D'ENDPOINTS dins /api/ SIGUIN PUBLICS
-                        //.requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll() //AFEGEIXO ACCES ALS ENDPOINTS DE SWAGGER!
+                                .requestMatchers("/api/correusUsuaris").hasRole("ADMIN")
+                                .requestMatchers("/api/usuaris/*").hasAnyRole("USER", "ADMIN")  //TESTEJAT!      PROTEGEIXO RUTA /api/usuaris/{ID}. SI VOLGUES PROTEGIR TOTES LES SUBRUTES POSTERIORS (POSARIA DOS ASTERISCS EN COMPTES DE UN). HE AFINAT PER RESTRINGIT ALS USUARIS AMB PreAuthorise
+                                .requestMatchers("/api/usuaris").hasRole("ADMIN")   //TESTEJAT!                         AQUEST ENDPOINT NOMES L'HA DE VEURE L'ADMINISTRADOR. ENDPOINT PROTEGIT (ADMIN es permisos == 2 de la bbdd veure FiltreAutenticacioJwt)
+                                .requestMatchers("/api/nreUsuaris").hasAnyRole("USER", "ADMIN") //TESTEJAT!         ENDPOINT PROTEGIT (USER es permisos==1 de la bbdd) TESTEJAT! NOMES DEIXA ACCEDIR USERS I ADMIN
+                                .requestMatchers("/api/*/contrasenya").hasAnyRole("USER", "ADMIN") //TESTEJAT!      Veure @PreAuthorize
+                                // PARA CONSEGUIR QUE SWAGGER FUNCIONE ES NECESARIO
+                                // COMENTAR LAS LINEAS DE requestMatchers anteriores que definen roles o autorizaciones
+                                // , DESCOMENTAR las dos siguientes Y TAMBIÉN comentar todos los @PRE-AUTHORISE del controlador
+                                .requestMatchers("/api/**").permitAll()  // PERMET QUE LA RESTA D'ENDPOINTS dins /api/ SIGUIN PUBLICS
+                                //.requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll() //AFEGEIXO ACCES ALS ENDPOINTS DE SWAGGER!
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

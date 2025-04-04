@@ -146,7 +146,6 @@ public class UsuariControlador {
 
     //PRE: existeix la bbdd i la taula de usuaris (no hi ha parametres d'entrada)
     //POST: Obtens el nombre d'usuaris que hi ha a la teva aplicacio a l'endpoint.
-    @PreAuthorize("hasRole('ADMIN')") //NOMES ADMINISTRADORS PODRAN VEURE-HO (NO DEFINIT A ConfigSeguretat pero te mateix efecte)
     @GetMapping("/correusUsuaris")
     public ResponseEntity<List<String>> mostraLlista() { //ni RequestBody ni RequestParam, perque no hi ha dades d'entrada.
         return new ResponseEntity<>(serveiUPP.correusUsuarisApp(), HttpStatus.OK);
