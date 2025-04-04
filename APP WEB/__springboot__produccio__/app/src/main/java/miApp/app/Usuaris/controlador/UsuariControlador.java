@@ -50,7 +50,7 @@ public class UsuariControlador {
     //
     // Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos:"true"} o false segons sigui el cas
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
-    @PostMapping("/usuariExisteix")
+    @PostMapping("/avaluaUsuari")
     public ResponseEntity<HashMap<String, Object>> verificarUsuari(@RequestBody @Valid CorreuDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
 
         //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
@@ -144,7 +144,7 @@ public class UsuariControlador {
         if (existiaUsuari) {
             mapJSONlike.put("existiaUsuari", true); //posem el clau valor al hashmap infromant que no registrem l'usuari obviament (pq ja esta registrat)
             mapJSONlike.put("usuariShaRegistrat", false);
-        } else { //L'USUARI N OEXISTIA, ERGO L'AFEGEIXO
+        } else { //L'USUARI NO EXISTIA, ERGO L'AFEGEIXO A BBDD
             String contrasenyaPlana = requestDelBody.get("contra");
             boolean usuariAfegitCorrectament = serveiUPP.afegirUsuari(eMail, contrasenyaPlana, "aliesAleatoritzat", (byte) 0);
             mapJSONlike.put("usuariShaRegistrat", usuariAfegitCorrectament); //posem el clau valor al hashmap
