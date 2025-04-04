@@ -13,8 +13,8 @@ import miApp.app.utils.validacio.PlaSuscripcio;
 public class LoginDTO {
 
     @CorreuElectronic
-    private String email; //posar correuElectronic per consistencia
+    private String correuElectronic; //posar correuElectronic per consistencia
 
     @Contrasenya
-    private String contra; //posar contrasenya per consistencia un cop canviat al front
+    private String contrasenya; //posar contrasenya per consistencia un cop canviat al front
 }
