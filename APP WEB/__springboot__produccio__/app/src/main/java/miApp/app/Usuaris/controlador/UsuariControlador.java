@@ -144,7 +144,7 @@ public class UsuariControlador {
         if (existiaUsuari) {
             mapJSONlike.put("existiaUsuari", true); //posem el clau valor al hashmap infromant que no registrem l'usuari obviament (pq ja esta registrat)
             mapJSONlike.put("usuariShaRegistrat", false);
-        } else { //L'USUARI NO EXISTIA, ERGO L'AFEGEIXO A BBDD
+        } else { //L'USUARI NO EXISTIA, ERGO L'AFEGEIXO A BBDD (AMB PERMISOS 0!)
             String contrasenyaPlana = requestDelBody.get("contra");
             boolean usuariAfegitCorrectament = serveiUPP.afegirUsuari(eMail, contrasenyaPlana, "aliesAleatoritzat", (byte) 0);
             mapJSONlike.put("usuariShaRegistrat", usuariAfegitCorrectament); //posem el clau valor al hashmap
