@@ -13,6 +13,7 @@
 %ELS TRAPEZIS QUEDEN MALAMENT I S'HAN SUBSTITUITS PER RECTANGLES
 %\tikzstyle{trapeziSortida} = [trapezium, trapezium left angle=75, trapezium right angle=105, minimum height=.75cm, text centered, draw=black, fill=taronjaBrillant!90, font=\normalsize]
 
+\tikzstyle{nodeAccessToken} = [ellipse, draw=black, fill=red!50, minimum height=1cm, minimum width=2cm, text centered]
 
 \tikzstyle{decisionBackend} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=yellowfosforito]
 \tikzstyle{decisionFrontend} = [diamond, minimum width=3cm, minimum height=2cm, text centered, draw=black, fill=blauCian]
@@ -41,18 +42,25 @@
 	\node (invisible1) [nodeNoDimensio, left of=dec1, xshift=-2.5cm] {};
 	\node (pas2a) [trapeziSortida, below of=invisible1, xshift=0cm, yshift=0cm] {pas2A\_infoBenvinguda.html};
 	\node (pas3) [trapeziSortida, below of=pas2a] {pas3\_crearContrassenya};
-	\node (pas4) [trapeziSortida, below of=pas3, yshift=-5.5cm] {pas4\_concedirAccesGmail};
-	\node (concedido) [decisionFrontend, below of=pas4, yshift=-1cm] {concedido};
-	\node (dec4) [decisionBackend, below of=concedido, yshift=-.5cm] {¿Se pudo loguear?};
-	\node (dashboard) [trapeziSortida, right of=concedido, xshift=10.5cm] {dashboard};
+	\node (pas4) [trapeziSortida, below of=pas3, yshift=-10.5cm] {pas4\_concedirAccesGmail};
+	\node (concedido) [decisionFrontend, below of=pas4, yshift=-4cm] {concedido};
 	\node (invisible2) [nodeNoDimensio, right of=dec1, xshift=2.5cm] {};
 	\node (dec2) [decisionBackend, below of=invisible2, yshift=-1.5cm, text width=1.5cm] {¿Hay acceso a recursos?};
+	\node (invisible4) [nodeNoDimensio, right of=dec2, xshift=1.5cm] {};
+	\node (pas2c) [trapeziSortida, below of=invisible4, yshift=-2cm] {pas2C\_login};
+	\node (dec4) [decisionBackend, below of=pas2c, yshift=-1cm, text width=1.8cm] {¿credenciales correctas?};
+	\node (jwtLOGIN) [nodeAccessToken, below of=dec4, yshift=-1cm, text width=1.3cm] {JWT (Access Token)};
+	\node (dec5) [decisionBackend, below of=dec4, yshift=-4cm, text width=1.5cm] {¿Hay acceso a recursos?};
+	
+	\node (dashboard) [trapeziSortida, right of=concedido, xshift=10.5cm] {dashboard};
+	
+
 	\node (dec3) [decisionBackend, below of=pas3, yshift=-1.5cm, text width=1.5cm] {¿Se pudo registrar?};
 	\node (invisible3) [nodeNoDimensio, left of=dec2, xshift=-1.5cm] {};
 	\node (pas2b) [trapeziSortida, below of=invisible3, yshift=-2cm] {pas2B\_introdueix contrassenya};
-	\node (invisible4) [nodeNoDimensio, right of=dec2, xshift=1.5cm] {};
-	\node (pas2c) [trapeziSortida, below of=invisible4, yshift=-2cm] {pas2C\_login};
-	\node (invisible5) [nodeNoDimensio, below of=pas2b,yshift=-2cm]{};
+	
+	
+	\node (invisible5) [nodeNoDimensio, below of=pas2b,yshift=-7cm]{};
 	\node (invisible6) [nodeNoDimensio, left of=dec3,xshift=-1cm]{};
 	\node (invisible7) [nodeNoDimensio, left of=pas3,xshift=-1cm]{};
 	
@@ -69,7 +77,7 @@
 	 
 	\node (dummy7) [below of=dashboard, xshift=.5cm, yshift=1.2cm] {(/dashboard)};  
 	\node (dummy8) [below of=dec2, xshift=0cm, yshift=.1cm] {\textbf{\textcolor{red}{[/api/avaluaUsuari]}}};
-	\node (dummy9) [below of=dec3, xshift=0cm, yshift=.3cm] {\textbf{\textcolor{red}{[/api/registraUsuari]}}};
+	\node (dummy9) [below of=dec3, xshift=0cm, yshift=.3cm] {\textbf{\textcolor{brown}{[/api/registraUsuari]}}};
 	
 \node (dummy9) [below of=dec1, xshift=0cm, yshift=.2cm] {\textbf{\textcolor{red}{[/api/avaluaUsuari]}}};
 
@@ -112,7 +120,11 @@
 
 	\draw [arrow] (pas4) -- (concedido);
 	
-	\draw [arrow] (pas2c) -- (dec4) node[midway, yshift=.05cm, xshift=.4cm] {No};
+	\draw [linia] (pas2c) -- (dec4);
+	\draw [linia] (dec4) -- (jwtLOGIN) node[midway, yshift=0cm, xshift=.3cm] {S\'{i}};
+	\draw [arrow] (jwtLOGIN) -- (dec5);
+	\draw [arrow] (dec5) -- (dashboard) node[midway, yshift=.05cm, xshift=.4cm] {S\'{i}};
+	\draw [arrow] (dec5) -- (pas4) node[midway, yshift=.3cm, xshift=3.7cm] {No};
 	\draw [arrow] (concedido) -- (dashboard)  node[midway, yshift=.2cm, xshift=-.1cm] {S\'{i}};
 	
 
