@@ -1,20 +1,18 @@
 # 0. Introducción
 
-En este repositorio muestro la antesala de un proceso de registro e iniciar sesión de una aplicación web que estoy haciendo.
+En este repositorio muestro el código para generar una aplicación web con la que hacer un análisis de tikets digitales. En este proyecto existe un back-end, un front-end y una base de datos.
 
-En primer lugar, podréis ver el [back-end](/APP%20WEB/__springboot__produccio__/) que he hecho con `Spring Boot` , siendo ésta la parte más importante de este proyecto y aquello en lo que los lectores pasarán más tiempo inspeccionando. En segundo lugar,  podréis vislumbrar [el front-end](/APP%20WEB/__frontend__produccio__/landingPage/) de la aplicación: que he desarrollado con HTML5, CSS y Javascript puro (sin frameworks) y, finalmente, una [base de datos](/APP%20WEB/___BBDD___/estructuraTaules/pirApp.sql) hecha con mySQL que contiene dos tablas de usuarios -a la que por ahora, y en este ejemplo, solo tocaremos una (la tabla "usuari")-.
+En este readme especificaremos como correr el proyecto y mostraremos un diagrama de flujo de la aplicación partiendo del enrutamiento del front-end que ha sido inspirado en el proceso de registro de la plataforma Netflix.
 
-La gracia de la aplicación web que contiene este repositorio es que mediante el back-end se ha intentado (y, en mi opinión, conseguido) hacer una réplica de la lógica de negocio que sigue Netflix cuando un usuario, con el objetivo de introducir los datos en el sistema por primera vez, envía su correo a través del formulario de registro que aparece nada más entrar en la "landing-page". Cuando el usuario lo mande, sea en Netflix o en nuestra web, va a entrar en la antesala de un sistema preparado para brindarle, con la máxima sencillez posible, la inscripción a un servicio por suscripción. En este caso de uso el sistema evalúa cuál es el estado actual del usuario en la base de datos: en función de ello la aplicación le mostrará a éste un camino u otro. Si el usuario está registrado o no lo está, o bien si al estar registrado está pagando por servicios o no, son distintos escenarios que generarán también por parte del back-end distintas redirecciones del usuario a distintas páginas de acuerdo a lo que se especifica en el [diagrama de flujo](#3-diagrama-de-flujo) que mostraremos en el siguiente apartado.
+En primer lugar, podréis ver el [back-end](/APP%20WEB/__springboot__produccio__/) que se ha hecho con `Spring Boot` , siendo ésta la parte más importante de este proyecto y aquello en lo que los lectores pasarán más tiempo inspeccionando. En segundo lugar,  podréis vislumbrar [el front-end](/APP%20WEB/__frontend__produccio__/landingPage/) de la aplicación: que he desarrollado con HTML5, CSS y Javascript puro (sin frameworks) y, finalmente, una [base de datos](/APP%20WEB/___BBDD___/estructuraTaules/pirApp.sql) hecha con mySQL que contiene dos tablas de usuarios -a la que por ahora, y en este ejemplo, solo tocaremos una (la tabla "usuari")-.
+
+La gracia de la aplicación web que contiene este repositorio es que mediante el back-end se ha intentado (y, en mi opinión, conseguido) hacer una réplica de la lógica de negocio que sigue Netflix cuando un usuario, con el objetivo de introducir los datos en el sistema por primera vez, envía su correo a través del formulario de registro que aparece nada más entrar en la "landing-page". 
+
+Cuando el usuario lo mande, en Netflix, entra en la antesala de un sistema preparado para brindarle, con la máxima sencillez posible, la inscripción a un servicio por suscripción. En este caso de uso el sistema evalúa cuál es el estado actual del usuario en la base de datos: en función de ello la aplicación le muestara a éste un camino u otro. Si el usuario está registrado o no lo está, o bien si al estar registrado está pagando por servicios o no, son distintos escenarios que generarán también por parte del back-end distintas redirecciones del usuario a distintas páginas de acuerdo a lo que se especifica en el [diagrama de flujo (replica Netflix)](#3-diagrama-de-flujo-replica-Netflix) que mostraremos en el siguiente apartado.
+
+Para el diseño de la aplicacion de mercApp se ha usado la misma lógica de la réplica de este sistema de NetFlix, pero adaptada a nuestro caso particular: en lugar de redirigir al usuario a escoger planes de suscripción le redirigimos a poder iniciar sesión en su cuenta de google para darnos acceso a sus tikets digitales, de acuerdo con lo que se especifica en el [diagrama de flujo (mercApp)](#4-diagrama-de-flujo-mercApp)
 
 Además, la comunicación entre front-end y back-end la he realizado en todo caso mediante API (usaremos la interfaz nativa del navegador fetch-api en el front-end para que este pueda "consumir" los endpoints que nos proporciona la rest-API del back-end). En todo caso se ha seguido en la medida de lo posible los principios REST (véase nota al pie[^1]). Así pues, debe quedar claro que el back-end y el front-end son dos proyectos separados que están en comunicación entre ellos y que el back-end, además, se comunicará con la base de datos (que será un tercer proyecto). Así pues, la ventaja de hacerlo por separado con tres proyectos distintos, por ejemplo, es que se podría reescribir por completo el proyecto front-end en otra tecnología basada en componentes (por ejemplo Angular, React o Vue) sin tener que hacer modificación alguna en el back-end, o incluso podría usarse este back-end para permitir que sus endpoints sean consumidos por otras aplicaciones además del front-end web: por ejemplo, una aplicación en android. O más todavía: utilizar la misma base de datos y cambiar de framework de back-end por ejemplo, en un futuro.
-
-# 1. Objetivo
-
-Por un lado, mostrar una pequeña porción de un software que pertenece a un proyecto mío más grande (no está mostrado aquí en su totalidad dado que es software propietario) para demostrar que he iniciado la adquisición de conocimientos en un framework de back-end, como es Spring boot; y, por el otro, mostrar la antesala de un sistema de registro, información que será relevante para otros desarrolladores de software que quieran empezar a aprender este framework de Java.
-
-Para enseñar como funciona Spring boot voy a describir de forma pormenorizada los dos nodos de decisión en color amarillo y todos los nodos de salida o páginas HTML (rectangulos naranja) que son contiguos a ellos dos del [diagrama de flujo](#3-diagrama-de-flujo) del tercer apartado. De este modo, explicaré a grandes rasgos como se estructura un proyecto en Spring boot en sus distintas partes organizativas partiendo del paradigma del modelo vista controlador o MVC (en este caso: modelo, repositorio, servicio y controlador). Además, también quisiera tratar de demostrar como podemos utilizar este framework para traducir el código en resultados tangibles que nos ayuden con una lógica de negocio enfocada a captar clientes ya desde sus primeras interacciones.
-
-Finalmente, mencionar que no se comentarán aspectos de los estilos del front-end aunque si el lector tiene preguntas puede escribirme por linkedin y preguntar lo que desee. Asimismo, aspectos como la generación de tokens JWT o gestión de cookies no se tratan en este repositorio.
 
 
 # 2. Recomendaciones para ejecutar el proyecto
@@ -38,7 +36,7 @@ Como se ha comentado, cada uno de los tres proyectos necesita su propio puerto p
 
 Es indispensable que se respeten estos puertos porque en las distintas fetch-APIs del front-end apuntamos al puerto 8080. Asimismo, en los controladores de Spring Boot permitimos consumir las APIs de orígenes cruzados solamente desde el puerto 5500 y, finalmente, dentro del archivo [application.properties](/APP%20WEB/__springboot__produccio__/app/src/main/resources/application.properties) del back-end especificamos que la base de datos está en el puerto 8080.
 
-# 3. Diagrama de flujo
+# 3. Diagrama de flujo (replica netflix)
 
 Como se ha comentado anteriormente, este sistema de registro y de iniciar sesión ha sido el resultado de un proceso de desarrollo inverso que ha venido motivado por la observación pormenorizada del funcionamiento de las etapas iniciales del proceso de registro de Netflix. Por ello, el comportamiento de la aplicación que describimos en este diagrama de flujo es aplicable por partida doble: tanto para la aplicación que he creado como para lo que se puede observar en la página oficial de Netflix.
 
@@ -56,7 +54,50 @@ Este diagrama se puede entender del siguiente modo:
 4. El paréntesis que incluye la extensión de una URL debajo de cada rectángulo naranja es cada página de Netflix cuyo comportamiento y, en menor medida, aspecto, se ha intentado replicar en el archivo .html del rectángulo naranja que le es contiguo. Por ejemplo, el archivo .html `pas2A_infoBenvinguda.html` de este proyecto es una réplica de la página especificada en el paréntesis `netflix.com/signup/registration` y el usuario llegará a ella a través del proceso de registro gracias a la aplicación de una lógica de back-end similar a la que usa Netflix. 
 
 
+
+
+
+
+
+# 4. Diagrama de flujo (mercApp)
+
+
+El diagrama de flujo[^5] es el siguiente (está en catalán dado que, por consistencia con los nombres de archivos y de variables del programa me pareció mejor opción que cambiar todos los nombres de los archivos html del proyecto):
+
+<div align="center">
+  <img src="/img/diagramaTikzDefinitiu.svg" alt="diagrama svg no cargó" />
+</div>
+
+Este diagrama se puede entender del siguiente modo:
+
+1. Cada rectángulo de color naranja es una página estática .html de nuestro proyecto.
+2. Cada rombo de fondo **amarillo** es una decisión que se hará dentro del **back-end** de Spring Boot, dado que requiere hacer consultas a la BBDD y contiene datos sensibles.
+3. Los rombos de fondo azul se decidirán en el front-end en tanto que sus decisiones no requieren consultar información personal en la base de datos y no precisan, por lo tanto, del uso del back-end (y, además, no se explicarán en este readme).
+4. El paréntesis que incluye la extensión de una URL debajo de cada rectángulo naranja es cada página de Netflix cuyo comportamiento y, en menor medida, aspecto, se ha intentado replicar en el archivo .html del rectángulo naranja que le es contiguo. Por ejemplo, el archivo .html `pas2A_infoBenvinguda.html` de este proyecto es una réplica de la página especificada en el paréntesis `netflix.com/signup/registration` y el usuario llegará a ella a través del proceso de registro gracias a la aplicación de una lógica de back-end similar a la que usa Netflix.
+
+
 >⚠️ **NOTA**: es muy importante hacer notar que las consultas de datos personales a la base de datos -correos y contraseñas- no se deben hacer desde el front-end, porque los archivos del front-end son públicos para el usuario y podrían exponer las bases de datos (y los datos de los usuarios) a vulnerabilidades. Además las contraseñas jamás deben almacenarse directamente (como, por simplicidad demostrativa, se ha hecho en este proyecto), sino que hay que usar una función de hash para evitar que nadie pueda acceder a las contraseñas si hubiesen vulnerabilidades o par evitar que los propios gestores de la base de datos tengan información sensible de los propios usuarios.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## 3.1 Página inicial (landing page)

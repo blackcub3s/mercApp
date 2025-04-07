@@ -7,6 +7,7 @@ package miApp.app.Usuaris.controlador;
 
 import jakarta.validation.Valid;
 import miApp.app.Usuaris.dto.ActualitzaContrasenyaDTO;
+import miApp.app.Usuaris.dto.CorreuDTO;
 import miApp.app.Usuaris.dto.LoginDTO;
 import miApp.app.Usuaris.dto.UsuariDTO;
 import miApp.app.Usuaris.model.Usuari;
@@ -36,23 +37,31 @@ public class UsuariControlador {
         this.serveiUPP = serveiUPP;
     }
 
-
-
-    //PRE: Un correu entra pel frontend
-    //POST: Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos:"true"} o false segons sigui el cas
+    //-----------------------------------------------------------------
+    //NOTA: -- consumim a aquest endpoint en pas1_landingSignUp.html --
+    //-----------------------------------------------------------------
+    //PRE: Un correu entra pel frontend: e.g -->  {"correuElectronic" : "acces@gmail.com"}
+    //POST: si correu es invalid segons anotacions CorreuDTO activades per @Valid:
+    //          - codi estat:  400 Bad Request [NO S'HA DE GENERAR MAI SI EL FRONT END ESTA BEN PROGRAMAT]
+    //          - body:        {"correuElectronic": "El correo electrónico no es válido!"}
+    //      si correu es valid segons anotacions classe CorreuDTO:
+    //          - codi estat:  200 OK
+    //          - body:        {"existeixUsuari": BOOLEÀ, "teAccesArecursos": BOOLEÀ}
+    //
+    // Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos:"true"} o false segons sigui el cas
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
-    @PostMapping("/usuariExisteix")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
-    public ResponseEntity<HashMap<String, Object>> verificarUsuari(@RequestBody HashMap<String, String> requestDelBody) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
+    @PostMapping("/avaluaUsuari")
+    public ResponseEntity<HashMap<String, Object>> verificarUsuari(@RequestBody @Valid CorreuDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
 
         //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
-        String eMail = requestDelBody.get("email");
+        String eMail = dto.getCorreuElectronic();
         boolean existeixUsuari = serveiUPP.usuariRegistrat(eMail);
 
         //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
         HashMap<String, Object> mapJSONlike = new HashMap<>();
         mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hasmap
 
-        //MIRO SI L'USUARI AMB EL MAI LCORRESPONENT TÉ ACCES ALS RECURSOS DE L'APP (I.E. USUARI QUE PAGA)
+        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT TÉ ACCES ALS RECURSOS DE L'APP (I.E. USUARI QUE PAGA)
         boolean usuariTeAcces = serveiUPP.usuariTeAcces(eMail);
         mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
 
@@ -62,11 +71,11 @@ public class UsuariControlador {
         return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //torno la response
     }
 
-
-
+    //------------------------------------------------------------
+    //NOTA: --- Consumim a aquest endpoint en pas2C_login.html ---
+    //------------------------------------------------------------
     //PRE: Un correu i contrasenya entren pel frontend.
-
-    //          {"email" : "asas@gmail.com", "contra" : "1213414124Mm" }
+    //          {"correuElectronic" : "acces@gmail.com", "contrasenya" : "12345678Mm_" }
     //
 
     //POST:
@@ -110,13 +119,14 @@ public class UsuariControlador {
     @CrossOrigin(origins = "http://127.0.0.1:5500") //permeto comunicacio amb vsCode
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
     public ResponseEntity<HashMap<String, Object>> login(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
-        HashMap<String, Object> mapJSONlike = serveiUPP.generaBodyLogin(dto.getEmail(), dto.getContra());
+        HashMap<String, Object> mapJSONlike = serveiUPP.generaBodyLogin(dto.getCorreuElectronic(), dto.getContrasenya());
         return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike (amb el token d'accés)!
     }
 
 
-
-
+    //----------------------------------------------------------------------
+    //NOTA: --- Consumim a aquest endpoint en pas3_crearContrasenya.html ---
+    //----------------------------------------------------------------------
     //PRE: Un correu i contrasenya entraran pel frontend
     //POST: Si l'usuari no existeix a usuari es registraran correu i contrasenya.
     //      Es tornara un hasmap {"usuariRegistrat":"True"} si l'usuari no existeix i s'ha registrat.
@@ -134,7 +144,7 @@ public class UsuariControlador {
         if (existiaUsuari) {
             mapJSONlike.put("existiaUsuari", true); //posem el clau valor al hashmap infromant que no registrem l'usuari obviament (pq ja esta registrat)
             mapJSONlike.put("usuariShaRegistrat", false);
-        } else { //L'USUARI N OEXISTIA, ERGO L'AFEGEIXO
+        } else { //L'USUARI NO EXISTIA, ERGO L'AFEGEIXO A BBDD (AMB PERMISOS 0!)
             String contrasenyaPlana = requestDelBody.get("contra");
             boolean usuariAfegitCorrectament = serveiUPP.afegirUsuari(eMail, contrasenyaPlana, "aliesAleatoritzat", (byte) 0);
             mapJSONlike.put("usuariShaRegistrat", usuariAfegitCorrectament); //posem el clau valor al hashmap
@@ -186,7 +196,9 @@ public class UsuariControlador {
     }
 
     //METODE PER TROBAR UN USUARI PER ID --------------------------------> LA R DEL CRUD
-
+    //NOTA:  EXISTEIXEN DOS FORMES DE PASSAR EL PARAMETRE EN LA SOLICITUD GET per obtenir recursos d'un usuari per parametrte:
+    //       @PathVariable("id"). Si id fos 1 -->  (http://localhost:8080/api/usuaris/1)   [OPCIÓ AQUÍ UTILITZADA]
+    //       @RequestParam("id")  Si id fos 1 --> (http://localhost:8080/api/usuaris?id=1 |
     @GetMapping("/usuaris/{id}")
     @PreAuthorize("hasRole('ADMIN') or #id == principal")  //FA AUTENTICACIÓ AMB id==principal (RESTRINGEIX ACCÉS A UN SOL ID D'USUARI: EL QUE PASSA PEL "principal" DE UsernamePasswordAuthenticationToken authentication DINS FiltreAutenticacioJwt. També permet accedir-hi a admins sense importar quin id tinguin.
     public ResponseEntity<Usuari> obtinguesUsuari(@PathVariable("id") int id) {

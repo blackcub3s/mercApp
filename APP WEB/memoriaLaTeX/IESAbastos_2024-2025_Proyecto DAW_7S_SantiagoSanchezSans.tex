@@ -12,8 +12,8 @@
 \usepackage{titlesec}  % Paquete para personalizar títulos
 \usepackage{float}  %pquete para que las figuras no se de splacen
 \usepackage{listings} %para poner entronos de codigo 
-% Configuración para reducir el espacio superior de los capítulos
-\titleformat{\chapter}[hang]
+%\usepackage{svg}
+\titleformat{\chapter}[hang] % Configuración para reducir el espacio superior de los capítulos
 {\normalfont\huge\bfseries} % Formato de la fuente y tamaño del capítulo
 {Capítulo \thechapter}{0pt}{\huge}  % Sin espacio entre "Capítulo X" y el título
 \titlespacing*{\chapter}{0pt}{-20pt}{20pt} % Ajustes de espacio antes, después, y debajo del título
@@ -240,6 +240,8 @@
 			 
 			Se ha usado HTML, CSS y JavaScript. - Para la visualización de gráficos se usará una librerría javascript: https://www.chartjs.org/. Entre otras cosas se utilizará para hacer los gráficos de la evolución de precios por producto.
 			
+			Para el sistema de registro e iniciar sesión se ha hecho una réplica mediante desarrollo inverso de los procesos de registro e inicio sesión de netflix y se ha adaptado a este caso particular (puede verse en \ref{sec:EnrutamientoDeVistas}).
+			
 	
 		 
 		\subsection{back-end: Java (SpringBoot) y Python}
@@ -312,13 +314,25 @@
 		
 			\section{Entornos de desarrollo}
 			
-				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto que permiten sacar provecho de LomBok sin las cuales correr el proyecto en IntelliJ fallará.
+				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto que permiten sacar provecho de Lombok sin las cuales correr el proyecto en IntelliJ fallará.
 				
 				Para el frontend se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}. Esto podría hacer las veces de una CDN donde podrían estar alojados los archivos estáticos (HTML, CSS y JavaScript).
 		
 	
 		
 			\section{desarrollo del front-end}
+			
+			\subsection{Enrutamiento de vistas}
+			\label{sec:EnrutamientoDeVistas}
+			
+			Para esta aplicación vamos a tener una serie de vistas a las que el usuario va acceder en función del valor de la variable ``permisos'' en la tabla ``usuaris'' de mySql.
+			
+			Como hemos especificado en el Apartado de diseño, nos hemos inspirado para ello en un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix. El proceso de registro de netflix queda decentemente bien recogido en el diagrama del anexo (ver apartado \ref{sec:anexo_diagramaNetflix}) y puede consultarse también en uno delos repositorios de mi github (\href{https://www.github.com/miApp}{link}). El proceso de registro que utilizamos aquí es una derivación del mismo, pero en estre caso no se utilizan redirecciones a cartas de pago sino que redirigimos al usuario o bien a una página para darnos acceso a su gmail donde están los tikets digitales o al dashboard como vemos en el siguiente diagrama:ti
+			
+			\textbf{POSA DIAGRAMA ACTUALITZAT}
+			
+			
+			
 		
 			\subsection{Manejar vistas en función de Autenticación y autorización}
 			
@@ -416,23 +430,40 @@
 				
 				\subsubsection{método utilizado: JWT}
 				
-				Para autenticar y autorizar a los usuarios no utilizaremos sesiones. Las sesiones, tal y como vimos en la asignatura de desarrollo web entorno servidor, requieren guardar un estado en el servidor (si tenemos 100 usuarios conectados necesitamos rastrear 100 personas en el servidor) y un identificador de sesión en una cookie segura con HttpOnly puesto a True guardada en el navegador de cada uno de los usuario conectados que lo identifica en relación al servidor.
+				Para autenticar y autorizar a los usuarios no utilizaremos sesiones. Las sesiones, tal y como vimos en la asignatura de desarrollo web entorno servidor, requieren guardar un estado en el servidor (si tenemos 100 usuarios conectados necesitamos rastrear 100 personas en el servidor) y un identificador de sesión en una cookie segura con HttpOnly puesto a True guardada en el navegador de cada uno de los usuarios conectados que lo identifica en relación al servidor.
 				
 				Sin embargo, existe un método de acceso por token más escalable que no requiere guardar sesiones en el servidor (es decir, es un método ``stateless'' o sin estado) con el que nos basta tener solamente la Cookie Segura para guardarlo y ya está. Es un token que está autocontenido: es decir, puede contener ya el ID de usuario, nombre de usuario, roles que luego permitirán dar permisos o no en el servidor para acceder a determinadas APIs o recursos, etc. En definitiva, con JWT tenemos una autenticación más eficiente y un control del acceso preciso (autorización) sin necesidad de almacenar sesiones en el servidor.
 				
 				
-				A este sistema lo llamamos JSON Web Token (\texttt{JWT}) y toda la información que contiene está encriptada o \textbf{firmada digitalmente} con SHA256 mediante una clave privada que solo tenemos nosotros en el servidor. Esta clave es igual para todos los tokens que generemos: la firma digital que emana de esta clave estará embedida, por así decirlo, en cada uno de esos tokens y \textit{será inválida} si un atacante ha modificado el token y nos lo devuelve al servidor tratando de suplantar la identidad de algún usuario; con ello, el servidor rechazará la integridad del token y evitará que pueda acceder a recursos del usuario al que trata de suplantar.
+				A este sistema lo llamamos JSON Web Token (\texttt{JWT}) y toda la información que contiene está encriptada o \textbf{firmada digitalmente} con SHA256 mediante una clave privada (el ``secret'') que solo tenemos nosotros en el servidor. Esta clave es igual para todos los tokens que generemos: la firma digital que emana de esta clave estará embedida, por así decirlo, en cada uno de esos tokens y \textit{será inválida} si un atacante ha modificado el token y nos lo devuelve al servidor tratando de suplantar la identidad de algún usuario; con ello, el servidor rechazará la integridad del token y evitará que pueda acceder a recursos del usuario al que trata de suplantar.
 				
-				JWT no es perfecto, por supuesto. Una desventaja del JWT es que una vez puesta una fecha de expiración el desarrollador ya no la puede cambiar. En las sesiones del servidor se pueden extender las sesiones si se detecta actividad del usuario, acortarlas si pasa justo lo contrario o incluso cerrar la sesión de un usuario en remoto; pero con JWT no es posible: una vez creado el Token de acceso la fecha de actividad del mismo no se puede modificar (porque no puedes invalidar un token ya existente!). La solución que se propone con JWT es tener, por lo tanto, dos tokens almacenados en el cliente: el ``access token'' que es el que permite autenticar y autorizar, del que hemos hablado hasta ahora; y el ``refresh token'', que tiene la función de validar si el token de refresco sigue siendo válido con el servidor, y si lo es, entonces permite que el servidor emita un nuevo ``access token'' para el usuario. De este modo el usuario no deberá estar generando nuevos tokens constantemente. En este trabajo solo utilizaremos ``access tokens'' y ya está. Cuando un usuario se desloguee, lo que haremos será borrar el access token de la cookie, local storage o session storage y ya está.
+				JWT no es perfecto, por supuesto. Una desventaja del JWT es que una vez puesta una fecha de expiración el desarrollador ya no la puede cambiar. En las sesiones del servidor se pueden extender las sesiones si se detecta actividad del usuario, acortarlas si pasa justo lo contrario o incluso cerrar la sesión de un usuario en remoto; pero con JWT no es posible: una vez creado el Token de acceso la fecha de actividad del mismo no se puede modificar (porque no puedes invalidar un token ya existente!), lo cual permite que simplemente un atacante robe el token de acceso sin modificarlo y lo use hasta su fecha de expiración.
+				
+				Se proponen dos soluciones posibles a este problema, ninguna de las cuales ha sido implementada en este proyecto y queda definitivamente como uno de los puntos de mejora:
+				
+				\begin{itemize}
+					\setlength{\itemsep}{.0em}
+				
+					\item 1. Tener dos tokens almacenados en el cliente: el ``access token'' que es el que permite autenticar y autorizar, del que hemos hablado hasta ahora; y otro token denominado ``refresh token'', que se utiliza
+					para obtener un nuevo token de acceso cuando el token de acceso actual expire, o para obtener tokens de acceso adicionales con un alcance idéntico o más limitado -es decir, duración más corta- \cite{stackoverflow_refreshTokenAvantatjaSeguretat}
+					
+					\item 2. Crear una black-list de tokens de acceso donde se añadirán los usuarios que hayan hecho ``log out'' ANTES de la expiración programada de su token de acceso: así si un token de acceso todavía no expirado sabemos que su usuario se ha deslogueado, en caso que sea robado, el servidor rechazará la petición no permitiendo acceso a recursos \cite{stackOverflow_blackList}).
+ 
+					
+				\end{itemize}
+
+				
+				
+				En este trabajo solo utilizaremos ``access tokens'' y ya está. Cuando un usuario se desloguee, lo que haremos será borrar el access token del local storage y ya está. Tampoco guardaremos los tokens en una cookie segura porque complica el desarrollo (de nuevo, otro punto a mejorar a futuro en este proyecto).
 			
 				 
-				 \noindent En resumen, \texttt{las ventajas} que tiene JWT vs uso de sesiones (assumiendo que tanto JWT como SESSID se guarden en una cookie segura) son las siguientes:
+				 \noindent En resumen, \texttt{las ventajas} que tiene JWT vs uso de sesiones (si asumiéramos que tanto el JWT como el SESSID se guardasen en una cookie segura, respectivamente) serían las siguientes:
 				 
 					\begin{tabular}{l}
 						\textbf{- No depende del almacenamiento en el servidor} \\
 						\textbf{- Firmado digitalmente} \\
 						\textbf{- Mayor control sobre el acceso} \\
-						\textbf{- Mayo descentralización} \\
+						\textbf{- Mayor descentralización} \\
 						\textbf{- Menos carga para el servidor}
 					\end{tabular}
 									 
@@ -495,7 +526,7 @@
 		\end{itemize}
 		  
 		
-		En la clase \textbf{JwtUtil} hemos creado un método que obtiene las \textit{claims} (pares clave valor que contienen la carga útil de un JWT) y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que se cifren con esa contraseña-. De esta clase hemos heretado las otras dos: La subclase que nos genera el \textit{token de acceso}, \textbf{AccessToken}; y la que nos genera el \textit{token de refresco}, \textbf{RefreshToken}. A continuacion podéis, de estas tres, la más importante: 
+		En la clase \textbf{JwtUtil} hemos creado un método que obtiene las \textit{claims} (pares clave valor que contienen la carga útil de un JWT) y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que se cifren con esa contraseña-. De esta clase hemos heretado las otras dos: La subclase que nos genera el \textit{token de acceso}, \textbf{AccessToken}; y la que nos genera el \textit{token de refresco}, \textbf{RefreshToken}. A continuacion podéis, de estas tres, la más importante (la clase RefreshToken la hemos programado para usarla a futuro pero no se ha utilizado para la implementación del sistema de autenticación y autorización en este proyecto): 
 		
 		
 
@@ -529,7 +560,7 @@ public class AccessToken extends JwtUtil {
 		
 		
 		
-		Con la función \textbf{genera()} de la clase AccessToken arriba mostrada, y con los parámetros necesarios que serán necesarios para autorizar (idUsuari) y autenticar (permisos), podemos generar un token de acceso en ``accesJWT'':
+		Con la función \textbf{genera()} de la clase AccessToken arriba mostrada, y con los parámetros necesarios que serán necesarios para autorizar (idUsuari) y autenticar (permisos), podemos generar un token de acceso en ``accesJWT'' que es el que usamos en la aplicación para permitir acceder a los endpoints o no:
 		
 		
 		
@@ -552,7 +583,7 @@ String accesJWT = accessToken.genera(
 			\FloatBarrier
 			\begin{figure}[H]
 				\centering
-				\caption{Decodificación de un token de acceso generado con la función genera de la clase AccessToken mediante \href{https://www.jwt.io}{jwt.io}. La Payload con las claims en flecha verde.}
+				\caption{Decodificación mediante \href{https://www.jwt.io}{jwt.io} de un token de acceso usado en nuestra aplicación generado con la función ``genera()'' de la clase AccessToken. La Payload con las claims en flecha verde.}
 				\includegraphics[width=1\textwidth]{img/jwtio_mostra_payload.png}
 
 				\label{fig:jwtioMostraPayload} 
@@ -585,7 +616,7 @@ String accesJWT = accessToken.genera(
 		\subsubsection{Enviar por primera vez el Access Token hacia el front-end}
 		\label{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}
 		
-		Cuando el usuario consigue poner la contraseña correcta en la página del front-end \textbf{pas2C\_login.html} se manda de vuelta del back-end (desde el controlador de endpoint \texttt{/login}) hasta el front-end en el localStorage (¡por ahora lo hemos hecho así por simplicidad, pero en producción debería estar en una cookie segura!).
+		Cuando el usuario consigue poner la contraseña correcta en la página del front-end \textbf{pas2C\_login.html} se manda de vuelta del back-end (desde el controlador de endpoint \texttt{/login}) hasta el front-end en el localStorage (¡en esto proyecto lo hemos hecho así por simplicidad, pero en producción, insistimos, debería estar en una cookie segura!).
 		
 		La parte de recepción del token en el front-end y de su manejo podéis encontrarla en el apartado \ref{sec:recibirAccesTokenENFRONTEND}
 
@@ -978,13 +1009,29 @@ public class AccessToken extends JwtUtil {
 	
 
 	
-		\section{CODIGO 5}
-		\label{sec:KLNASQOW}
-	
+		\section{Diagrama réplica netflix}
+		\label{sec:anexo_diagramaNetflix}
+		
+		\includegraphics[width=1\textwidth]{img/diagramaTikzDefinitiuV2.pdf}
+
+		NOTA: El lector puede ver el proceso de creación de este diagrama en el repositorio \href{https://github.com/blackcub3s/diagramaTikz}{diagramaTikz}. También puede ver una explicación del diagrama a continuación:
+		
+		Este diagrama se puede entender del siguiente modo:
+		
+		\begin{enumerate}
+			\item Cada rectángulo de color naranja es una página estática \texttt{.html} de lo que sería una réplica de la página de registro de netflix.
+			\item Cada rombo de fondo amarillo es una decisión que se hará dentro del back-end de Spring Boot, dado que requiere hacer consultas a la BBDD y contiene datos sensibles.
+			\item Los rombos de fondo azul se decidirán en el front-end en tanto que sus decisiones no requieren consultar información personal en la base de datos y no precisan, por lo tanto, del uso del back-end (y, además, no se explicarán en este \textit{readme}).
+			\item El paréntesis que incluye la extensión de una URL debajo de cada rectángulo naranja es cada página de Netflix cuyo comportamiento y, en menor medida, aspecto, se ha intentado replicar en el archivo \texttt{.html} del rectángulo naranja que le es contiguo. Por ejemplo, el archivo \texttt{pas2A\_infoBenvinguda.html} de este proyecto es una réplica de la página especificada en el paréntesis \texttt{netflix.com/signup/registration} y el usuario llegará a ella a través del proceso de registro gracias a la aplicación de una lógica de back-end similar a la que usa Netflix.
+		\end{enumerate}
 
 		
+	
 
+		\section{Diagrama enrutamiento mercApp}
+		\label{sec:anexo_diagramaEnrutamietnoMercApp}
 
+		
 		
 	% Bibliografía (\chapter(6. Bibliograifa) como implicito)
 	\addcontentsline{toc}{chapter}{7. Bibliografía} 
