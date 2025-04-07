@@ -43,17 +43,17 @@
 	\node (invisible1) [nodeNoDimensio, left of=dec1, xshift=-2.5cm] {};
 	\node (pas2a) [trapeziSortida, below of=invisible1, xshift=0cm, yshift=0cm] {pas2A\_infoBenvinguda.html};
 	\node (pas3) [trapeziSortida, below of=pas2a] {pas3\_crearContrassenya};
-	\node (pas4) [trapeziSortida, below of=pas3, yshift=-8.5cm] {pas4\_concedirAccesGmail};
+	\node (pas4) [trapeziSortida, below of=pas3, yshift=-9.5cm] {pas4\_concedirAccesGmail};
 	\node (concedido) [decisionFrontend, below of=pas4, yshift=-4cm] {concedido};
 	\node (invisible2) [nodeNoDimensio, right of=dec1, xshift=2.5cm] {};
 	\node (dec2) [decisionBackend, below of=invisible2, yshift=-1.5cm, text width=1.5cm] {¿Hay acceso a recursos?};
 	\node (invisible4) [nodeNoDimensio, right of=dec2, xshift=1.5cm] {};
 	\node (pas2c) [trapeziSortida, below of=invisible4, yshift=-2cm] {pas2C\_login};
-	\node (dec4) [decisionBackend, below of=pas2c, yshift=-1cm, text width=1.8cm] {¿credenciales correctas?};
+	\node (dec4) [decisionBackend, below of=dec2, yshift=-6cm, text width=1.8cm] {¿credenciales correctas?};
 	
 	\node (dec5) [decisionBackend, below of=dec4, yshift=-2cm, text width=1.5cm] {¿Hay acceso a recursos?};
 	\node (jwtLOGIN) [nodeAccessToken, below of=dec5, yshift=-1.3cm, text width=3cm] {\textbf{AccessToken} \\$permisos \geq 1$};
-	\node (dashboard) [trapeziSortida, right of=concedido, xshift=10.5cm] {dashboard};
+	\node (dashboard) [trapeziSortida, right of=concedido, xshift=7cm] {dashboard};
 	
 
 	\node (dec3) [decisionBackend, below of=pas3, yshift=-1.5cm, text width=1.5cm] {¿Se pudo registrar?};
@@ -61,10 +61,12 @@
 	\node (pas2b) [trapeziSortida, below of=invisible3, yshift=-2cm] {pas2B\_introdueix contrassenya};
 	
 	
-	\node (invisible5) [nodeNoDimensio, below of=pas2b,yshift=-5cm]{};
+	\node (invisible5) [nodeNoDimensio, below of=pas2b,yshift=0cm]{};
 	\node (invisible6) [nodeNoDimensio, left of=dec3,xshift=-1cm]{};
 	\node (invisible7) [nodeNoDimensio, left of=pas3,xshift=-1cm]{};
 	
+	\node (invisible8) [nodeNoDimensio, below of=pas2c, yshift=0cm]{};
+	\node (invisible9) [nodeNoDimensio, below of=dec2, yshift=-4cm]{};
 	
 	%Nodes dummy (
 	%    - els del text de les URLs --------> sense color
@@ -98,12 +100,16 @@
 	
 	
 	\node (asterisc2Arribada)[aspecteAsterisc, below of = asterisc1Arribada, yshift=1cm]{$ii:$};
-	\node (asterisc2Explicacio)[aspecteExplicacioAsterisc, right of = asterisc2Arribada, yshift=-1.3cm, xshift=1.15cm] {
+	\node (asterisc2Explicacio)[aspecteExplicacioAsterisc, right of = asterisc2Arribada, yshift=-1.9cm, xshift=1.15cm] {
 		\begin{tabular}{l}
 			Si permisos == 0:\\
-				\hspace{2em} No tiene acceso a PDFs correo.\\
-			Si permisos $>$ 0:\\
-				\hspace{2em} Usuari tiene acceso a PDFs correo\\\hspace{2em}(bien es usuario (USER) o \\\hspace{2em} superusuario (ADMIN)).			
+				\hspace{1.9em} No hay acceso a tickets digitales.\\
+			Si permisos $==$ 1:\\
+				\hspace{1.9em} Hay acceso a tickets digitales\\\hspace{2.5em}\textit{[rol $\rightarrow$ USER]}\\
+			Si permisos $==$ 2:\\
+				\hspace{1.9em} Usuari tiene acceso a PDFs correo\\\hspace{2.5em}\textit{[rol $\rightarrow$ ADMIN]}\\
+			 			
+				
 		\end{tabular}
 	};
 
@@ -122,12 +128,15 @@
 
 	\draw [arrow] (pas4) -- (concedido);
 	
-	\draw [linia] (pas2c) -- (dec4);
+	\draw [linia] (pas2c) -- (invisible8);
+	\draw [linia] (invisible8) -- (invisible9);
+	\draw [arrow] (invisible9) -- (dec4);
+	
 	\draw [linia] (dec4) -- (dec5) node[midway, yshift=0cm, xshift=.3cm] {S\'{i}};
 	%\draw [arrow] (jwtLOGIN) \textit{}-- (dec5);
 	\draw [linia] (dec5) -- (jwtLOGIN) node[midway, yshift=.2cm, xshift=.3cm] {S\'{i}};
-	\draw [arrow] (dec5) -- (pas4) node[midway, yshift=.3cm, xshift=4cm] {No};
-	\draw [arrow] (jwtLOGIN) -- (dashboard) node[midway, yshift=.3cm, xshift=4cm] {};
+	\draw [arrow] (dec5) -- (pas4) node[midway, yshift=.3cm, xshift=2.2cm] {No};
+	\draw [arrow] (jwtLOGIN) -- (dashboard) node[midway, yshift=.3cm, xshift=2cm] {};
 	\draw [arrow] (concedido) -- (dashboard)  node[midway, yshift=.2cm, xshift=-.1cm] {S\'{i}};
 	
 
@@ -144,7 +153,7 @@
 	\draw [arrow] (invisible4) -- (pas2c);
 	
 	\draw [linia] (pas2b) -- (invisible5) node[midway, yshift=0.3cm] {};
-	\draw [arrow] (invisible5) -- (pas4);
+	\draw [linia] (invisible5) -- (invisible9);
 	
 	\draw [linia] (dec3) -- (invisible6) node[midway, yshift=0.3cm] {No};
 	\draw [linia] (invisible6) -- (invisible7);
@@ -153,12 +162,12 @@
 	% Claudator que agrupa los nodos del login (dreta)
 	\draw[decorate, decoration={brace, amplitude=10pt, mirror}, thick, dashed, draw=blue] %mirror fa que estigui cap a la dreta
 	([xshift=2cm]dec5.south) -- ([xshift=2cm]dec4.north)
-	node[midway, right=0pt, text width=3cm, align=center] {};
+	node[midway, right=0pt, text width=3cm, align=center] {\textbf{\textcolor{blue}{[/api/login]}}};
 	
 	% Claudator que agrupa els nodes del login (esquerra)
 	\draw[decorate, decoration={brace, amplitude=10pt}, thick, dashed, draw=blue]  %sense mirror va a l'esquerra
 	([xshift=-2cm]dec5.south) -- ([xshift=-2cm]dec4.north)
-	node[midway, left=0cm, text width=3cm, align=center] {\textbf{\textcolor{blue}{[/api/login]}}};
+	node[midway, right=1cm, text width=3cm, align=center] {};
 	
 	
 	\end{tikzpicture}
