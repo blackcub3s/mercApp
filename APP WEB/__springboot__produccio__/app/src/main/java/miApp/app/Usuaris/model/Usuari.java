@@ -50,4 +50,7 @@ public class Usuari {
     // --- NOTA: LOMBOK HA PERMÈS AIXÒ:
     //      ---A) CONSTRUCTORS afegits amb les anotacipons noargscontrustror i allargsconstructor
     //      ---B) GETTERS I SETTERS ESTAN AFEGITS AUTOMATICAMENT AMB FUNCIO DATA --
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuari", referencedColumnName = "id_usuari")
+    private UsuariAmpliat usuariAmpliat;
 }

@@ -5,6 +5,9 @@ package miApp.app.Usuaris.repositori;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import miApp.app.Usuaris.model.UsuariAmpliat;
 
@@ -14,13 +17,8 @@ import java.util.Optional;
 @Repository
 public interface UsuariAmpliatRepositori extends JpaRepository<UsuariAmpliat, Integer> {
 
-    // Troba si un usuariAmpliat existeix a partir de la seva clau primària (id_usuari)
-    Optional<UsuariAmpliat> findById(Integer idUsuari);
+    @Modifying
+    @Query(value = "INSERT INTO usuari_ampliat (nom, primer_cognom, segon_cognom) VALUES (:nom, :cog1, :cog2)", nativeQuery = true)
+    void guardaNomComplet(@Param("nom") String nom, @Param("cog1") String cog1, @Param("cog2") String cog2);
 
-    // Optional custom query methods can be added here if needed
-    // Example: Find UsuariAmpliat by any other field if necessary
-    // Optional<UsuariAmpliat> findByNom(String nom);
-
-    // Example of a method to check if a UsuariAmpliat exists by the parent's id_usuari
-    boolean existsById(Integer idUsuari);
 }
