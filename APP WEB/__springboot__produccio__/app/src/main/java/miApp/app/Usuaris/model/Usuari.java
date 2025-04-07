@@ -1,5 +1,6 @@
 package miApp.app.Usuaris.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,5 +53,6 @@ public class Usuari {
     //      ---B) GETTERS I SETTERS ESTAN AFEGITS AUTOMATICAMENT AMB FUNCIO DATA --
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuari", referencedColumnName = "id_usuari")
+    //@JsonIgnore  //Pots descomentar-ho SI VOLS que SÍ surti l'objecte usuariAmpliat en fet un GET a /api/usuaris
     private UsuariAmpliat usuariAmpliat;
 }

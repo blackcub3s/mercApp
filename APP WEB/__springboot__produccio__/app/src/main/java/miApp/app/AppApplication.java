@@ -37,10 +37,12 @@ public class AppApplication {
 				                                 "pinkcub3s",
 				                                       (byte) 0); //JA TENIM MAIL I CONTRA GUARDATS, PERO NO TE RECURSOS
 
+
+		//PODEM AFEGIR UN PARELL DE NOMS I COGNOMS
 		UsuariAmpliatServei usuariAmpliatServei = context.getBean(UsuariAmpliatServei.class);
 
 		Usuari u = usuariServei.trobaUsuariPerEmail("superacces@gmail.com");
-		Usuari usuariBis = usuariServei.trobaPerId(2).get();
+		Usuari usuariBis = usuariServei.trobaPerId(2).get(); //acces@gmail.com
 
 		usuariAmpliatServei.afegirNomIcognoms(u, "Santi", "Sánchez", "Sans");
 		usuariAmpliatServei.afegirNomIcognoms(usuariBis, "Emma", "Palausabulla", "Balluback");
