@@ -1,5 +1,6 @@
 \documentclass[tikz,border=10pt]{standalone}
 \usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{decorations.pathreplacing, positioning}
 
 
 %defineixo el groc fosforito i blau cian
@@ -37,7 +38,7 @@
 	
 	
 	\node (pas1) [trapeziSortida] {pas1\_Landing SignUp};
-	\node (joMateix) [nomUsuari, right of=pas1, xshift=8cm, yshift=1cm] {@blackcub3s};
+	\node (joMateix) [nomUsuari, right of=pas1, xshift=5cm, yshift=1cm] {@blackcub3s};
 	\node (dec1) [decisionBackend, below of=pas1, yshift=-2cm,text width=1.75cm] {¿Existe\\correo?}; 
 	\node (invisible1) [nodeNoDimensio, left of=dec1, xshift=-2.5cm] {};
 	\node (pas2a) [trapeziSortida, below of=invisible1, xshift=0cm, yshift=0cm] {pas2A\_infoBenvinguda.html};
@@ -84,9 +85,7 @@
 	\node (dummy10) [below of=pas2b, xshift=1.75cm, yshift=1.2cm] {(/signup/password)};  
 	\node (dummy11) [below of=pas2c, xshift=1cm, yshift=1.2cm] {(/login)};  
 	\node (dummy9) [below of=dec1, xshift=0cm, yshift=.2cm] {\textbf{\textcolor{red}{[/api/avaluaUsuari]}}};
-	\node (dummy12) [below of=dec4, xshift=1.2cm, yshift=1cm] {\textbf{\textcolor{red}{[/api/login]}}};
-	\node (dummy13) [below of=dec5, xshift=1.2cm, yshift=1cm] {\textbf{\textcolor{red}{[/api/login]}}};
-	\node (dummy14) [below of=jwtLOGIN, xshift=1.2cm, yshift=1cm] {\textbf{\textcolor{red}{[/api/login]}}};
+
 
 	%nodes de comentari nota al "peu" (node de referEncia)
 	\node (asterisc1sortida)[aspecteAsterisc, right of = dec1, yshift=.9cm, xshift=-.9cm]{$i$};
@@ -126,8 +125,8 @@
 	\draw [linia] (pas2c) -- (dec4);
 	\draw [linia] (dec4) -- (jwtLOGIN) node[midway, yshift=0cm, xshift=.3cm] {S\'{i}};
 	\draw [arrow] (jwtLOGIN) -- (dec5);
-	\draw [arrow] (dec5) -- (dashboard) node[midway, yshift=.05cm, xshift=.4cm] {S\'{i}};
-	\draw [arrow] (dec5) -- (pas4) node[midway, yshift=.3cm, xshift=3.7cm] {No};
+	\draw [arrow] (dec5) -- (dashboard) node[midway, yshift=1.8cm, xshift=.3cm] {S\'{i}};
+	\draw [arrow] (dec5) -- (pas4) node[midway, yshift=.3cm, xshift=4cm] {No};
 	\draw [arrow] (concedido) -- (dashboard)  node[midway, yshift=.2cm, xshift=-.1cm] {S\'{i}};
 	
 
@@ -149,6 +148,16 @@
 	\draw [linia] (dec3) -- (invisible6) node[midway, yshift=0.3cm] {No};
 	\draw [linia] (invisible6) -- (invisible7);
 	\draw [arrow] (invisible7) -- (pas3);
+	
+	% Claudator que agrupa los nodos del login (dreta)
+	\draw[decorate, decoration={brace, amplitude=10pt, mirror}, thick, dashed, draw=blue] %mirror fa que estigui cap a la dreta
+	([xshift=2cm]dec5.south) -- ([xshift=2cm]dec4.north)
+	node[midway, right=0pt, text width=3cm, align=center] {};
+	
+	% Claudator que agrupa els nodes del login (esquerra)
+	\draw[decorate, decoration={brace, amplitude=10pt}, thick, dashed, draw=blue]  %sense mirror va a l'esquerra
+	([xshift=-2cm]dec5.south) -- ([xshift=-2cm]dec4.north)
+	node[midway, left=0cm, text width=3cm, align=center] {\textbf{\textcolor{blue}{[/api/login]}}};
 	
 	
 	\end{tikzpicture}
