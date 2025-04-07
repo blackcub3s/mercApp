@@ -4,6 +4,7 @@ package miApp.app.Usuaris.servei;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import miApp.app.Usuaris.dto.ActualitzaContrasenyaDTO;
+import miApp.app.Usuaris.dto.RegistreDTO;
 import miApp.app.Usuaris.dto.UsuariDTO;
 import miApp.app.Usuaris.repositori.UsuariAmpliatRepositori;
 import miApp.app.seguretat.jwt.AccessToken;
@@ -285,5 +286,25 @@ public class UsuariServei {
     }
 
 
+    //PRE: un correu electronic i una contrasenya plana a través del dto.
+    //POST: un hashmap amb les dades segons els casos descrits en funcio registraUsuari() del controlador
+    //      que generarà el contingut del body de les solicituds POST que consumeixin l'endpoint /api/registraUsuari.
+    public HashMap<String, Object> registraUsuari(RegistreDTO dto) {
+        String eMail = dto.getCorreuElectronic();
+        boolean existiaUsuari = this.usuariRegistrat(eMail);
+
+        //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
+        HashMap<String, Object> mapJSONlike = new HashMap<>();
+        if (existiaUsuari) {
+            mapJSONlike.put("existiaUsuari", true); //posem el clau valor al hashmap infromant que no registrem l'usuari obviament (pq ja esta registrat)
+            mapJSONlike.put("usuariShaRegistrat", false);
+        } else { //L'USUARI NO EXISTIA, ERGO L'AFEGEIXO A BBDD (AMB PERMISOS 0!)
+            String contraPlana = dto.getContrasenya();
+            boolean usuariAfegitCorrectament = this.afegirUsuari(eMail, contraPlana, "aliesAleatoritzat", (byte) 0);
+            mapJSONlike.put("usuariShaRegistrat", usuariAfegitCorrectament); //posem el clau valor al hashmap
+            mapJSONlike.put("existiaUsuari", false);
+        }
+        return mapJSONlike;
+    }
 
 }
