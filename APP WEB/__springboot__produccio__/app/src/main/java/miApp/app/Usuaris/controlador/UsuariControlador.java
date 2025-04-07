@@ -125,29 +125,15 @@ public class UsuariControlador {
     //NOTA: --- Consumim a aquest endpoint en pas3_crearContrasenya.html ---
     //----------------------------------------------------------------------
     //PRE: Un correu i contrasenya entraran pel frontend
-    //POST: Si l'usuari no existeix a usuari es registraran correu i contrasenya.
-    //      Es tornara un hasmap {"usuariRegistrat":"True"} si l'usuari no existeix i s'ha registrat.
-    //      Es tornara un hashmap {"usuariRegistrat":"True"} si l'usuari JA existeix i per tant no s'ha registrat.
+    //      {"correuElectronic" : "acces@gmail.com", "contrasenya" : "12345678Mm_" }
+    //POST: Si l'usuari no existeix a usuari es registraran correu i contrasenya:
+    //      Si usuari NO existia (ergo    es registra) --> {"existiaUsuari": false, "usuariShaRegistrat" : true}
+    //      Si usuari JA existia (ergo no es registra) --> {"existiaUsuari": true, "usuariShaRegistrat" : false}
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/registraUsuari")
     public ResponseEntity<HashMap<String, Object>> registraUsuari(@RequestBody @Valid RegistreDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
-
-        //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
-        String eMail = dto.getCorreuElectronic();
-        boolean existiaUsuari = serveiUPP.usuariRegistrat(eMail);
-
-        //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
-        HashMap<String, Object> mapJSONlike = new HashMap<>();
-        if (existiaUsuari) {
-            mapJSONlike.put("existiaUsuari", true); //posem el clau valor al hashmap infromant que no registrem l'usuari obviament (pq ja esta registrat)
-            mapJSONlike.put("usuariShaRegistrat", false);
-        } else { //L'USUARI NO EXISTIA, ERGO L'AFEGEIXO A BBDD (AMB PERMISOS 0!)
-            String contrasenyaPlana = dto.getContrasenya();
-            boolean usuariAfegitCorrectament = serveiUPP.afegirUsuari(eMail, contrasenyaPlana, "aliesAleatoritzat", (byte) 0);
-            mapJSONlike.put("usuariShaRegistrat", usuariAfegitCorrectament); //posem el clau valor al hashmap
-            mapJSONlike.put("existiaUsuari", false);
-        }
-        return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //torno la response
+        HashMap<String, Object> mapJSONLike = serveiUPP.registraUsuari(dto);
+        return new ResponseEntity<>(mapJSONLike, HttpStatus.OK);  //torno la response
     }
 
 
