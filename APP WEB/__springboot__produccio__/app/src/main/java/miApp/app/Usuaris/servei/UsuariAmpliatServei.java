@@ -23,7 +23,8 @@ public class UsuariAmpliatServei {
         ua.setPrimerCognom(cognom1);
         ua.setSegonCognom(cognom2);
         u.setUsuariAmpliat(ua);
-        repoUsuariAmpliat.guardaNomComplet(nom, cognom1, cognom2);
+        repoUsuariAmpliat.save(ua);
+        //repoUsuariAmpliat.guardaNomComplet(nom, cognom1, cognom2);
 
     }
 

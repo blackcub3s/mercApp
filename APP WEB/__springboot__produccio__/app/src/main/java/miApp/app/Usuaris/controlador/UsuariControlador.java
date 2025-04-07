@@ -29,12 +29,10 @@ import java.util.Optional;
 public class UsuariControlador {
 
     private final UsuariServei serveiUPP; //millor fer-ho final
-    private final UsuariAmpliatServei serveiUsuariAmpliat; //millor fer-ho final
 
     @Autowired                                              //POSEM ANOTACIÓ D'INJECCIÓ DE DEPENDÈNCIES EN EL CONSTRUCTOR (no en l'atribut, no recomanat) ENCARA QUE A VERSIONS RECENTS DE  SPRING ES FA AUTOMATIC
-    public UsuariControlador(UsuariServei serveiUPP, UsuariAmpliatServei serveiUsuariAmpliat) {
+    public UsuariControlador(UsuariServei serveiUPP) {
         this.serveiUPP = serveiUPP;
-        this.serveiUsuariAmpliat = serveiUsuariAmpliat;
     }
 
     //-----------------------------------------------------------------
@@ -208,9 +206,6 @@ public class UsuariControlador {
 
         if (nouUsuariOPTIONAL.isPresent()) { //si usuari s'ha afegit, aquest tipus Optional tindrà un usuari dins
             Usuari nouUsuari = nouUsuariOPTIONAL.get();
-            boolean afegirInfoUsuariAmpliat = true;
-            if (afegirInfoUsuariAmpliat)
-                serveiUsuariAmpliat.afegirNomIcognoms(nouUsuari, "santi", "sanchez", "sans");
             return new ResponseEntity<>(nouUsuari, HttpStatus.CREATED); // 201 CREATED si es crea correctament
         } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT); // 409 CONFLICT (l'usuari ja existia! i no s'ha afegit a la bbdd)
