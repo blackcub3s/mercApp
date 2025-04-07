@@ -1,10 +1,13 @@
 package miApp.app;
 
+import miApp.app.Usuaris.model.Usuari;
+import miApp.app.Usuaris.servei.UsuariAmpliatServei;
 import miApp.app.utils.EncriptaContrasenyes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import miApp.app.Usuaris.servei.UsuariServei;
+import miApp.app.Usuaris.servei.UsuariAmpliatServei;
 
 
 @SpringBootApplication
@@ -34,6 +37,13 @@ public class AppApplication {
 				                                 "pinkcub3s",
 				                                       (byte) 0); //JA TENIM MAIL I CONTRA GUARDATS, PERO NO TE RECURSOS
 
+		UsuariAmpliatServei usuariAmpliatServei = context.getBean(UsuariAmpliatServei.class);
+
+		Usuari u = usuariServei.trobaUsuariPerEmail("superacces@gmail.com");
+		Usuari usuariBis = usuariServei.trobaPerId(2).get();
+
+		usuariAmpliatServei.afegirNomIcognoms(u, "Santi", "Sánchez", "Sans");
+		usuariAmpliatServei.afegirNomIcognoms(usuariBis, "Emma", "Palausabulla", "Balluback");
 
 	}
 }
