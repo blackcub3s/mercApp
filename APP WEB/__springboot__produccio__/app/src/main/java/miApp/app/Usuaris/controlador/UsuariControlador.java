@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import miApp.app.Usuaris.dto.*;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
-import miApp.app.Usuaris.servei.UsuariAmpliatServei;
 import miApp.app.Usuaris.servei.UsuariServei;
 import miApp.app.seguretat.jwt.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
