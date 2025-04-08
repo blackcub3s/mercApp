@@ -276,7 +276,7 @@ public class UsuariServei {
 
             mapJSONlike.put("usuari", mapUsuariIntern);
 
-            //EL TOKEN VIATJARÀ DEL BODY AL CLIENT PEL BODY!
+            //EL TOKEN VIATJARÀ DEL server AL CLIENT PEL BODY!
             String tokenJWTgenerat = this.generaTokenAccesPerUsuariParticular(eMail);
             System.out.println("TOKENETE ACCESETE per a "+usuariLoguejat.getAlies()+": "+tokenJWTgenerat);
 
@@ -303,6 +303,11 @@ public class UsuariServei {
             boolean usuariAfegitCorrectament = this.afegirUsuari(eMail, contraPlana, "aliesAleatoritzat", (byte) 0);
             mapJSONlike.put("usuariShaRegistrat", usuariAfegitCorrectament); //posem el clau valor al hashmap
             mapJSONlike.put("existiaUsuari", false);
+
+            //GENERO EL TOKEN PER AL NOU USUARI REGISTRAT!
+            String tokenJWTgenerat = this.generaTokenAccesPerUsuariParticular(eMail);
+            System.out.println("TOKENETE NOU USUARI "+tokenJWTgenerat);
+            mapJSONlike.put("AccessToken", tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
         }
         return mapJSONlike;
     }
