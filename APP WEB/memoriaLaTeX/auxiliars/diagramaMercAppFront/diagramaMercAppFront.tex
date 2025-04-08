@@ -44,7 +44,7 @@
 	\node (pas2a) [trapeziSortida, below of=invisible1, xshift=0cm, yshift=0cm] {pas2A\_infoBenvinguda.html};
 	\node (pas3) [trapeziSortida, below of=pas2a] {pas3\_crearContrassenya};
 	\node (pas4) [trapeziSortida, below of=pas3, yshift=-14.5cm] {pas4\_concedirAccesGmail};
-	\node (concedido) [decisionFrontend, below of=pas4, yshift=-2cm] {concedido};
+	\node (concedido) [decisionFrontend, below of=pas4, yshift=-1cm] {concedido};
 	\node (invisible2) [nodeNoDimensio, right of=dec1, xshift=2.5cm] {};
 	\node (dec2) [decisionBackend, below of=invisible2, yshift=-1.5cm, text width=1.5cm] {¿Hay acceso a recursos?};
 	\node (invisible4) [nodeNoDimensio, right of=dec2, xshift=1.5cm] {};
@@ -112,9 +112,9 @@
 	\node (asterisc2Explicacio)[aspecteExplicacioAsterisc, right of = asterisc2Arribada, yshift=-2.2cm, xshift=1.4cm] {
 		\begin{tabular}{l}
 			Si permisos == 0:\\
-				\hspace{1.9em} No acceso a tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow \emptyset$ ]} $:$ \textbf{  NO Acc. APIs}\\
+				\hspace{1.9em} No acceso a tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow \emptyset$ ]} $:$ \textbf{  NO Acc. APIs privadas}\\
 			Si permisos $==$ 1:\\
-				\hspace{1.9em} Hay acc. a sus tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow$ USER]} $:$ \textbf{ Acc. APIs idUsuario}\\
+				\hspace{1.9em} Hay acc. a sus tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow$ USER]} $:$ \textbf{ Acc. APIs privadas Us.}\\
 			Si permisos $==$ 2:\\
 				\hspace{1.9em} Hay acc. a todo ticket digital\\\hspace{2em}\textit{[rol $\rightarrow$ ADMIN]} $:$ \textbf{Acc. $\forall$ APIs}\\\\
 			 			

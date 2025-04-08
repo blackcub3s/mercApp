@@ -375,23 +375,35 @@
 			\subsection{Manejar vistas en función de Autenticación y autorización}
 			
 			
-			Podemos considerar que cada archivo HTML y su CSS asociado es una ``vista'' de nuestra aplicación.  La autenticación y la autorización se hace en el backend y el control de las vistas (en función de si el usuario está autorizado y autenticado) se hará en el front-end mediante JavaScript puro.
+			Como hemos visto antes Podemos considerar que cada archivo HTML y su CSS asociado es una ``vista'' de nuestra aplicación. Habrá vistas que \textbf{no nos interesará enseñar a ciertos usuarios}, porque o bien no serán relevantes para ellos o bien harán llamadas a APIs cuya información no podrá ser obtenida para ellos.
 			
-			Si bien SpringBoot permite servir los archivos estáticos\footnote{HTML, CSS y JS son archivos estáticos.}  de dentro del mismo back-end de Spring Boot y utilizar un sistema de plantillas (Thymeleaf) esto realmente no es, para nada, lo ideal. Lo ideal es definir un front-end y un back-end separados y así lo hemos hecho en este proyecto\footnote{Si tenemos ambas partes desacopladas podremos hacer modificaciones independientes en ambas. Por ejemplo, podremos cargar los archivos front-end en una CDN o un Proxy o tenerlos cacheados en un servidor que los sirva mucho más rápido, como Nginx. Es más, lo óptimo sería generar los archivos del front-end mediante un sistema de desarrollo por componentes (como Angular, React o Vue) para facilitar el desarrollo cuando la aplicación crezca y utilizar una paradigma \textit{SPA} (\textit{Single Page Application}). Sin embargo, en este caso, por el tiempo disponible y el tamaño de la aplicación se ha optado por hacerlo con HTML, CSS y JS puros.}.
+			Si bien Spring Boot permite servir los archivos estáticos\footnote{HTML, CSS y JS son archivos estáticos.}  de dentro del mismo back-end de Spring Boot y utilizar un sistema de plantillas (Thymeleaf) esto realmente no es, para nada, lo ideal. Lo ideal es definir un front-end y un back-end separados partiendo de principios de \textit{separación de responsabilidades} o \textit{SoC}\footnote{Separation of concerns}, y así lo hemos hecho en este proyecto\footnote{Si tenemos ambas partes desacopladas podremos hacer modificaciones independientes en ambas. Por ejemplo, podremos cargar los archivos front-end en una CDN o un Proxy o tenerlos cacheados en un servidor que los sirva mucho más rápido, como Nginx. Es más, lo óptimo sería generar los archivos del front-end mediante un sistema de desarrollo por componentes (como Angular, React o Vue) para facilitar el desarrollo cuando la aplicación crezca y utilizar una paradigma \textit{SPA} (\textit{Single Page Application}). Sin embargo, en este caso, por el tiempo disponible y el tamaño de la aplicación se ha optado por hacerlo con HTML, CSS y JS puros.}. Las ventajas son evidentes:
+			
+\begin{itemize}
+	\setlength{\itemsep}{.0em}
+	\item \textbf{Responsabilidad única (SRP)}: Cada módulo debería hacer una sola cosa ($\{$Frontend $\rightarrow$ interfaz$\}$, $\{$Backend $\rightarrow$ procesamiento$\}$). 
+	\item \textbf{mantenibilidad}: Al usar una arquitectura modular cada parte puede evolucionar por separado. Podemos desplegar solo el front o el back. En el futuro podremos cambiar el front-end de archivos estáticos por un front-end con Angular, por ejemplo.
+	\item \textbf{Escalabilidad}: Según la carga podemos escalar independientemente ambas partes del proyecto. Por ejemplo, poner los archivos estáticos (html, css y js del front-end) en un servidor para servirlos rápidamente como nGinx \cite{nginx} (supuestamente más rápido que Apache). Dejar en el tomcat embedido de springboot el procesamiento del back-end y si hay problemas de escalabilidad escalar este independientemente en AWS, AZURE, o en un servidor propio según sea más conveniente.
+	\item \textbf{Reutilización}: Un backend puede servir varios front-ends (no solo web, sino móvil también). El mismo front-end podemos reutilizarlo luego para otra aplicación con un back-end en otro lenguaje por ejemplo.
+\end{itemize}
 
 			
 			
-			Al tener el front-end y el back-end desacoplados esto también aumenta la complejidad inicial en el desarrollo: la protección de las vistas se hace más compleja. Así las cosas, del mismo modo que los endpoints de nuestra API del back-end en SpringBoot están protegidos y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado), ciertas páginas del front-end no podrán obtener la información deseada: En este caso deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesion y/o bien redirigir al usuario a la página de login, por ejemplo.
 			
-			Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica.
+			
+			Sin embargo, no todo es ideal. Siempre existen concesiones (o como diríamos en inglés ``trade-offs''). Al tener el front-end y el back-end desacoplados esto también aumenta considerablemente la complejidad inicial en el desarrollo: la protección de las vistas se hace más difícil porque no las sirve el back-end y no las puede proteger directamente este\footnote{A diferencia de lo que sí haría una aplicación back-end hecha en php tradicional como las que hemos visto en desarrollo web entorno servidor, donde servimos el HTML desde dentro del mismo PHP).}.
+			
+			Por ejemplo, del mismo modo que los endpoints de nuestra API del back-end en Spring Boot están protegidos y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado o no tenga el ``idUsuari'' que permita el acceso a un cierto recurso), también pasará que ciertas páginas del front-end no podrán obtener la información deseada si llaman a un end-point para el que no tienen autorización: En este caso deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesion y/o bien redirigir al usuario a la página correcta, por ejemplo.
+			
+			Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript.
 			
 			\subsubsection{Protegiendo las vistas: permisos}
 			
-			Se establecen tres niveles de permisos en la aplicación que tienen un impacto en qué puede visualizar el usuario logueado y qué no; y cómo se permite que el usuario navegue a medida que va moviéndose en el proceso de registro. Estos permisos los podemos ver en la parte superior derecha de la figura \ref{fig:diagramaMercaAppFront}.
+			Se establecen tres niveles de permisos en la aplicación que tienen un impacto en qué puede visualizar el usuario ``logueado'' y qué no; y cómo se permite que el usuario navegue a medida que va moviéndose en el proceso de registro cuando no está ``logueado''. Estos permisos tienen un impacto en el enrutamiento del front-end de la aplicación (su impacto podemos verlo en la parte superior derecha de la figura del enrutamiento \ref{fig:diagramaMercaAppFront}) y más resumidamente en el cuadro \ref{table:permisos}:
 						
 			\begin{table}[H]
 				\centering
-				\caption{Significado del valor de la variable \texttt{permisos} en la tabla \texttt{usuaris} (ver figura~\ref{fig:diagramaMercaAppFront}) para ver como esto redirige al usuario en el enrutamiento de la aplicación para el proceso de registro}
+				\caption{Significado del valor de la variable \texttt{permisos} en la tabla mySQL\texttt{usuaris}}
 				\begin{tabular}{|c|l|}
 					\hline
 					\textbf{\texttt{permisos}} & \textbf{Significado} \\
@@ -401,9 +413,11 @@
 					2 & Acceso a tickets como administrador (ADMIN) \\
 					\hline
 				\end{tabular}
+				\label{table:permisos}
 
 			\end{table}
 
+			\textbf{Parlar de les proteccions de les vistes programmatically via javascript. Posar captura d'alguns dels scripts. No paralar de JWT en aquest apartat, referenciar al seguent (para entender como guardamos los datos de permisos e ide de usuario en el front, podemos ver el apartado del token de acceso: \ref{sec:recibirAccesTokenENFRONTEND})}
 			
 			\subsubsection{Recibir el Access Token desde el back-end}
 			\label{sec:recibirAccesTokenENFRONTEND}
@@ -478,7 +492,7 @@
 				
 				TO DO Parlar de les validacions i les anotacions 
 				
-				Parlar dels apartats de seguretat (segurity filter chain i JWT pero només de passada perque els mencionem despres)
+				TO DO Parlar dels apartats de seguretat (segurity filter chain i JWT pero només de passada perque els mencionem despres)
 				
 				\subsection{Autenticacion y Autorización}
 				
