@@ -38,7 +38,7 @@
 	
 	
 	\node (pas1) [trapeziSortida] {pas1\_Landing SignUp};
-	\node (joMateix) [nomUsuari, right of=pas1, xshift=5cm, yshift=1cm] {@blackcub3s};
+	\node (joMateix) [nomUsuari, left of=pas1, xshift=-4cm, yshift=1cm] {@blackcub3s};
 	\node (dec1) [decisionBackend, below of=pas1, yshift=-2cm,text width=1.75cm] {¿Existe\\correo?}; 
 	\node (invisible1) [nodeNoDimensio, left of=dec1, xshift=-2.5cm] {};
 	\node (pas2a) [trapeziSortida, below of=invisible1, xshift=0cm, yshift=0cm] {pas2A\_infoBenvinguda.html};
@@ -59,7 +59,9 @@
 	
 
 	\node (dec3) [decisionBackend, below of=pas3, yshift=-1.5cm, text width=1.5cm] {¿Se pudo registrar?};
-	\node (jwtLOGIN2) [nodeAccessToken, below of=dec3, yshift=-8cm, text width=3cm] {\textbf{AccessToken} \\$permisos = 0$};
+	\node (jwtLOGIN2) [nodeAccessToken, below of=dec3, yshift=-1cm, text width=3cm] {\textbf{AccessToken} \\$permisos = 0$};
+	
+	\node (jwtLOGIN3) [nodeAccessToken, left of=jwtLOGIN, xshift=-2cm, text width=3cm] {\textbf{AccessToken} \\$permisos = 0$};
 	\node (invisible3) [nodeNoDimensio, left of=dec2, xshift=-1.5cm] {};
 	\node (pas2b) [trapeziSortida, below of=invisible3, yshift=-2cm] {pas2B\_introdueix contrassenya};
 	
@@ -70,7 +72,9 @@
 	
 	\node (invisible8) [nodeNoDimensio, below of=pas2c, yshift=0cm]{};
 	\node (invisible9) [nodeNoDimensio, below of=dec2, yshift=-4cm]{};
-	\node (invisible10) [nodeNoDimensio, above of=jwtLOGIN2, yshift=0cm]{};
+	\node (invisible10) [nodeNoDimensio, left of=dec5, xshift=-2cm]{};
+	\node (invisible11) [nodeNoDimensio, above of=jwtLOGIN3, yshift=-1.5cm]{};
+	\node (invisible12) [nodeNoDimensio, below of=jwtLOGIN3, yshift=.3cm]{};
 	
 	%Nodes dummy (
 	%    - els del text de les URLs --------> sense color
@@ -84,34 +88,35 @@
 	 
 	\node (dummy7) [below of=dashboard, xshift=.5cm, yshift=1.2cm] {(/dashboard)};  
 	\node (dummy8) [below of=dec2, xshift=0cm, yshift=.1cm] {\textbf{\textcolor{red}{[/api/avaluaUsuari]}}};
-	\node (dummy9) [below of=dec3, xshift=0cm, yshift=0cm] {\textbf{\textcolor{brown}{[/api/registraUsuari]}}};
+	
 	
 	\node (dummy9) [below of=dec1, xshift=0cm, yshift=.2cm] {\textbf{\textcolor{red}{[/api/avaluaUsuari]}}};
 
 	\node (dummy10) [below of=pas2b, xshift=1.75cm, yshift=1.2cm] {(/signup/password)};  
 	\node (dummy11) [below of=pas2c, xshift=1cm, yshift=1.2cm] {(/login)};  
 	\node (dummy9) [below of=dec1, xshift=0cm, yshift=.2cm] {\textbf{\textcolor{red}{[/api/avaluaUsuari]}}};
-
+	
+	
 
 	%nodes de comentari nota al "peu" (node de referEncia)
 	\node (asterisc1sortida)[aspecteAsterisc, right of = dec1, yshift=.9cm, xshift=-.9cm]{$i$};
 	\node (asterisc2sortida)[aspecteAsterisc, right of = dec2, yshift=.9cm, xshift=-.9cm]{$ii$};
 	
 	%nodes de comentari nota al "peu" (node referenciat -explicacio ampliada-)
-	\node (asterisc1Arribada)[aspecteAsterisc, right of = pas1, yshift=0cm, xshift=2cm]{$i:$};
+	\node (asterisc1Arribada)[aspecteAsterisc, right of = pas1, yshift=1cm, xshift=2cm]{$i:$};
 	\node (asterisc1Explicacio)[aspecteExplicacioAsterisc, right of = asterisc1Arribada, yshift=-.5cm, xshift=.5cm]{Si $correu \in usuari \rightarrow \exists $ usuari};
 	\node (asterisc1ExplicacioComplement)[aspecteUltraPetit, below of = asterisc1Explicacio, yshift=1.7cm, xshift=.05cm]{(mySQL)};
 	
 	
 	\node (asterisc2Arribada)[aspecteAsterisc, below of = asterisc1Arribada, yshift=1cm]{$ii:$};
-	\node (asterisc2Explicacio)[aspecteExplicacioAsterisc, right of = asterisc2Arribada, yshift=-1.9cm, xshift=1.15cm] {
+	\node (asterisc2Explicacio)[aspecteExplicacioAsterisc, right of = asterisc2Arribada, yshift=-2.2cm, xshift=1.4cm] {
 		\begin{tabular}{l}
 			Si permisos == 0:\\
-				\hspace{1.9em} No hay acceso a tickets digitales.\\
+				\hspace{1.9em} No acceso a tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow \emptyset$ ]} $:$ \textbf{  NO Acc. APIs}\\
 			Si permisos $==$ 1:\\
-				\hspace{1.9em} Hay acceso a tickets digitales\\\hspace{2.5em}\textit{[rol $\rightarrow$ USER]}\\
+				\hspace{1.9em} Hay acc. a sus tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow$ USER]} $:$ \textbf{ Acc. APIs idUsuario}\\
 			Si permisos $==$ 2:\\
-				\hspace{1.9em} Usuari tiene acceso a PDFs correo\\\hspace{2.5em}\textit{[rol $\rightarrow$ ADMIN]}\\
+				\hspace{1.9em} Hay acc. a todo ticket digital\\\hspace{2em}\textit{[rol $\rightarrow$ ADMIN]} $:$ \textbf{Acc. $\forall$ APIs}\\\\
 			 			
 				
 		\end{tabular}
@@ -128,7 +133,7 @@
 	\draw [arrow] (pas2a) -- (pas3);
 	\draw [arrow] (pas3) -- (dec3);
 	
-	\draw [linia] (dec3) -- (jwtLOGIN2) node[midway, yshift=1cm, xshift=-.3cm] {S\'{i}};
+	\draw [linia] (dec3) -- (jwtLOGIN2) node[midway, yshift=0cm, xshift=-.3cm] {S\'{i}};
 	\draw [arrow] (jwtLOGIN2) -- (pas4);
 
 
@@ -137,11 +142,18 @@
 	\draw [linia] (pas2c) -- (invisible8);
 	\draw [linia] (invisible8) -- (invisible9);
 	\draw [arrow] (invisible9) -- (dec4);
+	\draw [linia] (invisible11) -- (invisible10);
+	
+	
+	\draw [arrow] (invisible12) -- (pas4); %%%%
+	
 	
 	\draw [linia] (dec4) -- (dec5) node[midway, yshift=0cm, xshift=.3cm] {S\'{i}};
 	%\draw [arrow] (jwtLOGIN) \textit{}-- (dec5);
 	\draw [linia] (dec5) -- (jwtLOGIN) node[midway, yshift=.2cm, xshift=.3cm] {S\'{i}};
-	\draw [linia] (dec5) -- (invisible10) node[midway, yshift=.3cm, xshift=3.5cm] {No};
+	\draw [linia] (dec5) -- (invisible10) node[midway, yshift=.3cm, xshift=1cm] {No};
+	
+	
 	\draw [arrow] (jwtLOGIN) -- (dashboard) node[midway, yshift=.3cm, xshift=2cm] {};
 	\draw [arrow] (concedido) -- (dashboard)  node[midway, yshift=.2cm, xshift=-.1cm] {S\'{i}};
 	
@@ -161,19 +173,37 @@
 	\draw [linia] (pas2b) -- (invisible5) node[midway, yshift=0.3cm] {};
 	\draw [linia] (invisible5) -- (invisible9);
 	
-	\draw [linia] (dec3) -- (invisible6) node[midway, yshift=0.3cm] {No};
+	\draw [linia] (dec3) -- (invisible6) node[midway, yshift=0.3cm, xshift=.5cm] {No};
 	\draw [linia] (invisible6) -- (invisible7);
 	\draw [arrow] (invisible7) -- (pas3);
+	\draw [linia] (invisible12) -- (jwtLOGIN3);
 	
-	% Claudator que agrupa los nodos del login (dreta)
+	% Claudator que agrupa los nodos de la /api/login (dreta)
 	\draw[decorate, decoration={brace, amplitude=10pt, mirror}, thick, dashed, draw=blue] %mirror fa que estigui cap a la dreta
-	([xshift=2cm]dec5.south) -- ([xshift=2cm]dec4.north)
+	([xshift=2cm]jwtLOGIN.south) -- ([xshift=2cm]dec4.north)
 	node[midway, right=0pt, text width=3cm, align=center] {\textbf{\textcolor{blue}{[/api/login]}}};
 	
-	% Claudator que agrupa els nodes del login (esquerra)
+	% Claudator que agrupa els nodes de la /api/login (esquerra)
 	\draw[decorate, decoration={brace, amplitude=10pt}, thick, dashed, draw=blue]  %sense mirror va a l'esquerra
-	([xshift=-2cm]dec5.south) -- ([xshift=-2cm]dec4.north)
+	([xshift=-6cm]jwtLOGIN.south) -- ([xshift=-6cm]dec4.north)
 	node[midway, right=1cm, text width=3cm, align=center] {};
+	
+	
+	
+	
+	% Claudator que agrupa los nodos de la /api/registraUsuari (dreta)
+	\draw[decorate, decoration={brace, amplitude=10pt, mirror}, thick, dashed, draw=brown] %mirror fa que estigui cap a la dreta
+	([xshift=2cm]jwtLOGIN2.south) -- ([xshift=2cm]dec3.north)
+	node[midway, right=0pt, text width=3cm, align=center] {};
+	
+	% Claudator que agrupa els nodes de la /api/registraUsuari (esquerra)
+	\draw[decorate, decoration={brace, amplitude=10pt}, thick, dashed, draw=brown]  %sense mirror va a l'esquerra
+	([xshift=-2cm]jwtLOGIN2.south) -- ([xshift=-2cm]dec3.north)
+	node[midway, left=1cm, text width=3cm, align=center, rotate=90] {\textbf{\textcolor{brown}{[/api/registraUsuari]}}};
+	
+	
+	
+	
 	
 	
 	\end{tikzpicture}

@@ -281,7 +281,7 @@
 			
 				Para desarrollar este proyecto se ha trabajado con GitHub y git. Dado que no ha habido trabajo en equipo no se han utilizado pull requests a la rama main sino simplemente se ha seguido la estrategia de crear ramas de característica y, una vez son satisfactorias, hacer un merge en la rama main en local.
 				
-				Un flujo de trabajo habitual es mediante ramas de característica (puede verse anexo \ref{sec:anexoFlujoGit}). También puede verse el GitHub del proyecto a continuación. Dentro del readme del proyecto encontraréis instrucciones para su descarga, clonado y ``despliegue'' de sus componentes en vuestro ordenador personal si así lo deseáis.
+				Un flujo de trabajo habitual es mediante ramas de característica (puede verse anexo \ref{sec:anexoFlujoGit}). También puede verse el GitHub del proyecto a continuación. Dentro del readme del proyecto encontraréis instrucciones para su descarga, clonado y ``despliegue'' (en local) de sus componentes en vuestro ordenador personal utilizando los servidores embedidos en los entornos de desarrollo de workbench, vscode e IntelliJ \textbf{PONER OTRO SI HACE FALTA} si así lo deseáis.
 			
 
 			
@@ -325,12 +325,50 @@
 			\subsection{Enrutamiento de vistas}
 			\label{sec:EnrutamientoDeVistas}
 			
-			Para esta aplicación vamos a tener una serie de vistas a las que el usuario va acceder en función del valor de la variable ``permisos'' en la tabla ``usuaris'' de mySql.
+			Para esta aplicación vamos a tener \textbf{una serie de vistas} a las que el usuario va acceder en función del valor de la variable ``permisos'' en la tabla ``usuaris'' de mySql y de si el usuario está ``loqueado'' o no.
 			
-			Como hemos especificado en el Apartado de diseño, nos hemos inspirado para ello en un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix. El proceso de registro de netflix queda decentemente bien recogido en el diagrama del anexo (ver apartado \ref{sec:anexo_diagramaNetflix}) y puede consultarse también en uno delos repositorios de mi github (\href{https://www.github.com/miApp}{link}). El proceso de registro que utilizamos aquí es una derivación del mismo, pero en estre caso no se utilizan redirecciones a cartas de pago sino que redirigimos al usuario o bien a una página para darnos acceso a su gmail donde están los tikets digitales o al dashboard como vemos en el siguiente diagrama:ti
+			Como hemos especificado en el Apartado de diseño, nos hemos inspirado para ello en un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix. El esquema simplificado del proceso de enrutamiento durante el registro de un usuario en NetFlix queda recogido en el diagrama del anexo (ver apartado \ref{sec:anexo_diagramaNetflix}) y puede consultarse también en uno de los repositorios de mi github (\href{https://www.github.com/miApp}{link}). 
 			
-			\textbf{POSA DIAGRAMA ACTUALITZAT}
+			El proceso de registro que utilizamos aquí es, justamente, una derivación del mismo: pero en este caso no se utilizan redirecciones a cartas de pago sino que redirigimos al usuario a una de dos páginas posibles según su caso particular con los permisos. Una, es una página para darnos acceso al gmail donde Mercadona envía al usuario los tickets digitales para así poder nosotros descargarlos y procesarlos: \texttt{pas4\_ConcedirAccesGmail.html}; la otra es \texttt{dashboard.html}, donde se visualizan el resultado de la minería y extracción de datos de esos tikets, como vemos en el diagrama de la figura \ref{fig:diagramaMercaAppFront}:
 			
+			\begin{itemize}
+			\setlength{\itemsep}{.0em}
+				
+				\item 1. Decisiones del back-end de Spring Boot al llamar a APIs (\textbf{\textcolor{yellow!75!black}{\underline{rombos amarillos}}}). %75 per cent groc i 25 negre entenc
+				\item 2. Las APIs mencionadas, indicadas entre corchetes y con colores:
+				\begin{itemize}
+					\setlength{\itemsep}{.0em}
+					\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: evalúa si el correo electrónico introducido pertenece a un usuario registrado.
+					\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las claims \footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}
+					\item \textbf{\textcolor{blue}{[\texttt{/api/login}]}}: gestiona el proceso de autenticación y generación del \textit{JWT Access Token} con tres niveles de permisos posibles (0, 1 y 2).
+				\end{itemize}
+			
+			
+				
+				\item 3. Las vistas (archivos html, en \textbf{\textcolor{orange}{\underline{rectángulos naranja}}}) a las que redirige JavaScript mediante $window.location.href$ a partir de los resultados de las llamadas a las APIs.
+				
+				\item 4. Expedición de tokens de acceso (JWT) con (\textbf{\textcolor{blue!40!white}{\underline{rectangulo de fondo azul}}}) con permisos embedidos en las claims.
+				
+			\end{itemize}
+			
+			
+		
+			
+			\setlength{\belowcaptionskip}{3pt}
+			\FloatBarrier
+			\begin{figure}[H]
+				\centering
+				\caption{Diagrama de flujo del enrutamiento comlpeto del sistema \textit{front-end} durante el proceso de registro, desde que el usuario introduce su correo en \texttt{pas1\_LandingSignUp.html} hasta que obtiene acceso al \texttt{dashboard}.}
+				\includegraphics[width=1\textwidth]{img/diagramaMercAppFront.pdf}
+				
+				\label{fig:diagramaMercaAppFront} 
+			\end{figure}
+			\FloatBarrier
+			
+		
+			
+			
+
 			
 			
 		
@@ -347,9 +385,25 @@
 			
 			Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica.
 			
-			\subsubsection{Protegiendo las vistas}
+			\subsubsection{Protegiendo las vistas: permisos}
 			
-			\textbf{TO DO: POSAR EXEMPLE DE CASOS PARTICULARS}
+			Se establecen tres niveles de permisos en la aplicación que tienen un impacto en qué puede visualizar el usuario logueado y qué no; y cómo se permite que el usuario navegue a medida que va moviéndose en el proceso de registro. Estos permisos los podemos ver en la parte superior derecha de la figura \ref{fig:diagramaMercaAppFront}.
+						
+			\begin{table}[H]
+				\centering
+				\caption{Significado del valor de la variable \texttt{permisos} en la tabla \texttt{usuaris} (ver figura~\ref{fig:diagramaMercaAppFront}) para ver como esto redirige al usuario en el enrutamiento de la aplicación para el proceso de registro}
+				\begin{tabular}{|c|l|}
+					\hline
+					\textbf{\texttt{permisos}} & \textbf{Significado} \\
+					\hline
+					0 & No hay acceso a tickets digitales \\
+					1 & Acceso a tickets como usuario (USER) \\
+					2 & Acceso a tickets como administrador (ADMIN) \\
+					\hline
+				\end{tabular}
+
+			\end{table}
+
 			
 			\subsubsection{Recibir el Access Token desde el back-end}
 			\label{sec:recibirAccesTokenENFRONTEND}
@@ -479,6 +533,7 @@
 				
 				
 				\subsubsection{¿Qué compone un JWT?}
+				\label{sec:queComponeJWTbackend}
 				
 				\noindent El JWT se compone de tres partes. \textbf{los headers}, \textbf{el payload} y \textbf{la signatura}. En la página \href{https://jwt.io/}{https://jwt.io/}, como veremos después, se puede ver si los tokens son válidos, observar su estructura interna, etc. \cite{jwtio}. A saber:
 				
