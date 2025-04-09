@@ -3,12 +3,10 @@ package miApp.app;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
 import miApp.app.Usuaris.servei.UsuariAmpliatServei;
-import miApp.app.utils.EncriptaContrasenyes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import miApp.app.Usuaris.servei.UsuariServei;
-import miApp.app.Usuaris.servei.UsuariAmpliatServei;
 
 
 @SpringBootApplication
@@ -48,5 +46,25 @@ public class AppApplication {
 		usuariAmpliatServei.afegirNomIcognoms(u, "Santi", "Sánchez", "Sans");
 		usuariAmpliatServei.afegirNomIcognoms(usuariBis, "Emma", "Palausabulla", "Balluback");
 
+
+
+		//SI VOLS GENERAR EL TOKEN FIX PER A VERIFICAR LES CRIDADES AL BACKEND DE FAST API (DESCOMENTA SEGÜENTS LINIES)
+		/*
+		TokenFix tf = new TokenFix();
+		String tokenFix = tf.generaTokenFix();
+		System.out.println("TOKEN FIX PER A ENVIAR A BACK: " + tokenFix);
+		*/
+
+		//TESTEJO CLASSE QUE OBTE DADES DEL BACKEND FASAPI
+
+		//SENSE TOKEN:
+
+		/*
+		RestClient restClient = new restClient();
+		Client client = new Client(restClient);
+		TicketDTO dtoT = client.getTickets(1);
+		*/
+
+		//AMB TOKEN
 	}
 }
