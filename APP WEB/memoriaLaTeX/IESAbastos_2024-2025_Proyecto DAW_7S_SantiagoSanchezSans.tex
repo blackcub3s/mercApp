@@ -520,15 +520,15 @@ String accesJWT = accessToken.genera(
 		Al generar las tres clases hemos utilizado herencia porque la clave privada es la misma para ambos tipos de token (tanto el de acceso como el de refresco), mientras que los métodos para generar cada uno de los dos tipos de token cambian. En StackOverflow existe un debate para ver si hay que tener una clave privada distinta para cada tipo de token, por si el lector está interesado \cite{stackoverflow_jwt_refresh_token_secret}. Después de ver la entrada en stackOverflow Se ha optado por compartir claves para ambos tipos.
 		
 		
-		En la clase \textbf{JwtUtil} tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar y autorizar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link}). Se recomienda encarecidamente al lector optar por esta última opción\footnote{Al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.}.
+		En la clase \textbf{JwtUtil} tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar y autorizar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link})\footnote{Se recomienda encarecidamente al lector optar por esta última opción}\footnote{Al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.}.
 		
 		\subsubsection{Enviar por primera vez el Access Token hacia el front-end (registro)}
 		\label{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}
 		
-		Cuando el usuario consigue poner la contraseña correcta en la página de registro del front-end \texttt{pas3C\_crearContrasenya.html} se manda de vuelta del back-end (desde el controlador de endpoint \textit{api/registraUsuari}) hasta el front-end en el localStorage, \textbf{el token de acceso}. Pasa lo mismo cuando iniciamos sesión, en \texttt{pas2C\_login.html}.
+		Cuando el usuario consigue poner la contraseña correcta en la página de registro del front-end (\texttt{pas3C\_crearContrasenya.html}), esta contraseña se manda conjuntamente con el correo electrónico\footnote{el correo electrónico  lo teníamos guardado en el localStorage de la página de registro inicial.}  mediante una petición POST al controlador de endpoint \textit{api/registraUsuari} de nuestro back-end de springboot. Este controlador responde entonces mandando de vuelta al cliente \textbf{el token de acceso}, que se \textbf{guardará} en el localStorage del navegador del usuario.
 		
 		
-		Así las cosas, podemos testear el endpoint de \textit{api/registraUsuari} ehaciendo una llamada POST desde postman asegurándose que ``nuevoUsuario@gmail.com'' no existe en la tabla usuaris para luego testearlo con el front-end, tal que así:
+		Así las cosas, podemos testear que esto funciona como es debido haciendo una solicitud POST con la aplicación Postman\cite{postman_api_platform} al endpoint \textit{api/registraUsuari} con un correo que no esté guardado en la tabla usuaris: por ejemplo, ``nuevoUsuario@gmail.com''; y con una contraseña válida para ser guardada de acuerdo con nuestro requisitos de seguridad\footnote{Mínimo 8 caracteres, una minúscula y una mayúscula y sin caracteres peligrosos.}: si todo va bien deberemos obtener la figura \ref{fig:detallPostmanRegistraUsuari}:
 		
 		
 		
@@ -537,25 +537,27 @@ String accesJWT = accessToken.genera(
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/detallPostmanRegistraUsuari.png}
-			\caption{Creación de un nuevo usuario llamando con una solicitud post al endpoint ``api/registraUsuari'' mandando los datos de ``correuElectronic'' y ``contrasenya'' que leerá y validará el DTO. En naranja es el body de la solicitud y en verde el body de la response}
+			\caption{Creación de un nuevo usuario llamando con una solicitud POST al endpoint ``api/registraUsuari'' cuando las validaciones del objeto RegistreDTO del back-end lo permite. En naranja se muestra el body de la petición (lo que el cliente envía al servidor) y en verde el body de la respuesta (lo que el servidor devuelve al cliente).}
 			
 			\label{fig:detallPostmanRegistraUsuari} 
 		\end{figure}
 		\FloatBarrier
 		
 		
-		Análogamente, para testear el endpoint de iniciar sesión sin utilizar el front-end podemos hacerlo así:
+		Tenemos otro endpoint que también expide tokens de acceso, mucho más habitualmente que el anterior: es el endpoint que se consume cuando iniciamos sesión, en \texttt{pas2C\_login.html}: el endpoint ubicado en la URI\footnote{Uniform Resource Identifier} \textit{/api/login}. Si intentamos iniciar sesión con un usuario ya existente en la tabla de usuarios obtendremos algo como esto:
 		
 		\setlength{\abovecaptionskip}{0pt}
 		\FloatBarrier
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/detallPostmanLogin.png}
-			\caption{Iniciando sesión con un usuario mediante ``api/login'' mandando los datos de ``correuElectronic'' y ``contrasenya'' que leerá y validará el DTO del back-end. En naranja es el body de la solicitud y en verde el body de la response. El correo ya debe existir en la base de datos!}
+			\caption{Iniciando sesión con un usuario ya existente mediante ``api/login'' mandando los datos de ``correuElectronic'' y ``contrasenya'' que leerá y validará el LoginDTO del back-end. En naranja es el body de la petición y en verde el body de la respuesta.}
 			
 			\label{fig:detallPostmanLogin} 
 		\end{figure}
 		\FloatBarrier
+		
+		\textbf{POTSER POSAR LES FUNCIONS DEL CONTROLADOR I DEL SERVICE QUE HO FAN ENLLAÇANT CODIS DE GITHUB.}
 		
 		La parte de recepción del token en el front-end y de su manejo podéis encontrarla en el apartado \ref{sec:recibirAccesTokenENFRONTEND}
 
