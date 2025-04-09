@@ -8,7 +8,6 @@ app = FastAPI()
 
 @app.get("/api/usuari/{id}")
 def mostraUsuari(id):        # id es enter (pots tipar-lo si vols)
-    print()
     return {"dadesUsuari" : "les dades de l'usuari "+str(id)+" ASD."}
 
 

@@ -14,7 +14,7 @@ public class Client {
 
     private final RestClient restClient;
 
-    //TOKEN SENSE CADUCITAT QUE UTILITZEM PER ENVIAR AL BACKEND DE FASTAPI QUE VOLDREM QUE CORROBORI L'ORIGEN
+    //TOKEN SENSE CADUCITAT USAT PER PROVES (EN VERSIÓ DEFINITIVA CAL UN TOKEN D'USUARI I EXTERURE LES CLAIMS)
     private String token = "eyJhbGciOiJIUzI1NiJ9.eyJvcmlnZW4iOiJiYWNrLWVuZCBzcHJpbmcgYm9vdCIsImlhdCI6MTc0NDE5NTkzNH0.vWyws2xGbb2K_Q2idc_GA_joqONMiWKVSwSCE7yqlvs";
 
     public Client(RestClient restClient) {
@@ -23,7 +23,7 @@ public class Client {
 
 
 
-    //TESTEJAR
+    //OBTENIR ALGO DEL SERVIDOR FASTAPI AMB GET SENSE ENVIAR TOKEN
     public TicketDTO getSenseToken(Integer idUsuari) {
         return restClient.get()//FA LA SOLICITUD GET
                 .uri("http://localhost:8000/api/usuari/{idUsuari}", idUsuari) //el http://localhost:8000 ja esta definit dins ConfiguracioRestClient
@@ -31,6 +31,7 @@ public class Client {
                 .body(TicketDTO.class); //EL TIPUS DE CLASSE QUE RETORNA LA FUNCIÓ
     }
 
+    //OBTENIR ALGO DEL SERVIDOR FASTAPI AMB GET ENVIANT TOKEN
     public TestDTO getAmbToken(Integer idUsuari) {
         return restClient.get()//FA LA SOLICITUD GET
                 .uri("http://localhost:8000/api/usuariSegur/{idUsuari}", idUsuari) //el http://localhost:8000 ja esta definit dins ConfiguracioRestClient
