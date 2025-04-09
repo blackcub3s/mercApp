@@ -3,16 +3,10 @@ package miApp.app;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
 import miApp.app.Usuaris.servei.UsuariAmpliatServei;
-import miApp.app.seguretat.jwt.TokenFix;
-import miApp.app.tickets.dto.TicketDTO;
-import miApp.app.tickets.restclient.Client;
-import miApp.app.utils.EncriptaContrasenyes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import miApp.app.Usuaris.servei.UsuariServei;
-import miApp.app.Usuaris.servei.UsuariAmpliatServei;
-import org.springframework.web.client.RestClient;
 
 
 @SpringBootApplication
