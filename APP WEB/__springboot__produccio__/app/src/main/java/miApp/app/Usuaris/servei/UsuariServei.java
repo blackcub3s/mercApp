@@ -312,4 +312,20 @@ public class UsuariServei {
         return mapJSONlike;
     }
 
+    //PRE: un correu electrònic ja validat per les classes de validació (activades del controlador en /avaluaUsuari)
+    //POST: un hashmap segons estructura funcio controlador de mateix nom.
+    public HashMap<String, Object> verificaUsuari(String eMail) {
+        boolean existeixUsuari = this.usuariRegistrat(eMail);
+
+        //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
+        HashMap<String, Object> mapJSONlike = new HashMap<>();
+        mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hasmap
+
+        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT TÉ ACCES ALS RECURSOS DE L'APP (I.E. USUARI QUE PAGA)
+        boolean usuariTeAcces = this.usuariTeAcces(eMail);
+        mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
+
+        return mapJSONlike;
+    }
+
 }

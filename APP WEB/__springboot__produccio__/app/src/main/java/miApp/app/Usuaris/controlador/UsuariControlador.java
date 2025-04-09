@@ -48,23 +48,9 @@ public class UsuariControlador {
     // Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos:"true"} o false segons sigui el cas
     @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/avaluaUsuari")
-    public ResponseEntity<HashMap<String, Object>> verificarUsuari(@RequestBody @Valid CorreuDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
-
-        //MIRO SI EL MAIL EXISTEIX A LA TAULA USUARIS (ERGO L'USUARI EXISTEIX)
+    public ResponseEntity<HashMap<String, Object>> verificaUsuari(@RequestBody @Valid CorreuDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
         String eMail = dto.getCorreuElectronic();
-        boolean existeixUsuari = serveiUPP.usuariRegistrat(eMail);
-
-        //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
-        HashMap<String, Object> mapJSONlike = new HashMap<>();
-        mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hasmap
-
-        //MIRO SI L'USUARI AMB EL MAIL CORRESPONENT TÉ ACCES ALS RECURSOS DE L'APP (I.E. USUARI QUE PAGA)
-        boolean usuariTeAcces = serveiUPP.usuariTeAcces(eMail);
-        mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
-
-        /*
-            AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
-         */
+        HashMap<String, Object> mapJSONlike = serveiUPP.verificaUsuari(eMail);
         return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //torno la response
     }
 
