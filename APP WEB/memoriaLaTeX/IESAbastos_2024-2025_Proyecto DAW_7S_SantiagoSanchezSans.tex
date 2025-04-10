@@ -814,6 +814,44 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript para redirigir a los usuarios.
 	
+	\subsubsection{Protegiendo las vistas: expiración del token}
+	
+	Existen dos páginas de nuestra web que, cuando expire su token de acceso, no deberán ser visualizables\footnote{Como se desprende a partir del diagrama de flujo del enrutamiento que vimos en la figura \ref{fig:diagramaMercaAppFront}, son las páginas a las que redirigimos los usuarios justo después de generar tokens de acceso.}:
+	
+	\vspace{0em}
+	\begin{itemize}
+		\setlength{\itemsep}{-.5em}
+		\item \texttt{pas4\_concedirAccesGmail.html}
+		\item \texttt{dashboard.html}
+	\end{itemize}
+	
+	La primera requiere tener un token con permisos a 0; la segunda un token con permisos superior o igual a 1. En otras palabras: requieren tener algun tipo de autenticación de usuario, como veremos en el siguiente apartado; pero está claro que para visualizarlas la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) deberán tener un token que no esté expirado y que sea descifrable (ojo, que no validable con el secret, que eso está en nuestro servidor y no se muestra jamás en el cliente).
+	
+	Si está expirado, cuando hagamos la diferencia entre el valor ``exp'' del payload\footnote{Segundos en que el token expira o expiró, desde la epoch.} y la función \textit{Date.now()/1000}\footnote{Segundos actuales del navegador, desde la epoch.} saldrá un número negativo. En caso contrario, positivo. 
+	
+	Si el token está expirado inmediatamente redirigiremos al usuario a la landing page, impidiendo así el visionado de cualquiera de las dos páginas (sin esperar ninguna acción por parte del usuario: directamente le sacaremos de la página). En cambio, si el token no está expirado seguiremos reevaluando la expiración del token con una frecuencia de un segundo: esto se conseguirá mediante la función asíncrona \textit{setInterval()} que hemos visto en desarrollo web entorno cliente.
+	
+	Para ello, en el \textit{head} de cada una de las dos páginas en cuestión veréis que \textbf{antes} siquiera \textbf{de cargar el DOM} se cargan sendos archivos:
+	
+	\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+	<script src="/js/jwt/decodificaJWT.js"></script>
+	<script src="/js/jwt/restringeixVistes_EXPIRACIO.js"></script>
+	\end{lstlisting}
+	
+	En el primero tenemos la función para extraer el payload de un token. Y en el segundo está la lógica que acabamos de explicar en los párrafos anteriores (ver figura \ref{fig:restringeixVistesEXPIRACIO}):
+	
+	
+	\setlength{\belowcaptionskip}{3pt}
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Script para regresar automáticamente a la landing page cuando el token de acceso expira en páginas protegidas.}
+		\includegraphics[width=1\linewidth]{img/restringeixVistesEXPIRACIO}
+
+		\label{fig:restringeixVistesEXPIRACIO}
+	\end{figure}
+	\FloatBarrier
+	
 	\subsubsection{Protegiendo las vistas: permisos}
 	\label{sec:vistasPermisos}
 	
