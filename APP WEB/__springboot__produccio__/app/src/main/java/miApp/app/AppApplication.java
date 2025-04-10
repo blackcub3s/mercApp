@@ -48,12 +48,6 @@ public class AppApplication {
 
 
 
-		//SI VOLS GENERAR EL TOKEN FIX PER A VERIFICAR LES CRIDADES AL BACKEND DE FAST API (DESCOMENTA SEGÜENTS LINIES)
-		/*
-		TokenFix tf = new TokenFix();
-		String tokenFix = tf.generaTokenFix();
-		System.out.println("TOKEN FIX PER A ENVIAR A BACK: " + tokenFix);
-		*/
 
 		//TESTEJO CLASSE QUE OBTE DADES DEL BACKEND FASAPI
 
