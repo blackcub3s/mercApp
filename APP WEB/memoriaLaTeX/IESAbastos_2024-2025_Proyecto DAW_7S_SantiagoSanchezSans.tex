@@ -732,29 +732,46 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	\subsection{Enrutamiento de vistas}
 	\label{sec:EnrutamientoDeVistas}
 	
-	Para esta aplicación vamos a tener \textbf{una serie de vistas} a las que el usuario va acceder en función del valor de la variable ``permisos'' en la tabla ``usuaris'' de mySql y de si el usuario está ``loqueado'' o no.
+	Cuando un usuario introduzca su correo en el formulario de registro de la página principal de la web (\texttt{pas1\_LandingSignUp.html}) va a ser redirigido con javascript a partir de las llamadas al back-end de Spring Boot: éste ultimo nos permitirá acceder al valor de la variable ``permisos'' de la tabla ``usuaris'' de mySql, siendo así redirigido a unas páginas u otras (el asunto de como se evita que ciertas páginas sean vistas por usuarios ya autenticados se cubre en otra sección: apartado \ref{sec:vistasPermisos}).
 	
-	Como hemos especificado en el Apartado de diseño, nos hemos inspirado para ello en un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix. El esquema simplificado del proceso de enrutamiento durante el registro de un usuario en NetFlix queda recogido en el diagrama del anexo (ver apartado \ref{sec:anexo_diagramaNetflix}) y puede consultarse también en uno de los repositorios de mi github (\href{https://www.github.com/miApp}{link}). 
 	
-	El proceso de registro que utilizamos aquí es, justamente, una derivación del mismo: pero en este caso no se utilizan redirecciones a cartas de pago sino que redirigimos al usuario a una de dos páginas posibles según su caso particular con los permisos. Una, es una página para darnos acceso al gmail donde Mercadona envía al usuario los tickets digitales para así poder nosotros descargarlos y procesarlos: \texttt{pas4\_ConcedirAccesGmail.html}; la otra es \texttt{dashboard.html}, donde se visualizan el resultado de la minería y extracción de datos de esos tikets. El proceso se encuentra en el diagrama de la figura \ref{fig:diagramaMercaAppFront}, cuyo contenido explicamos a continuación:
+	\setlength{\belowcaptionskip}{3pt}
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\textwidth]{img/landingSignUp.png}
+		\caption{Detalle de la landing page \texttt{pas1\_LandingSignUp.html} donde el usuario introducirá inicialmente su correo para registrarse -aunque ese mismo formulario en realidad nos servirá para todo gracias al enrutamiento de vistas-}
+		\label{fig:landingSignUpDETALL} 
+	\end{figure}
+	\FloatBarrier
+	
+	Estas redirecciones no son fruto del azar. Se ha hecho un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix: replicándolo, desde cero, y adaptándolo a nuestro caso particular. Si Netflix utiliza ese esquema es porque tiene un impacto en la facilidad de captación de clientes y qué mejor que tratar de replicar los sistemas de los grandes \textit{players}.
+	
+	El esquema simplificado del proceso de enrutamiento durante el registro de un usuario en NetFlix queda recogido en el diagrama del anexo (ver apartado \ref{sec:anexo_diagramaNetflix}) y puede consultarse también en uno de los repositorios de mi github (\href{https://www.github.com/miApp}{link}). 
+	
+	Asimismo, el proceso de registro que utilizamos en mercApp es convenientemente una derivación de este mismo: si bien en NetFlix primeramente se redirige al usuario a unas cartas de pago, nosotros aquí le llevamos a una página para que nos dé acceso al gmail en el que Mercadona los tickets digitales al usuario (la página  \texttt{pas4\_ConcedirAccesGmail.html}); de nuevo análogamente a NetFlix, donde al usuario que ya ha pagado se le concede inmediatamente el acceso a las películas y series,  en nuestro caso se le dará acceso al usuario al tablón de visualización de análisis de datos de los tikets digitales  (\texttt{dashboard.html}), donde se visualizan el resultado de la minería y extracción de datos de esos tikets. 
+	
+	El proceso de enrutamiento de los usuarios desde que llegan a nuestra aplicación web hasta que acceden al \textit{dashboard} se encuentra recogido en el diagrama de la figura \ref{fig:diagramaMercaAppFront}, cuyas nomenclaturas explicamos en los siguientes \textit{bullet points}:
+	\vspace{1em}
+	\hrule
 	
 	\begin{itemize}
 		\setlength{\itemsep}{-.3em}
 		
-		\item 1. Decisiones del back-end de Spring Boot al llamar a APIs (\textbf{\textcolor{yellow!75!black}{\underline{rombos amarillos}}}). %75 per cent groc i 25 negre entenc
-		\item 2. Las APIs mencionadas, indicadas entre corchetes y con colores:
+		\item Decisiones del back-end de Spring Boot al llamar a APIs: \textbf{\textcolor{yellow!75!black}{\underline{rombos amarillos}}}. %75 per cent groc i 25 negre entenc
+		\item Las APIs que consume el front-end van entre [] y con color:
 		\begin{itemize}
 			\setlength{\itemsep}{.0em}
-			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: evalúa si el correo electrónico introducido pertenece a un usuario registrado.
-			\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las claims \footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}
+			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: evalúa si el correo electrónico introducido pertenece a un usuario registrado y qué permisos tiene.
+			\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las \textit{claims} de su \textit{payload}\footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}.
 			\item \textbf{\textcolor{blue}{[\texttt{/api/login}]}}: gestiona el proceso de autenticación y generación del \textit{JWT Access Token} con tres niveles de permisos posibles (0, 1 y 2).
 		\end{itemize}
 		
 		
 		
-		\item 3. Las vistas (archivos html, en \textbf{\textcolor{orange}{\underline{rectángulos naranja}}}) a las que redirige JavaScript mediante $window.location.href$ a partir de los resultados de las llamadas a las APIs.
+		\item Las vistas -archivos html- a las que redirige JavaScript mediante la llamada a $window.location.href$ a partir de los resultados de las llamadas a las APIs:  \textbf{\textcolor{orange}{\underline{rectángulos naranja}}}.
 		
-		\item 4. Expedición de tokens de acceso (JWT) desde el endpoint (\textbf{\textcolor{blue!40!white}{\underline{rectangulo de fondo azul}}}) enviados al front-end \footnote{Consultad la estructura de los mismos en la figura \ref{fig:jwtioMostraPayload}.}.
+		\item Expedición de tokens de acceso (JWT) desde el endpoint del que emanan y enviados al front-end se representan con un rectángulo \textbf{\textcolor{blue!40!white}{\underline{de fondo azul}}} y bordes redondeados \footnote{Consultad la estructura de los mismos en la figura \ref{fig:jwtioMostraPayload}.}.
 		
 	\end{itemize}
 	
@@ -793,11 +810,12 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	Sin embargo, no todo es ideal. Siempre existen concesiones (o como diríamos en inglés ``trade-offs''). Al tener el front-end y el back-end desacoplados esto también aumenta considerablemente la complejidad inicial en el desarrollo: la protección de las vistas se hace más difícil porque no las sirve el back-end y no las puede proteger directamente este\footnote{A diferencia de lo que sí haría una aplicación back-end hecha en php tradicional como las que hemos visto en desarrollo web entorno servidor, donde servimos el HTML desde dentro del mismo PHP).}.
 	
-	Por ejemplo, del mismo modo que los endpoints de nuestra API del back-end en Spring Boot están protegidos y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado o no tenga el ``idUsuari'' que permita el acceso a un cierto recurso), también pasará que ciertas páginas del front-end no podrán obtener la información deseada si llaman a un end-point para el que no tienen autorización: En este caso deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesion y/o bien redirigir al usuario a la página correcta, por ejemplo.
+	Por ejemplo, del mismo modo que los endpoints de nuestra API del back-end en Spring Boot están protegidos y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado o no tenga el ``idUsuari'' que permita el acceso a un cierto recurso), también pasará que ciertas páginas del front-end no podrán obtener la información deseada si llaman a un end-point para el que no tienen autorización: en este caso ello tendrá implicaciones para las vistas, y deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesión y/o bien redirigir al usuario a la página correcta, por ejemplo. Nosotros hemos optado por este último enfoque.
 	
-	Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript.
+	Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript para redirigir a los usuarios.
 	
 	\subsubsection{Protegiendo las vistas: permisos}
+	\label{sec:vistasPermisos}
 	
 	Se establecen tres niveles de permisos en la aplicación que tienen un impacto en qué puede visualizar el usuario ``logueado'' y qué no; y cómo se permite que el usuario navegue a medida que va moviéndose en el proceso de registro cuando no está ``logueado''. Estos permisos tienen un impacto en el enrutamiento del front-end de la aplicación (su impacto podemos verlo en la parte superior derecha de la figura del enrutamiento \ref{fig:diagramaMercaAppFront}) y más resumidamente en el cuadro \ref{table:permisos}:
 	
