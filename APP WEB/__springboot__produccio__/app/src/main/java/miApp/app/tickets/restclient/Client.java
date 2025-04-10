@@ -1,6 +1,7 @@
 package miApp.app.tickets.restclient;
 
 
+import lombok.RequiredArgsConstructor;
 import miApp.app.tickets.dto.TestDTO;
 import miApp.app.tickets.dto.TicketDTO;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestClient;
 import java.util.HashMap;
 
 @Component
+@RequiredArgsConstructor
 public class Client {
 
     private final RestClient restClient;
@@ -17,9 +19,7 @@ public class Client {
     //TOKEN SENSE CADUCITAT USAT PER PROVES (EN VERSIÓ DEFINITIVA CAL UN TOKEN D'USUARI I EXTERURE LES CLAIMS)
     private String token = "eyJhbGciOiJIUzI1NiJ9.eyJvcmlnZW4iOiJiYWNrLWVuZCBzcHJpbmcgYm9vdCIsImlhdCI6MTc0NDE5NTkzNH0.vWyws2xGbb2K_Q2idc_GA_joqONMiWKVSwSCE7yqlvs";
 
-    public Client(RestClient restClient) {
-        this.restClient = restClient;
-    }
+
 
 
 
