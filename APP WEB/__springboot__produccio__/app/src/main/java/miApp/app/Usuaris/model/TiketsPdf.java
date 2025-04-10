@@ -17,6 +17,9 @@ import java.sql.Blob;
 @Data
 public class TiketsPdf {
 
+
+
+    @Id
     @Column(name = "nre_factura_simplificada", nullable = false) //Byte es el tipus de dades de hibernate que mapeja al tipus TINYINT de mysql (nota que tinyint justament acupa un byte jeje)
     private Integer nreFacturaSimplificada; //0 es persona que nomes tenim mail i contrasenya (pero no te acces a recursos). Si es 1 aleshores te acces als seus recursos. Si es 2 es el superusuari i pot accedir a tot.
 
