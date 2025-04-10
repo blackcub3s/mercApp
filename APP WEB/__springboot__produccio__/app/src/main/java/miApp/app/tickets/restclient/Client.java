@@ -10,6 +10,11 @@ import org.springframework.web.client.RestClient;
 
 import java.util.HashMap;
 
+//NOTA VEURE DOCUMENTACIÓ
+//https://docs.spring.io/spring-framework/reference/integration/rest-clients.html
+//CAL POSAR Client clientet = new Client(RestClient.builder().build());
+//I ESTALVIES CLASSE DE CONFIGURACIO
+
 @Component
 @RequiredArgsConstructor
 public class Client {
