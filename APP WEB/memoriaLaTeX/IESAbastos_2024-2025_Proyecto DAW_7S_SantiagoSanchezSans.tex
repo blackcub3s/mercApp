@@ -116,32 +116,34 @@
 		
 		Mercadona implementa un sistema de tickets digitales que vinculan la tarjeta de débito a un correo electrónico. Cualquier usuario del supermercado que quiera utilizar el ticket digital solamente deberá facilitar estos dos datos y el supermercado le enviará por correo electrónico los tickets de las posteriores compras hechas en cualquier establecimiento de Mercadona.
 		
-		Las ventajas para el usuario son evidentes: no se pierden los tickets de cara a devoluciones y el cliente del supermercado no debe esperar a la impresión del ticket.
+		Las ventajas para el usuario y para el supermercado de tener un ticket digital son evidentes: el cliente no perderá los tickets de cara a devoluciones, no deberá esperar a su impresión después del pago y no se verá expuesto a la tinta del texto del ticket físico: que al menos por allá en 2019 la comisión europea ya alertaba de su peligrosidad \cite{EU_Parliament_2019} a partir de un estudio de la Universidad de Granada que hallaba alto contenido de Bisfenol-A\footnote{Es un químico que es un disruptor del sistema endocrino.} en los tickets de compra de distintos paises \cite{Molina-Molina2019}\cite{CanalUGR}.
+		
+		Las ventajas de la adopción masiva del ticket digital para el supermercado y el trabajador también son claras: se evita derrochar papel, tener a los cajeros expuestos a químicos que constituyan un riesgo laboral y, finalmente, acortar los tiempos de cola mejorando la experiencia de los clientes y asegurando su regreso futuro.
 		
 		
 		
 		\section{Identificación de necesidades}
 		\label{section:identificacionNecesidades}
 		
-		Los tickets de cada usuario se acumulan de forma recurrente en el correo electrónico y con un formato estructurado (los asuntos son predecibles e incluyen las fechas) y dentro de cada correo de un ticket digital se encuentra un PDF con el desglose de la compra (producto, unidades vendidas, establecimiento, etc).
+		Los tickets de cada usuario del ticket digital de Mercadona se acumulan de forma recurrente en su correo electrónico. A pesar de contener información valiosa de cara a la planificación de gastos, este formato digital solamente responde a ventajas operativas para supermercado y cliente; pero no ha mejorado todavía la asimilación ni la interpretación de los datos por parte del cliente: este no puede visualizar lo que ha gastado a lo largo de un período temporal, ni la evolución de los precios de los productos que adquiere, ni los supermercados en los que ha comprado, ni las veces que lo ha hecho, etc.
 		
-		Esta información se acumula en el correo del usuario pero a pesar de ser una información estructurada su acceso para el usuario no es simple: no puede visualizar lo que ha gastado, ni el precio de los productos y de su evolución, ni los supermercados en los que ha comprado, ni las veces que lo ha hecho, etc.
-
+		Con un formato estructurado como el que ya tienen a día de hoy los tickets digitales podemos sacar muchísima información y presentársela al cliente de forma clara y visual: los asuntos de los correos que contienen los tickets son precedibles y dentro de cada correo se encuentra un solo PDF con el desglose de la compra (producto, unidades vendidas, establecimiento, etc.) que espera ser minado y analizado.
+ 
 		\section{Objetivos del proyecto} % OBLIGAT
 		\label{section:objetivosProyecto}
 		
-		Este proyecto quiere responder a estas necesidades. Para ello se plantea la Creación de un dashboard o "cuadro de mando" front-end para que un usuario del ticket digital de Mercadona pueda visualizar la evolución de precios de los productos adquiridos, el coste promedio de sus compras por períodos temporales y sus distribuciones de gastos a partir de los tickets digitales guardados en una base de datos.
+		Este proyecto quiere responder a estas necesidades. Para ello se plantea la Creación de un \textit{dashboard} o ``cuadro de mando'' en forma de aplicación web para que un usuario del ticket digital de Mercadona pueda visualizar la evolución de precios de los productos adquiridos, el coste promedio de sus compras por períodos temporales y sus distribuciones de gastos a partir de los tickets digitales guardados en una base de datos.
 		
-		
-		Los \textbf{Objetivos principales} del proyecto son mostrar al usuario:
+		A grandes rasgos, los \textbf{Objetivos principales} del proyecto son proporcionar al usuario del ticket digital una herramienta que muestre en gráficos visuales:
 
 					
 		\begin{itemize}
 			\setlength{\itemsep}{-.5em}
-			\item \textbf{Evolución de precios} (inflación) a lo largo del tiempo en los productos habitualmente comprados en el mismo establecimiento\footnote{La evolución de precios se mostrará solamente para un mismo centro de Mercadona, dado que distintos centros pueden cambiar los nombres de los productos (por ejemplo, en Cataluña…).}.
-			\item \textbf{Evolución del gasto} total del usuario a lo largo del tiempo.
+			\item \textbf{La evolución de precios} (inflación) a lo largo del tiempo en los productos habitualmente comprados en el mismo establecimiento\footnote{La evolución de precios se mostrará solamente para un mismo centro de Mercadona, dado que distintos centros pueden cambiar los nombres de los productos (por ejemplo, en Cataluña…).}.
+			\item \textbf{Evolución del gasto} total del usuario a lo largo del tiempo por períodos temporales.
 		\end{itemize}
 		
+		Más concretamente los subobjetivos los mostramos en forma de requisitos en el apartado \ref{sec:requisitosAplicacion}
 		
 		
 
@@ -190,13 +192,32 @@
 	
 		
 				
-		Para implementar los objetivos principales de los que hemos hablado en la sección \ref{section:objetivosProyecto} hemos proyectado una serie de requisitos funcionales de la aplicación.
-		
-		
-
 
 		
+		Como veremos en el apartado \ref{sec:analisisRealitatLocal}, el motivo por el que se ha usado principalmente Java como lenguaje de back-end y Spring Boot como framework está vinculado con el análisis de la realidad local: tanto en la probabilidad de inserción laboral futura como en economía de tiempo durante la realización de las prácticas.
 		
+		Asimismo, de los objetivos principales de los que hemos hablado en la sección \ref{section:objetivosProyecto} hemos derivado una serie de requisitos funcionales de la aplicación, que se verán en el apartado \ref{sec:requisitosAplicacion}
+		
+		\section{Análisis de la realidad local}
+		\label{sec:analisisRealitatLocal}
+		
+		Esta aplicación tiene muchísimo contenido de back-end. Por ello, la elección del lenguaje de programación para este era importante y obedece a criterios puramente estratégicos. 
+		
+		En primer lugar, se ha utilizado el lenguaje de programación Java y el framework Spring Boot porque en el equipo de desarrollo de software en el que me he integrado para las prácticas en Lãberit me estoy formando justamente en este lenguaje y framework.
+		
+		El tiempo de formación inicial en estas prácticas ha entrañado un curso de Spring Boot excesivamente introductorio, y se estimó que la única forma de ganar conocimientos reales era desarrollar una aplicación de back-end completa y segura con el framework, desde cero. De este modo, el salto futuro a una posición más integrada en el equipo de prácticas y tener oportunidades profesionales al terminar las prácticas serían mayores. Asimismo, esto también ha permitido poder combinar la parte de desarrollo del back-end en Java Spring Boot con el primer mes de jornada de prácticas en Laberit, cumpliendo así un doble objetivo:
+			
+			\begin{itemize}
+				\setlength{\itemsep}{-.2em}
+				\item Realizar el curso con garantías reales de aprendizaje.
+				\item Realizar la parte de back-end de este proyecto, en paralelo.
+				
+			\end{itemize}
+
+			
+		 permitiendo su consecución en el estrecho plazo que hay en el calendario para hacer tanto las prácticas a jornada completa como este proyecto que, tal y como se ha planteado, ha supuesto bastantes más horas de desarrollo que las que se planeaban por calendario.
+		
+
 		
 		
 		\section{Requisitos Funcionales}
@@ -205,6 +226,7 @@
 		
 		
 			\subsection{Requisitos de la aplicación}
+			\label{sec:requisitosAplicacion}
 			
 		
 
@@ -217,13 +239,13 @@
 			
 			\textbf{REQUISITO B:} Coste total de la cesta de la compra del usuario a lo largo de distintas ventanas temporales (por meses, períodos de 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
 			
-			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un diagrama de queso (o de sectores) desglosando qué porcentaje del dinero se ha destinado a cada una de las siguientes categorías: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carnes, pescado, hogar e higiene personal.Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.
+			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un diagrama de queso (o de sectores) desglosando qué porcentaje del dinero se ha destinado a cada una de las siguientes categorías: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carnes, pescado, hogar e higiene personal\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
 			
 			
 			
 			\textbf{REQUISITO D:} Un botón ``Actualizar'' permitirá al usuario refrescar los datos desde el servidor cuando haya añadido nuevas compras. También podríamos permitir que los PDFs descargados en el servidor se almacenen en una carpeta local del usuario para que pueda verificar la extracción de los datos.
 			
-			\textbf{REQUISITO E:} Hacer un sistema front-end y back-end que permitan redirigir a los usuarios rápidamente a un registro de forma inteligente. Nos inspiraremos en el sistema de registro e iniciar sesión de NetFlix \textbf{(POSAR DIAGRAMA A L'ANEX SOBRE EL SISTEMA DEL NETFLIX I EL NOSTRE)}
+			\textbf{REQUISITO E:} Hacer un sistema front-end y back-end que permitan redirigir a los usuarios rápidamente a un registro de forma inteligente. Nos inspiraremos en el sistema de registro e iniciar sesión de NetFlix.
 			
 			\subsection{Requisitos de los usuarios}
 			
@@ -234,17 +256,16 @@
 		
 		\section{Stack tecnológico}
 	
-		Hemos escogido un stack tecnológico que permite que seamos fieles a los requisitos funcionales que nos hemos marcado para la aplicación:
 		
 			 \subsection{Front-End: HTML, CSS y Javascript}
 			 
-			Se ha usado HTML, CSS y JavaScript. - Para la visualización de gráficos se usará una librerría javascript: https://www.chartjs.org/. Entre otras cosas se utilizará para hacer los gráficos de la evolución de precios por producto.
+			Se han usado HTML, \textit{vanilla} CSS y \textit{vanilla} JavaScript. Excepciones al uso de los lenguajes puros en el front-end, para la visualización de gráficos se usarán una librería javascript, \href{https://www.chartjs.org/}{chart.js}\cite{chartjs}  que se utilizará para hacer muchos de los gráficos; y para conseguir transiciones usaremos \href{https://animate.style/}{animate.css}\cite{animatecss}
 			
-			Para el sistema de registro e iniciar sesión se ha hecho una réplica mediante desarrollo inverso de los procesos de registro e inicio sesión de netflix y se ha adaptado a este caso particular (puede verse en \ref{sec:EnrutamientoDeVistas}).
+			Para el sistema de registro e iniciar sesión se ha hecho una réplica mediante desarrollo inverso de los procesos de registro e inicio sesión de Netflix y se ha adaptado a este caso particular (puede verse en \ref{sec:EnrutamientoDeVistas}). En este paso se ha dedicado muchísimo tiempo y es quizás la parte más importante de este proyecto en cuanto a vínculos directos con los objetivos del CFGS de DAW.
 			
 	
 		 
-		\subsection{back-end: Java (SpringBoot) y Python}
+		\subsection{Back-end: Java (Spring Boot) y Python (FastAPI)}
 		
 			- Back-end con Java (springboot para el login y la autenticación de usuarios: con este framework guardaremos datos en la BBDD mySQL).
 			
@@ -255,9 +276,9 @@
 		
 		Para guardar los datos de los usuarios se debe usar un sistema de gestión de base de datos relacional. Hemos escogido MySQL dado que es el que hemos visto en el grado superior y estamos bien versados en ello.
 		
-		Sin embargo, los productos de Mercadona no los conocemos de antemano ni tenemos una lista exhaustiva de los mismos. Además, el número de productos que se pueden encontrar en un ticket varía en cada compra, por lo que no podemos usar una base de datos relacional tradicional como MySQL o PostgreSQL por que se trata de información no estructurada. En su lugar, usaremos MongoDB, una BBDD NoSQL que almacena datos en formato JSON y permite, además, búsquedas eficientes.
+		Sin embargo, los productos de Mercadona no los conocemos de antemano ni tenemos una lista exhaustiva de los mismos. Además, el número de productos que se pueden encontrar en un ticket varía en cada compra, por lo que no podemos usar una base de datos relacional tradicional como MySQL o PostgreSQL porque se trata de información no estructurada. En su lugar, usaremos MongoDB, una BBDD NoSQL que almacena datos en formato JSON y permite, además, búsquedas eficientes.
 		
-		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. La primera vez que consulte sus datos, estos se descargarán y almacenarán en localStorage del cliente. En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor. Evaluaremos la viabilidad de este sistema durante el desarrollo; Esto es la fase de diseño y como tal, \textbf{PUEDE QUE EN LA FASE DE DESARROLLO CAMBIE}, en caso de no ser factible, las consultas se harán directamente en MongoDB.
+		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. La primera vez que consulte sus datos, estos se descargarán y almacenarán en localStorage del cliente. En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor. Evaluaremos la viabilidad de este sistema durante el desarrollo; Esto es la fase de diseño y como tal, \textbf{AQUEST PARAGRAF POTSER EL PODRAS ELIMINAR SI FINALMENT NO HO FAS I FAS CRIDES DIRECTES A BBDD}, en caso de no ser factible, las consultas se harán directamente en MongoDB.
 		
 
 
@@ -317,20 +338,47 @@
 				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto que permiten sacar provecho de Lombok sin las cuales correr el proyecto en IntelliJ fallará.
 				
 				Para el frontend se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}. Esto podría hacer las veces de una CDN donde podrían estar alojados los archivos estáticos (HTML, CSS y JavaScript).
+				
+				Para el back-end con fast-api se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}.
 		
 	
 		
 			
 
 			
-			\section{desarrollo back-end (Spring Boot)}
+			\section{Desarrollo back-end (Spring Boot)}
 			
 				\subsection{Estructura de la aplicación}
 				\label{sec:estructuraAplicacion}
 				
+				La parte de mercApp programada con Java (Spring Boot) se puede ver en el repositorio de GitHub del proyecto: \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__/app/src/main}{aquí}. En este link veréis dos rutas a tener en cuenta cuando se corra el proyecto con intelliJ\footnote{Si el lector desea correr el proyecto en intelliJ se recomienda abrir el proyecto en este nivel de altura del árbol de directorios en \textit{\_\_springbootproduccio\_\_/app}.}:
+				
+				\vspace{-.5em}
+				\begin{itemize}
+					\setlength{\itemsep}{-.5em}
+					\item \textbf{src/main/java} $\rightarrow$ En esta ruta encontramos los \textit{packages} y las clases del proyecto dentro (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{red}{rojo})
+					\item \textbf{resources} $\rightarrow$ Dentro encontramos el archivo \texttt{application.properties}, para definir conexionado con base de datos y que trae por defecto Spring Boot (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{green}{verde}) y logback-spring.txt que si el lector cambia su extensión de \textit{.txt} a \textit{.xml} va a configurar que los logs o errores del proyecto se guarden
+					
+				\end{itemize}
+				
+				
+				\setlength{\belowcaptionskip}{3pt}
+				\FloatBarrier
+				\begin{figure}[H]
+					\centering
+					\caption{Estructura del proyecto TO DO IMATGES A LA DRETA}
+					\includegraphics[width=.2\textwidth]{img/estrucutraAplicacioJAVARESOURCES.png}
+					
+					\label{fig:estrucutraAplicacioJAVARESOURCES} 
+				\end{figure}
+				\FloatBarrier
+				
+				
+				 
+				
 				TO DO pom.xml application.properties, usuari, repository, service, controller.
 				
-				TO DO Parlar de les validacions i les anotacions 
+				- Todos los campos de formulario de entrada se han validado no solamente en el front-end sino también en el back-end (hay redundancia de validaciones, por si un usuario maliciosamente intenta hacer llamadas directas a API esquivando las protecciones de front-end): para ello hay archivos\textbf{ TAL TAL TAL} que referenciamos en detalle en \ref{sec:validacioDadesBACK}.
 				
 				TO DO Parlar dels apartats de seguretat (segurity filter chain i JWT pero només de passada perque els mencionem despres)
 				
@@ -1223,7 +1271,7 @@ public class AccessToken extends JwtUtil {
 		
 	% Bibliografía (\chapter(6. Bibliograifa) como implicito)
 	\addcontentsline{toc}{chapter}{7. Bibliografía} 
-	\bibliographystyle{plain}  % Estilo de bibliografía
+	\bibliographystyle{unsrt}  % Estilo de bibliografía no ordenats (Segons ordre aparicio en text)
 	\bibliography{referencias} % Nombre del archivo .bib  extensión
 	
 		
