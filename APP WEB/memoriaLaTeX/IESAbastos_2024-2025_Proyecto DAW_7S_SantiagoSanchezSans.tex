@@ -290,7 +290,7 @@
 		
 		\section{Diagramas de la aplicación}
 		
-		\textbf{Fer un diagrama guapo de tots els components de l'aplicació.}
+		\textbf{Fer un diagrama de sistemes guapo amb tikz de tots els components de l'aplicació.}
 	
 	\chapter{Desarrollo del proyecto} %OBLIGAT
 	
@@ -326,7 +326,7 @@
 					\textbf{Página desplegada} & TO DO \\ % Corregido: Se eliminó la llave extra
 					\hline
 				\end{tabular}
-				\caption{Enlaces importantes del proyecto.}
+				\caption{Enlaces  del proyecto.}
 				\label{tabla:enlaces}
 			\end{table}
 
@@ -351,13 +351,14 @@
 				\subsection{Estructura de la aplicación}
 				\label{sec:estructuraAplicacion}
 				
-				La parte de mercApp programada con Java (Spring Boot) se puede ver en el repositorio de GitHub del proyecto abriendo esta carpeta: \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__/app}{aquí}. Recomendamos al lector abrir este proyecto por aquí con IntelliJ. Se podrá ver entonces \textit{tres} rutas importantes:
+				La parte de mercApp programada con Java (Spring Boot) se puede ver en el repositorio de GitHub del proyecto abriendo esta carpeta: \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__/app}{aquí}. Recomendamos al lector abrir este proyecto por aquí con IntelliJ. Se podrá ver entonces \textit{tres} rutas importantes (que las tienen todos los proyectos Spring Boot):
 				
 				\vspace{-.5em}
 				\begin{itemize}
 					\setlength{\itemsep}{-.5em}
-					\item \textbf{src/main/java} $\rightarrow$ En esta ruta encontramos los \textit{packages} y las clases del proyecto dentro (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{red}{rojo})
-					\item \textbf{src/main/resources} $\rightarrow$ Dentro encontramos el archivo \texttt{application.properties}, para definir conexionado con base de datos y que trae por defecto Spring Boot (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{green}{verde}) y logback-spring.txt que si el lector cambia su extensión de \textit{.txt} a \textit{.xml} va a configurar que los logs o errores del proyecto se guarden
+					\item \textbf{src/main/java} $\rightarrow$ En esta ruta encontramos los \textit{packages} y las clases del proyecto (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{red}{rojo}).
+					\item \textbf{src/main/resources} $\rightarrow$ Dentro de esta carpeta  nos encontramos con el archivo \texttt{application.properties}. trata de un archivo de configuración donde se define, por ejemplo, el conexionado con la base de datos (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{green}{verde}) y logback-spring.xml que, aunque no está definido por defecto en una aplicación Spring Boot, si lo añadimos lo que hace es que los logs del proyecto se guarden en \textit{logs/spring.log} en lugar de salir a terminal\footnote{La ruta se crea automáticamente}. Aquí aparece como un \textit{.txt} en lugar de un \textit{.xml} porque por ahora no queremos que se guarden los errores.
+					\item \textbf{pom.xml} $\rightarrow$ Es un arhivo donde encontramos el árbol de dependencias de Maven\footnote{Maven es una herramienta de automatización para la construcción de proyectos Java. Gestiona todas las dependencias, que se descargan desde un repositorio central y permite empaquetar el proyecto en un .jar o .war fácilmente, entre otras cosas.}: cada vez que añadimos una dependencia estamos añadiendo nuevas funcionalidades a nuestro proyecto SpringBoot a través de una descarga automatizada del repositorio central de Maven
 					
 				\end{itemize}
 				
@@ -366,12 +367,17 @@
 				\FloatBarrier
 				\begin{figure}[H]
 					\centering
-					\caption{Estructura del proyecto TO DO IMATGES A LA DRETA}
+					\caption{Estructura del proyecto mercApp: imatges a la dreta.}
 					\includegraphics[width=.2\textwidth]{img/estrucutraAplicacioJAVARESOURCES.png}
 					
 					\label{fig:estrucutraAplicacioJAVARESOURCES} 
 				\end{figure}
 				\FloatBarrier
+				
+				
+				\subsubsection{src/main/resources: las clases del proyecto}
+				\subsubsection{src/main/java: las clases del proyecto}
+				\subsubsection{pom.xml: dependencias de maven}
 				
 				
 				 
@@ -391,9 +397,9 @@
 				Sin embargo, existe un método de acceso por token más escalable que no requiere guardar sesiones en el servidor (es decir, es un método ``stateless'' o sin estado) con el que nos basta tener solamente la Cookie Segura para guardarlo y ya está. Es un token que está autocontenido: es decir, puede contener ya el ID de usuario, nombre de usuario, roles que luego permitirán dar permisos o no en el servidor para acceder a determinadas APIs o recursos, etc. En definitiva, con JWT tenemos una autenticación más eficiente y un control del acceso preciso (autorización) sin necesidad de almacenar sesiones en el servidor.
 				
 				
-				A este sistema lo llamamos JSON Web Token (\texttt{JWT}) y toda la información que contiene está encriptada o \textbf{firmada digitalmente} con SHA256 mediante una clave privada (el ``secret'') que solo tenemos nosotros en el servidor. Esta clave es igual para todos los tokens que generemos: la firma digital que emana de esta clave estará embedida, por así decirlo, en cada uno de esos tokens y \textit{será inválida} si un atacante ha modificado el token y nos lo devuelve al servidor tratando de suplantar la identidad de algún usuario; con ello, el servidor rechazará la integridad del token y evitará que pueda acceder a recursos del usuario al que trata de suplantar.
+				A este sistema lo llamamos JSON Web Token (\texttt{JWT}) y toda la información que contiene está \textbf{firmada digitalmente} con SHA256 mediante una clave privada (el ``secret'') que solo tenemos nosotros en el servidor\footnote{El token está firmado, pero no cifrado: todo el mundo puede ver su contenido.}. Esta clave es igual para todos los tokens que generemos: la firma digital que emana de esta clave estará embedida, por así decirlo, en cada uno de esos tokens y \textit{será inválida} si un atacante ha modificado el token y nos lo devuelve al servidor tratando de suplantar la identidad de algún usuario; con ello, el servidor rechazará la integridad del token y evitará que pueda acceder a recursos del usuario al que trata de suplantar.
 				
-				JWT no es perfecto, por supuesto. Una desventaja del JWT es que una vez puesta una fecha de expiración el desarrollador ya no la puede cambiar. En las sesiones del servidor se pueden extender las sesiones si se detecta actividad del usuario, acortarlas si pasa justo lo contrario o incluso cerrar la sesión de un usuario en remoto; pero con JWT no es posible: una vez creado el Token de acceso la fecha de actividad del mismo no se puede modificar (porque no puedes invalidar un token ya existente!), lo cual permite que simplemente un atacante robe el token de acceso sin modificarlo y lo use hasta su fecha de expiración.
+				JWT no es perfecto, por supuesto. Una desventaja del JWT es que una vez puesta una fecha de expiración el desarrollador ya no la puede cambiar. En las sesiones del servidor se pueden extender las sesiones si se detecta actividad del usuario, acortarlas si pasa justo lo contrario o incluso cerrar la sesión de un usuario en remoto; pero con JWT no es posible: una vez creado el Token de acceso la fecha de actividad del mismo no se puede modificar (¡porque no puedes invalidar un token ya existente!), lo cual permite que simplemente un atacante robe el token de acceso sin modificarlo y lo use hasta su fecha de expiración.
 				
 				Se proponen dos soluciones posibles a este problema, ninguna de las cuales ha sido implementada en este proyecto y queda definitivamente como uno de los puntos de mejora:
 				
@@ -410,7 +416,7 @@
 
 				
 				
-				En este trabajo solo utilizaremos ``access tokens'' y ya está. Cuando un usuario se desloguee, lo que haremos será borrar el access token del local storage y ya está. Tampoco guardaremos los tokens en una cookie segura porque complica el desarrollo (de nuevo, otro punto a mejorar a futuro en este proyecto).
+				En este trabajo solo utilizaremos ``access tokens'' y ya está. Cuando un usuario se desloguee, lo que haremos simplemente será borrar el access token del local storage. Tampoco guardaremos los tokens en una cookie segura porque complica el desarrollo (de nuevo, otro punto a mejorar a futuro en este proyecto).
 			
 				 
 				 \noindent En resumen, \texttt{las ventajas} que tiene JWT vs uso de sesiones (si asumiéramos que tanto el JWT como el SESSID se guardasen en una cookie segura, respectivamente) serían las siguientes:
@@ -437,7 +443,7 @@
 				\subsubsection{¿Qué compone un JWT?}
 				\label{sec:queComponeJWTbackend}
 				
-				\noindent El JWT se compone de tres partes. \textbf{los headers}, \textbf{el payload} y \textbf{la signatura}. En la página \href{https://jwt.io/}{https://jwt.io/}, como veremos después, se puede ver si los tokens son válidos, observar su estructura interna, etc. \cite{jwtio}. A saber:
+				\noindent El JWT se compone de tres partes separadas por \textit{puntos}: \textbf{el header}, \textbf{el payload} y \textbf{la signatura}. En la página \href{https://jwt.io/}{https://jwt.io/}, como veremos después, se puede ver si los tokens son válidos, observar el contenido de su payload, etc. \cite{jwtio}. A saber:
 				
 
 				\begin{itemize}
