@@ -625,8 +625,12 @@ String accesJWT = accessToken.genera(
 		
 		\subsubsection{Recibir el JWT enviado por el front-end, interpretarlo desde el back-end y con ello securizar un endpoint de la API desde el back-end}
 		
-		Después de crear las tres clases en Java de las que hemos hablado en el apartado \ref{sec:implementacionJWTjava} anterior y haber mandado el token de acceso al front, podemos empezar a 
-		implementar la protección de endpoints con JWT. Asumamos que nos llega al back-end un token de acceso en una solicitud HTTP de un usuario que ya acaba de recibir su token y quiere acceder al dashboard de visualización (a través de la heather ``Authorization''). La solicitud HTTP con el susodicho token se hace via GET a (\texttt{'usuaris/{id}/tiketsVERIFICARSIEXISTEIX'}) (ver subseccion \ref{sec:estructuraAplicacion}, en ControladorUsuari.java). 
+		Después de crear las tres clases en Java de las que hemos hablado en el apartado \ref{sec:implementacionJWTjava} anterior y haber mandado el token de acceso al front mediante el body de las \textit{responses} a los endpoints \textit{api/registraUsuari} o \textit{api/login}, podemos empezar a 
+		implementar la protección de endpoints con JWT. 
+		
+		Asumamos que nos llega al back-end un token de acceso en una solicitud HTTP de un usuario que ya ha recibido su token y quiere ahora acceder al dashboard de visualización (a través de la heather ``Authorization''). 
+		
+	\textbf{	POSA EL CAS REAL QUAN L'HAGIS PROGRAMAT QUE AQUEST ENDPOINT ENCARA NO EXISTEIX}: La solicitud HTTP con el susodicho token se hace via GET a (\texttt{'usuaris/{id}/tiketsVERIFICARSIEXISTEIX'}) (ver subseccion \ref{sec:estructuraAplicacion}, en ControladorUsuari.java). 
 		
 		En javascript puro, desde el cliente, esta solicitud HTTP la pondríamos conseguir de la función fetch(), poniéndole uno de los pares clave valor con el inicio ``Bearer'' (por convenio) tal que así:
 		
