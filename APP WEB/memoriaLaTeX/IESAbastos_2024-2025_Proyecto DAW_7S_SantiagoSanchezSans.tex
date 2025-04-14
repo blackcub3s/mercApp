@@ -912,7 +912,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	\subsubsection{Protegiendo las vistas: expiración del token}
 	
-	Existen dos páginas de nuestra web que, cuando expire su token de acceso, no deberán ser visualizables\footnote{Como se desprende a partir del diagrama de flujo del enrutamiento que vimos en la figura \ref{fig:diagramaMercaAppFront}, son las páginas a las que redirigimos los usuarios justo después de generar tokens de acceso.}:
+	Existen dos páginas de nuestra web que, cuando expire el token de acceso que se requiere para acceder a los recursos back-end que hay detrás de ellas, no deberán ser visualizables:
 	
 	\vspace{0em}
 	\begin{itemize}
@@ -921,11 +921,13 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		\item \texttt{dashboard.html}
 	\end{itemize}
 	
-	La primera requiere tener un token con permisos a 0; la segunda un token con permisos superior o igual a 1. En otras palabras: requieren tener algun tipo de autenticación de usuario, como veremos en el siguiente apartado; pero está claro que para visualizarlas la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) deberán tener un token que no esté expirado y que sea descifrable (ojo, que no validable con el secret, que eso está en nuestro servidor y no se muestra jamás en el cliente).
+	Como se desprende del diagrama de flujo del enrutamiento del proceso de registro que vimos en la figura \ref{fig:diagramaMercaAppFront}, esas dos páginas son aquellas páginas de nuestro proyecto a las que redirigimos los usuarios justo después de generar tokens de acceso; por ende, lógicamente requieren cierto grado de autenticación y autorización. De ahí que consideremos no permitir visualizarlas si el grado de permisos requerido no se llegase a satisfacer.
+	
+	La primera página (\texttt{dashboard.html}), requiere tener un token con permisos a 0; la segunda (\texttt{pas4\_concedirAccesGmail.html}) un token con permisos superior o igual a 1. En otras palabras: ambas requieren tener algún tipo de autenticación de usuario, como veremos en el siguiente apartado; pero está claro que para visualizar cualquiera de ellas la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) se albergue un token de acceso que no esté expirado y que sea descifrable (ojo, que no validable con el secret, que eso está en nuestro servidor y no se muestra jamás en el cliente).
 	
 	Si está expirado, cuando hagamos la diferencia entre el valor ``exp'' del payload\footnote{Segundos en que el token expira o expiró, desde la epoch.} y la función \textit{Date.now()/1000}\footnote{Segundos actuales del navegador, desde la epoch.} saldrá un número negativo. En caso contrario, positivo. 
 	
-	Si el token está expirado inmediatamente redirigiremos al usuario a la landing page, impidiendo así el visionado de cualquiera de las dos páginas (sin esperar ninguna acción por parte del usuario: directamente le sacaremos de la página). En cambio, si el token no está expirado seguiremos reevaluando la expiración del token con una frecuencia de un segundo: esto se conseguirá mediante la función asíncrona \textit{setInterval()} que hemos visto en desarrollo web entorno cliente.
+	Si el token está expirado inmediatamente redirigiremos al usuario a la landing page llamando a \textit{redirigeixAlandingPage()}, impidiendo así el visionado de cualquiera de las dos páginas (se cargará el script que contiene esta función antes de que se cargue el DOM\footnote{El lector puede hacer la prueba siguiente: si el token ha caducado o el usuario no se ha logueado, accediendo a \textit{pas4\_concedirAccesGmail.htm} o a \textit{dashboard.html} verá como automáticamente se produce una redirección a \textit{pas1\_landingSignUp.html}; o si se ha logueado, abrir la consola y verá una cuenta atrás del tiempo que le queda al token de acceso para su expiración y para la redirección a la landing page.}). En cambio, si el token no está expirado seguiremos reevaluando la expiración del token con una frecuencia de un segundo: esto se conseguirá mediante la función asíncrona \textit{setInterval()} que hemos visto en desarrollo web entorno cliente.
 	
 	Para ello, en el \textit{head} de cada una de las dos páginas en cuestión veréis que \textbf{antes} siquiera \textbf{de cargar el DOM} se cargan sendos archivos:
 	
