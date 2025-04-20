@@ -384,9 +384,11 @@
 				
 
 				
-				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/utils/validacio}	donde residen las clases de anotación utilizadas para permitir que los campos de formulario de entrada se validen no solamente en el front-end sino también en el back-end (hay redundancia de validaciones, por si un usuario maliciosamente intenta hacer llamadas directas a API esquivando las protecciones de front-end): los archivos y su explicación quedan referenciados en detalle en \ref{sec:validacioDadesBACK}.
+				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/utils/validacio}	donde residen las clases de anotación utilizadas para permitir que los campos de formulario de entrada se validen en el back-end (nótese que, con esto, hemos establecido redundancia de validaciones por si se diese el caso que un usuario maliciosamente intentase hacer llamadas directas a la API, esquivando así las validaciones ya definidas en el front-end): los archivos y su explicación quedan referenciados en detalle en el apartado \ref{sec:validacioDadesBACK}.
 				
-				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/seguretat/jwt} donde tenemos clases que generan tokens de acceso y de refresco  a partir de una clave secreta que solo está en el servidor, que referenciamos en detalle dentro de \ref{sec:implementacionJWTjava}; Análogamente, las clases que permiten implementar la autenticación y la autorización a partir de los tokens generados por las clases anteriores, las referenciamos también en detalle dentro de \ref{sec:classesSecuritzacioClaimsIfirma}.
+				
+				
+				Dentro de \textbf{src/main/java} tenemos también la ruta \textbf{miApp.app/seguretat/jwt} donde tenemos clases que generan tokens de acceso y de refresco  a partir de una clave secreta que solo está en el servidor, que referenciamos en detalle dentro de \ref{sec:implementacionJWTjava}; Análogamente, las clases que permiten implementar la autenticación y la autorización a partir de los tokens generados por las clases anteriores, las referenciamos también en detalle dentro de \ref{sec:classesSecuritzacioClaimsIfirma}.
 				
 				
 				TO DO EXPLICAR 	\hspace{3em} usuari, repository, service, controller de 
@@ -1294,7 +1296,7 @@ public class AccessToken extends JwtUtil {
 		.setClaims(dadesExtraApayload) //dades customitzades
 		.setSubject(correu)            //guardo nom subjecte (clau "sub")
 		.setIssuedAt(new Date())       //data creacio (clau "iat" payload)
-		.setExpiration(new Date(System.currentTimeMillis() + (tExpM*60*1000)))
+		.setExpiration(new Date((System.currentTimeMillis() / 1000 + (tExpM * 60)) * 1000))
 		.signWith(SignatureAlgorithm.HS256, clauSecreta.getBytes())
 		.compact();
 	}
