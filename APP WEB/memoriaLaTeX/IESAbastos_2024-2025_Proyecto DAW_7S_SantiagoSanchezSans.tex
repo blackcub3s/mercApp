@@ -12,7 +12,8 @@
 \usepackage{titlesec}  % Paquete para personalizar títulos
 \usepackage{float}  %pquete para que las figuras no se de splacen
 \usepackage{listings} %para poner entronos de codigo 
-%\usepackage{svg}
+\usepackage{multirow} %per poder combinar cel·les d'una taula
+
 \titleformat{\chapter}[hang] % Configuración para reducir el espacio superior de los capítulos
 {\normalfont\huge\bfseries} % Formato de la fuente y tamaño del capítulo
 {Capítulo \thechapter}{0pt}{\huge}  % Sin espacio entre "Capítulo X" y el título
@@ -124,7 +125,7 @@
 		
 		\begin{minipage}{0.8\textwidth}
 			\large
-			La redacción íntegra de esta memoria se ha hecho a mano. No se ha utilizado inteligencia artificial para la redacción de sus frases, ni revisión gramatical u ortográfica. Se insta al lector a tomarla en serio, pues es el resultado del esfuerzo y trabajo constante hechos de marzo a mayo de 2025.
+			La redacción íntegra de esta memoria se ha hecho a mano. No se ha utilizado inteligencia artificial para la redacción de ningna frase, ni revisión gramatical ni ortográfica. Se insta al lector a considerarla el resultado del esfuerzo y trabajo constante a lo largo de los meses de marzo a mayo de 2025 (en paralelo con las prácticas a tiempo completo en Lãberit) y valorarla con su idiosincracia -incluyendo sus imperfecciones-.
 		\end{minipage}
 		
 		\vspace*{4cm}
@@ -274,23 +275,20 @@
 		
 		Esta aplicación tiene muchísimo contenido de back-end. Por ello, la elección del lenguaje de programación para este era importante y obedece a criterios puramente estratégicos. 
 		
-		En primer lugar, se ha utilizado el lenguaje de programación Java y el framework Spring Boot porque en el equipo de desarrollo de software en el que me he integrado para las prácticas en Lãberit me estoy formando justamente en este lenguaje y framework.
+		En primer lugar, se ha utilizado el lenguaje de programación Java y el framework Spring Boot porque en el equipo de desarrollo de software en el que me he integrado para las prácticas en Lãberit me estoy formando justamente en este lenguaje y framework. 
 		
-		El tiempo de formación inicial en estas prácticas ha entrañado un curso de Spring Boot excesivamente introductorio, y se estimó que la única forma de ganar conocimientos reales era desarrollar una aplicación de back-end completa y segura con el framework, desde cero. De este modo, el salto futuro a una posición más integrada en el equipo de prácticas y tener oportunidades profesionales al terminar las prácticas serían mayores. Por lo tanto, dado el solapamiento existente en el desarrollo del sistema de gestión de usuarios con Spring Boot y los contenidos del curso de Spring Boot mandado desde Lãberit han permitido cumplir un \textbf{doble objetivo}:
+		En segundo lugar, el tiempo de formación inicial en estas prácticas ha entrañado un curso de Spring Boot excesivamente introductorio, y se estimó que la única forma de ganar conocimientos reales era desarrollar una aplicación de back-end completa y segura con el framework, desde cero. De este modo, el salto futuro a una posición más integrada en el equipo de prácticas debería ser más probable; y aprovechando el solapamiento existente en el desarrollo del sistema de gestión de usuarios de mercApp y los contenidos del curso de Spring Boot mandado desde Lãberit han permitido realizar parte de este back-end durante el primer mes de prácticas en la empresa.
 			
-			\begin{itemize}
-				\setlength{\itemsep}{-.2em}
-				\item A) Realizar el curso de Spring Boot con garantías \textbf{reales} de aprendizaje.
-				\item B) Realizar la parte de back-end de este proyecto, en paralelo al punto A.
-				
-			\end{itemize}
+		En tercer lugar, la elección de Java como lenguaje de back-end en lugar de PHP viene motivada porque otras empresas de la zona utilizan el framework Spring Boot como framework (Mercadona tech, una de ellas). No es de extrañar que esto pase, dado que es el lenguaje que Imma Cabanes nos enseñó en primer curso en Abastos y también el lenguaje que se enseña en primer curso a los estudiantes del grado de ingeniería informática de la Universitat Politécnica de Valencia. Ello implica que el ecosistema tecnológico valenciano se nutre de forma orgánica de desarrolladores Java salidos de la academia.
+		
+		En cuarto lugar, apostar por Java como lenguaje de back-end es un caballo ganador en forma de crecimiento profesional al ser un lenguaje sólido y de largo recorrido no solo en Valencia sino en muchos países de Europa\footnote{Este fue uno de los motivos que me hizo contactar con Lãberit para hacer las prácticas: poder tocar back-end con Java y Spring Boot.}. No es un lenguaje que vaya por modas y ejercitarlo puede permitir iniciar una carrera enfocada en una tecnología que no se prevé que desfallezca en un futuro cercano.
 		
 
 		
 		
 		\section{Requisitos Funcionales}
 		
-			NOTA: Los requisitos aquí presentes se suman a los requisitos que se sobreentiende que tiene la aplicación de un proyecto final de grado superior y que esta aplicación, por supuesto, cumple: tener un front-end, un back-end con sistema de registro de usuarios y un login con buenas prácticas en materia de seguridad y una base de datos.
+			\textit{NOTA: Los requisitos presentes en el siguiente subapartado se suman a los requisitos que de forma tácita se sobreentiende que debe tener una aplicación de un proyecto final de grado superior; es decir: tener un front-end, un back-end con sistema de registro de usuarios, un login con buenas prácticas en materia de seguridad y una base de datos.}
 		
 		
 			\subsection{Requisitos de la aplicación}
@@ -327,9 +325,9 @@
 		
 			 \subsection{Front-End: HTML, CSS y Javascript}
 			 
-			Se han usado HTML, \textit{vanilla} CSS y \textit{vanilla} JavaScript. Excepciones al uso de los lenguajes puros en el front-end, para la visualización de gráficos se usarán una librería javascript, \href{https://www.chartjs.org/}{chart.js}\cite{chartjs}  que se utilizará para hacer muchos de los gráficos; y para conseguir transiciones usaremos \href{https://animate.style/}{animate.css}\cite{animatecss}
+			Se han usado HTML, \textit{vanilla} CSS y \textit{vanilla} JavaScript. Excepciones al uso de los lenguajes puros en el front-end son una librería javascript para la visualización de gráficos, \href{https://www.chartjs.org/}{chart.js}\cite{chartjs}; y una librería de css que permite aplicar transiciones, \href{https://animate.style/}{animate.css}\cite{animatecss}. Ambas fueron vistas en la asignatura de Desarrollo de Interfaces Web.
 			
-			Para el sistema de registro e iniciar sesión se ha hecho una réplica mediante desarrollo inverso de los procesos de registro e inicio sesión de Netflix y se ha adaptado a este caso particular (puede verse en \ref{sec:EnrutamientoDeVistas}). En este paso se ha dedicado muchísimo tiempo y es quizás la parte más importante de este proyecto en cuanto a vínculos directos con los objetivos del CFGS de DAW.
+			Como hemos visto en los requisitos de la aplicación, en el sistema de registro e iniciar sesión se ha hecho una réplica mediante desarrollo inverso de los procesos que Netflix utiliza a tal efecto, adaptándola a nuestro caso particular (puede verse como se ha aprovechado ello en la sección \ref{sec:EnrutamientoDeVistas}). En este paso se ha dedicado muchísimo tiempo y es quizás la parte más importante de este proyecto en cuanto a vínculos directos con los objetivos del CFGS de DAW.
 			
 	
 		 
@@ -437,21 +435,18 @@
 				\begin{figure}[H]
 					\centering
 					\caption{Estructura del back-end de Spring Boot en la aplicación mercApp. \\ {\footnotesize (Cajas de color $\rightarrow$ $\{$\textcolor{red}{clases del proyecto}, \textcolor{green}{archivos de configuración}, \textcolor{blue}{dependencias de Maven}$\}$) }}
-					\includegraphics[width=1\textwidth]{img/estrucutraAplicacioJAVARESOURCES_final.png}
+					\includegraphics[width=1\textwidth]{img/estrucutraAplicacioJAVARESOURCES_final_rallat.png}
 					
 					\label{fig:estrucutraAplicacioJAVARESOURCES} 
 				\end{figure}
 				\FloatBarrier
 				
 				
-				\subsubsection{src/main/resources: archivos de configuración}
-				
-				TO DO EXPLICAR application.properties
+
 				
 
 				\subsubsection{src/main/java: las clases del proyecto}
 				
-
 				
 				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/utils/validacio}	donde residen las clases de anotación utilizadas para permitir que los campos de formulario de entrada se validen en el back-end (nótese que, con esto, hemos establecido redundancia de validaciones por si se diese el caso que un usuario maliciosamente intentase hacer llamadas directas a la API, esquivando así las validaciones ya definidas en el front-end): los archivos y su explicación quedan referenciados en detalle en el apartado \ref{sec:validacioDadesBACK}.
 				
@@ -466,7 +461,9 @@
 				
 				
 				
+				\subsubsection{src/main/resources: archivos de configuración}
 				
+				TO DO EXPLICAR application.properties
 				
 				\subsubsection{pom.xml: dependencias de maven}
 				
@@ -478,7 +475,7 @@
 				
 			
 				
-				\subsection{Autenticacion y Autorización}
+				\subsection{Autenticación y Autorización}
 				
 				\subsubsection{método utilizado: JWT}
 				
@@ -895,7 +892,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 
 		
 		
-			\subsection{validación de datos (End-points back)}
+			\subsection{Validación de datos (End-points back)}
 			\label{sec:validacioDadesBACK}
 			
 			\textit{NOTA: Los datos validados en el back-end siguen las mismas expresiones regulares y restricciones que las validaciones hechas en el front-end (ver sección \ref{sec:validacioDadesFRONT}).}
@@ -908,13 +905,13 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			
 
 		
-	\section{desarrollo back-end (microservicio con Python)}
+	\section{Desarrollo back-end (microservicio con Python)}
 	
 	
 	
 	
 	
-	\section{desarrollo del front-end}
+	\section{Desarrollo del front-end}
 	
 	\subsection{Enrutamiento de vistas}
 	\label{sec:EnrutamientoDeVistas}
@@ -922,23 +919,25 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	Cuando un usuario introduzca su correo en el formulario de registro de la página principal de la web (\texttt{pas1\_LandingSignUp.html}) va a ser redirigido con javascript a partir de las llamadas al back-end de Spring Boot: éste ultimo nos permitirá acceder al valor de la variable ``permisos'' de la tabla ``usuaris'' de mySql, siendo así redirigido a unas páginas u otras (el asunto de como se evita que ciertas páginas sean vistas por usuarios ya autenticados se cubre en otra sección: apartado \ref{sec:vistasPermisos}).
 	
 	
+
+	
+	Estas redirecciones no son fruto del azar. Se ha hecho un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix: replicándolo, desde cero, y adaptándolo a nuestro caso particular. Si Netflix utiliza ese esquema es porque tiene un impacto en la facilidad de captación de clientes y qué mejor que tratar de replicar los sistemas de los grandes \textit{players}.
+	
 	\setlength{\belowcaptionskip}{3pt}
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=1\textwidth]{img/landingSignUp.png}
-		\caption{Detalle de la landing page \texttt{pas1\_LandingSignUp.html} donde el usuario introducirá inicialmente su correo para registrarse -aunque ese mismo formulario en realidad nos servirá para todo gracias al enrutamiento de vistas-}
+		\caption{\textbf{Imagen superior}: Detalle de la landing page \texttt{pas1\_LandingSignUp.html} donde el usuario introducirá inicialmente su correo para registrarse -aunque ese mismo formulario en realidad nos servirá para todo gracias al enrutamiento de vistas- $||$ \textbf{Imagen inferior}: la página de Netflix en la que nos hemos inspirado para el diseño minimalista.}
 		\label{fig:landingSignUpDETALL} 
 	\end{figure}
 	\FloatBarrier
-	
-	Estas redirecciones no son fruto del azar. Se ha hecho un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix: replicándolo, desde cero, y adaptándolo a nuestro caso particular. Si Netflix utiliza ese esquema es porque tiene un impacto en la facilidad de captación de clientes y qué mejor que tratar de replicar los sistemas de los grandes \textit{players}.
 	
 	El esquema simplificado del proceso de enrutamiento durante el registro de un usuario en NetFlix queda recogido en el diagrama del anexo (ver apartado \ref{sec:anexo_diagramaNetflix}) y puede consultarse también en uno de los repositorios de mi github (\href{https://www.github.com/miApp}{link}). 
 	
 	Asimismo, el proceso de registro que utilizamos en mercApp es convenientemente una derivación de este mismo: si bien en NetFlix primeramente se redirige al usuario a unas cartas de pago, nosotros aquí le llevamos a una página para que nos dé acceso al gmail en el que Mercadona los tickets digitales al usuario (la página  \texttt{pas4\_ConcedirAccesGmail.html}); de nuevo análogamente a NetFlix, donde al usuario que ya ha pagado se le concede inmediatamente el acceso a las películas y series,  en nuestro caso se le dará acceso al usuario al tablón de visualización de análisis de datos de los tikets digitales  (\texttt{dashboard.html}), donde se visualizan el resultado de la minería y extracción de datos de esos tikets. 
 	
-	El proceso de enrutamiento de los usuarios desde que llegan a nuestra aplicación web hasta que acceden al \textit{dashboard} se encuentra recogido en el diagrama de la figura \ref{fig:diagramaMercaAppFront}, cuyas nomenclaturas explicamos en los siguientes \textit{bullet points}:
+	El proceso de enrutamiento de los usuarios desde que introducen el correo en el formulario de \texttt{pas1\_LandingSignUp.html} hasta que acceden al \textit{dashboard} se encuentra recogido en el diagrama de la figura \ref{fig:diagramaMercaAppFront}, cuyas nomenclaturas explicamos en los siguientes \textit{bullet points}:
 	\vspace{1em}
 	\hrule
 	
@@ -946,12 +945,12 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		\setlength{\itemsep}{-.3em}
 		
 		\item Decisiones del back-end de Spring Boot al llamar a APIs: \textbf{\textcolor{yellow!75!black}{\underline{rombos amarillos}}}. %75 per cent groc i 25 negre entenc
-		\item Las APIs que consume el front-end van entre [] y con color:
+		\item Las APIs que consume el front-end van entre corchetes ([]) y con color:
 		\begin{itemize}
 			\setlength{\itemsep}{.0em}
-			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: evalúa si el correo electrónico introducido pertenece a un usuario registrado y qué permisos tiene.
-			\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las \textit{claims} de su \textit{payload}\footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}.
-			\item \textbf{\textcolor{blue}{[\texttt{/api/login}]}}: gestiona el proceso de autenticación y generación del \textit{JWT Access Token} con tres niveles de permisos posibles (0, 1 y 2).
+			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: \textit{end-point} que evalúa si el correo electrónico introducido pertenece a un usuario registrado y qué permisos tiene.
+			\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: \textit{end-point} que registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las \textit{claims} de su \textit{payload}\footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}.
+			\item \textbf{\textcolor{blue}{[\texttt{/api/login}]}}: \textit{end-point} que gestiona el proceso de autenticación y generación del \textit{JWT Access Token} con tres niveles de permisos posibles (0, 1 y 2).
 		\end{itemize}
 		
 		
@@ -988,20 +987,20 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	Como hemos visto antes Podemos considerar que cada archivo HTML y su CSS asociado es una ``vista'' de nuestra aplicación. Habrá vistas que \textbf{no nos interesará enseñar a ciertos usuarios}, porque o bien no serán relevantes para ellos o bien harán llamadas a APIs cuya información no podrá ser obtenida para ellos.
 	
-	Si bien Spring Boot permite servir los archivos estáticos\footnote{HTML, CSS y JS son archivos estáticos.}  de dentro del mismo back-end de Spring Boot y utilizar un sistema de plantillas (Thymeleaf) esto realmente no es, para nada, lo ideal. Lo ideal es definir un front-end y un back-end separados partiendo de principios de \textit{separación de responsabilidades} o \textit{SoC}\footnote{Separation of concerns}, y así lo hemos hecho en este proyecto\footnote{Si tenemos ambas partes desacopladas podremos hacer modificaciones independientes en ambas. Por ejemplo, podremos cargar los archivos front-end en una CDN o un Proxy o tenerlos cacheados en un servidor que los sirva mucho más rápido, como Nginx. Es más, lo óptimo sería generar los archivos del front-end mediante un sistema de desarrollo por componentes (como Angular, React o Vue) para facilitar el desarrollo cuando la aplicación crezca y utilizar una paradigma \textit{SPA} (\textit{Single Page Application}). Sin embargo, en este caso, por el tiempo disponible y el tamaño de la aplicación se ha optado por hacerlo con HTML, CSS y JS puros.}. Las ventajas son grandes y tienen implicaciones en términos de mantenimiento, escalabilidad y reutilización tanto del front-end como del back-end (ver ventajas justificadas en anexo \ref{sec:SoCVENTATJES}).
+	Si bien Spring Boot permite servir los archivos estáticos\footnote{HTML, CSS y JS son archivos estáticos.}  de dentro del mismo back-end de Spring Boot y utilizar un sistema de plantillas (Thymeleaf) que permite impedir visualizaciones de vistas a usuarios no autorizados, esto realmente no es, para nada, lo ideal. Lo ideal es definir un front-end y un back-end separados partiendo de principios de \textit{separación de responsabilidades} o \textit{SoC}\footnote{Separation of concerns}, y así lo hemos hecho en este proyecto\footnote{Si tenemos ambas partes desacopladas podremos hacer modificaciones independientes en ambas. Por ejemplo, podremos cargar los archivos front-end en una CDN o un Proxy o tenerlos cacheados en un servidor que los sirva mucho más rápido, como Nginx. Es más, lo óptimo sería generar los archivos del front-end mediante un sistema de desarrollo por componentes (como Angular, React o Vue) para facilitar el desarrollo cuando la aplicación crezca y utilizar una paradigma \textit{SPA} (\textit{Single Page Application}). Sin embargo, en este caso, por el tiempo disponible y el tamaño de la aplicación se ha optado por hacerlo con HTML, CSS y JS puros.}. Las ventajas son grandes y tienen implicaciones en términos de mantenimiento, escalabilidad y reutilización tanto del front-end como del back-end (ver ventajas justificadas en anexo \ref{sec:SoCVENTATJES}).
 	
 
 	
 	
 	
 	
-	Sin embargo, no todo es ideal. Siempre existen concesiones (o como diríamos en inglés ``trade-offs''). Al tener el front-end y el back-end desacoplados esto también aumenta considerablemente la complejidad inicial en el desarrollo: la protección de las vistas se hace más difícil porque no las sirve el back-end y no las puede proteger directamente este\footnote{A diferencia de lo que sí haría una aplicación back-end hecha en php tradicional como las que hemos visto en desarrollo web entorno servidor, donde servimos el HTML desde dentro del mismo PHP).}.
+	Sin embargo, no todo es ideal. Siempre existen concesiones (o como diríamos en inglés ``trade-offs''). Al tener el front-end y el back-end desacoplados esto también aumenta considerablemente la complejidad inicial en el desarrollo: la protección de las vistas a usuarios que no deben visualizarlas se hace más difícil porque no las sirve el back-end y no las puede proteger directamente este\footnote{A diferencia de lo que sí haría una aplicación back-end hecha en php tradicional como las que hemos visto en desarrollo web entorno servidor, donde servimos el HTML desde dentro del mismo PHP).}.
 	
-	Por ejemplo, del mismo modo que los endpoints de nuestra API del back-end en Spring Boot están protegidos y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado o no tenga el ``idUsuari'' que permita el acceso a un cierto recurso), también pasará que ciertas páginas del front-end no podrán obtener la información deseada si llaman a un end-point para el que no tienen autorización: en este caso ello tendrá implicaciones para las vistas, y deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesión y/o bien redirigir al usuario a la página correcta, por ejemplo. Nosotros hemos optado por este último enfoque.
+	Por ejemplo, del mismo modo que los endpoints de nuestra API del back-end en Spring Boot están protegidos y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado o no tenga en el \textit{payload} el ``idUsuari'' que permita el acceso a un cierto recurso), también pasará que ciertas páginas del front-end no podrán obtener la información deseada si llaman a un end-point para el que no tienen autorización: en este caso ello tendrá implicaciones para las vistas, y deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesión y/o bien redirigir al usuario a la página correcta, por ejemplo. Nosotros hemos optado por este último enfoque.
 	
 	Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript para redirigir a los usuarios.
 	
-	\subsubsection{Protegiendo las vistas: expiración del token}
+	\subsubsection{Protegiendo vistas ``privadas'' cuando el token ha expirado}
 	
 	Existen dos páginas de nuestra web que, cuando expire el token de acceso que se requiere para acceder a los recursos back-end que hay detrás de ellas, no deberán ser visualizables:
 	
@@ -1034,17 +1033,21 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Script para regresar automáticamente a la landing page cuando el token de acceso expira en páginas protegidas.}
+		\caption{Script ``restringeixVistes\_EXPIRACIO.js'', utilizado para regresar automáticamente a la landing page cuando el token de acceso expira en las páginas que requieren permisos de acceso: (\texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}).}
 		\includegraphics[width=1\linewidth]{img/restringeixVistesEXPIRACIO}
 
 		\label{fig:restringeixVistesEXPIRACIO}
 	\end{figure}
 	\FloatBarrier
 	
-	\subsubsection{Protegiendo las vistas: permisos}
+	\subsubsection{Protegiendo vistas ``públicas'' con permisos cuando el token no ha expirado}
 	\label{sec:vistasPermisos}
 	
-	Se establecen tres niveles de permisos en la aplicación que tienen un impacto en qué puede visualizar el usuario ``logueado'' y qué no; y cómo se permite que el usuario navegue a medida que va moviéndose en el proceso de registro cuando no está ``logueado''. Estos permisos tienen un impacto en el enrutamiento del front-end de la aplicación (su impacto podemos verlo en la parte superior derecha de la figura del enrutamiento \ref{fig:diagramaMercaAppFront}) y más resumidamente en el cuadro \ref{table:permisos}:
+
+	
+	Para empezar, es necesario mencionar que se establecen tres niveles de permisos en la aplicación: estos  tienen un impacto sobre qué puede visualizar el usuario ``logueado'' y qué no; y cómo se permite que el usuario navegue a medida que va moviéndose en el proceso de registro cuando no está ``logueado''.
+	
+	Estos permisos construyen el enrutamiento del front-end de la aplicación (su impacto podemos verlo en la parte superior derecha de la figura del enrutamiento \ref{fig:diagramaMercaAppFront}) y más resumidamente en el cuadro \ref{table:permisos}), \underline{pero también hay que utilizarlos} \underline{para impedir visualizar ciertas páginas en usuarios ya logueados}, las que bautizamos en el título del apartado como ``vistas públicas''.
 	
 	\begin{table}[H]
 		\centering
@@ -1062,12 +1065,87 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		
 	\end{table}
 	
-	\textbf{Parlar de les proteccions de les vistes programmatically via javascript. Posar captura d'alguns dels scripts. No paralar de JWT en aquest apartat, referenciar al seguent (para entender como guardamos los datos de permisos e ide de usuario en el front, podemos ver el apartado del token de acceso: \ref{sec:recibirAccesTokenENFRONTEND})}
+	Programáticamente, debemos conseguir que estas ``vistas públicas'' \textbf{no sean visualizables} jamás si, en el \textit{local storage}, \textbf{existe}  un \underline{token de acceso} que \textbf{no haya expirado}\footnote{¡Si existe ese token no expirado significa que el usuario ya no debe acceder a ellas, porque ya se ha registrado y/o iniciado sesión y solo debe ver páginas de usuario registrado!}. Estas páginas vetadas a los usuarios ``logueados'' son las siguientes:
 	
-	\subsubsection{Recibir el Access Token desde el back-end}
+	\vspace{0em}
+	\begin{itemize}
+		\setlength{\itemsep}{-.5em}
+		\item \textit{A)} \texttt{pas1\_landingSignUp.html}
+		\item \textit{B)} \texttt{pas2A\_infoBenvinguda.html}
+		\item \textit{C)} \texttt{pas2B\_introduirContrasenya.html}
+		\item \textit{D)} \texttt{pas2C\_login.html}
+		\item \textit{E)} \texttt{pas3\_crearContrasenya.html}
+	\end{itemize}
+	
+	La forma que optamos para impedir su visualización es poner \textbf{dos scripts} en cada una de las cinco vistas públicas arriba mencionadas, que permitirán redirigir al usuario a la página ``privada'' que le corresponda según el valor que toma la variable ``permisos'' dentro del \textit{payload} del token de acceso guardado en el \textit{local storage} \footnote{Si queréis ver a qué me refiero con el payload, revisad de nuevo la figura \ref{fig:jwtioMostraPayload}.}, según se muestra en la tabla siguiente:
+		
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\textbf{página accedida} & \textbf{Permisos token} & \textbf{Redirigimos automáticamente a} \\
+			\hline
+			\multirow{2}{*}{\textit{A)}, \textit{B}, \textit{C)}, \textit{D)} o \textit{E)}} & $0$ & \texttt{pas4\_concedirAccesGmail.html} \\
+			& $1 || 2$ & \texttt{dashboard.html} \\
+			\hline
+		\end{tabular}
+	\end{table}
+
+	En cada una de las páginas accedidas A), B), C), D) y E), antes que cargue el DOM, los dos scripts mencionados a cargar son:
+	
+\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+<script src="/js/jwt/decodificaJWT.js"></script>
+<script src="/js/jwt/restringeixVistes_USUARI_LOGUEJAT.js"></script>
+\end{lstlisting}
+
+El segundo script, ``restringeixVistes\_USUARI\_loguejat.jas'' es una modificación para la ocasión del script mostrado en la figura \ref{fig:restringeixVistesEXPIRACIO} previa, y lo mostramos a continuación en la figura \ref{fig:restringeixVistesUSUARILOGUEJAT}:
+
+
+\setlength{\belowcaptionskip}{3pt}
+\FloatBarrier
+\begin{figure}[H]
+	\centering
+	\caption{Script ``restringeixVistes\_USUARI\_LOGUEJAT.js'', utilizado para redirigir a un usuario logueado fuera de las páginas públicas de forma automática y directo a las 2 páginas posibles que requieren credencial de acceso (``privadas''), según proceda de acuerdo con la variable permisos de su token de acceso -si el token existe y no ha expirado-: (\texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}).}
+	\includegraphics[width=1\linewidth]{img/restringeixVistesUSUARILOGUEJAT.png}
+	
+	\label{fig:restringeixVistesUSUARILOGUEJAT}
+\end{figure}
+\FloatBarrier	
+	
+
+
+	
+\subsubsection{Protegiendo vistas ``privadas'' mediante permisos cuando el token no ha expirado.}
+\label{sec:vistasPermisos}
+
+Análogamente al apartado anterior, tenemos que tomar en consideración las páginas que requieren permisos de acceso. Estas páginas YA ESTÁN protegidas de usuarios no logueados: estos no las podrán ver nunca, porque hicimos el script de la figura \ref{fig:restringeixVistesEXPIRACIO} para redirigir a estos a la landing page en caso que por error entren en ellas. Sin embargo, necesitamos algo que evite que un usuario con permisos 1 o 2 (que ya ha concedido acceso a tickets digitales) pueda pedir de nuevo acceso a los mismos en el \texttt{pas4\_concedirAccesGmail}; o que un usuario con permisos 0 (e.g., ha puesto correo y contraseña y se ha registrado, pero no ha dado acceso a tickets digitales todavía) pueda tratar de visualizar el \texttt{dashboard} e intentar acceder a unos tickets que todavía no ha proporcionado a la aplicación para que trabaje con ellos.
+
+La solución a lo anterior es hacer que en función de los permisos existentes en el token inhabilitemos una vista de las ``privadas'' para el usuario, \textit{mediante} la redirección automática del usuario a la página que sí debe visualizar \textit{antes} de que cargue el DOM de la pagina vetada, tal que así:
+	
+	\FloatBarrier
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\textbf{p. privada accedida
+				 (vetada)} &\textbf{Permisos} & \textbf{Redirección automática a} \\
+			\hline
+			\texttt{dashboard.html} & $0$ &  \texttt{pas4\_concedirAccesGmail.html}\\
+			\texttt{pas4\_concedirAccesGmail.html} &$1 || 2$ & \texttt{dashboard.html} \\
+			\hline
+		\end{tabular}
+	\end{table}
+	\FloatBarrier
+
+
+	
+	
+	Para entender como guardamos los datos de permisos e ids de usuario en el front-end, podemos ver el apartado \ref{sec:recibirAccesTokenENFRONTEND} que viene a continuación, donde especificamos como se recibe el token del back-end y se guarda en el front-end.
+	
+	\subsection{Recibir el Access Token desde el back-end}
 	\label{sec:recibirAccesTokenENFRONTEND}
 	
-	Cuando un usuario del que ya tenemos su correo electrónico en BBDD intenta ``loquearse'' en mercApp\footnote{Sea que ya estuvo registrado -permisos 0-, dio acceso a sus tickets digitales -permisos 1- o es superusuario -permisos 2-.}, el token de acceso lo recibe por primera vez en el cliente cuando este haga una llamada fetch() hacia el endpoint del back-end ``\textit{/api/login}''. Esta llamada se hace desde \texttt{pas2C\_login.html} o desde \texttt{pas2B\_introdueix contrassenya.html}, de idéntica forma.
+	Cuando un usuario del que ya tenemos su correo electrónico en BBDD intenta ``loguearse'' en mercApp\footnote{Sea que ya estuvo registrado -permisos 0-, dio acceso a sus tickets digitales -permisos 1- o es superusuario -permisos 2-.}, el token de acceso lo recibe por primera vez en el cliente cuando este haga una llamada fetch() hacia el endpoint del back-end ``\textit{/api/login}''. Esta llamada se hace desde \texttt{pas2C\_login.html} o desde \texttt{pas2B\_introdueix contrassenya.html}, de idéntica forma.
 	
 	
 	Por ejemplo, explicaremos solamente el caso de \textit{pas2Clogin.html}. En este archivo la recepción del token se hará en el JavaScript embedido cuando, por un lado, obtengamos el código 200 (OK) del servidor; pero también, cuando se cumpla que el usuario y contraseña introducidos por el usuario son correctos. Si y solo si se cumplen ambas condiciones, el cliente entonces recibirá el token de acceso en el body de la respuesta a su solicitud, que será una como la que sigue, de la que podremos extraer el ``AccessToken'' y guardarlo inmediatamente en el LocalStorage del navegador: \footnote{Esto lo hacemos para luego poder mandarlo de vuelta al servidor en la subsecuentes solicitudes que requieran autenticación y autorización.} Para más información sobre el código JavaScript del front-end que lo permite véase figuras y \ref{fig:FetchCodisResponseFRONT} y \ref{fig:figuraLoginFetch}):
@@ -1112,7 +1190,9 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	
 	
-	Ahora bien, si el usuario nunca se ha registrado en nuestra aplicación\footnote{Es decir, no tenemos su correo electrónico en BBDD.}, cuando lo haga, lo hará por el proceso de registro y no por el proceso de inicio de sesión. Una vez introduzca su contraseña en \texttt{pas3\_crearContrasenya.html} y se tome el correo electrónico insertado por el usuario en páginas previas y guardado en el localStorage, se hará una llamada POST con fetch() al endpoint ``api/registraUsuari'' pasando esos datos por el body: si y solo si el usuario NO existía, se creará un nuevo registro en la tabla Usuaris y ahi se devolverá un JSON con el token de acceso para el nuevo usuario creado, ahora de permisos 0:
+	Ahora bien, si el usuario nunca se ha registrado en nuestra aplicación\footnote{Es decir, no tenemos su correo electrónico en BBDD.}, cuando lo haga, lo hará por el proceso de registro y no por el proceso de inicio de sesión. Una vez introduzca su contraseña en \texttt{pas3\_crearContrasenya.html} y se tome el correo electrónico insertado por el usuario en páginas previas y guardado en el localStorage, se hará una llamada POST con fetch() al endpoint ``api/registraUsuari'' pasando esos datos por el body: si y solo si el usuario NO existía, se creará un nuevo registro en la tabla Usuaris y ahi se devolverá un JSON con el token de acceso para el nuevo usuario creado, ahora de permisos 0. Este JSON tendrá el siguiente aspecto (el token será mucho más largo):
+	
+	
 	
 \begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 {
@@ -1123,7 +1203,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 \end{lstlisting}
 	
 	
-	Para entender de dónde viene el token desde el back-end redirigimos al lector a la sección \ref{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}, donde se trata ese aspecto. En la presente sección nos ocuparemos de JavaScript en el front. Por ahora el lector debe tener claro que, como hemos visto ya, existen tres páginas HTML con códigos Javascript embedidos que pueden hacer llamadas asíncronas y obtener un token de acceso del servidor y guardarlo en el localStorage (un detalle de los formularios de estas páginas se encuentra en la figura \ref{fig:figPaginesQueExpedeixenJWT}:
+	Para entender de dónde viene el token desde el back-end redirigimos al lector a la sección \ref{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}, donde se trata ese aspecto. En la presente sección nos ocuparemos de JavaScript en el front. Por ahora el lector debe tener claro que, como hemos visto ya, existen tres páginas HTML con códigos Javascript embedidos que pueden hacer llamadas asíncronas y obtener un token de acceso del servidor y guardarlo en el localStorage (un detalle de los formularios de estas páginas se encuentra en la figura \ref{fig:figPaginesQueExpedeixenJWT}):
 	
 	\setlength{\belowcaptionskip}{3pt}
 	\FloatBarrier
@@ -1138,7 +1218,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	
 	
-\textit{NOTA: En este trabajo no implementaremos cookies ya que implica configuración extra tanto en el cliente como en el servidor. Vamos a guardar el token en el cliente en el localStorage (que es, de hecho, una práctica habitual en aplicaciones que no requieren un alto grado de seguridad). También hay que mencionar sobre que existe un debate para ver si en ese logIn el token de acceso recién generado en el servidor se debe mandar al cliente en el body de la respuesta de la solicitud POST \textit{o bien} en la header ``Authorization''. Sin embargo, es práctica común mandarlo en el body. Nótese, que para el paso inverso (cliente a servidor) sí debe mandarse en el Heather ``Authorization''. }
+\textit{NOTA: En este trabajo no implementaremos cookies ya que implica configuración extra tanto en el cliente como en el servidor. Vamos a guardar el token en el cliente en el localStorage (que es, de hecho, una práctica habitual en aplicaciones que no requieren un alto grado de seguridad). También hay que mencionar sobre que existe un debate para ver si en ese logIn el token de acceso recién generado en el servidor se debe mandar al cliente en el body de la respuesta de la solicitud POST \textit{o bien} en la header ``Authorization''. Sin embargo, es práctica común mandarlo en el body. Nótese, que para el paso inverso (cliente a servidor) sí debe mandarse en el Heather ``Authorization'' con el preámbulo ``Bearer '' seguido del token. }
 	
 	
 	
