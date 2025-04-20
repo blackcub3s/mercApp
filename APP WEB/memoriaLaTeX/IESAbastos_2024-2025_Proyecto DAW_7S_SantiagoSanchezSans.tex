@@ -421,12 +421,13 @@
 				
 				La parte de mercApp programada con Java (Spring Boot) se puede ver en el repositorio de GitHub del proyecto abriendo esta carpeta: \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__/app}{aquí} (eecomendamos al lector que abra y corra el proyecto con IntelliJ abriendo la carpeta mencionada del GitHub, pero en local). Se podrá ver entonces \textit{tres} rutas importantes (que son las tienen todos los proyectos Spring Boot):
 				
-				\vspace{-.5em}
+				\vspace{-.9em}
 				\begin{itemize}
 					\setlength{\itemsep}{-.5em}
 					\item \textbf{src/main/java} $\rightarrow$ En esta ruta encontramos los \textit{packages} y las clases del proyecto (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{red}{rojo}).
 					\item \textbf{src/main/resources} $\rightarrow$ Dentro de esta carpeta  nos encontramos con el archivo \texttt{application.properties}. trata de un archivo de configuración donde se define, por ejemplo, el conexionado con la base de datos (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{green}{verde}) y logback-spring.xml que, aunque no está definido por defecto en una aplicación Spring Boot, si lo añadimos lo que hace es que los logs del proyecto se guarden en \textit{logs/spring.log} en lugar de salir a terminal\footnote{La ruta se crea automáticamente}. Aquí aparece como un \textit{.txt} en lugar de un \textit{.xml} porque por ahora no queremos que se guarden los errores.
-					\item \textbf{pom.xml} $\rightarrow$ Es un arhivo donde encontramos el árbol de dependencias de Maven\footnote{Maven es una herramienta de automatización para la construcción de proyectos Java. Gestiona todas las dependencias, que se descargan desde un repositorio central muy vivo donde hay millones de nuevos paquetes publicados anualmente (\href{https://mvnrepository.com/repos/central}{ver link}). Maven permite empaquetar el proyecto en un .jar o .war fácilmente, entre otras cosas.}: cada vez que añadimos una dependencia estamos añadiendo nuevas funcionalidades a nuestro proyecto SpringBoot a través de una descarga automatizada del repositorio central de Maven.
+					\item \textbf{pom.xml} $\rightarrow$ Es un arhivo donde encontramos el árbol de dependencias de Maven\footnote{Maven es una herramienta de automatización para la construcción de proyectos Java. Gestiona todas las dependencias, que se descargan desde un repositorio central muy vivo donde hay millones de nuevos paquetes publicados anualmente (\href{https://mvnrepository.com/repos/central}{ver link}). Maven permite empaquetar el proyecto en un .jar o .war fácilmente, entre otras cosas.} (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES}, recuadro en \textcolor{blue}{azul}): cada vez que añadimos una dependencia estamos añadiendo nuevas funcionalidades a nuestro proyecto SpringBoot a través de una descarga automatizada del repositorio central de Maven.
+					
 					
 				\end{itemize}
 				
@@ -435,15 +436,15 @@
 				\FloatBarrier
 				\begin{figure}[H]
 					\centering
-					\caption{Estructura del proyecto mercApp: imatges a la dreta.}
-					\includegraphics[width=.2\textwidth]{img/estrucutraAplicacioJAVARESOURCES.png}
+					\caption{Estructura del back-end de Spring Boot en la aplicación mercApp. \\ {\footnotesize (Cajas de color $\rightarrow$ $\{$\textcolor{red}{clases del proyecto}, \textcolor{green}{archivos de configuración}, \textcolor{blue}{dependencias de Maven}$\}$) }}
+					\includegraphics[width=1\textwidth]{img/estrucutraAplicacioJAVARESOURCES_final.png}
 					
 					\label{fig:estrucutraAplicacioJAVARESOURCES} 
 				\end{figure}
 				\FloatBarrier
 				
 				
-				\subsubsection{src/main/resources: las clases del proyecto}
+				\subsubsection{src/main/resources: archivos de configuración}
 				
 				TO DO EXPLICAR application.properties
 				
