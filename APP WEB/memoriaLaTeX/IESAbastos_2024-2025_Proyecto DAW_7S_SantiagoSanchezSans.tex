@@ -69,7 +69,7 @@
 			
 			\vspace*{5cm} 
 
-			\LARGE{Creación de un dashboard para usuarios del ticket digital de Mercadona con consultas visuales a la evolución de productos habitualmente adquiridos, costes de compras por intervalos temporales y gastos por áreas de producto}
+			\LARGE{Creación de un dashboard para usuarios del ticket digital de Mercadona con visualización de la evolución temporal de precios en productos habitualmente adquiridos, costes de compras por intervalos temporales y gastos por áreas de producto.}
 			
 			\vfill
 			
@@ -118,16 +118,16 @@
 		
 		Las ventajas para el usuario y para el supermercado de tener un ticket digital son evidentes: el cliente no perderá los tickets de cara a devoluciones, no deberá esperar a su impresión después del pago y no se verá expuesto a la tinta del texto del ticket físico: que al menos por allá en 2019 la comisión europea ya alertaba de su peligrosidad \cite{EU_Parliament_2019} a partir de un estudio de la Universidad de Granada que hallaba alto contenido de Bisfenol-A\footnote{Es un químico que es un disruptor del sistema endocrino.} en los tickets de compra de distintos paises \cite{Molina-Molina2019}\cite{CanalUGR}.
 		
-		Las ventajas de la adopción masiva del ticket digital para el supermercado y el trabajador también son claras: se evita derrochar papel, tener a los cajeros expuestos a químicos que constituyan un riesgo laboral y, finalmente, acortar los tiempos de cola mejorando la experiencia de los clientes y asegurando su regreso futuro.
+		Las ventajas de la adopción masiva del ticket digital para el supermercado y el trabajador también son claras: se evita el derroche de papel, se impide que los cajeros estén expuestos a químicos que constituyan un riesgo laboral y, finalmente, se consifgue acortar los tiempos de cola mejorando la experiencia de los clientes y asegurando su regreso futuro.
 		
 		
 		
 		\section{Identificación de necesidades}
 		\label{section:identificacionNecesidades}
 		
-		Los tickets de cada usuario del ticket digital de Mercadona se acumulan de forma recurrente en su correo electrónico. A pesar de contener información valiosa de cara a la planificación de gastos, este formato digital solamente responde a ventajas operativas para supermercado y cliente; pero no ha mejorado todavía la asimilación ni la interpretación de los datos por parte del cliente: este no puede visualizar lo que ha gastado a lo largo de un período temporal, ni la evolución de los precios de los productos que adquiere, ni los supermercados en los que ha comprado, ni las veces que lo ha hecho, etc.
+		Los tickets de cada usuario del ticket digital de Mercadona se acumulan de forma recurrente en su correo electrónico. A pesar de contener información valiosa de cara a la planificación de gastos, este formato digital solamente responde a ventajas operativas para el supermercado y cliente del mismo; pero no ha mejorado todavía la asimilación ni la interpretación de los datos por parte del cliente: este no puede visualizar lo que ha gastado a lo largo de un período temporal, ni la evolución de los precios de los productos que adquiere, ni los supermercados en los que ha comprado, ni las veces que lo ha hecho, etc.
 		
-		Con un formato estructurado como el que ya tienen a día de hoy los tickets digitales podemos sacar muchísima información y presentársela al cliente de forma clara y visual: los asuntos de los correos que contienen los tickets son precedibles y dentro de cada correo se encuentra un solo PDF con el desglose de la compra (producto, unidades vendidas, establecimiento, etc.) que espera ser minado y analizado.
+		Con un formato estructurado como el que ya tienen a día de hoy los tickets digitales podemos sacar muchísima información y presentársela al cliente de forma clara y visual: los asuntos de los correos que contienen los tickets tienen un formato estándar y predecible, y dentro de cada correo electrónico se encuentra un solo PDF con el desglose de la compra (producto, unidades vendidas, establecimiento, etc.) que espera ser minado y analizado.
  
 		\section{Objetivos del proyecto} % OBLIGAT
 		\label{section:objetivosProyecto}
@@ -235,17 +235,17 @@
 			
 		
 			
-			\textbf{REQUISITO A:} Mostrar evolución de los precios de los productos unitarios adquiridos con más frecuencia (visualizable en un gráfico donde en X tendremos el tiempo y en Y el precio en euros). Para los productos de precios muy variables (productos a granel, como frutas, etc.), se mostrará la evolución del precio por kg a lo largo del tiempo.
+			\textbf{REQUISITO A:} Mostrar\textbf{ \textit{evolución de los precios}} de los productos unitarios adquiridos \underline{con más frecuencia} (visualizable en un gráfico donde en X tendremos el tiempo y en Y el precio en euros). Para los productos de precios muy variables (productos a granel, como frutas, etc.), se mostrará la evolución del precio por kg a lo largo del tiempo.
 			
-			\textbf{REQUISITO B:} Coste total de la cesta de la compra del usuario a lo largo de distintas ventanas temporales (por meses, períodos de 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
+			\textbf{REQUISITO B:} Mostrar el \textbf{\textit{coste total}} de la cesta de la compra del usuario a lo largo de distintas ventanas temporales (\underline{por meses}, períodos de 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
 			
-			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un diagrama de queso (o de sectores) desglosando qué porcentaje del dinero se ha destinado a cada una de las siguientes categorías: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carnes, pescado, hogar e higiene personal\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
+			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 9 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carnes, pescado, hogar e higiene personal\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
 			
 			
+			%REQUISIT D I E NO EREN A LA REDACCCIO DEL PROJECTE INICIAL CREC
+			\textbf{REQUISITO D\footnote{Requisito añadido después de la presentación del proyecto.}:} Podremos permitir que los PDFs descargados del correo del usuario se almacenen en una carpeta local del mismo para que pueda verificar la extracción de los datos.
 			
-			\textbf{REQUISITO D:} Un botón ``Actualizar'' permitirá al usuario refrescar los datos desde el servidor cuando haya añadido nuevas compras. También podríamos permitir que los PDFs descargados en el servidor se almacenen en una carpeta local del usuario para que pueda verificar la extracción de los datos.
-			
-			\textbf{REQUISITO E:} Hacer un sistema front-end y back-end que permitan redirigir a los usuarios rápidamente a un registro de forma inteligente. Nos inspiraremos en el sistema de registro e iniciar sesión de NetFlix.
+			\textbf{REQUISITO E\footnote{Requisito añadido después de la presentación del proyecto.}:} El sistema front-end y back-end de registro permitirá redirigir a los usuarios rápidamente a un registro de forma inteligente. Nos inspiraremos en el sistema de registro e iniciar sesión de NetFlix.
 			
 			\subsection{Requisitos de los usuarios}
 			
@@ -351,14 +351,14 @@
 				\subsection{Estructura de la aplicación}
 				\label{sec:estructuraAplicacion}
 				
-				La parte de mercApp programada con Java (Spring Boot) se puede ver en el repositorio de GitHub del proyecto abriendo esta carpeta: \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__/app}{aquí}. Recomendamos al lector abrir este proyecto por aquí con IntelliJ. Se podrá ver entonces \textit{tres} rutas importantes (que las tienen todos los proyectos Spring Boot):
+				La parte de mercApp programada con Java (Spring Boot) se puede ver en el repositorio de GitHub del proyecto abriendo esta carpeta: \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__/app}{aquí} (eecomendamos al lector que abra y corra el proyecto con IntelliJ abriendo la carpeta mencionada del GitHub, pero en local). Se podrá ver entonces \textit{tres} rutas importantes (que son las tienen todos los proyectos Spring Boot):
 				
 				\vspace{-.5em}
 				\begin{itemize}
 					\setlength{\itemsep}{-.5em}
 					\item \textbf{src/main/java} $\rightarrow$ En esta ruta encontramos los \textit{packages} y las clases del proyecto (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{red}{rojo}).
 					\item \textbf{src/main/resources} $\rightarrow$ Dentro de esta carpeta  nos encontramos con el archivo \texttt{application.properties}. trata de un archivo de configuración donde se define, por ejemplo, el conexionado con la base de datos (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{green}{verde}) y logback-spring.xml que, aunque no está definido por defecto en una aplicación Spring Boot, si lo añadimos lo que hace es que los logs del proyecto se guarden en \textit{logs/spring.log} en lugar de salir a terminal\footnote{La ruta se crea automáticamente}. Aquí aparece como un \textit{.txt} en lugar de un \textit{.xml} porque por ahora no queremos que se guarden los errores.
-					\item \textbf{pom.xml} $\rightarrow$ Es un arhivo donde encontramos el árbol de dependencias de Maven\footnote{Maven es una herramienta de automatización para la construcción de proyectos Java. Gestiona todas las dependencias, que se descargan desde un repositorio central y permite empaquetar el proyecto en un .jar o .war fácilmente, entre otras cosas.}: cada vez que añadimos una dependencia estamos añadiendo nuevas funcionalidades a nuestro proyecto SpringBoot a través de una descarga automatizada del repositorio central de Maven
+					\item \textbf{pom.xml} $\rightarrow$ Es un arhivo donde encontramos el árbol de dependencias de Maven\footnote{Maven es una herramienta de automatización para la construcción de proyectos Java. Gestiona todas las dependencias, que se descargan desde un repositorio central muy vivo donde hay millones de nuevos paquetes publicados anualmente (\href{https://mvnrepository.com/repos/central}{ver link}). Maven permite empaquetar el proyecto en un .jar o .war fácilmente, entre otras cosas.}: cada vez que añadimos una dependencia estamos añadiendo nuevas funcionalidades a nuestro proyecto SpringBoot a través de una descarga automatizada del repositorio central de Maven.
 					
 				\end{itemize}
 				
@@ -376,17 +376,36 @@
 				
 				
 				\subsubsection{src/main/resources: las clases del proyecto}
+				
+				TO DO EXPLICAR application.properties
+				
+
 				\subsubsection{src/main/java: las clases del proyecto}
+				
+
+				
+				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/utils/validacio}	donde residen las clases de anotación utilizadas para permitir que los campos de formulario de entrada se validen no solamente en el front-end sino también en el back-end (hay redundancia de validaciones, por si un usuario maliciosamente intenta hacer llamadas directas a API esquivando las protecciones de front-end): los archivos y su explicación quedan referenciados en detalle en \ref{sec:validacioDadesBACK}.
+				
+				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/seguretat/jwt} donde tenemos clases que generan tokens de acceso y de refresco  a partir de una clave secreta que solo está en el servidor, que referenciamos en detalle dentro de \ref{sec:implementacionJWTjava}; Análogamente, las clases que permiten implementar la autenticación y la autorización a partir de los tokens generados por las clases anteriores, las referenciamos también en detalle dentro de \ref{sec:classesSecuritzacioClaimsIfirma}.
+				
+				
+				TO DO EXPLICAR 	\hspace{3em} usuari, repository, service, controller de 
+			
+				TO DO EXPLICAR 	\hspace{3em} classes per a fer la unio amb el backend de fast API mitjançant restClient.
+				
+				
+				
+				
+				
 				\subsubsection{pom.xml: dependencias de maven}
 				
 				
 				 
 				
-				TO DO pom.xml application.properties, usuari, repository, service, controller.
+				TO DO EXPICAR pom.xml: parlar de la versio i link a la pagina on la versio.
 				
-				- Todos los campos de formulario de entrada se han validado no solamente en el front-end sino también en el back-end (hay redundancia de validaciones, por si un usuario maliciosamente intenta hacer llamadas directas a API esquivando las protecciones de front-end): para ello hay archivos\textbf{ TAL TAL TAL} que referenciamos en detalle en \ref{sec:validacioDadesBACK}.
 				
-				TO DO Parlar dels apartats de seguretat (segurity filter chain i JWT pero només de passada perque els mencionem despres)
+			
 				
 				\subsection{Autenticacion y Autorización}
 				
@@ -479,7 +498,7 @@
 				\end{lstlisting}
 				
 				
-		En el proyecto se han creado tres clases dentro de sus respectivos archivos en la ruta \texttt{src/main/java/} \texttt{miApp.app/seguretat/jwtseguretat} denominadas:
+		En el proyecto se han creado tres clases dentro de sus respectivos archivos en la ruta \texttt{src/main/java/} \texttt{miApp.app/seguretat/jwt} denominadas:
 		
 		\begin{itemize}
 			\setlength{\itemsep}{-.4em}
@@ -624,6 +643,7 @@ String accesJWT = accessToken.genera(
 	
 		
 		\subsubsection{Recibir en el back-end el JWT enviado desde el front-end y con él securizar un endpoint de la API mediante interpretación de claims y verificación de firma.}
+		\label{sec:classesSecuritzacioClaimsIfirma}
 		
 		Después de crear las tres clases en Java de las que hemos hablado en el apartado \ref{sec:implementacionJWTjava} anterior y haber mandado el token de acceso al front mediante el body de las \textit{responses} a los endpoints \textit{api/registraUsuari} o \textit{api/login}, podemos empezar a 
 		implementar la protección de endpoints con JWT. 
