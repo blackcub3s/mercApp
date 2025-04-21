@@ -1000,9 +1000,9 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript para redirigir a los usuarios.
 	
-	\subsubsection{Protegiendo vistas ``privadas'' cuando el token ha expirado}
+	\subsubsection{Protegiendo vistas ``privadas'' ante usuarios no ``logueados'': cuando el token ha expirado}
 	
-	Existen dos páginas de nuestra web que, cuando expire el token de acceso que se requiere para acceder a los recursos back-end que hay detrás de ellas, no deberán ser visualizables:
+	Existen dos páginas de nuestra web que, cuando expire el token de acceso que se requiere para acceder a los recursos back-end que hay detrás de ellas (o este no exista), no deberán ser visualizables:
 	
 	\vspace{0em}
 	\begin{itemize}
@@ -1013,11 +1013,11 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	Como se desprende del diagrama de flujo del enrutamiento del proceso de registro que vimos en la figura \ref{fig:diagramaMercaAppFront}, esas dos páginas son aquellas páginas de nuestro proyecto a las que redirigimos los usuarios justo después de generar tokens de acceso; por ende, lógicamente requieren cierto grado de autenticación y autorización. De ahí que consideremos no permitir visualizarlas si el grado de permisos requerido no se llegase a satisfacer.
 	
-	La primera página (\texttt{dashboard.html}), requiere tener un token con permisos a 0; la segunda (\texttt{pas4\_concedirAccesGmail.html}) un token con permisos superior o igual a 1. En otras palabras: ambas requieren tener algún tipo de autenticación de usuario, como veremos en el siguiente apartado; pero está claro que para visualizar cualquiera de ellas la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) se albergue un token de acceso que no esté expirado y que sea descifrable (ojo, que no validable con el secret, que eso está en nuestro servidor y no se muestra jamás en el cliente).
+	La primera página (\texttt{dashboard.html}), requiere tener un token con permisos a 0; la segunda (\texttt{pas4\_concedirAccesGmail.html}) un token con permisos superior o igual a 1. En otras palabras: ambas requieren tener algún tipo de autenticación de usuario (i.e a esto nos referimos con usuarios ``logueados'' en el título), como veremos en el siguiente apartado; pero está claro que para visualizar cualquiera de estas dos páginas o vistas la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) se albergue un token de acceso que no esté expirado y que sea descifrable (ojo, que no validable con el secret, que eso está en nuestro servidor y no se muestra jamás en el cliente).
 	
 	Si está expirado, cuando hagamos la diferencia entre el valor ``exp'' del payload\footnote{Segundos en que el token expira o expiró, desde la epoch.} y la función \textit{Date.now()/1000}\footnote{Segundos actuales del navegador, desde la epoch.} saldrá un número negativo. En caso contrario, positivo. 
 	
-	Si el token está expirado inmediatamente redirigiremos al usuario a la landing page llamando a \textit{redirigeixAlandingPage()}, impidiendo así el visionado de cualquiera de las dos páginas (se cargará el script que contiene esta función antes de que se cargue el DOM\footnote{El lector puede hacer la prueba siguiente: si el token ha caducado o el usuario no se ha logueado, accediendo a \textit{pas4\_concedirAccesGmail.htm} o a \textit{dashboard.html} verá como automáticamente se produce una redirección a \textit{pas1\_landingSignUp.html}; o si se ha logueado, abrir la consola y verá una cuenta atrás del tiempo que le queda al token de acceso para su expiración y para la redirección a la landing page.}). En cambio, si el token no está expirado seguiremos reevaluando la expiración del token con una frecuencia de un segundo: esto se conseguirá mediante la función asíncrona \textit{setInterval()} que hemos visto en desarrollo web entorno cliente.
+	Si el token está expirado -o es inexistente- inmediatamente redirigiremos al usuario a la landing page llamando a \textit{redirigeixAlandingPage()}, impidiendo así el visionado de cualquiera de las dos páginas (se cargará el script que contiene esta función antes de que se cargue el DOM\footnote{El lector puede hacer la prueba siguiente: si el token ha caducado o el usuario no se ha logueado, accediendo a \textit{pas4\_concedirAccesGmail.htm} o a \textit{dashboard.html} verá como automáticamente se produce una redirección a \textit{pas1\_landingSignUp.html}; o si se ha logueado, abrir la consola y verá una cuenta atrás del tiempo que le queda al token de acceso para su expiración y para la redirección a la landing page.}). En cambio, si el token no está expirado seguiremos reevaluando la expiración del token -y su existencia- con una frecuencia de un segundo: esto se conseguirá mediante la función asíncrona \textit{setInterval()} que hemos visto en desarrollo web entorno cliente de segundo curso.
 	
 	Para ello, en el \textit{head} de cada una de las dos páginas en cuestión veréis que \textbf{antes} siquiera \textbf{de cargar el DOM} se cargan sendos archivos:
 	
@@ -1034,7 +1034,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Script \texttt{restringeixVistesPrivades\_USUARI\_NO\_LOGUEJAT.js}, utilizado para regresar automáticamente a la landing page cuando el token de acceso expira en las páginas que requieren permisos de acceso: (\texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}).}
+		\caption{Script \texttt{restringeixVistesPrivades\_USUARI\_NO\_LOGUEJAT.js}, utilizado para regresar automáticamente a la landing page cuando el token de acceso expira -o es borrado- en las páginas que requieren permisos de acceso: \texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}.}
 		\includegraphics[width=1\linewidth]{img/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.png}
 
 		\label{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT}
@@ -1052,12 +1052,12 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	\begin{table}[H]
 		\centering
-		\caption{Significado del valor de la variable \texttt{permisos} en la tabla mySQL\texttt{usuaris}}
+		\caption{Significado de la variable \texttt{permisos} en la tabla \texttt{usuaris} de mySQL.}
 		\begin{tabular}{|c|l|}
 			\hline
 			\textbf{\texttt{permisos}} & \textbf{Significado} \\
 			\hline
-			0 & No hay acceso a tickets digitales \\
+			0 & No hay acceso a tickets digitales (pero ya tenemos email y contraseña) \\
 			1 & Acceso a tickets como usuario (USER) \\
 			2 & Acceso a tickets como administrador (ADMIN) \\
 			\hline
@@ -1078,7 +1078,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		\item \textit{E)} \texttt{pas3\_crearContrasenya.html}
 	\end{itemize}
 	
-	La forma que optamos para impedir su visualización es poner \textbf{dos scripts} en cada una de las cinco vistas públicas arriba mencionadas, que permitirán redirigir al usuario a la página ``privada'' que le corresponda según el valor que toma la variable ``permisos'' dentro del \textit{payload} del token de acceso guardado en el \textit{local storage} \footnote{Si queréis ver a qué me refiero con el payload, revisad de nuevo la figura \ref{fig:jwtioMostraPayload}.}, según se muestra en la tabla siguiente:
+	La forma que optamos para impedir su visualización es poner \textbf{dos scripts} en cada una de las cinco vistas públicas arriba mencionadas, que permitirán redirigir al usuario a la página ``privada'' que le corresponda según el valor que toma la variable ``permisos''\footnote{No hace falta mencionar que se saca del campo permisos de la tabla usuaris de la base de datos que tenemos en mySQL.} dentro del \textit{payload} del token de acceso guardado en el \textit{local storage} \footnote{Si queréis ver a qué me refiero con el payload, revisad de nuevo la figura \ref{fig:jwtioMostraPayload}.}, según se muestra en la tabla siguiente:
 		
 	\begin{table}[h!]
 		\centering
@@ -1106,7 +1106,7 @@ El segundo script, \texttt{restringeixVistesPubliques\_USUARI\_loguejat.js} es u
 \FloatBarrier
 \begin{figure}[H]
 	\centering
-	\caption{Script \texttt{restringeixVistesPubliques\_USUARI\_LOGUEJAT.js}, utilizado para redirigir a un usuario logueado fuera de las páginas públicas de forma automática y directo a las 2 páginas posibles que requieren credencial de acceso (``privadas''), según proceda de acuerdo con la variable permisos de su token de acceso -si el token existe y no ha expirado-: (\texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}).}
+	\caption{Script \texttt{restringeixVistesPubliques\_USUARI\_LOGUEJAT.js}, utilizado para redirigir a un usuario logueado fuera de las páginas públicas de forma automática y directo a las 2 páginas posibles que requieren credencial de acceso (``privadas''), según proceda de acuerdo con la variable permisos de su token de acceso -si el token existe y no ha expirado-: \texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}.}
 	\includegraphics[width=1\linewidth]{img/restringeixVistesPubliques_USUARI_LOGUEJAT.png}
 	
 	\label{fig:restringeixVistesPubliquesUSUARILOGUEJAT}
@@ -1138,7 +1138,8 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{table}
 	\FloatBarrier
 
-
+	
+	Es decir, en la tabla anterior mostramos que si un usuario con permiso 0 (no ha concedido acceso a tickets digitales) quiere acceder a la página \texttt{dashboard.html} para visualizar la explotación de datos de los tickets, no podrá verla porque le redirigiremos automáticamente a la página donde podrá proporcionar acceso a tickets digitales: \texttt{pas4\_concedirAccesGmail.html}). Y viceversa: Si entra en \textit{pas4} teniendo permisos 1 o 2, será redirigido al \textit{dashboard}. 
 	
 	
 	Para entender como guardamos los datos de permisos e ids de usuario en el front-end, podemos ver el apartado \ref{sec:recibirAccesTokenENFRONTEND} que viene a continuación, donde especificamos como se recibe el token del back-end y se guarda en el front-end.
