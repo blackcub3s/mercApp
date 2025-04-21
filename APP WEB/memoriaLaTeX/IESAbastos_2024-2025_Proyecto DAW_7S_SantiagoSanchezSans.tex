@@ -125,7 +125,7 @@
 		
 		\begin{minipage}{0.8\textwidth}
 			\large
-			La redacción íntegra de esta memoria se ha hecho a mano. No se ha utilizado inteligencia artificial para la redacción de ningna frase, ni revisión gramatical ni ortográfica. Se insta al lector a considerarla el resultado del esfuerzo y trabajo constante a lo largo de los meses de marzo a mayo de 2025 (en paralelo con las prácticas a tiempo completo en Lãberit) y valorarla con su idiosincracia -incluyendo sus imperfecciones-.
+			La redacción íntegra de esta memoria se ha hecho a mano. No se ha utilizado inteligencia artificial para la redacción de ninguna frase, ni revisión gramatical ni ortográfica. Se insta al lector a considerarla el resultado del esfuerzo y trabajo constante a lo largo de los meses de marzo a mayo de 2025 (en paralelo con las prácticas a tiempo completo en Lãberit) y valorarla con su idiosincracia -incluyendo sus imperfecciones-.
 		\end{minipage}
 		
 		\vspace*{4cm}
@@ -283,7 +283,7 @@
 		
 		En cuarto lugar, apostar por Java como lenguaje de back-end es un caballo ganador en forma de crecimiento profesional al ser un lenguaje sólido y de largo recorrido no solo en Valencia sino en muchos países de Europa\footnote{Este fue uno de los motivos que me hizo contactar con Lãberit para hacer las prácticas: poder tocar back-end con Java y Spring Boot.}. No es un lenguaje que vaya por modas y ejercitarlo puede permitir iniciar una carrera enfocada en una tecnología que no se prevé que desfallezca en un futuro cercano.
 		
-
+		
 		
 		
 		\section{Requisitos Funcionales}
@@ -350,6 +350,19 @@
 
 
 		
+		\section{Secuenciación de tareas}
+		
+		El desarrollo del proyecto ha empezado entorno el \textbf{7 de marzo de 2025} (el día después de la sesión informativa sobre proyectos). Desde ese día hasta el día \textbf{21 abril} se ha invertido tiempo en la parte del front-end para gestionar el registro e inicio de sesion (páginas públicas) del proyecto, en comunión y en paralelo con el sistema de autenticación y autorización y securización de las APIs de la tabla Usuari en el back-end (el entramado más o menos complejo que mostramos en la figura \ref{fig:diagramaMercaAppFront} principalemtnte) y todo lo redactado de la parte de SpringBoot del proyecto (ver apartado \ref{sec:parteSpringBoot}).
+		
+		Durante el horario de las prácticas de Lãberit (iniciadas el 10 de marzo) hasta el viernes 11 se ha diseñado el back-end en Java Spring Boot en paralelo a la realización del curso introductorio de Spring Boot mandado por la empresa (ver imagen \ref{fig:estrucutraAplicacioJAVARESOURCES}, recuadro en rojo, verde y azul). También se ha creado el enlace del back-end con java hasta el back-end de fastAPI donde haremos la explotación de tickets.
+		
+		Fuera del horario de prácticas desde el \textbf{21 de abril} hasta el \textbf{24 de mayo} (día previo a la entrega de la memoria) se programarán las dos páginas privadas: 
+		
+		\begin{itemize}
+			\item \texttt{pas4\_ConcedirAccesGmail.html}: que da acceso a tickets digitales (donde se hará la integración con API de Google).
+			\item \texttt{dashboard.html}: \textbf{que saca datos de una API de Spring Boot que a su vez extraerá los datos de la API de FastAPI, que a su vez se conectará con MongoDB.}
+		\end{itemize}
+
 		
 		
 		
@@ -413,6 +426,7 @@
 
 			
 			\section{Desarrollo back-end (Spring Boot)}
+			\label{sec:parteSpringBoot}
 			
 				\subsection{Estructura de la aplicación}
 				\label{sec:estructuraAplicacion}
@@ -453,6 +467,8 @@
 				
 				
 				Dentro de \textbf{src/main/java} tenemos también la ruta \textbf{miApp.app/seguretat/jwt} donde tenemos clases que generan tokens de acceso y de refresco  a partir de una clave secreta que solo está en el servidor, que referenciamos en detalle dentro de \ref{sec:implementacionJWTjava}; Análogamente, las clases que permiten implementar la autenticación y la autorización a partir de los tokens generados por las clases anteriores, las referenciamos también en detalle dentro de \ref{sec:classesSecuritzacioClaimsIfirma}.
+				
+				Dentro de \textbf{src/main/java} tenemos también la ruta \textbf{miApp.app/seguretat} encontramos la clase \textit{EncriptaContrasenyes.java}, que utilizamos en el servicio de usuaris para hashear las contraseñas en la base de datos. Esto lo explicamos en detalle dentro de \ref{sec:implementacioHashContra}.
 				
 				
 				TO DO EXPLICAR 	\hspace{3em} usuari, repository, service, controller de 
@@ -904,7 +920,34 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		\textbf{	TO DO }
 			
 
-		
+			\subsection{Hasheado de contraseñas}
+			\label{sec:implementacioHashContra}
+			
+			Las contraseñas de los usuarios no se han guardado en texto plano. Por seguridad, se han guardado en forma de hash, es decir, con encriptación unidireccional. A tal efecto se ha utilizado la librería bcrypt de Spring security\cite{bcryptPasswordEncoder} y se ha hecho una clase \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/EncriptaContrasenyes.java}{EncriptaContrasenyes.java} que ha permitido envolver las funciones de bcrypt que usamos (ver figura \ref{fig:hashejatContrasenyes}) con nombres más pedagógicos.
+			
+			
+			Específicamente, cada vez que un usuario inicie sesión o se registre, se utilizarán una o u otra función de la clase \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/EncriptaContrasenyes.java}{EncriptaContrasenyes.java}. Al instanciar un objeto de la misma, se instanciará también un objeto BCryptPasswordEncoder y se usarán las funciones de librería encode()\footnote{Para obtener el hash de una contraseña creada.} y matches()\footnote{Para verificar si una contraseña plana es coincidente con el hash que se guardó en base de datos en el momento del registro.}, respectivamente (convenientemente guardadas con un nombre más agradable como vemos en la figura \ref{fig:hashejatContrasenyes}).
+			
+			Esto se hará en la clase de servicio de Usuaris. Por ejemplo, para el inicio de sesión el uso de matches() a través de verificaContrasenya() lo encontraremos en esta línea de código:  (\href{https://github.com/blackcub3s/mercApp/blob/e8afa7110971dca00a660bd8ec5f1a565b852fbd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/servei/UsuariServei.java#L67}{link}).
+			
+			\FloatBarrier
+			\begin{figure}[H]
+				\centering
+				\caption{Clase \texttt{EncriptaContrasenyes.java}, utilizada para guardar contraseñas como hash en base de datos y para comparar contraseñas en texto plano con el hash guardado usando bcrypt.}
+				\label{fig:hashejatContrasenyes}
+				\includegraphics[width=1\linewidth]{img/hashejatContrasenyes.png}
+			\end{figure}
+			\FloatBarrier
+			
+			
+			Es interesante hacer notar, y esto no lo sabía antes de programar la clase, es que una misma contraseña de entrada produce hash distintos! Es decir, el hashing no solo impide ver las contraseñas de los usuarios si se observa la BBDD, sino que también impide ver si dos usuarios tienen la misma contraseña (porque no encontraremos dos hashs iguales). Esto también hace que no podamos comparar con una función de comparación de strings el hash guardado de una contraseña en el momento del registro con el hash generado por un logueo. Esto hay que hacerlo con el metodo matches().
+			
+			
+			
+			
+			
+
+			
 	\section{Desarrollo back-end (microservicio con Python)}
 	
 	
@@ -1011,13 +1054,13 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		\item \texttt{dashboard.html}
 	\end{itemize}
 	
-	Como se desprende del diagrama de flujo del enrutamiento del proceso de registro que vimos en la figura \ref{fig:diagramaMercaAppFront}, esas dos páginas son aquellas páginas de nuestro proyecto a las que redirigimos los usuarios justo después de generar tokens de acceso; por ende, lógicamente requieren cierto grado de autenticación y autorización. De ahí que consideremos no permitir visualizarlas si el grado de permisos requerido no se llegase a satisfacer.
+	Como se desprende del diagrama de flujo del enrutamiento del proceso de registro que vimos en la figura \ref{fig:diagramaMercaAppFront}, esas dos páginas son aquellas páginas de nuestro proyecto a las que redirigimos los usuarios justo después de generar tokens de acceso; por ende, su visionado requiere cierto grado de autenticación y autorización. De ahí que consideremos no permitir visualizarlas si el grado de permisos requerido no se llegase a satisfacer.
 	
-	La primera página (\texttt{dashboard.html}), requiere tener un token con permisos a 0; la segunda (\texttt{pas4\_concedirAccesGmail.html}) un token con permisos superior o igual a 1. En otras palabras: ambas requieren tener algún tipo de autenticación de usuario (i.e a esto nos referimos con usuarios ``logueados'' en el título), como veremos en el siguiente apartado; pero está claro que para visualizar cualquiera de estas dos páginas o vistas la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) se albergue un token de acceso que no esté expirado y que sea descifrable (ojo, que no validable con el secret, que eso está en nuestro servidor y no se muestra jamás en el cliente).
+	La primera página (\texttt{dashboard.html}), requiere tener un token con permisos a 0; la segunda (\texttt{pas4\_concedirAccesGmail.html}) un token con permisos superior o igual a 1. En otras palabras: ambas requieren tener algún tipo de autenticación de usuario que se materialice en un token de acceso con una variable de permisos (i.e a esto nos referimos con usuarios ``logueados'' en el título), como veremos en el siguiente apartado; pero está claro que para visualizar cualquiera de estas dos páginas o vistas, la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) se albergue un token de acceso que \underline{no esté expirado} y que sea \underline{descifrable}\footnote{Ojo, descrifrable no significa validable. Validable es lo que hacemos en el back-end con el secret, y no se muestra jamás en el cliente.}.
 	
 	Si está expirado, cuando hagamos la diferencia entre el valor ``exp'' del payload\footnote{Segundos en que el token expira o expiró, desde la epoch.} y la función \textit{Date.now()/1000}\footnote{Segundos actuales del navegador, desde la epoch.} saldrá un número negativo. En caso contrario, positivo. 
 	
-	Si el token está expirado -o es inexistente- inmediatamente redirigiremos al usuario a la landing page llamando a \textit{redirigeixAlandingPage()}, impidiendo así el visionado de cualquiera de las dos páginas (se cargará el script que contiene esta función antes de que se cargue el DOM\footnote{El lector puede hacer la prueba siguiente: si el token ha caducado o el usuario no se ha logueado, accediendo a \textit{pas4\_concedirAccesGmail.htm} o a \textit{dashboard.html} verá como automáticamente se produce una redirección a \textit{pas1\_landingSignUp.html}; o si se ha logueado, abrir la consola y verá una cuenta atrás del tiempo que le queda al token de acceso para su expiración y para la redirección a la landing page.}). En cambio, si el token no está expirado seguiremos reevaluando la expiración del token -y su existencia- con una frecuencia de un segundo: esto se conseguirá mediante la función asíncrona \textit{setInterval()} que hemos visto en desarrollo web entorno cliente de segundo curso.
+	Si el token está expirado -o es inexistente- inmediatamente redirigiremos al usuario a la landing page llamando a \textit{redirigeixAlandingPage()}, impidiendo así el visionado de cualquiera de las dos páginas (se cargará el script que contiene esta función antes de que se cargue el DOM\footnote{El lector puede hacer la prueba siguiente: si el token ha caducado o el usuario no se ha logueado, accediendo a \textit{pas4\_concedirAccesGmail.htm} o a \textit{dashboard.html} verá como automáticamente se produce una redirección a \textit{pas1\_landingSignUp.html}; o si se ha logueado, abrir la consola y verá una cuenta atrás del tiempo que le queda al token de acceso para su expiración y para la redirección a la landing page.}). En cambio, si el token no está expirado seguiremos revaluando la expiración del token -y su existencia- con una frecuencia de un segundo: esto se conseguirá mediante la función asíncrona \textit{setInterval()} que hemos visto en desarrollo web entorno cliente de segundo curso.
 	
 	Para ello, en el \textit{head} de cada una de las dos páginas en cuestión veréis que \textbf{antes} siquiera \textbf{de cargar el DOM} se cargan sendos archivos:
 	
@@ -1034,21 +1077,21 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Script \texttt{restringeixVistesPrivades\_USUARI\_NO\_LOGUEJAT.js}, utilizado para regresar automáticamente a la landing page cuando el token de acceso expira -o es borrado- en las páginas que requieren permisos de acceso: \texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}.}
+		\caption{Script \texttt{restringeixVistesPrivades\_USUARI\_NO\_LOGUEJAT.js}, utilizado para regresar automáticamente a la landing page cuando el token de acceso de un usuario logueado expira -o es borrado- o cuando un usuario no logueado intenta acceder a las páginas que requieren permisos de acceso: \texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}.}
 		\includegraphics[width=1\linewidth]{img/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.png}
 
 		\label{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT}
 	\end{figure}
 	\FloatBarrier
 	
-	\subsubsection{Protegiendo vistas ``públicas'' con permisos cuando el token no ha expirado}
+	\subsubsection{Protegiendo vistas ``públicas'' para usuarios ``logueados'': cuando el token no ha expirado}
 	\label{sec:vistasPermisos}
 	
 
 	
 	Para empezar, es necesario mencionar que se establecen tres niveles de permisos en la aplicación: estos  tienen un impacto sobre qué puede visualizar el usuario ``logueado'' y qué no; y cómo se permite que el usuario navegue a medida que va moviéndose en el proceso de registro cuando no está ``logueado''.
 	
-	Estos permisos construyen el enrutamiento del front-end de la aplicación (su impacto podemos verlo en la parte superior derecha de la figura del enrutamiento \ref{fig:diagramaMercaAppFront}) y más resumidamente en el cuadro \ref{table:permisos}), \underline{pero también hay que utilizarlos} \underline{para impedir visualizar ciertas páginas en usuarios ya logueados}, las que bautizamos en el título del apartado como ``vistas públicas''.
+	Antes ya hemos visto que estos permisos nos han permitido construir el enrutamiento del front-end de la aplicación (su impacto podemos verlo en la parte superior derecha de la figura del enrutamiento \ref{fig:diagramaMercaAppFront} y más resumidamente en el cuadro \ref{table:permisos}), pero también ahora debemos utilizarlos también para \textbf{impedir} visualizar ciertas páginas en usuarios \underline{ya logueados}, es decir, aquellas páginas a las que nos referimos con el término ``vistas públicas'' empleado en el título de esta sección.
 	
 	\begin{table}[H]
 		\centering
@@ -1102,7 +1145,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 El segundo script, \texttt{restringeixVistesPubliques\_USUARI\_loguejat.js} es una modificación para la ocasión del script mostrado en la figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT} previa, y lo mostramos a continuación en la figura \ref{fig:restringeixVistesPubliquesUSUARILOGUEJAT}:
 
 
-\setlength{\belowcaptionskip}{3pt}
+\setlength{\abovecaptionskip}{15pt}
 \FloatBarrier
 \begin{figure}[H]
 	\centering
@@ -1116,10 +1159,12 @@ El segundo script, \texttt{restringeixVistesPubliques\_USUARI\_loguejat.js} es u
 
 
 	
-\subsubsection{Protegiendo vistas ``privadas'' mediante permisos cuando el token no ha expirado.}
+\subsubsection{Protegiendo vistas ``privadas'' ante usuarios ``logueados'': cuando el token no ha expirado.}
 \label{sec:vistasPermisos}
 
-Análogamente al apartado anterior, tenemos que tomar en consideración las páginas que requieren permisos de acceso. Estas páginas YA ESTÁN protegidas de usuarios no logueados: estos no las podrán ver nunca, porque hicimos el script de la figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT} para redirigir a estos a la landing page en caso que por error entren en ellas. Sin embargo, necesitamos algo que evite que un usuario con permisos 1 o 2 (que ya ha concedido acceso a tickets digitales) pueda pedir de nuevo acceso a los mismos en el \texttt{pas4\_concedirAccesGmail}; o que un usuario con permisos 0 (e.g., ha puesto correo y contraseña y se ha registrado, pero no ha dado acceso a tickets digitales todavía) pueda tratar de visualizar el \texttt{dashboard} e intentar acceder a unos tickets que todavía no ha proporcionado a la aplicación para que trabaje con ellos.
+Análogamente al apartado anterior, tenemos que tomar en consideración las páginas que requieren permisos de acceso. Estas páginas \textit{ya están} protegidas del visionado de usuarios no logueados (usarios que no tengan token expedido): estos no las podrán ver nunca, porque hicimos el script de la figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT} para redirigilos a la landing page en caso que por error accedan a ellas.
+
+Sin embargo, nos queda algo por hacer: hay que conseguir \textbf{evitar} que un usuario con permisos 1 o 2 en el payload de su token (es decir, que ya ha concedido acceso a tickets digitales) pueda pedir de nuevo acceso a esos tikets; algo completamente innecesario porque ya los ha facilitado a mercApp previamente en \texttt{pas4\_concedirAccesGmail}; o, su opuesto: tenemos que evitar que un usuario con permisos 0 (e.g., ha puesto correo y contraseña y se ha registrado, pero no ha dado acceso a tickets digitales todavía) pueda tratar de visualizar el \texttt{dashboard} a la espera de obtener una información de unos tickets que él todavía no ha proporcionado.
 
 La solución a lo anterior es hacer que en función de los permisos existentes en el token inhabilitemos una vista de las ``privadas'' para el usuario, \textit{mediante} la redirección automática del usuario a la página que sí debe visualizar \textit{antes} de que cargue el DOM de la pagina vetada, tal que así:
 	
@@ -1139,7 +1184,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\FloatBarrier
 
 	
-	Es decir, en la tabla anterior mostramos que si un usuario con permiso 0 (no ha concedido acceso a tickets digitales) quiere acceder a la página \texttt{dashboard.html} para visualizar la explotación de datos de los tickets, no podrá verla porque le redirigiremos automáticamente a la página donde podrá proporcionar acceso a tickets digitales: \texttt{pas4\_concedirAccesGmail.html}). Y viceversa: Si entra en \textit{pas4} teniendo permisos 1 o 2, será redirigido al \textit{dashboard}. 
+	Es decir, en la tabla anterior mostramos que si un usuario con permiso 0 (no ha concedido acceso a tickets digitales) quiere acceder a la página \texttt{dashboard.html} para visualizar la explotación de datos de los tickets, no podrá verla porque le redirigiremos automáticamente a la página donde podrá proporcionar acceso a tickets digitales: \texttt{pas4\_concedirAccesGmail.html}. Y viceversa: Si entra en \textit{pas4} teniendo permisos 1 o 2, será redirigido al \textit{dashboard}. 
 	
 	Lo que acabamos de mencionar en la última tabla y en el párrafo anterior lo programamos en el siguiente script (cuyo prerequisito será decodificaJWT como en las anteriores ocasiones) y que podemos ver en la imagen \ref{fig:restringeixVistesPrivadesUSUARINOLOGUEJAT}:
 	
@@ -1147,15 +1192,15 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 \begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 <script src="/js/jwt/decodificaJWT.js"></script>
 <script src="/js/jwt/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.js">
-</script> TO DO! 
+</script>
 \end{lstlisting} 
 	
 	
-	\setlength{\belowcaptionskip}{3pt}
+	\setlength{\abovecaptionskip}{15pt}
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Script \texttt{restringeixVistesPrivades\_USUARI\_LOGUEJAT.js}, utilizado para redirigir a un usuario logueado hacia: \texttt{pas4\_concedirAccesGmail.html} o \texttt{dashboard.html} según proceda en caso que el usuario entre en una de estas dos páginas privadas sin el permiso correspondiente}
+		\caption{Script \texttt{restringeixVistesPrivades\_USUARI\_LOGUEJAT.js}, utilizado para redirigir a un usuario logueado hacia \texttt{pas4\_concedirAccesGmail.html} o \texttt{dashboard.html}, según proceda, en caso que el usuario entre en una de estas dos páginas privadas sin el permiso correspondiente.}
 		\includegraphics[width=1\linewidth]{img/restringeixVistesPrivadesUSUARINOLOGUEJAT.png}
 		
 		\label{fig:restringeixVistesPrivadesUSUARINOLOGUEJAT}
@@ -1165,6 +1210,26 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	Para entender como guardamos los datos de permisos e ids de usuario en el front-end, podemos ver el apartado \ref{sec:recibirAccesTokenENFRONTEND} que viene a continuación, donde especificamos como se recibe el token del back-end y se guarda en el front-end.
+	
+	\subsubsection{Salir voluntariamente de las páginas privadas: botón ``cerrar sesión''}
+	
+	El botón de ``cerrar sesión'' dentro de las dos páginas privadas \texttt{dashboard.html} y \texttt{pas4\_concedirAccesGmail.html} en realidad no cierra ninguna sesión. Recordemos que usamos token de acceso, que sustitye las sesiones. En el botón, sin embargo, hemos decidido mantener el nombre, porque el cierre de sesión es un concepto arraigado en los usuarios de sitios web, incluso más que el concepto de ``salir''\footnote{A nivel de usabilidad se me hace difícil justificar que un usuario diese click a un botón denominado ``eliminar token'' solamente porque el desarrollador quería ser preciso; dejemos esto como una prueba de como en ocasiones la usabilidad viene de la sencillez, no del honor a la verdad.}. 
+	
+	Lo que hace es , simplemente, eliminar el token de acceso del \textit{localStorage} cuando el usuario clica el botón de id ``botoEliminarToken''. 
+	
+	En cada una de estas páginas privadas recordemos que tenemos un script que cada segundo está reevaluando si hay token de acceso y si este es válido (ver script de figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT}). Por lo tanto, si lo borramos ese script va a redirigirnos a la página de inicio como máximo un segundo más tarde de la pulsación del botón de ``cierre de sesión''.
+	
+	\FloatBarrier
+	\setlength{\abovecaptionskip}{15pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Script \texttt{tancaSessioEliminantToken} que elimina el token de acceso cuando el usuario clica en el botón ``cerrar sesión'' en las páginas privadas \texttt{dashboard.html} y \texttt{pas4\_concedirAccesGmail.html}}
+		\includegraphics[width=1\linewidth]{img/scriptTancarSessio.png}
+		\label{fig:scriptTancarSessio}
+	\end{figure}
+	\FloatBarrier
+	
+	
 	
 	\subsection{Recibir el Access Token desde el back-end}
 	\label{sec:recibirAccesTokenENFRONTEND}
