@@ -1141,6 +1141,28 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Es decir, en la tabla anterior mostramos que si un usuario con permiso 0 (no ha concedido acceso a tickets digitales) quiere acceder a la página \texttt{dashboard.html} para visualizar la explotación de datos de los tickets, no podrá verla porque le redirigiremos automáticamente a la página donde podrá proporcionar acceso a tickets digitales: \texttt{pas4\_concedirAccesGmail.html}). Y viceversa: Si entra en \textit{pas4} teniendo permisos 1 o 2, será redirigido al \textit{dashboard}. 
 	
+	Lo que acabamos de mencionar en la última tabla y en el párrafo anterior lo programamos en el siguiente script (cuyo prerequisito será decodificaJWT como en las anteriores ocasiones) y que podemos ver en la imagen \ref{fig:restringeixVistesPrivadesUSUARINOLOGUEJAT}:
+	
+	
+\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+<script src="/js/jwt/decodificaJWT.js"></script>
+<script src="/js/jwt/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.js">
+</script> TO DO! 
+\end{lstlisting} 
+	
+	
+	\setlength{\belowcaptionskip}{3pt}
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Script \texttt{restringeixVistesPrivades\_USUARI\_LOGUEJAT.js}, utilizado para redirigir a un usuario logueado hacia: \texttt{pas4\_concedirAccesGmail.html} o \texttt{dashboard.html} según proceda en caso que el usuario entre en una de estas dos páginas privadas sin el permiso correspondiente}
+		\includegraphics[width=1\linewidth]{img/restringeixVistesPrivadesUSUARINOLOGUEJAT.png}
+		
+		\label{fig:restringeixVistesPrivadesUSUARINOLOGUEJAT}
+	\end{figure}
+	\FloatBarrier	
+	
+	
 	
 	Para entender como guardamos los datos de permisos e ids de usuario en el front-end, podemos ver el apartado \ref{sec:recibirAccesTokenENFRONTEND} que viene a continuación, donde especificamos como se recibe el token del back-end y se guarda en el front-end.
 	
