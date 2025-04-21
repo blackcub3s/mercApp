@@ -1021,22 +1021,23 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	Para ello, en el \textit{head} de cada una de las dos páginas en cuestión veréis que \textbf{antes} siquiera \textbf{de cargar el DOM} se cargan sendos archivos:
 	
-	\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
-	<script src="/js/jwt/decodificaJWT.js"></script>
-	<script src="/js/jwt/restringeixVistes_EXPIRACIO.js"></script>
-	\end{lstlisting}
+\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+<script src="/js/jwt/decodificaJWT.js"></script>
+<script src="/js/jwt/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.js">
+</script>
+\end{lstlisting}
 	
-	En el primero tenemos la función para extraer el payload de un token. Y en el segundo está la lógica que acabamos de explicar en los párrafos anteriores (ver figura \ref{fig:restringeixVistesEXPIRACIO}):
+	En el primero tenemos la función para extraer el payload de un token. Y en el segundo está la lógica que acabamos de explicar en los párrafos anteriores (ver figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT}):
 	
 	
 	\setlength{\belowcaptionskip}{3pt}
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Script ``restringeixVistes\_EXPIRACIO.js'', utilizado para regresar automáticamente a la landing page cuando el token de acceso expira en las páginas que requieren permisos de acceso: (\texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}).}
-		\includegraphics[width=1\linewidth]{img/restringeixVistesEXPIRACIO}
+		\caption{Script \texttt{restringeixVistesPrivades\_USUARI\_NO\_LOGUEJAT.js}, utilizado para regresar automáticamente a la landing page cuando el token de acceso expira en las páginas que requieren permisos de acceso: (\texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}).}
+		\includegraphics[width=1\linewidth]{img/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.png}
 
-		\label{fig:restringeixVistesEXPIRACIO}
+		\label{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT}
 	\end{figure}
 	\FloatBarrier
 	
@@ -1095,20 +1096,20 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 \begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 <script src="/js/jwt/decodificaJWT.js"></script>
-<script src="/js/jwt/restringeixVistes_USUARI_LOGUEJAT.js"></script>
+<script src="/js/jwt/restringeixVistesPubliques_USUARI_LOGUEJAT.js"></script>
 \end{lstlisting}
 
-El segundo script, ``restringeixVistes\_USUARI\_loguejat.jas'' es una modificación para la ocasión del script mostrado en la figura \ref{fig:restringeixVistesEXPIRACIO} previa, y lo mostramos a continuación en la figura \ref{fig:restringeixVistesUSUARILOGUEJAT}:
+El segundo script, \texttt{restringeixVistesPubliques\_USUARI\_loguejat.js} es una modificación para la ocasión del script mostrado en la figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT} previa, y lo mostramos a continuación en la figura \ref{fig:restringeixVistesPubliquesUSUARILOGUEJAT}:
 
 
 \setlength{\belowcaptionskip}{3pt}
 \FloatBarrier
 \begin{figure}[H]
 	\centering
-	\caption{Script ``restringeixVistes\_USUARI\_LOGUEJAT.js'', utilizado para redirigir a un usuario logueado fuera de las páginas públicas de forma automática y directo a las 2 páginas posibles que requieren credencial de acceso (``privadas''), según proceda de acuerdo con la variable permisos de su token de acceso -si el token existe y no ha expirado-: (\texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}).}
-	\includegraphics[width=1\linewidth]{img/restringeixVistesUSUARILOGUEJAT.png}
+	\caption{Script \texttt{restringeixVistesPubliques\_USUARI\_LOGUEJAT.js}, utilizado para redirigir a un usuario logueado fuera de las páginas públicas de forma automática y directo a las 2 páginas posibles que requieren credencial de acceso (``privadas''), según proceda de acuerdo con la variable permisos de su token de acceso -si el token existe y no ha expirado-: (\texttt{pas4\_concedirAccesGmail.html} y \texttt{dashboard.html}).}
+	\includegraphics[width=1\linewidth]{img/restringeixVistesPubliques_USUARI_LOGUEJAT.png}
 	
-	\label{fig:restringeixVistesUSUARILOGUEJAT}
+	\label{fig:restringeixVistesPubliquesUSUARILOGUEJAT}
 \end{figure}
 \FloatBarrier	
 	
@@ -1118,7 +1119,7 @@ El segundo script, ``restringeixVistes\_USUARI\_loguejat.jas'' es una modificaci
 \subsubsection{Protegiendo vistas ``privadas'' mediante permisos cuando el token no ha expirado.}
 \label{sec:vistasPermisos}
 
-Análogamente al apartado anterior, tenemos que tomar en consideración las páginas que requieren permisos de acceso. Estas páginas YA ESTÁN protegidas de usuarios no logueados: estos no las podrán ver nunca, porque hicimos el script de la figura \ref{fig:restringeixVistesEXPIRACIO} para redirigir a estos a la landing page en caso que por error entren en ellas. Sin embargo, necesitamos algo que evite que un usuario con permisos 1 o 2 (que ya ha concedido acceso a tickets digitales) pueda pedir de nuevo acceso a los mismos en el \texttt{pas4\_concedirAccesGmail}; o que un usuario con permisos 0 (e.g., ha puesto correo y contraseña y se ha registrado, pero no ha dado acceso a tickets digitales todavía) pueda tratar de visualizar el \texttt{dashboard} e intentar acceder a unos tickets que todavía no ha proporcionado a la aplicación para que trabaje con ellos.
+Análogamente al apartado anterior, tenemos que tomar en consideración las páginas que requieren permisos de acceso. Estas páginas YA ESTÁN protegidas de usuarios no logueados: estos no las podrán ver nunca, porque hicimos el script de la figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT} para redirigir a estos a la landing page en caso que por error entren en ellas. Sin embargo, necesitamos algo que evite que un usuario con permisos 1 o 2 (que ya ha concedido acceso a tickets digitales) pueda pedir de nuevo acceso a los mismos en el \texttt{pas4\_concedirAccesGmail}; o que un usuario con permisos 0 (e.g., ha puesto correo y contraseña y se ha registrado, pero no ha dado acceso a tickets digitales todavía) pueda tratar de visualizar el \texttt{dashboard} e intentar acceder a unos tickets que todavía no ha proporcionado a la aplicación para que trabaje con ellos.
 
 La solución a lo anterior es hacer que en función de los permisos existentes en el token inhabilitemos una vista de las ``privadas'' para el usuario, \textit{mediante} la redirección automática del usuario a la página que sí debe visualizar \textit{antes} de que cargue el DOM de la pagina vetada, tal que así:
 	
