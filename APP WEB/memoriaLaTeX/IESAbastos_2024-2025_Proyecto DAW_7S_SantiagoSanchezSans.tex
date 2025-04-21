@@ -915,32 +915,33 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			
 			Los endpoints del back-end a los que apuntamos con llamadas fetch desde los campos de formulario de correo electrónico y contraseña desde el HTML deben protegerse también en el back-end, no solamente en el front.
 			
-			El motivo de ello es porque no podemos permitir que entren unos datos no validados (nulos, con caracteres peligrosos) a través de \textbf{llamadas directas a la API}. Hay que tener mucho cuidado con esto!
+			El motivo de ello es porque no podemos permitir que entren unos datos no validados (nulos, con caracteres peligrosos) a través de \textbf{llamadas directas a la API}. Hay que tener mucho cuidado con esto! \textbf{	TO DO }
 			
-		\textbf{	TO DO }
+		
 			
 
 			\subsection{Hasheado de contraseñas}
 			\label{sec:implementacioHashContra}
 			
-			Las contraseñas de los usuarios no se han guardado en texto plano. Por seguridad, se han guardado en forma de hash, es decir, con encriptación unidireccional. A tal efecto se ha utilizado la librería bcrypt de Spring security\cite{bcryptPasswordEncoder} y se ha hecho una clase \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/EncriptaContrasenyes.java}{EncriptaContrasenyes.java} que ha permitido envolver las funciones de bcrypt que usamos (ver figura \ref{fig:hashejatContrasenyes}) con nombres más pedagógicos.
-			
-			
-			Específicamente, cada vez que un usuario inicie sesión o se registre, se utilizarán una o u otra función de la clase \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/EncriptaContrasenyes.java}{EncriptaContrasenyes.java}. Al instanciar un objeto de la misma, se instanciará también un objeto BCryptPasswordEncoder y se usarán las funciones de librería encode()\footnote{Para obtener el hash de una contraseña creada.} y matches()\footnote{Para verificar si una contraseña plana es coincidente con el hash que se guardó en base de datos en el momento del registro.}, respectivamente (convenientemente guardadas con un nombre más agradable como vemos en la figura \ref{fig:hashejatContrasenyes}).
-			
-			Esto se hará en la clase de servicio de Usuaris. Por ejemplo, para el inicio de sesión el uso de matches() a través de verificaContrasenya() lo encontraremos en esta línea de código:  (\href{https://github.com/blackcub3s/mercApp/blob/e8afa7110971dca00a660bd8ec5f1a565b852fbd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/servei/UsuariServei.java#L67}{link}).
+			Las contraseñas de los usuarios no se han guardado en texto plano. Por seguridad, se han guardado en forma de hash, es decir, con encriptación unidireccional. A tal efecto se ha utilizado la librería bcrypt de Spring security\cite{bcryptPasswordEncoder} y se ha hecho una clase \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/EncriptaContrasenyes.java}{EncriptaContrasenyes.java} que ha permitido envolver las funciones de bcrypt usadas con nombres más pedagógicos (ver figura \ref{fig:hashejatContrasenyes}).
 			
 			\FloatBarrier
 			\begin{figure}[H]
 				\centering
-				\caption{Clase \texttt{EncriptaContrasenyes.java}, utilizada para guardar contraseñas como hash en base de datos y para comparar contraseñas en texto plano con el hash guardado usando bcrypt.}
+				\caption{Clase \texttt{EncriptaContrasenyes.java}, utilizada para encriptar contraseñas y comparar hash encriptados.}
 				\label{fig:hashejatContrasenyes}
 				\includegraphics[width=1\linewidth]{img/hashejatContrasenyes.png}
 			\end{figure}
 			\FloatBarrier
 			
+			Específicamente, cada vez que un usuario inicie sesión o se registre, se utilizarán una u otra función de la clase \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/EncriptaContrasenyes.java}{EncriptaContrasenyes.java}. Al instanciar un objeto de la misma, se instanciará también un objeto BCryptPasswordEncoder y se usarán las funciones de librería \textit{encode()}\footnote{Para obtener el hash de una contraseña creada.} y \textit{matches()}\footnote{Para verificar si una contraseña plana es coincidente con el hash que se guardó en base de datos en el momento del registro.}, respectivamente (convenientemente guardadas con un nombre más agradable como vemos en la figura \ref{fig:hashejatContrasenyes}).
 			
-			Es interesante hacer notar, y esto no lo sabía antes de programar la clase, es que una misma contraseña de entrada produce hash distintos! Es decir, el hashing no solo impide ver las contraseñas de los usuarios si se observa la BBDD, sino que también impide ver si dos usuarios tienen la misma contraseña (porque no encontraremos dos hashs iguales). Esto también hace que no podamos comparar con una función de comparación de strings el hash guardado de una contraseña en el momento del registro con el hash generado por un logueo. Esto hay que hacerlo con el metodo matches().
+			Esto se hará en la clase de servicio \textit{UsuariServei.java}. Por ejemplo, para el inicio de sesión el uso de \textit{matches()} a través de \textit{ verificaContrasenya()} lo encontraremos en esta línea de código de dicha clase:  \href{https://github.com/blackcub3s/mercApp/blob/e8afa7110971dca00a660bd8ec5f1a565b852fbd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/servei/UsuariServei.java#L67}{link}.
+			
+
+			
+			
+			¡Es interesante hacer notar que una misma contraseña encriptada varias veces por la función \textit{encode()} (envuelta en \textit{hashejaContrsenya()}) produce hash distintos! Es decir, el hashing no solo imposibilita ver las contraseñas de los usuarios, sino que también impide ver si dos usuarios tienen la misma contraseña. Esto también hace que no podamos comparar con una función simple de comparación de strings el hash guardado de una contraseña en el momento del registro con el hash generado por un logueo. Por eso nos vemos obligados a usar el metodo \textit{matches()}.
 			
 			
 			
