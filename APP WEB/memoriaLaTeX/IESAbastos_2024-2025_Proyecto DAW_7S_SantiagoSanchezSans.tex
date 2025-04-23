@@ -311,7 +311,7 @@
 			%REQUISIT D I E NO EREN A LA REDACCCIO DEL PROJECTE INICIAL CREC
 			\textbf{REQUISITO D\footnote{Requisito añadido después de la presentación del proyecto.}:} Podremos permitir que los PDFs descargados del correo del usuario se almacenen en una carpeta local del mismo para que pueda verificar la extracción de los datos.
 			
-			\textbf{REQUISITO E\footnote{Requisito añadido después de la presentación del proyecto.}:} El sistema front-end y back-end de registro permitirá redirigir a los usuarios rápidamente a un registro de forma inteligente. Nos inspiraremos en el sistema de registro e iniciar sesión de NetFlix.
+			\textbf{REQUISITO E\footnote{Requisito añadido después de la presentación del proyecto.}:} El sistema front-end y back-end de registro permitirá redirigir a los usuarios rápidamente a un registro de forma inteligente. Nos inspiraremos en el sistema de  registro e iniciar sesión de NetFlix.
 			
 			\subsection{Requisitos de los usuarios}
 			
@@ -352,7 +352,7 @@
 		
 		\section{Secuenciación de tareas}
 		
-		El desarrollo del proyecto ha empezado entorno el \textbf{7 de marzo de 2025} (el día después de la sesión informativa sobre proyectos). Desde ese día hasta el día \textbf{21 abril} se ha invertido tiempo en la parte del front-end para gestionar el registro e inicio de sesion (páginas públicas) del proyecto, en comunión y en paralelo con el sistema de autenticación y autorización y securización de las APIs de la tabla Usuari en el back-end (el entramado más o menos complejo que mostramos en la figura \ref{fig:diagramaMercaAppFront} principalemtnte) y todo lo redactado de la parte de SpringBoot del proyecto (ver apartado \ref{sec:parteSpringBoot}).
+		El desarrollo del proyecto ha empezado entorno el \textbf{7 de marzo de 2025} (el día después de la sesión informativa sobre proyectos). Desde ese día hasta el día \textbf{21 abril} se ha invertido tiempo en la parte del front-end para gestionar el registro e inicio de sesion (páginas públicas) del proyecto, en comunión y en paralelo con el sistema de autenticación y autorización y securización de las APIs vinculadas a la tabla Usuari en el back-end (el entramado más o menos complejo que mostramos en la figura \ref{fig:diagramaMercaAppFront} principalmente) y todo lo redactado de la parte de SpringBoot del proyecto (ver apartado \ref{sec:parteSpringBoot}).
 		
 		Durante el horario de las prácticas de Lãberit (iniciadas el 10 de marzo) hasta el viernes 11 se ha diseñado el back-end en Java Spring Boot en paralelo a la realización del curso introductorio de Spring Boot mandado por la empresa (ver imagen \ref{fig:estrucutraAplicacioJAVARESOURCES}, recuadro en rojo, verde y azul). También se ha creado el enlace del back-end con java hasta el back-end de fastAPI donde haremos la explotación de tickets.
 		
@@ -416,7 +416,7 @@
 			
 				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto que permiten sacar provecho de Lombok sin las cuales correr el proyecto en IntelliJ fallará.
 				
-				Para el frontend se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}. Esto podría hacer las veces de una CDN donde podrían estar alojados los archivos estáticos (HTML, CSS y JavaScript).
+				Para el frontend se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}. Esto podría hacer las veces de una CDN donde podrían estar alojados los archivos estáticos (HTML, CSS y JavaScript)\footnote{¡Para correr el proyecto con la extensión live server abrir el proyecto en carpeta \textbf{app}, si no no funcionará!}.
 				
 				Para el back-end con fast-api se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}.
 		
@@ -1318,6 +1318,20 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\textit{NOTA: Los datos validados en el front-end siguen las mismas expresiones regulares y restricciones que las validaciones hechas en el back-end (ver sección \ref{sec:validacioDadesBACK}).}
 	
 	\textbf{TO DO FER-HO}
+	
+	\subsection{Diseño responsive: paginas publicas}
+	\label{sec:disenyoResponsivePublicas}
+	\textbf{TO DO FER-HO}
+	
+	\subsection{Diseño responsive: paginas privadas}
+	\label{sec:disenyoResponsivePrivadas}
+	
+	
+	\subsection{arquitectura dashboard: llamada fetch inicial a back-end y posteriores a localStorage}
+	\label{sec:dashboardFetchLocalStorage}
+	\textbf{TO DO FER-HO}
+	
+	
 		
 		
 	\chapter{Evaluación y Conclusiones Finales} %OBLIGAT
