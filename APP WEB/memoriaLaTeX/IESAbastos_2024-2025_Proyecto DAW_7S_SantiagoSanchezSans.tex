@@ -369,7 +369,44 @@
 		
 		\section{Diagramas de la aplicación}
 		
-		\textbf{Fer un diagrama de sistemes guapo amb tikz de tots els components de l'aplicació.}
+
+		
+		\subsection{diagrama de sistemas}
+		
+				
+		\setlength{\belowcaptionskip}{3pt}
+		\FloatBarrier
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercapp.png}
+			\caption{Diagrama de sistemas de la aplicación mercApp. Tenemos el back-end principal (Spring Boot) donde se mandan a guardar y leer tanto los usuarios (mySql) como los tickets (MongoDB). El back-end secundario, con fastAPI, parsea los tickets y los pasa a formato estructurado JSON para hacer que Spring Boot lo persista en en MongoDB. Google API Client permite extracción de tickets del gmail del usuario. El front-end con "Vanilla" JavaScript muestra las vistas al usuario en función del token de acceso.}
+
+			
+			\label{fig:diagramaSistemesAplicacioMercapp} 
+		\end{figure}
+		\FloatBarrier
+				
+				
+			\subsection{Camino durante registro de usuario}
+				
+				
+				\setlength{\belowcaptionskip}{3pt}
+				\FloatBarrier
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTRE.png}
+					\caption{Simplificación de los caminos activados en el diagrama de sistemas durante el registro de un usuario, hasta que este tiene acceso al dashboard de visualización con éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash contraseña. c) Mandamos vista al usuario para que nos dé acceso a tickets digitales junto con token de acceso con permisos = 0. d) usuario se autentica con \textbf{google API client.} e) tickets regresan al navegador. f) fastAPI recoge los  tickets y los parsea a formato JSON estructurado. g) fastAPI delega en SpringBoot la persistencia de datos. h) la persistencia de los tickets se hace en MongoDB. i) Spring Boot manda token de acceso con permisos = 1 para que frontend muestre el análisis de los tikets en el dashboard.}
+					\label{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE} 
+				\end{figure}
+				\FloatBarrier
+				
+				
+		\subsection{Camino durante inicio de sesión de usuario con pleno acceso a tikets digitales}
+		
+	\textbf{	TO DO TO DO}
+		
+		 O si n o el fas borra el \textbf{Camino durante registro de usuario} i deixa el diagrama de sistemes només.
+		
 	
 	\chapter{Desarrollo del proyecto} %OBLIGAT
 	
