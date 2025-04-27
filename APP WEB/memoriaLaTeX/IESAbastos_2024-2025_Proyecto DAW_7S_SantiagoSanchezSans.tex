@@ -344,7 +344,7 @@
 		
 		Sin embargo, los productos de Mercadona no los conocemos de antemano ni tenemos una lista exhaustiva de los mismos. Además, el número de productos que se pueden encontrar en un ticket varía en cada compra, por lo que no podemos usar una base de datos relacional tradicional como MySQL o PostgreSQL porque se trata de información no estructurada. En su lugar, usaremos MongoDB, una BBDD NoSQL que almacena datos en formato JSON y permite, además, búsquedas eficientes.
 		
-		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. La primera vez que consulte sus datos, estos se descargarán y almacenarán en localStorage del cliente. En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor. Evaluaremos la viabilidad de este sistema durante el desarrollo; Esto es la fase de diseño y como tal, \textbf{AQUEST PARAGRAF POTSER EL PODRAS ELIMINAR SI FINALMENT NO HO FAS I FAS CRIDES DIRECTES A BBDD}, en caso de no ser factible, las consultas se harán directamente en MongoDB.
+		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. Cuando inicie sesión y consulte sus datos de tikets, estos se descargarán de mongoDB y almacenarán en localStorage del cliente. En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor, hasta que se termine su token de acceso: en cuyo caso se borrarán los datos del localStorage. Evaluaremos la viabilidad de este sistema durante el desarrollo; Esto es la fase de diseño y como tal, \textbf{AQUEST PARAGRAF POTSER EL PODRAS ELIMINAR SI FINALMENT NO HO FAS I FAS CRIDES DIRECTES A BBDD}, en caso de no ser factible, las consultas se harán directamente en MongoDB.
 		
 
 
@@ -451,9 +451,9 @@
 		
 			\section{Entornos de desarrollo}
 			
-				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto que permiten sacar provecho de Lombok sin las cuales correr el proyecto en IntelliJ fallará.
+				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto que permiten sacar provecho de Lombok sin las cuales correr el proyecto en IntelliJ fallará\footnote{¡Para correr el proyecto back-end con\textit{ Spring Boot} abrir con intelliJ la carpeta app!}.
 				
-				Para el frontend se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}. Esto podría hacer las veces de una CDN donde podrían estar alojados los archivos estáticos (HTML, CSS y JavaScript)\footnote{¡Para correr el proyecto con la extensión live server abrir el proyecto en carpeta \textbf{app}, si no no funcionará!}.
+				Para el frontend se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}. Esto podría hacer las veces de una CDN donde podrían estar alojados los archivos estáticos (HTML, CSS y JavaScript)\footnote{¡El proyecto \textit{front end} con \textit{vanilla javascript} debe abrirse con vscode en la carpeta \textbf{app} y ejeductarlo en live server, si no \textbf{no} funcionará correctamente!}.
 				
 				Para el back-end con fast-api se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}.
 		
