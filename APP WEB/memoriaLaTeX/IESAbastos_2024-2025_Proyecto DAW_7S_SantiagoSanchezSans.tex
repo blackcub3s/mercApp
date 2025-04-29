@@ -305,7 +305,7 @@
 			
 			\textbf{REQUISITO B:} Mostrar el \textbf{\textit{coste total}} de la cesta de la compra del usuario a lo largo de distintas ventanas temporales (\underline{por meses}, períodos de 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
 			
-			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 9 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carnes, pescado, hogar e higiene personal\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
+			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 8 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carne, pescado, hogar e higiene personal\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
 			
 			
 			%REQUISIT D I E NO EREN A LA REDACCCIO DEL PROJECTE INICIAL CREC
@@ -1377,7 +1377,10 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\subsection{Diseño de iconos}
 	
-	Los iconos de las 9 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa. En la figura \ref{fig:eliminocanalalpha}, podemos ver la creación de uno de ellos a modo de ejemplo para mostrar el procedimiento seguido en los demás:
+	Los iconos de las 9 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa y se han editado con gimp (ver \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/categoriesProductes}{carpeta GitHub}).
+	
+	
+	En la figura \ref{fig:eliminocanalalpha}, podemos ver la creación de uno de ellos a modo de ejemplo para mostrar el procedimiento seguido en los demás:
 
 	
 	
@@ -1387,7 +1390,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{img/eliminoCanalAlpha}
-	\caption{Se ha pedido a chat gpt la creación del icono de verduras y hortalizas. Chat gpt no elimina el canal alpha del fondo automáticamente, así que hemos tenido que tomar la imagen saliente (A), pasarla por Gimp y exportarla  sin el fondo (B).}
+	\caption{Se ha pedido a chat gpt la creación del icono de verduras y hortalizas. Chat gpt no elimina el canal alpha del fondo automáticamente, así que hemos tenido que tomar la imagen saliente (A), pasarla por Gimp y exportarla  sin el fondo (B). Para hacerlo dentro de gimp seleccionamos el color blanco con la herramienta de selección (varita mágica) y seguimos la ruta \textit{capa} $\rightarrow$ \textit{transparencia} $\rightarrow$ \textit{color a alpha}.}
 
 	\label{fig:eliminocanalalpha}
 \end{figure}
