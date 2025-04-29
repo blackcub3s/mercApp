@@ -329,6 +329,8 @@
 			
 			Como hemos visto en los requisitos de la aplicación, en el sistema de registro e iniciar sesión se ha hecho una réplica mediante desarrollo inverso de los procesos que Netflix utiliza a tal efecto, adaptándola a nuestro caso particular (puede verse como se ha aprovechado ello en la sección \ref{sec:EnrutamientoDeVistas}). En este paso se ha dedicado muchísimo tiempo y es quizás la parte más importante de este proyecto en cuanto a vínculos directos con los objetivos del CFGS de DAW.
 			
+			El diseño de las páginas será responsive, hecho con \textit{media queries} de CSS, a excepción de los casos en que las librerías de gráficos utilizadas no lo permitan. Se insta al lector a modificar el tamaño de la ventana en todas las vistas del proyecto para valorar las soluciones empleadas.
+			
 	
 		 
 		\subsection{Back-end: Java (Spring Boot) y Python (FastAPI)}
@@ -367,11 +369,11 @@
 		
 		
 		
-		\section{Diagramas de la aplicación}
+
 		
 
 		
-		\subsection{diagrama de sistemas}
+		\section{Diagrama de sistemas de la aplicación}
 		
 				
 		\setlength{\belowcaptionskip}{3pt}
@@ -401,9 +403,9 @@
 				\FloatBarrier
 				
 				
-		\subsection{Camino durante inicio de sesión de usuario con pleno acceso a tikets digitales}
+		\subsection{Camino durante inicio de sesión}
 		
-	\textbf{	TO DO TO DO}
+	\textbf{TO DO TO DO}
 		
 		 O si n o el fas borra el \textbf{Camino durante registro de usuario} i deixa el diagrama de sistemes només.
 		
@@ -1364,10 +1366,32 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\label{sec:disenyoResponsivePrivadas}
 	
 	
-	\subsection{arquitectura dashboard: llamada fetch inicial a back-end y posteriores a localStorage}
+	\subsection{arquitectura pas4: llamada a google API client}
+	\label{sec:pas4googleAPIclient}
+	\textbf{TO DO FER-HO}
+	
+	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
 	\label{sec:dashboardFetchLocalStorage}
 	\textbf{TO DO FER-HO}
 	
+	
+	\subsection{Diseño de iconos}
+	
+	Los iconos de las 9 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa. En la figura \ref{fig:eliminocanalalpha}, podemos ver la creación de uno de ellos a modo de ejemplo para mostrar el procedimiento seguido en los demás:
+
+	
+	
+	
+\FloatBarrier
+\setlength{\belowcaptionskip}{3pt}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{img/eliminoCanalAlpha}
+	\caption{Se ha pedido a chat gpt la creación del icono de verduras y hortalizas. Chat gpt no elimina el canal alpha del fondo automáticamente, así que hemos tenido que tomar la imagen saliente (A), pasarla por Gimp y exportarla  sin el fondo (B).}
+
+	\label{fig:eliminocanalalpha}
+\end{figure}
+\FloatBarrier
 	
 		
 		
