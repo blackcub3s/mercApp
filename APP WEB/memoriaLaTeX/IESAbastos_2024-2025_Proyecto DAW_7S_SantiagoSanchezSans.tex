@@ -303,7 +303,7 @@
 			
 			\textbf{REQUISITO A:} Mostrar\textbf{ \textit{evolución de los precios}} de los productos unitarios adquiridos \underline{con más frecuencia} (visualizable en un gráfico donde en X tendremos el tiempo y en Y el precio en euros). Para los productos de precios muy variables (productos a granel, como frutas, etc.), se mostrará la evolución del precio por kg a lo largo del tiempo.
 			
-			\textbf{REQUISITO B:} Mostrar el \textbf{\textit{coste total}} de la cesta de la compra del usuario a lo largo de distintas ventanas temporales (\underline{por meses}, períodos de 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
+			\textbf{REQUISITO B:} Mostrar el \textbf{\textit{coste total de la cesta}} de la compra del usuario a lo largo de distintas ventanas temporales (\underline{por meses}, períodos de 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
 			
 			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 8 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carne, pescado, hogar e higiene personal\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
 			
