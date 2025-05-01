@@ -337,7 +337,14 @@
 		
 			- Back-end con Java (springboot para el login y la autenticación de usuarios: con este framework guardaremos datos en la BBDD mySQL).
 			
-			- Python dentro de un contenedor docker (o python a secas, para descargar los pdfs del correo) y parsear el contenido de los mismos: con sklearn, numpy y spacy que luego se podrán pasarlos a la BBDD mongoDB.
+			- fastAPI parseará el contenido de los mismos: con sklearn, numpy y spacy que luego se podrán pasar a la BBDD mongoDB mediante Spring Boot.
+			
+			
+		\textit{	Spring Boot se encargará de la \textbf{persistencia} de los datos de los tickets, hacia mongoDB y de su lectura. Python solamente extraerá o p\textbf{arseará el contenido de los tickets}.}
+		
+		\subsection{Cloud: Google API Client}
+		
+					-\textbf{ Google API Client} nos permitirá acceder a los tickets de los usuarios y permitirle \textbf{al usuario descargarlos a su ordenador mediante javascript}.
 			
 		\subsection{BBDD: MySQL y MongoDB}
 		
@@ -346,7 +353,7 @@
 		
 		Sin embargo, los productos de Mercadona no los conocemos de antemano ni tenemos una lista exhaustiva de los mismos. Además, el número de productos que se pueden encontrar en un ticket varía en cada compra, por lo que no podemos usar una base de datos relacional tradicional como MySQL o PostgreSQL porque se trata de información no estructurada. En su lugar, usaremos MongoDB, una BBDD NoSQL que almacena datos en formato JSON y permite, además, búsquedas eficientes.
 		
-		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. Cuando inicie sesión y consulte sus datos de tikets, estos se descargarán de mongoDB y almacenarán en localStorage del cliente. En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor, hasta que se termine su token de acceso: en cuyo caso se borrarán los datos del localStorage. Evaluaremos la viabilidad de este sistema durante el desarrollo; Esto es la fase de diseño y como tal, \textbf{AQUEST PARAGRAF POTSER EL PODRAS ELIMINAR SI FINALMENT NO HO FAS I FAS CRIDES DIRECTES A BBDD}, en caso de no ser factible, las consultas se harán directamente en MongoDB.
+		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. Cuando inicie sesión y consulte sus datos de tickets, estos se descargarán de mongoDB y almacenarán en el localStorage del cliente (navegador). En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor, hasta que expire el token de acceso del usuario: en cuyo caso se borrarán los datos del localStorage.
 		
 
 
@@ -405,9 +412,7 @@
 				
 		\subsection{Camino durante inicio de sesión}
 		
-	\textbf{TO DO TO DO}
-		
-		 O si n o el fas borra el \textbf{Camino durante registro de usuario} i deixa el diagrama de sistemes només.
+	\textbf{TO DO}
 		
 	
 	\chapter{Desarrollo del proyecto} %OBLIGAT
