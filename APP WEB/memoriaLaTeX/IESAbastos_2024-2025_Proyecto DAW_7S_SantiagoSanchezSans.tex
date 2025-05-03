@@ -190,7 +190,7 @@
 		
 		Las ventajas para el usuario y para el supermercado de tener un ticket digital son evidentes: el cliente no perderá los tickets de cara a devoluciones, no deberá esperar a su impresión después del pago y no se verá expuesto a la tinta del texto del ticket físico: que al menos por allá en 2019 la comisión europea ya alertaba de su peligrosidad \cite{EU_Parliament_2019} a partir de un estudio de la Universidad de Granada que hallaba alto contenido de Bisfenol-A\footnote{Es un químico que es un disruptor del sistema endocrino.} en los tickets de compra de distintos paises \cite{Molina-Molina2019}\cite{CanalUGR}.
 		
-		Las ventajas de la adopción masiva del ticket digital para el supermercado y el trabajador también son claras: se evita el derroche de papel, se impide que los cajeros estén expuestos a químicos que constituyan un riesgo laboral y, finalmente, se consifgue acortar los tiempos de cola mejorando la experiencia de los clientes y asegurando su regreso futuro.
+		Las ventajas de la adopción masiva del ticket digital para el supermercado y el trabajador también son claras: se evita el derroche de papel, se impide que los cajeros estén expuestos a químicos que constituyan un riesgo laboral y, finalmente, se consigue acortar los tiempos de cola mejorando la experiencia de los clientes y asegurando su regreso futuro.
 		
 		
 		
@@ -303,7 +303,7 @@
 			
 			\textbf{REQUISITO A:} Mostrar\textbf{ \textit{evolución de los precios}} de los productos unitarios adquiridos \underline{con más frecuencia} (visualizable en un gráfico donde en X tendremos el tiempo y en Y el precio en euros). Para los productos de precios muy variables (productos a granel, como frutas, etc.), se mostrará la evolución del precio por kg a lo largo del tiempo.
 			
-			\textbf{REQUISITO B:} Mostrar el \textbf{\textit{coste total de la cesta}} de la compra del usuario a lo largo de distintas ventanas temporales (\underline{por meses}, períodos de 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
+			\textbf{REQUISITO B:} Mostrar {\textbf{gasto total en distintas ventanas temporales}} del usuario: períodos de 1, 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
 			
 			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 8 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carne, pescado, hogar e higiene personal\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
 			
@@ -340,7 +340,7 @@
 			- fastAPI parseará el contenido de los mismos: con sklearn, numpy y spacy que luego se podrán pasar a la BBDD mongoDB mediante Spring Boot.
 			
 			
-		\textit{	Spring Boot se encargará de la \textbf{persistencia} de los datos de los tickets, hacia mongoDB y de su lectura. Python solamente extraerá o p\textbf{arseará el contenido de los tickets}.}
+		\textit{	Spring Boot se encargará de la \textbf{persistencia} de los datos de los tickets, hacia mongoDB y de su lectura. Python solamente extraerá o p\textbf{arseará el contenido de los tickets} mandando sus datos hacia el back-end de spring boot directamente.}
 		
 		\subsection{Cloud: Google API Client}
 		
@@ -1380,12 +1380,14 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\textbf{TO DO FER-HO}
 	
 	
-	\subsection{Diseño de iconos}
+	\subsection{Diseño de iconos (áreas de producto)}
 	
-	Los iconos de las 9 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa y se han editado con gimp (ver \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/categoriesProductes}{carpeta GitHub}).
+	Los iconos de las 8 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa y se han editado posteriormente con Gimp para eliminar el fondo y generar transparencia en el mismo (ver \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/categoriesProductes}{carpeta GitHub}).
 	
 	
-	En la figura \ref{fig:eliminocanalalpha}, podemos ver la creación de uno de ellos a modo de ejemplo para mostrar el procedimiento seguido en los demás:
+	En la figura \ref{fig:eliminocanalalpha}, podemos ver la creación de uno de los iconos con chatGPT y la eliminación posterior del fondo con GIMP. 
+	
+	Hay que mencionar, sin embargo, que el procedimiento de GIMP ahí mostrado no permite conseguir una transparencia pura del fondo. Para conseguirlo en algunos iconos es indispensable usar otro procedimiento que involucra más pasos pero que nos permite asegurarnos que se elimina por completo el canal alpha del fondo (ver figura \ref{fig:eliminocanalalphaCOMPLEX}). La utilidad de ese último procedimiento en relación al anterior puede verse en la figura \ref{fig:ventatjaProcedComplexVSsimple} donde comparamos la aplicación de ambos procedimientos al mismo icono.
 
 	
 	
@@ -1394,10 +1396,38 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 \setlength{\belowcaptionskip}{3pt}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{img/eliminoCanalAlpha}
 	\caption{Se ha pedido a chat gpt la creación del icono de verduras y hortalizas. Chat gpt no elimina el canal alpha del fondo automáticamente, así que hemos tenido que tomar la imagen saliente (A), pasarla por Gimp y exportarla  sin el fondo (B). Para hacerlo dentro de gimp seleccionamos el color blanco con la herramienta de selección (varita mágica) y seguimos la ruta \textit{capa} $\rightarrow$ \textit{transparencia} $\rightarrow$ \textit{color a alpha}.}
+	\includegraphics[width=1\linewidth]{img/eliminoCanalAlpha}
+
 
 	\label{fig:eliminocanalalpha}
+\end{figure}
+\FloatBarrier
+
+
+\FloatBarrier
+\setlength{\belowcaptionskip}{3pt}
+\begin{figure}[H]
+	\centering
+	\caption{En determinados casos no es suficiente con la estrategia sencilla del paso anterior y debemos seguir este procedimiento, que incluye el uso de la varita mágica, y de los pasos \textit{Seleccionar} $\rightarrow$ \textit{invertir} (invertir selección) y \textit{Ctrl + X} seguido de \textit{Ctrl + V} como mostramos en la figura.} 
+	\includegraphics[width=1\linewidth]{img/eliminoCanalAlphaCOMPLEX.png}
+
+	
+	\label{fig:eliminocanalalphaCOMPLEX}
+\end{figure}
+\FloatBarrier
+
+
+
+\FloatBarrier
+\setlength{\belowcaptionskip}{3pt}
+\begin{figure}[H]
+	\centering
+	\caption{El procedimiento de Gimp mostrado en la figura \ref{fig:eliminocanalalpha} genera un icono que en contexto se verá como la imagen de la izquierda: la card central del dashboard mostraría un icono con bordes rectangulares no intencionados. El procedimiento de la figura \ref{fig:eliminocanalalphaCOMPLEX}, en cambio, nos da la imagen de la derecha que no tiene fondo alguno y permite que el icono se asente a la perfección en la card.}
+	\includegraphics[width=1\linewidth]{img/ventatjaProcedComplexVSsimple.png}
+
+	
+	\label{fig:ventatjaProcedComplexVSsimple}
 \end{figure}
 \FloatBarrier
 	
