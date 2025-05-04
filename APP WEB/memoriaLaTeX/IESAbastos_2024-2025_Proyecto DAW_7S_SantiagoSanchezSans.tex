@@ -1260,6 +1260,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	Para entender como guardamos los datos de permisos e ids de usuario en el front-end, podemos ver el apartado \ref{sec:recibirAccesTokenENFRONTEND} que viene a continuación, donde especificamos como se recibe el token del back-end y se guarda en el front-end.
 	
 	\subsubsection{Salir voluntariamente de las páginas privadas: botón ``cerrar sesión''}
+	\label{sec:tancarSessioBotoExplicacio}
 	
 	El botón de ``cerrar sesión'' dentro de las dos páginas privadas \texttt{dashboard.html} y \texttt{pas4\_concedirAccesGmail.html} en realidad no cierra ninguna sesión. Recordemos que usamos token de acceso, que sustitye las sesiones. En el botón, sin embargo, hemos decidido mantener el nombre, porque el cierre de sesión es un concepto arraigado en los usuarios de sitios web, incluso más que el concepto de ``salir''\footnote{A nivel de usabilidad se me hace difícil justificar que un usuario diese click a un botón denominado ``eliminar token'' solamente porque el desarrollador quería ser preciso; dejemos esto como una prueba de como en ocasiones la usabilidad viene de la sencillez, no del honor a la verdad.}. 
 	
@@ -1366,12 +1367,112 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\textbf{TO DO FER-HO}
 	
-	\subsection{Diseño responsive: paginas publicas}
-	\label{sec:disenyoResponsivePublicas}
-	\textbf{TO DO FER-HO}
+	\subsection{Diseño: páginas publicas}
+	\label{sec:disenyoPublicas}
+	\textbf{TO DO FER-HO: parlar diseny responsive}
 	
-	\subsection{Diseño responsive: paginas privadas}
+	\subsection{Diseño: páginas privadas}
 	\label{sec:disenyoResponsivePrivadas}
+	
+	\subsubsection{Diseño del dashboard}
+	
+	Parte del diseño del dashboard es un reaprovechamiento del figma y del código HTML y CSS creado para el proyecto final de la asignatura de desarrollo de interfaces, concretamente, de una página donde se explicaban diferencias entre frameworks de front-end que el lector puede consultar  	\href{https://blackcub3s.github.io/proyectoDesarrolloInterfaces/FrontEnd.html}{aquí} para ver la semilla del diseño original.
+	
+	Esa página fue diseñada y programada por mí de forma íntegra, desde cero con CSS y HTML (a excepción de la Footer que la hizo mi compañero de grupo, dado que era un proyecto grupal). De la parte del footer no se ha aprovechado HTML ni CSS porque el código de la misma no fue de mi autoría, así que se ha optado por un diseño distinto.
+	
+	El motivo del reaprovechamiento del código es que era imposible asegurar una firma visual distintiva y un aspecto profesional con un diseño desde cero en el poco tiempo para hacer el proyecto. Para hacer la página original, fueron dedicadas muchas, \textit{muchísimas} horas por mi parte: una barbaridad de hecho, así que me sabía mal no reutilizarlo. Además, lo bueno de la reutilización es que se ha podido mejorar la página inicial con dos aspectos que en la asignatura de interfaces NO se pudieron cubrir por los requisitos de la misma:
+	
+	\vspace{-.8em}
+	\begin{itemize}
+		\setlength{\itemsep}{-.2em}
+		\item \textbf{Diseño responsive}: la página original \texttt{frontEnd.html} del proyecto de interfaces no podía ser responsive mientras que \texttt{dashboard} sí lo es\footnote{en la medida de lo posible, dado que no todas las librerías admiten responsividad: por ejemplo, chart.js no lo es.}.
+		\item \textbf{Persistencia de datos}: las vistas de la página del dashboard permiten visualizar datos extraídos de una base de datos de mongoDB.
+	\end{itemize}
+	
+	Después de esta aclaración vamos a pasar a explicar las secciones de la página y su diseño.
+	
+	
+	
+	\noindent \textbf{SECCIÓN 0 (S0): barra de navegación y botón de cierre de sesión}
+	\hrule
+	\vspace{.5em}
+	
+	Esta sección incorpora el botón de cierre de sesión (que elimina el token de acceso, en realidad, como ya se ha visto en la sección \ref{sec:tancarSessioBotoExplicacio}) y la barra de navegación que conseguirá redirigir a ubicaciones distintas en función de si se es usuario (permisos=1) o superusuario (permisos=2). También muestra links a páginas que nos permiten ver los tickets del usuario (si los tiene descargados), sus datos en una tabla y una página para contactar con nosotros (ver figuras \ref{fig:barranavegaciodashboardpermisos1}, \ref{fig:barranavegaciodashboardpermisos1dropdown} y \ref{fig:detalleNavbarDesplegadaCodi}).
+	
+	\FloatBarrier
+	\setlength{\abovecaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Barra de navegación del usuario de permisos=1 con sus 4 elementos}
+		\includegraphics[width=1\linewidth]{img/barraNavegacioDashboardPERMISOS1}
+
+		\label{fig:barranavegaciodashboardpermisos1}
+	\end{figure}
+	\FloatBarrier
+	
+	Dentro de la sección servicios hay un desplegable o ``dropdown" que nos permite llegar a las distintas secciones del dashboard: el ``inflalyzer'', el ``categorizer'' y el ``intervalizer''.
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Detalle barra de navegación con el drop-down desplegado.}
+		\includegraphics[width=1\linewidth]{img/barraNavegacioDashboardPERMISOS1dropDown}
+		
+		\label{fig:barranavegaciodashboardpermisos1dropdown}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{0pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Detalle del código que hizo posible el drop-down del menú. Cada elemento drop down se ha animado mediante animate.css definiendo distintas duraciones de la animación \textit{fadeInDown} para conseguir un efecto persiana. El uso del selector descendiente y el no abuso de los IDs a menos que sea necesario es una metodología seguida a lo largo del diseño del dashboard.}
+		\includegraphics[width=1\linewidth]{img/navBarDesplegadaMakingOfPermisos1.png}
+
+		\label{fig:detalleNavbarDesplegadaCodi}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	
+	
+	
+	
+	
+	
+	\noindent \textbf{SECCIÓN 1 (S1): presentación Dashboard}
+	\hrule
+	\vspace{.5em}
+	
+	Esta sección simplemente muestra un gradiente lineal que transiciona del negro de la barra de navegación hacia el azul claro que es colindante a la barra roja. Para hacerlo se ha hecho mediante un doble gradiente lineal. También se ha usado la clase fadeIn de animate.css para hacer que aparezca con un fundido de entrada al cargar o recargar la página. Podéis ver la figura que muestra el código en \ref{fig:S1FrontMakeOf}.
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{De izquierda a derecha: código HTML, codigo CSS y el resultado final de la vista de esa sección}
+		\includegraphics[width=1\linewidth]{img/S1FrontMakeOf.png}
+		
+		
+		\label{fig:S1FrontMakeOf}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	
+	
+	\noindent \textbf{SECCIÓN 2 (S2): características de la aplicación mercApp:}
+	\hrule
+	\vspace{.5em}
+	
+	Esta sección contiene tres ``cards'' que resumen los servicios que ofrece el resto del dashboard (inflación por producto, gastos por categoría y gastos por ventana temporal): también incorporan los datos más relevantes de los tikets de cada usuario.
+	
+	
+	
+	\subsubsection{Diseño del ``pas4''}
+	
 	
 	
 	\subsection{arquitectura pas4: llamada a google API client}
