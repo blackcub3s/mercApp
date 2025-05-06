@@ -40,4 +40,7 @@
 
     /*TAMAÑO DE LETRA DE LA TABLA DEL DASHBOARD*/
     --tamanyoTabla: 1.4em;
+
+    /*TAMAÑO DEL BORDE DE LA TABLA DE INFLALYZER*/
+    --radioBordeTablaInflalizer: .4em;
 }

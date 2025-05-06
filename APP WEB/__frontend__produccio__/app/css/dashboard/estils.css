@@ -1,6 +1,9 @@
 .titulo {font-size: 2.1rem; margin-top: 1rem;}     
 .subtitolSalutacio {font-size: 1.7rem;} 
 
+
+
+
 /*######################################
   #              SECCIÓN 1             # 
   #       presentación dashboard       #
@@ -31,6 +34,9 @@
     height: .9em;
     background: red;
 }
+
+
+
 
 /*###########################################
   # SECCIÓN 2: DASHBOARD CARACTERISTICAS:   # 
@@ -127,10 +133,23 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 }
 
 
+/*DISENY DE LA CARD DE L'ESQUERRA (DE LES TRES EXISTENTS)*/
+#gridInferiorCardInflacio { /*les tres columnes que tenim a l'inferior de la card de l'esquerra en la Secció 2 (característiques de l'aplicacio dashboard)*/
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2em 1.5em 0em 1.5em; /*top right bottom left: el right i el left els fa comprimir*/
+}
 
-/*#################################################
-    SECCIÓN 3: Inflalyzer (sin swiper: ¡esta vez hecho a mano!) --> un paginador!
-  #################################################*/
+#gridInferiorCardInflacio section img {width: 60%;} /*fletxes creixents i decreixents*/
+#gridInferiorCardInflacio section:nth-child(2) p:first-child {font-size: 3em; font-weight: bold; position: relative; top: -.25em;}  /*≃*/
+#gridInferiorCardInflacio section p:last-child {font-size: 1.22em; font-weight: bold; padding-top: .7em;}  /*els numeros de productes d'aument, igual o decrement*/
+
+#nreProductesPreu_INCREMENTAT {color: red;}  /*NUMERO inferior a la fletxa d'amunt*/
+#nreProductesPreu_MANTINGUT {position: relative; top: -1.2em; color: orange;}  /*NUMERO inferior a la ≃*/
+#nreProductesPreu_DECREMENTAT {color: var(--colorVerdeVue);}  /*NUMERO inferior a fletxa avall*/
+/*FI DISSENY ESPECIFIC DE LA CARD DE L'ESQUERRA (DE LES TRES EXISTENTS)*/
+
+
 
 
 
@@ -138,21 +157,19 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
   # SECCIÓN 3: INFLALYZER                   # 
   #        paginador estilo swiper          #
   #        sin swiper. Icono categoria,     #
-  #        card con tabla min max           #
-  #        subtítulo y 3 cards)             #
+  #        card con tabla (min,max)         #
+  #        embedida en una unica card       #
   ###########################################*/
 
 
 /*******************************************************************************/
-/* Titulo (Inflalyzer: evolución de 
+/* Título (Inflalyzer: evolución de 
 los precios por producto ("inflación")?)
 /*******************************************************************************/
 #PRIV_evolucionInflacionPorProducto > h1 {
     text-align: center;
     padding-top: 2.6em;
 }
-
-
 
 
 /***********************************/
@@ -212,11 +229,8 @@ incrementando el tamaño de la imagen con transform */
 
 
 
-
-
-
 /************************************/
-/** 4A) Fondos variables y torcido **/
+/** 3B) Fondos variables y torcido **/
 /************************************/
 
 
@@ -241,9 +255,9 @@ body {overflow-x: hidden;}
 
 
 
-/***********************************/
-/** 4A)Diseño de la  card de inflalyzer **/
-/***********************************/
+/*****************************************/
+/** 3C)Diseño de la  card translúcida de inflalyzer **/
+/*****************************************/
 
 
 #cardInflacio .cardDiferenciasFront {
@@ -271,19 +285,7 @@ body {overflow-x: hidden;}
     color: white;
 }
 
-#gridInferiorCardInflacio {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 2em 1.5em 0em 1.5em; /*top right bottom left: el right i el left els fa comprimir*/
-}
 
-#gridInferiorCardInflacio section img {width: 60%;} /*fletxes creixents i decreixents*/
-#gridInferiorCardInflacio section:nth-child(2) p:first-child {font-size: 3em; font-weight: bold; position: relative; top: -.25em;}  /*≃*/
-#gridInferiorCardInflacio section p:last-child {font-size: 1.22em; font-weight: bold; padding-top: .7em;}  /*els numeros de productes d'aument, igual o decrement*/
-
-#nreProductesPreu_INCREMENTAT {color: red;}  /*NUMERO inferior a la fletxa d'amunt*/
-#nreProductesPreu_MANTINGUT {position: relative; top: -1.2em; color: orange;}  /*NUMERO inferior a la ≃*/
-#nreProductesPreu_DECREMENTAT {color: var(--colorVerdeVue);}  /*NUMERO inferior a fletxa avall*/
 
 /*una forma de definir salto de linea en CSS
   sin usar el <br> de HTML, mejor práctica*/
@@ -302,7 +304,7 @@ body {overflow-x: hidden;}
 
 /*el paginador 1/30, 2/30 etc. [SI NO SO SELECTOR DESCENDENT NO FUNCION*/
 #cardInflacio #paginesPaginadorINFL { 
-    margin: 0;
+    margin: 0em;
     color: grey;
     font-weight: bold;
 }
@@ -338,21 +340,37 @@ body {overflow-x: hidden;}
 
 
 
-/*#################################################
-    SECCIÓN 5 (S5) tabla inflalyzer: datos resumidos sobre la inflación: productos comprados
-    en momentos distintos del tiempo, precio minimo y precio maximo historico en ticket de usuario.
-  #################################################*/
+/*#################################################################################################
+  #  SECCIÓN 3 (S3) CONTINUACIÓN --> tabla inflalyzer:                                            #
+  #  datos resumidos sobre la inflación:                                                          #
+  #  productos comprados en momentos distintos del tiempo,                                        #
+  #  precio minimo y precio maximo de entre los históricos de ticket de usuario.                  #
+  #################################################################################################*/
 
+  /*#tablaInflalyzer cuelga de la sección de id #PRIV_evolucionInflacionPorProducto */
 #tablaInflalyzer {
-    padding-top: 2em;
+    padding-top: 1em;
 }
+
+
+/*APLICO UN RADIO (UNA TANGENCIA) A LOS CUATRO BORDES DE LA TABLA DEL INFLALYZER 
+  PARA ELLO, CON SELECTORES DESCENDIENTES, HAY QUE IR A BUSCAR CADA CELDA QUE OCUPE UN CANTO
+  Y ESPECIFICAR  CUAL ES EL BORDE REDONDEADO QUE LE CORRESPONDE */
+  #tablaInflalyzer table tr th:first-child {border-top-left-radius: var(--radioBordeTablaInflalizer);}
+  #tablaInflalyzer table tr th:last-child {border-top-right-radius: var(--radioBordeTablaInflalizer);}
+  #tablaInflalyzer table tr:last-child td:first-child {border-bottom-left-radius: var(--radioBordeTablaInflalizer);}
+  #tablaInflalyzer table tr:last-child td:last-child {border-bottom-right-radius: var(--radioBordeTablaInflalizer);}
+  
+
 
 
 #tablaInflalyzer table {
     border-collapse: collapse; /*Hacemos que los borders de la tabla colapsen en uno solo para que se vean lineas finas */
     background-color: transparent;
-    box-shadow: 8px 7px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 5px 4px 2px rgba(0, 0, 0, 0.25);
+    border-radius: var(--radioBordeTablaInflalizer); /*ESTE BORDER RADIUS ES PARA QUE SE MUESTRE LA SOMBRA QUE SE PRODUCE EN CADA CELDA DEL EXTREMO DE LA TABLA*/
 }
+
 
 
 
@@ -360,8 +378,7 @@ body {overflow-x: hidden;}
 #tablaInflalyzer th, #tablaInflalyzer td {padding: .83em 1em;}
 #tablaInflalyzer th {font-size: var(--tamanyoTabla);}
 
-/*PONEMOS LA SEPARACION VERTICAL ENTRE LA LA SEGUNDA COLUMNA DONDE PONEMOS
-LAS CARACTERISTICAS DE VUE Y LA COLUMNA DE REACT*/
+/*PONEMOS LA SEPARACION VERTICAL LAS DOS COLUMNAS (MIN I MAX)*/
 #tablaInflalyzer th:first-child{border-right: 1px solid black;}
 #tablaInflalyzer td:first-child {border-right: 1px solid black;}
 
@@ -372,9 +389,7 @@ LAS CARACTERISTICAS DE VUE Y LA COLUMNA DE REACT*/
     text-align: center;
 }
 
-#tablaInflalyzer td:first-child {
-    text-align: left;
-}
+
 
 /*LAS FILAS IMPARES APARECEN EN UN COLOR LIGERAMENTE DISTINTO A LAS IMPARES*/
 #tablaInflalyzer tbody tr:nth-child(even) {background-color: rgba(238, 238, 238, 0.75);}
@@ -396,9 +411,3 @@ LAS CARACTERISTICAS DE VUE Y LA COLUMNA DE REACT*/
     background: linear-gradient(90deg, var(--PI_colorAngularGradienteInicio), var(--PI_colorAngularGradienteFinal));
     text-align: center;
 }
-
-/*PONGO BORDES A LA TABLA DEL INFLALYZER (EN LOS TABLE HEAD A IZQUIERDA Y DERECHA)*/
-#tablaInflalyzer table tr th:first-child {border-top-left-radius: 10px;}
-#tablaInflalyzer table tr th:last-child {border-top-right-radius: 10px;}
-#tablaInflalyzer table tr:last-child td:first-child {border-bottom-left-radius: 10px;}
-#tablaInflalyzer table tr:last-child td:last-child {border-bottom-right-radius: 10px;}
