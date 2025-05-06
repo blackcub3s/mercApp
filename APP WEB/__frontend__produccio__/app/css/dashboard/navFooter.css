@@ -52,25 +52,7 @@ html {font-size: 16px;}  /*APUNTE NO MODIFICAR: Se destroza todo*/
 (FRONTEND, BACKEND, IA, ETC)*/
 .tituloSeccion {font-size: 2.5rem;}     /*son 40 px en figma. Con el font-size del root a 16 con 2.5rem tenemos los 40px (40 = 16*2.5)*/
 .subTituloSeccion {font-size: 1.45rem; margin-top: 1rem;}  /*TEORICAMENTE: son 26 px en figma. Si el font-size del root es 16 con 1.5rem tenemos los 24  (40 = 16*1.5). Pero lo hemos ajustado, porque la teoria no es igual que la practica*/
-.botonPrimario {
-    background-color: var(--colorAzulBoton);
-    color: white;
-    padding: .65em 1.5em .65em 1.5em;
-    border-radius: .5em;
-    border-style: none; /*quitamos la border vestigial*/
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
-    font-size: .62em;
-    text-decoration: none; /*quitamos el subrayado de hipervínculo (elemento a)*/
-    transition: background-color var(--tiempoTransicionEstandar) ease-in-out, 
-                transform var(--tiempoTransicionEstandar) ease-in-out, 
-                box-shadow var(--tiempoTransicionEstandar) ease-in-out; /*TRANSICIÓN PARA EL JOVER*/
-}
 
-
-.botonPrimario:hover {
-    background-color: var(--colorAzulBotonHover); /* Cambia a un tono más oscuro del color azul */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4); /* Sombra más intensa */
-}
 
 /*------------------------------------------------*/
 /*------------------------------------------------*/
