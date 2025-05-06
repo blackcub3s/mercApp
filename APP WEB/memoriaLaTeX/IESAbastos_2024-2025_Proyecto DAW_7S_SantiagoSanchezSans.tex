@@ -1004,6 +1004,11 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	\section{Desarrollo del front-end}
 	
+	\subsection{Estructura de la aplicación}
+	\label{sec:estructuraAplicacionFrontEnd}
+	
+	\textbf{TO DO}
+	
 	\subsection{Enrutamiento de vistas}
 	\label{sec:EnrutamientoDeVistas}
 	
@@ -1360,18 +1365,18 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
-	\subsection{validacion de datos (Formularios entrada)}
+	\subsection{Validación de datos (Formularios entrada)}
 	\label{sec:validacioDadesFRONT}
 	
 	\textit{NOTA: Los datos validados en el front-end siguen las mismas expresiones regulares y restricciones que las validaciones hechas en el back-end (ver sección \ref{sec:validacioDadesBACK}).}
 	
 	\textbf{TO DO FER-HO}
 	
-	\subsection{Diseño: páginas publicas}
+	\subsection{Diseño (UX/UI): páginas publicas}
 	\label{sec:disenyoPublicas}
-	\textbf{TO DO FER-HO: parlar diseny responsive}
+	\textbf{TO DO FER-HO: parlar disseny responsive}
 	
-	\subsection{Diseño: páginas privadas}
+	\subsection{Diseño (UX/UI): páginas privadas}
 	\label{sec:disenyoResponsivePrivadas}
 	
 	\subsubsection{Diseño del dashboard}
@@ -1492,7 +1497,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Detalle de la sección con las tres cards: características resumidas del dashboard.}
+		\caption{Detalle de la sección con las tres cards: características resumidas del dashboard. Los textos en color son placeholders para lo que se extraerá de la BBDD.}
 		\label{fig:s2caracteristiquesmercapp}
 		\includegraphics[width=1\linewidth]{img/s2CaracteristiquesMercApp.png}
 	\end{figure}
@@ -1509,17 +1514,80 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
-		\noindent \textbf{SECCIÓN 3 (S3): inflalyzer (sin swiper: ¡esta vez hecho a mano!) }
-		
-		En la página original se utilizaba la librería swiper para cambiar entre imágenes de una galería
+	\noindent \textbf{SECCIÓN 3 (S3): ``inflalyzer'' (sin swiper: ¡esta vez hecho a mano!) }
+	\hrule
+	\vspace{.5em}
+	En la página original de la que hemos derivado parte del dashboard (\href{https://blackcub3s.github.io/proyectoDesarrolloInterfaces/FrontEnd.html}{link}) utilizamos la librería swiper para cambiar entre imágenes de una galería mediante clicks en unos paginadores (si no podéis ver la web, podéis ver detalle en figura \ref{fig:swiperFront} del anexo). Tratar de reutilizarlo para nuestro caso fue imposible: ahora no tenemos solo imágenes a ir variando con los paginadores, sino que tenemos una tabla entera a poner dentro de esos paginadores. Swiper esto no lo podía manejar.
+	
+	Así las cosas hubo que crear un swiper manualmente para poder albergar una tabla dentro del paginador (ver figura \ref{fig:imatgeSwiperCustom}). Este ``swiper'' artesanal, se creó tomando los mismos iconos de swiper, eliminado el canal alpha del fondo, cambiando su color de azul a rojo y definiendo eventos de click a las imágenes que conforman esas flechitas.
+	
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Detalle de la parte superior del intervalizer: obsérvese el paginador creado manualmente}
+		\includegraphics[width=1\linewidth]{img/imatgeSwiperCustom.png}
+		\label{fig:imatgeSwiperCustom}
+	\end{figure}
+	\FloatBarrier
+	
+	A nivel de UX/UI el paginador de la figura \ref{fig:imatgeSwiperCustom} ha seguido los mismos principios. En este caso, hay un par de cosas destacables. El uso de imágenes customizadas para los botones de paginación nos ha habilitado para usar \textit{hover} afectando la propiedad \textit{drop-shadow} de la imagen del paginador, para así aprovechar los contornos del mismo hacer transform y dar la sensación de profundidad \textbf{combinando la sombra con el incremento de tamaño} (ver imagen \ref{fig:paginadorscustom}).
+	
+
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Paginadores para moverse hacia productos con más frecuencia de compra: a la izquierda sin hover (drop-shadow difuso y poco visible) y con hover a la derecha de la captura (drop-shadow con menos difusión de imagen y ligeramente desplazado hacia abajo).}
+		\includegraphics[width=1\linewidth]{img/paginadorsCustom}
+
+		\label{fig:paginadorscustom}
+	\end{figure}
+	\FloatBarrier
+	
+	Asimismo, cuando llegamos al final del listado de productos del usuario, sea por la izquierda o la derecha, se cargan unas imágenes difuminadas que además con JavaScript no permitimos que traten de acceder a ningún dato (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/img/dashboard/paginadorEsqDifuminat.png}{ver detalle}).
+	
+	El CSS de la imagen \ref{fig:imatgeSwiperCustom} está disponible en este rango de líneas de GitHub \href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L155}{link}. Para observar el JavaScript de la paginación se puede visualizar el apartado \ref{sec:paginadorJavascriptArquitectura}.
+	
+	
+	
+	
+	\noindent \textbf{SECCIÓN 4 (S4): ``categoryzer''}
 	\hrule
 	\vspace{.5em}
 	
+	\textbf{TO DO}
+	
+	
+	\noindent \textbf{SECCIÓN 5 (S5): ``intervalizer''}
+	\hrule
+	\vspace{.5em}
+	
+	\textbf{TO DO}
+	
 	\subsubsection{Diseño del ``pas4''}
 	
+	\subsection{Arquitectura: páginas privadas (javascript)}
+	
+	\subsubsection{Arquitectura dashboard}
+	\label{sec:paginadorJavascriptArquitectura}
+	
+	El \textbf{paginador customizado} que vimos en la figura \ref{fig:imatgeSwiperCustom} requiere JavaScript. El código que lo consigue orquestrar se encuentra en el archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/paginadorInflacio.js}{paginadorInflacio.js}.
+	
+	\textbf{TO DO PARLAR DEL GRAFIC D'INFLACIO I DEL SEU JAVASCRIPT (continuacio inflalyzer)}
+	
+	\textbf{TO DO PARLAR DEL DIAGRAMA DE SECTORS I DEL SEU JAVASCRIPT}
+	
+	\textbf{TO DO PARLAR DEL CATEGORIZER I DON ESTA EL JAVASCRIPT}
+	
+	\textbf{TO DO PARLAR DEL INTERVALIZER I DON ESTA EL JAVASCRIPT}
 	
 	
-	\subsection{arquitectura pas4: llamada a google API client}
+	
+	La extracción de datos de la base de datos se hace principalmente desde \href{	https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/extractorDadesPersistencia_enCarregarPagina.js}{extractorDadesPersistencia\_enCarregarPagina.js}
+	
+	\textbf{HI HA MES ARXIUS DE PERSISTENCIA? REAVALUAHO MENTRES PROGRAMES SI N'AFEGEIXES MES??}
+	
+	
+	\subsubsection{Arquitectura pas4: llamada a google API client}
 	\label{sec:pas4googleAPIclient}
 	\textbf{TO DO FER-HO}
 	
@@ -1913,7 +1981,18 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 			\item \textbf{Reutilización}: Un backend puede servir varios front-ends (no solo web, sino móvil también). El mismo front-end podemos reutilizarlo luego para otra aplicación con un back-end en otro lenguaje por ejemplo.
 		\end{itemize}
 		
-		
+	\section{Captura proyecto desarrollo interfaces}
+	
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Detalle del paginador de swiper del proyecto de desarrollo de interfaces.}
+		\includegraphics[width=1\linewidth]{img/swiperFront.png}
+
+		\label{fig:swiperFront}
+	\end{figure}
+	\FloatBarrier
+	
 		
 	% Bibliografía (\chapter(6. Bibliograifa) como implicito)
 	\addcontentsline{toc}{chapter}{7. Bibliografía} 
