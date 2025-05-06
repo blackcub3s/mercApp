@@ -80,6 +80,20 @@ function aux_emplenaCardInflacio(i, prodInflacio) {
 
     const titolCategoriaINFL = document.getElementById("textCategoriaINFLACIO");
     titolCategoriaINFL.innerHTML = categoriesTEXT[prodInflacio[i][2]];
+
+    /*RELLENO LA TAULA*/
+    const preuMinim = document.getElementById("preuMinim");
+    preuMinim.innerHTML = "2,99";
+
+    const preuMaxim = document.getElementById("preuMaxim");
+    preuMaxim.innerHTML = "3,46";
+
+    const dataPreuMinim = document.getElementById("dataPreuMinim");
+    dataPreuMinim.innerHTML = "15/03/24";
+
+    const dataPreuMaxim = document.getElementById("dataPreuMaxim");
+    dataPreuMaxim.innerHTML = "27/04/25";
+    /*FI RELLENO DE LA TAULA*/
 }
 
 
