@@ -1389,7 +1389,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		\item \textbf{Persistencia de datos}: las vistas de la página del dashboard permiten visualizar datos extraídos de una base de datos de mongoDB.
 	\end{itemize}
 	
-	Después de esta aclaración vamos a pasar a explicar las secciones de la página y su diseño.
+	\noindent Después de esta aclaración vamos a pasar a explicar las secciones del \texttt{dashboard} y de su diseño.
 	
 	
 	
@@ -1398,6 +1398,8 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\vspace{.5em}
 	
 	Esta sección incorpora el botón de cierre de sesión (que elimina el token de acceso, en realidad, como ya se ha visto en la sección \ref{sec:tancarSessioBotoExplicacio}) y la barra de navegación que conseguirá redirigir a ubicaciones distintas en función de si se es usuario (permisos=1) o superusuario (permisos=2). También muestra links a páginas que nos permiten ver los tickets del usuario (si los tiene descargados), sus datos en una tabla y una página para contactar con nosotros (ver figuras \ref{fig:barranavegaciodashboardpermisos1}, \ref{fig:barranavegaciodashboardpermisos1dropdown} y \ref{fig:detalleNavbarDesplegadaCodi}).
+	
+	Además se ha utilizado un sistema (figura \ref{fig:linkAhover})para conseguir que al hacer hover en cada link cambie su color a gris y aparezca una línea por debajo con una transición suave (automatizando las propiedades\textit{border-bottom} y \textit{color}) . Se ha tenido especial cuidado en que el añadir la línea debajo NO desplace el resto de la página hacia abajo. Para evitarlo todos los links tienen en realidad una línea por debajo del mismo color del fondo, que solo cambia de color al pasar por encima. Hay muchas líneas de código para conseguirlo y redirigimos al lector al github para verlas (nótese el uso de selectores descendientes, por norma: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/dashboard/navFooter.css}{link a navFooter.css})
 	
 	\FloatBarrier
 	\setlength{\abovecaptionskip}{3pt}
@@ -1432,6 +1434,16 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		\includegraphics[width=1\linewidth]{img/navBarDesplegadaMakingOfPermisos1.png}
 
 		\label{fig:detalleNavbarDesplegadaCodi}
+	\end{figure}
+	\FloatBarrier
+	
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Transiciones suaves al hacer hover en los spans que envuelven los links tanto en la barra de navegación como en la footer.}
+		\includegraphics[width=1\linewidth]{img/linkAhover.png}
+		
+		\label{fig:linkAhover}
 	\end{figure}
 	\FloatBarrier
 	

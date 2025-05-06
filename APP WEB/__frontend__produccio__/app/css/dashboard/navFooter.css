@@ -107,8 +107,9 @@ del mismo color que la barra de navegación.
 Ello tiene una implicación importante. Su existencia permitirá que
 al hacer hover sobre un li, al cambiar el color de la misma [B]
 la border-bottom no nos moverá los elementos de la web que quedan por debajo cada vez que 
-pasemos el ratón por encima [A] y que está definida. Se puede comprobar el problema que habría si borrásemos la linea comentada
-con [A].
+pasemos el ratón por encima [A] y que está definida. Si borrásemos la linea comentada
+con [A] en determinados casos daría problemas. Además, en todos los casos el subrayado 
+aparece desde cero y queremos que haga un fundido de entrada: esta línea también lo consigue.
 
 NOTA: esos mismos estilos (subrayado y gris, durante hover) se verán aplicados a la footer también!! Porque queremos
 conservar la misma lógica en ambos sitios 
@@ -119,12 +120,8 @@ nav ul li span, footer section section ul li span {
     border-bottom: 2px solid var(--colorBarraNavegacion); /*[A}*/
 
     /*hacemos que cambios de propiedades sean graduales en entrada y salida (para el hover)*/
-    transition: background-color var(--tiempoTransicionEstandar) ease-in-out, 
+    transition: color var(--tiempoTransicionEstandar) ease-in-out, 
                 border-bottom var(--tiempoTransicionEstandar) ease-in-out;
-
-    /*Conseguimos que cada border inferior de cada li, al hacer hover, se acote solamente al texto que ocupa: */
-    margin: 0 auto;
-    
 }
 
 /*queremos que cada elemento del menú de navegación sea dinámico al pasar por encima*/
