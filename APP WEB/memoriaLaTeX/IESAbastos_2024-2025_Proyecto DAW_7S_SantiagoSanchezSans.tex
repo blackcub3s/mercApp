@@ -1479,9 +1479,39 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Esta sección contiene tres ``cards'' que resumen los servicios que ofrece el resto del dashboard (inflación por producto, gastos por categoría y gastos por ventana temporal): también incorporan los datos más relevantes de los tikets de cada usuario.
+	Esta sección contiene tres ``cards'' que resumen los servicios que ofrece el resto del dashboard (inflación por producto, gastos por categoría y gastos por ventana temporal): también incorporan los datos más relevantes de los tikets de cada usuario, que se extraen también de la BBDD (ver detalle figura \ref{fig:s2caracteristiquesmercapp}). El lector puede consultar el fichero \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css}{estils.css} todos los selectores css descendientes que empiezan por el id con el que encabezamos el section de esa parte (id \textit{PRIV\_caracteristicasDashboard}).
+
+	
+	De estas cards hay tres aspectos a destacar: En \textit{primer lugar}, se ha vigilado en que sigan exactamente la proporción áurea. Al crearlas se ha definido la propiedad CSS \textit{aspect-ratio} (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L80}{ver en GitHub} para que la relación de aspecto ancho-alto de cada una de ellas sea exactamente de 1 a 1.618 \cite{wikiPropAurea}. De este modo, creamos un rectángulo agradable a la vista para poder presentar los primeros datos del resumen de los tickets al usuario. \textit{En segundo lugar}, en cada una de las cards se ha usado un gradiente lineal vertical mediante la propiedad CSS \textit{background} (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L85}{ver línea}) que hemos utilizado también para cambiar dinámicamente ambos colores del gradiente al hacer hover (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L126}{ver línea}). En esos casos, además el hover altera también el \textit{box-shadow} definido en esta \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L84}{línea} y lo modifica a otro valor (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L125}{en esta}). El resultado de esta programación es el que se puede ver en la figura \ref{fig:cardCaracteristicaAbansDespres}. También se han definido automatizaciones de la propiedad \textit{transform} para las imágenes de dentro de las cards, para hacer que aumenten de tamaño al posarnos con el ratón por encima (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L106-L108}{detalle líneas}).
+	
+	Finalmente, merece la pena mencionar que mediante wow.js se ha conseguido crear las animaciones de animate.css (como las que se usaron en la sección 0, ver captura previa \ref{fig:detalleNavbarDesplegadaCodi}) de modo que en lugar de que aparezcan con un temporizador desde la carga de la página como nos permite la librería animate.css, sino que aparezcan con un temporizador desde que hacemos scroll a la sección que las incluye.
+	
+	Así las cosas, las propiedades que nos define animate.css en este caso no las hemos escrito en el CSS sino que lo hemos hecho en el propio HTML de acuerdo con el requerimiento de la librería \textit{wow.js}. De este modo al hacer scroll a la sección, la card de la izquierda aparecerá por la izquierda (fadeInLeft,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L130}{link}), la del medido de abajo (fadeInUp,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L153}{link}) y la de la derecha de esa misma dirección (fadeInRight,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L173}{link}). Una ves hecho esto se ajustó la duración y el \textit{delay} de cada propiedad mediante atributos en esas mismas líneas del HTML.
 	
 	
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Detalle de la sección con las tres cards: características resumidas del dashboard.}
+		\label{fig:s2caracteristiquesmercapp}
+		\includegraphics[width=1\linewidth]{img/s2CaracteristiquesMercApp.png}
+	\end{figure}
+	\FloatBarrier
+	
+		\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Detalle del impacto que tiene la automatización de \textit{box-shadow} y \textit{background} al hacer hover encima de las cards.}
+		\label{fig:cardCaracteristicaAbansDespres}
+		\includegraphics[width=1\linewidth]{img/cardCaracteristicaAbansDespres.png}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	
+		\noindent \textbf{SECCIÓN 3 (S3): inflalyzer (sin swiper: ¡esta vez hecho a mano!) }
+	\hrule
+	\vspace{.5em}
 	
 	\subsubsection{Diseño del ``pas4''}
 	

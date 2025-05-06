@@ -77,7 +77,7 @@ para el CONTENEDOR DE LAS CARDS DE RESUMEN DE LAS COMPRAS*/
 de la página interna FrontEnd mediante la clase .cartaDashboard*/
 #PRIV_caracteristicasDashboard .cartaDashboard {
     width: 300px; /* Hemos optado para definir las cards con ancho fijo por más control */
-    aspect-ratio: 1/1.618; /* Proporción aurea --> 1:618 (ancho:alto) */
+    aspect-ratio: 1/1.618; /* Proporción áurea --> 1:618 (ancho:alto) */
     border-radius: 1em;
     padding: .2em 1.9em 1em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes*/
     box-sizing: border-box; /* Para asegurarse de que el padding no afecte el tamaño */
@@ -105,7 +105,7 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 
 /*DEFINIMOS HOVERS PER LAS IMAGENES DE LAS CARDS DE CARACTERÍSTICAS DEL DASHBOARD*/
 #PRIV_caracteristicasDashboard .cartaDashboard img {transition: transform var(--tiempoTransicionEstandar) ease-in-out;/*para el hover*/}
-#PRIV_caracteristicasDashboard .cartaDashboard img:hover {transform: scale(var(--aumentoTamanyoEstandar));} /*hover de imagen vue, aumenta de tamaño al pasar por encima*/
+#PRIV_caracteristicasDashboard .cartaDashboard img:hover {transform: scale(var(--aumentoTamanyoEstandar));} /*aumenta de tamaño al pasar por encima de cualquier imagen de las cards*/
 
 
 
