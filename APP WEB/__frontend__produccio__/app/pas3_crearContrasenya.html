@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PirApp.com | crea tu contraseña</title>
+
+
+    <!-- aquests dos scripts estan a totes les pagines visibles sense permisos. La seva funció és treure
+    l'usuari de pàgines com aquesta abans(ideades per registrar-se o iniciar sessio) abans de que carregui el DOM
+    i dur-lo automàticament a la pagina corresponent que li pertoqui en funció del seu nivell de permisos dins el token, 
+    si el token NO és expirat.-->
+    <script src="/js/jwt/decodificaJWT.js"></script>
+    <script src="/js/jwt/restringeixVistesPubliques_USUARI_LOGUEJAT.js"></script>
+
+    <!-- estils per a totes les pagines -->
+    <link rel="stylesheet" href="css/estilsGlobals.css"> 
+
+    <!-- estils i javascript ESPECIFICS per a aquesta pagina (alguns potser es podran reutilitzar) -->
+    <link rel="stylesheet" href="css/barraNavegacioSimple.css">
+    
+    <!-- estils per a la barra de correu -->
+    <link rel="stylesheet" href="css/landing/inputText.css">
+
+    <script src="js/regexMail.js"></script>
+    <script src="js/inputContra.js"></script>
+    <script src="js/bannerAlertes.js"></script>
+
+
+
+
+    <style>
+        #embolcallPare {
+            display: flex;
+            flex-direction: column; /* Align items vertically */
+            align-items: center;    /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+            height: 100%; /* Take up the full height of the parent container */
+            text-align: center;
+            height: 90vh;
+            
+        }
+
+        #embolcallLogin {
+            border: .05em solid black;
+            padding: 4em 1em 4em 1em;
+            border-radius: .7em;
+            
+        }
+
+        #embolcallLogin h1 {
+            margin-bottom: 1em;
+        }
+
+        @media (max-width: 900px) {
+            #embolcallLogin {
+
+                margin-top: 6em;
+               
+            }
+        }
+
+
+        @media (max-width: 400px) {
+            #embolcallLogin {
+                border: 0em solid black;
+                height: 100vh;
+                margin-top: 2em;
+                
+                
+            }
+        }
+
+        @media (max-width: 322px) {
+            #embolcallLogin {
+                border: 0em solid black;
+                height: 100vh;
+                margin-top: 5em;
+                font-size: .7em;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+
+
+    
+
+</head>
+<body>
+
+    <!-- capsalera de la pagina. Per a la persona amb sessió iniciada en altres pagines es pot afegir una nav-->
+    <header class="topPagina">
+        <div>
+            <a href="pas1_landingSignUp.html"><img src="img/lletraPhiLaTeX_vectorial_negra_clean.png" alt="logoNoCargó"></a>
+        </div>
+    </header>
+
+
+    <hr>
+
+
+
+
+<!-- CONTENIDOR DEL  -->
+<div id="embolcallPare">
+    
+    <!-- INPUT DE LECTURA DE CORREU -->
+     <div id = "embolcallLogin">
+        
+        <h1>Crea tu contraseña!</h1>
+        <p style="margin-bottom: 1em"><i>¡Ya casi hemos terminado!</i></p>
+        <div>
+            <div class="input-wrapper">
+                <input id="contrasenya" class="input-border" type="password" name="contrasenya" required>
+                <label for="contrasenya" class="input-label"  id = "contra-labeleta">Contraseña</label>
+            </div>
+            <button id="botoEnviarCorreu" class="boto-enviar-correu">Siguente</button> <!-- Agregado -->
+        </div>
+        
+     </div>
+     <div id = "bannerMissatges"></div> <!-- millor ubicacio snese que peti -->
+</div>
+
+
+    
+
+
+
+
+
+         <!-- SCRIPT SOLICITUD FETCH POST A SERVIDOR -ENVIEM CORREU I EL
+      SERVIDOR ENS RETORNArà JSON DIENT SI L'USUARI HI ES O NO HI ES, per ara imprimit per consola-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener referencias a los elementos
+            
+            const contrasenyaInput = document.getElementById('contrasenya');
+            const botoEnviarCorrIcontra = document.getElementById('botoEnviarCorreu');
+            let email = localStorage.getItem("emailNouUsuari"); //recupero el mail del local storage (que prove de pas1_landingSignUp!!)
+            console.log("correu: ", email); 
+            
+            botoEnviarCorrIcontra.addEventListener('click', function obtinguesDadesBackend() {
+                
+                if (!email) {
+                    // SI NO HI HA CORREU EMMAGATZEMAT TORNO A LA PAGINA INICIAL PERQUE L'USUARI TORNI A COMENÇAR EL PROCÉS
+                    
+                    bannerAlerta([], "usuariBuitIMPOSSIBLE","var(--taronjaAlerta)");
+                    const spaneteSegons = document.getElementById("closeBanner");
+
+                    //POSO TEMPORITZADOR EN BUCLE PER A CONTAR ENDARRERA
+                    tEspera = 5000; //ha de ser 1000, 2000, 3000, ... 
+                    sec = parseInt(tEspera/1000 - 1);
+                    let idInterval = setInterval(() => {
+                        if (sec > 1)
+                            spaneteSegons.innerHTML = sec.toString() + " segundos!";
+                        else if (sec == 1)
+                            spaneteSegons.innerHTML = sec.toString() + " segundo!";
+                        else  //si sec == 0
+                            clearInterval(idInterval);
+                        
+                        sec--;
+                    }, 1000);
+
+                    //POSO TEMPORITZADOR UN SOL COP PER A TORNAR
+                    setTimeout(() => {
+                        window.location.href = 'pas1_landingSignUp.html';
+                    }, tEspera);
+                     
+                    
+                } else {
+                    // UTILITZO EL CORREU EMMAGATGEMAT!!!!
+                    console.log('Correo recuperado:', email);
+                    const contra = contrasenyaInput.value;
+
+                    console.log("corrApte: ", correuApte(email));
+                    console.log("contraApta: ", contrasenyaApta(contra));
+                    
+                    //NOMES FAREM SOLICITUD AL SERVIDOR SI LA CONTRA REUNEIX UNS MINIMS
+                    if (contra.length < 1) { //el mail també el comprovem però no informem a l'usuari
+                        bannerAlerta([], "contrasenyaBuida","var(--taronjaAlerta)");
+
+                               
+                         
+                    } else if (correuApte(email) && contrasenyaApta(contra)) { // --------------> CONTINUA PER AQUI adapta la solicitud fetch copiada i pegada a l cast particular de la creacio de contrasneya i usuari al sistema ---
+                            
+                        // -------  PAS 1: Envio la solicitud POST ------- 
+                        fetch('http://localhost:8080/api/registraUsuari', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',  //OBLIGAT --> DIU AL SERVIDOR QUE EL BODY DE LA PETICIO POST DEL CLIENT AL SERVIDOR SERA JSON (SERA DE FET {"email":"asd@asd.com"})
+                                'Accept': 'application/json'        //OPCIONAL --> DIU QUE EL CLIENT ACCEPTARÀ DEL SERVIDOR UN JSON (EN AQUEST CAS, e.g, SERÀ {"{existeixUsuari: false}"})
+                            },
+                            body: JSON.stringify({ correuElectronic: email, contrasenya: contra }),             //ho recollira un hasmap de java al backend
+                        }) // ------- PAS 2: AVALUO SI LA REPSOSTA ES EXITOSA (NO HA DONAT CODIS D'ERROR). SI I NOMÉS SI HO ÉS, CONVERTEIXO DADES A JSON.
+                        .then(response => {
+                            if (response.status == 200)
+                                return response.json(); 
+                            else if (response.status == 400)  //SI CAMP CORREU i CONTRASENYA VALIDATS IGUAL QUE EN SPRING BOOT, NO ES DONARA MAI AQUEST CODI D ERROR!
+                                return response.json().then(data => Promise.reject({ type: 'validacion', data })); //mostro codi enviat pel servidor en forma de json
+                            else 
+                                throw new Error('Error! La resposta de xarxa no ha sigut exitosa!');
+                        }) // ------- PAS 3: MANEJO LA RESPOSTA JSON -------
+                        .then(dadesExitosesJSON => {
+                            
+                            alert('existiaUsuari: ' + dadesExitosesJSON.existiaUsuari+ " || usuariShaRegistrat: "+dadesExitosesJSON.usuariShaRegistrat);
+
+                            if (dadesExitosesJSON.existiaUsuari) {
+                                bannerAlerta([email], "usuariExisteixError","var(--vermellAlerta)"); //CAS QUE RARA VEGADA ES DONARA
+                                //window.location.href = "pas1_landingSignUp.html"; //si es donés redirigim a pagina inicial (endpoint registraUsuari no torna si usuari paga o no paga... anem a lo senzill)
+                            } 
+                            else { //SI NO EXISTIA USUARI A DINS BASE DE DADES POT SER QUE ARA L'HAGUEM AFEGIT O QUE NO SI HA ANAT MALAMENT. 
+                                if (dadesExitosesJSON.usuariShaRegistrat) {
+                                                                                                       
+                                    let tokenAccesJWT = dadesExitosesJSON.AccessToken;  //extrec el token que anava al body de la response
+                                    localStorage.setItem("AccessToken", tokenAccesJWT); //guardem token al localStorage (nivell de permisos 0)
+                                    
+                                    window.location.href = "/pas4_concedirAccesGmail.html";
+                                } else { //cas en que l'usuari s'ha intentat registrar pero ha petat la query en la base de dades
+                                    bannerAlerta([], "algoFueMalConRegistro","var(--vermellAlerta)");
+                                }   
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error en verificar usuari. Backend apagat probablement, o problemes de xarxa...');
+                        });
+
+                    } else if (!correuApte(email)) {
+                        alert("Comprueba el formato del correo, que no es correcto.");
+                    } else if (!contrasenyaApta(contra)) {
+                        bannerAlerta(errorsContrasenyaNoApta(contra), "contrasenyaImposible","var(--vermellAlerta)");
+                    }                 
+
+
+
+
+
+
+                }
+
+                
+                
+                
+                
+            }); 
+        });
+    </script>
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+</body>
+</html>

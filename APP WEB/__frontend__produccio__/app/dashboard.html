@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Front-end</title>
+
+
+
+
+    <!-- Aquests dos seguents scripts redirigeixen a la landing
+     page si el token d'acces està expirat o no hi ha token, en refrescar pàgina -->
+     <script src="/js/jwt/decodificaJWT.js"></script>
+     <script src="/js/jwt/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.js"></script>
+ 
+     <!-- a usari loguejat el moc de dashboard a pas4 o viceversa en funció
+          dels permisos que tingui quan entra a una de les dos pàgines-->
+     <script src="/js/jwt/restringeixVistesPrivades_USUARI_LOGUEJAT.js"></script> 
+ 
+     <!--script que elimina token (tanca "la sessió", molt entre cometes)
+         quan cliquem botó d'id "botoEliminarToken"-->
+     <script src = "js/jwt/tancaSessioEliminantToken.js"></script>
+
+
+
+
+
+
+
+
+
+    <!--Cargamos la fuente roboto de google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!--Cargamos el CSS de animate.style para hacer animaciones, p. ej menu desplegable de la navbar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- Incluimos el CSS de swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        .colorBlauSortidaDades {
+            color: #697DFF;
+            font-weight: bold;
+        }
+    </style>
+
+    <!--cargamos los estilos que hemos definido nosotros para el dashboard-->
+    <link rel="stylesheet" href="css/dashboard/navFooter.css">
+    <link rel="stylesheet" href="css/dashboard/estils.css">
+    <link rel="styleSheet" href="css/dashboard/colorsAmplades.css">
+
+
+    <!-- ARXIUS EN TANDEM I PER ORDRE-->
+     <script src="js/dashboard/categories.js"></script> <!--extraccio de les categories i correspondencia amb imatges-->
+    <script src="js/dashboard/extractorDadesPersistencia_enCarregarPagina.js"></script>     <!--Obtenim dades de persistència en carregar pagina-->
+    <script src="js/dashboard/paginadorInflacio.js"></script> <!--Creem el paginador completament des de zero (swiper no es podia perquè només admetia imatges dins els paginadors) -->
+
+
+    <!-- FI ARXIUS EN TANDEM I PER ORDRE-->
+
+    <!--Carreguem l'arxiu de wow.js des del seu CDN per tal d'aconseguir que les animacions de animate.css s’activin mitjançant l'scroll.-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script> 
+
+    <!--També afegim l’objecte instanciat de wow.js per tal de poder iniciar les animacions 
+    de animate.css quan l’usuari faci scroll cap a la zona on s’apliquin les mateixes. -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function instanciaWow() {
+            new WOW().init();
+        });
+    </script>
+</head>
+<body>
+
+    <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegación-->
+    <header>
+        <button id = "botoEliminarToken">Cerrar Sesión</button> <!-- botó per a eliminar el token i fer que el javascript automaticament redirigeixi a pas1-->
+        <nav>
+            
+            <ul>
+                <li>
+                    <span>Servicios</span> <img src="img/dashboard/flechaDesplegablePaint.png" alt="v">
+                    <ul>
+                        <li><a href="#PRIV_evolucionInflacionPorProducto">Inflalyzer</a></li>
+                        <li><a href="#">Categorizer</a></li>
+                        <li><a href="#">Intervalizer</a></li>
+                    </ul>
+                </li>
+                <li><span><a href="#">Mis tickets</a></span></li>
+                <li><span><a href="#">Mis datos</a></span></li>
+                <li><span><a href="#">Contacto</a></span></li>
+            </ul>
+        </nav>
+    </header>
+
+ 
+
+  
+
+    <!-- SECCIÓN 1 (S1): presentación Dashboard:
+      texto de presentación con un gradiente lineal
+       simple de negro a azul oscuro -->
+    <section id="PRIV_presentacionDashboard">
+        <!--doble gradiente lineal-->
+        <div>
+            <h1>Dashboard de visualización</h1>
+        </div> 
+        <div></div> <!--linea roja de separación-->
+    </section> 
+
+    <!--SECCIÓN 2 (S2): características de la aplicación mercApp: 
+	Esta sección contiene tres ``cards'' que resumen los servicios 
+    que ofrece el resto del dashboard (inflación por producto, gastos 
+    por categoría y gastos por ventana temporal): también incorporan los 
+    datos más relevantes de los tikets de cada usuario..-->
+    <section id="PRIV_caracteristicasDashboard">
+        
+        <!-- div:first-child:    conté el títol y subtítul de la secció-->
+        <div>
+            <h1 class="titulo">¡Hola <span  id = "nomUsuari" class="colorBlauSortidaDades"></span>!</h1>
+            <p class="subtitolSalutacio">MercApp ha encontrado <span id = "nreTicketsTotalUsuari" class = "colorBlauSortidaDades"></span> tickets digitales de mercadona
+                                          en tu correo electrónico, desde <span id = "dataInicialTickets" class = "colorBlauSortidaDades"></span> hasta  <span id = "dataFinalTickets" class = "colorBlauSortidaDades"></span>:
+                                        Resumen de todas estas compras a continuación:</p>
+        </div>
+
+        <!--div:last-child:   cards de características del dashboard de mercApp-->
+        <div>
+            <!-- Primera Card: la de l'icono de l'escala amb la inflación.
+                [animació animate.css iniciada per wow.js amb animació fadeInLeft]-->
+            <article class="cartaDashboard wow animate__animated animate__fadeInLeft" data-wow-duration="1s" data-wow-delay=".25s">
+                <h1 class = "subtitolSalutacio">Evolución precios por inflación</h1>
+                <img src="img/dashboard/escaletaCroppedDefinitiu.png" alt="imagenNoCargo">
+                <h2>Has adquirido <span id = "nreProductesDiferentsAdquirits" class = "colorBlauSortidaDades"></span> productos distintos.</h2>
+                
+                <section id = "gridInferiorCardInflacio">
+                    <section>
+                        <img src="img/dashboard/incrementPreu.png" alt="increment">
+                        <p><span id = "nreProductesPreu_INCREMENTAT"></span></p>  
+                    </section>
+                    <section>
+                        <p>≃</p>
+                        <p><span id = "nreProductesPreu_MANTINGUT"></span></p>
+                    </section>
+                    <section>
+                        <img src="img/dashboard/decrementPreu.png" alt="decrement">
+                        <p><span id = "nreProductesPreu_DECREMENTAT"></span></p>
+                    </section>
+                </section>
+            </article>
+
+            <!--Segunda Card: la del rayo de gastos por categoría.
+                [animación animate.css iniciada por wow.js con animación fadeInUp]-->
+            <article class="cartaDashboard wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay=".75s">
+                <h1 class = "subtitolSalutacio">Gastos por categoría</h1>
+                <img src="img/dashboard/llampDefinitiuv2.png" alt="imagenNoCargo">
+                <h2>La categoría en la que más has gastado:</h2>     
+                <section id = "iconoSegonaCardCATEGORIA">
+                    <img src="img/dashboard/iconosCategories/carns.png" alt="imagenNoCargo">
+                </section>
+            </article>
+
+            <!-- Tercera Card: la del icono del dollar
+                [animación animate.css iniciada por wow.js con animación fadeInRight]-->
+            <article class="cartaDashboard wow animate__animated animate__fadeInRight" data-wow-duration="1s" data-wow-delay="1.25s">
+                <h1 class = "subtitolSalutacio">Gastos por intervalo temporal</h1>
+                <img src="img/dashboard/GPT_dollar_noAlpha.png" alt="imagenNoCargo">
+                <h2>Tienes compras en <span id = "nreMesosOnShaFetCompra" class = "colorBlauSortidaDades">Y</span> meses distintos:</h2>
+            </article>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3 (S3): inflalyzer (sin swiper: ¡esta vez hecho a mano!) -->
+    <section id="PRIV_evolucionInflacionPorProducto">
+
+        <h1 class="titulo"><i>Inflalyzer</i> : evolución de los precios por producto ("inflación")</h1>
+
+        <!-- paginador -->
+        <section id="paginador">
+
+
+            <!--imatge que actua 
+            com a botó cap a la esquerra 
+            (fa de swiper, però sense la llibreria)-->
+            <section>
+                <img id = "botoEsquerra"  src = "img/dashboard/paginadorEsqDifuminat.png"></img>
+            </section>
+
+            <!--imatge que actua 
+            com a botó cap a l'esquerra (fa de swiper, però sense la llibreria)-->
+            <section>
+                <h1 id = "textCategoriaINFLACIO"></h1>  <!--src vindrà programàticament de categories.js-->
+                <img id = "imatgeCategoriaINFLACIO" alt="logo vue no cargó"> <!--src vindrà programàticament :)-->
+            </section>
+
+            <!-- la card on posarem el producte-->
+            <section>
+                <section id = "cardInflacio">
+                    <article>
+                        <article class="cardDiferenciasFront">
+                            <p id = "paginesPaginadorINFL"></p> <!--página del paginador [1/34, 3/34, etc-->
+                            <h1><span id="inflalyzerNomProducte" class="colorBlauSortidaDades"></span></h1> <!-- cogollo, chuleta contramuslo, etc...-->
+                            
+                            <p> <span id = "nreProductes_PRODUCTECONCRET_inflalyzer"class = "colorBlauSortidaDades"></span> adquisiciones de producto en momentos distintos</p>
+                        
+
+                            
+                            <!-- Tabla donde ponemos el precio mínimo 
+                             y máximo del producto en el histórico-->
+                            <section id = "tablaInflalyzer">
+                                <article>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th class="wow animate__animated animate__fadeIn" data-wow-duration="1.5s" data-wow-delay=".5s">Min</th>
+                                                <th class="wow animate__animated animate__fadeIn" data-wow-duration="1.5s" data-wow-delay="1s">Max</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="wow animate__animated animate__fadeIn" data-wow-duration="1.5s" data-wow-delay="0s">
+                                                <td id = "preuMinim" class = "colorBlauSortidaDades">3.44 €</td>
+                                                <td id = "preuMaxim" class = "colorBlauSortidaDades">4.66 €</td>
+                                            </tr>
+                                            <tr class="wow animate__animated animate__fadeIn" data-wow-duration="1.5s" data-wow-delay=".0s">
+                                                <td class = "colorBlauSortidaDades">02/10/23</td>
+                                                <td class = "colorBlauSortidaDades">04/11/24</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </article>
+                            </section>
+
+
+
+
+
+                            
+                        </article>    
+                    </article>
+                </section> 
+            </section>
+
+            <!--imatge que actua com a botó cap a la dreta (fa de swiper, però sense la llibreria)-->
+            <section>
+                <img id = "botoDreta" src = "img/dashboard/paginadorDre.png"></img>
+            </section>
+        </section>
+    </section>
+
+
+    <!-- SECCIÓN 4 (S4): gráfico de inflación por producto
+      (chart.js) conectado a sección 3-->
+    <div id = "contenedorTorcidoTop"></div>
+    
+
+    <!-- SECCION 5: RELLENO HASTA LA FOOTER-->
+    <div id="fondoTablaDiferencias"></div>
+
+
+    <!-- SECCIÓN 6 (S6): footer -->   
+    <footer>
+
+       <!-- section:first-child del footer-->
+        <section> 
+
+            <!--primera columna     section:first-child-->
+            <section>
+                <h1>Servicios</h1>
+                <ul> 
+                    <li><span><a href="#PRIV_evolucionInflacionPorProducto">Inflalyzer</a></span></li>
+                    <li><span><a href="#">Categorizer</a></span></li>
+                    <li><span><a href="#">Intervalizer</a></span></li>
+                </ul>
+            </section>
+
+            <!--segunda columna     section:nth-child(2)-->
+            <section>
+                <h1>Datos de usuario</h1>
+                <ul>
+                    <li><span><a href="aboutUs.html">Mis tickets</a></span></li>
+                    <li><span><a href="#">Mis datos</a></span></li>
+                </ul>
+            </section>
+
+            <!--tercera columna: section:last-child-->
+            <section>
+                <h1>Contacto</h1>
+                <ul>
+                    <li><span><a href="contacto.html">Contacto</a></span></li>
+                    <li><span><a href="https://www.linkedin.com/in/santiagosanchezsans/"><img src="img/dashboard/linkedin_logoDefinitiu.jpg" alt="LinkedIn"></a></span></li>
+                </ul>
+            </section>
+
+        </section>    
+        
+
+        <!-- section:last-child del footer-->
+        <section>
+            <p id="copyright"><i>&copy; 2025 | Todos los derechos reservados</i></p>   
+        </section> 
+    </footer>
+
+
+
+
+</body>
+</html>

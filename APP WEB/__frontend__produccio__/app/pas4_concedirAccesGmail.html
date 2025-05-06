@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Aquests dos seguents scripts redirigeixen a la landing
+     page si el token d'acces està expirat, en refrescar pàgina-->
+    <script src="/js/jwt/decodificaJWT.js"></script>
+    <script src="/js/jwt/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.js"></script>
+
+    <!-- a usari loguejat el moc de dashboard a pas4 o viceversa en funció
+     dels permisos que tingui quan entra a una de les dos pàgines-->
+    <script src="/js/jwt/restringeixVistesPrivades_USUARI_LOGUEJAT.js"></script> 
+
+
+    <!--script que elimina token (tanca "la sessió", molt entre cometes)
+     quan cliquem botó d'id "botoEliminarToken"-->
+    <script src = "js/jwt/tancaSessioEliminantToken.js"></script>    
+</head>
+<body>
+    <p>Farem tot lo necessari per obtenir els recursos per guanyar rapidament
+         permisos a 1 (en pirApp seria pagar algo, en mercApp tenir els PDFs descarregats al usuari)</p>
+
+    <button id = "botoEliminarToken">Cerrar sesión</button>
+</body>
+</html>

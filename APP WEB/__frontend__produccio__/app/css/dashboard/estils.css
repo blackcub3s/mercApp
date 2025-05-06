@@ -1,0 +1,404 @@
+.titulo {font-size: 2.1rem; margin-top: 1rem;}     
+.subtitolSalutacio {font-size: 1.7rem;} 
+
+/*######################################
+  #              SECCIÓN 1             # 
+  #       presentación dashboard       #
+  ######################################*/
+  
+/*Altura del contenedor con doble gradiente
+ negro a azul claro*/
+#PRIV_presentacionDashboard > div:first-child {
+    background: linear-gradient(to bottom, var(--colorBarraNavegacion) 0%, 
+                                           var(--PI_colorMedioGradienteAZULOSCUROFrontEnd) 50%, 
+                                           var(--PI_colorMedioGradienteAZULCLAROFrontEnd) 100%);
+    height: 27.5em;
+    color: white;
+    text-align: center;
+}
+
+/*título de la presentación*/
+#PRIV_presentacionDashboard > div:first-child h1 {
+    position: relative;
+    top: 40%;
+    font-size: 2.7em;
+    animation: fadeIn;  /*ponemos un fundido de entrada al título de la página*/
+    animation-duration: 2s;
+}
+
+/*línea roja*/
+#PRIV_presentacionDashboard > div:nth-child(2) {
+    height: .9em;
+    background: red;
+}
+
+/*###########################################
+  # SECCIÓN 2: DASHBOARD CARACTERISTICAS:   # 
+  #       caracteristicas del               #
+  #        dashboard (título,               #
+  #        subtítulo y 3 cards)             #
+  ###########################################*/
+
+
+
+/*DEFINIMOS UN ANCHO MÁXIMO PARA ESTA PARTE*/
+#PRIV_caracteristicasDashboard {
+    width: 100%;
+    max-width: var(--MaximaAnchuraCardsPIfrontend);
+    margin: 0 auto; /*Centramos todo este contenedor horizontalmente (cards y titulo y subtítulo que las antecede)*/
+}
+
+/*POSICIONO TÍTULO "¡Hola nombre usuario!"*/
+#PRIV_caracteristicasDashboard > div > h1 {
+    padding-top: 2.5em;
+    padding-left: 1em;
+}
+
+/*POSICIONO SUBTÍTULO "Mercapp ha encontrado [...] tus compras a continuacion:"*/
+#PRIV_caracteristicasDashboard > div > p {
+    padding-left: 5.3em;
+    padding-right: 5em;
+    padding-top: 1.5em;
+}
+
+
+/*DEFINO UN GRID DE TRES COLUMNAS y los estilos 
+para el CONTENEDOR DE LAS CARDS DE RESUMEN DE LAS COMPRAS*/
+#PRIV_caracteristicasDashboard div:last-child {
+    padding-top: 3.5em;
+    max-width: var(--MaximaAnchuraCardsPIfrontend);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /*defino las 3 columnas con grid*/
+    text-align: center;         /*MANTENGO EL TEXTO CENTRADO DENTRO DE CADA CARD*/
+    justify-items: center;       /* CENTRO LAS 3 CARDS HORIZONTALMENTE*/
+}
+
+/*definimos  el estilo de CADA CARD de características 
+de la página interna FrontEnd mediante la clase .cartaDashboard*/
+#PRIV_caracteristicasDashboard .cartaDashboard {
+    width: 300px; /* Hemos optado para definir las cards con ancho fijo por más control */
+    aspect-ratio: 1/1.618; /* Proporción aurea --> 1:618 (ancho:alto) */
+    border-radius: 1em;
+    padding: .2em 1.9em 1em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes*/
+    box-sizing: border-box; /* Para asegurarse de que el padding no afecte el tamaño */
+    box-shadow: 0px 5px 4px rgba(143, 141, 141, 0.3); 
+    background: linear-gradient(to bottom, var(--g), var(--r)); /* GRADIENTE YA ESTA HECHO BIEN, NO TOCAR */
+    transition: box-shadow var(--tiempoTransicionEstandar) ease-in-out; /*para el hover de cada carta*/
+}
+
+/*DEFINO ESTILOS PARA LOS 
+TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
+#PRIV_caracteristicasDashboard div:last-child article h1 {margin-top: .5em;}
+#PRIV_caracteristicasDashboard div:last-child article h2 {font-size: 1.3em; text-align: left;}
+
+/*DEFINO ESTILOS PARA LAS IMÁGENES MAS GRANDES DE LAS CARDS (elemento img):
+  -- IMAGEN (ESCALERA) ----- PRIMERA CARD de características*/
+#PRIV_caracteristicasDashboard div:last-child article:first-child > img {width: 80%; padding-top: 2.2em; padding-bottom: 2.2em;}
+/*-- IMAGEN (RAYO) --------- SEGUNDA CARD de características*/
+#PRIV_caracteristicasDashboard div:last-child article:nth-child(2) > img {width: 43%; padding-top: 2.2em; padding-bottom: 1.5em;}
+/*-- IMAGEN (DOLLAR) ---- TERCERA CARD de características*/
+#PRIV_caracteristicasDashboard div:last-child article:last-child > img {width: 65%; padding-top: 1.5em; padding-bottom: 1.7em;}
+
+/*-- IMAGEN INFERIOR CARD 2 (CATEGORIA DE PRODUCTE) --------- EXCLUSIVA A SEGUNDA CARD de características del dashboard*/
+#PRIV_caracteristicasDashboard #iconoSegonaCardCATEGORIA > img {width: 7.65em;}
+
+
+/*DEFINIMOS HOVERS PER LAS IMAGENES DE LAS CARDS DE CARACTERÍSTICAS DEL DASHBOARD*/
+#PRIV_caracteristicasDashboard .cartaDashboard img {transition: transform var(--tiempoTransicionEstandar) ease-in-out;/*para el hover*/}
+#PRIV_caracteristicasDashboard .cartaDashboard img:hover {transform: scale(var(--aumentoTamanyoEstandar));} /*hover de imagen vue, aumenta de tamaño al pasar por encima*/
+
+
+
+/*ANIMACIONES PARA LAS CARDS [A (hover) i B (animateStyle)]*/
+
+/*-----------------------------------------------------*/
+/*A: Animamos el box-shadow y el background con hover:-*/
+/*-----------------------------------------------------*/
+#PRIV_caracteristicasDashboard .cartaDashboard {
+    transition: box-shadow var(--tiempoTransicionEstandar) ease-in-out;
+    /*NOTA: ojo que el background NO se puede animar con transition (el background-color sí, 
+    pero en este caso queremos cambiar de un gradiente lineal a otro gradiente
+    lineal, y no nos sirve usar la propiedad background-color)*/    
+}
+
+#PRIV_caracteristicasDashboard .cartaDashboard:hover {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(to bottom, var(--gHover), var(--rHover)); /*NO se puede definir transition ease-in-out para esta propiedad*/
+}
+
+
+
+/*#################################################
+    SECCIÓN 3: Inflalyzer (sin swiper: ¡esta vez hecho a mano!) --> un paginador!
+  #################################################*/
+
+
+
+/*###########################################
+  # SECCIÓN 3: INFLALYZER                   # 
+  #        paginador estilo swiper          #
+  #        sin swiper. Icono categoria,     #
+  #        card con tabla min max           #
+  #        subtítulo y 3 cards)             #
+  ###########################################*/
+
+
+/*******************************************************************************/
+/* Titulo (Inflalyzer: evolución de 
+los precios por producto ("inflación")?)
+/*******************************************************************************/
+#PRIV_evolucionInflacionPorProducto > h1 {
+    text-align: center;
+    padding-top: 2.6em;
+}
+
+
+
+
+/***********************************/
+/*3B) sistema paginador! */
+/***********************************/
+
+
+/*ponemos un extra de altura al contenedor de diferencias para que
+el contenedor de paginador no se solape con el contenedor superior */
+#PRIV_evolucionInflacionPorProducto {
+    padding-top: 1em;
+    padding-bottom: 15em;
+}
+
+/*definimos anchura y altura del contenedor de paginador*/
+#paginador {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center;
+    height: 40em; /*Altura contenedor paginador*/
+    max-width: var(--MaximaAmpladaSwiperArtesa);
+}
+
+/*titulo de la categoria de alimentación CENTRADO*/
+#paginador section:nth-child(2) {
+    text-align: center;
+}
+
+/*imagen de la categoria de alimentación a tamaño razonable*/
+#paginador section:nth-child(2) img { /*la imatge de la cateogria definida*/
+    width: 80%;
+}
+
+
+/*paginadores a izquierd y derecha (SON IMAGENES!)*/
+#botoDreta, #botoEsquerra {
+    width: 2em;
+    cursor: pointer;
+}
+
+/*creamos drop shadow (A diferencia de boxshadow) permite
+generar una sombra usando el contorno real del icono*/
+#botoDreta, #botoEsquerra {
+    filter: drop-shadow(0px 5px 3px rgba(0, 0, 0, 0.25)); 
+    transition: filter var(--tiempoTransicionEstandar) ease-in-out,
+                transform var(--tiempoTransicionEstandar) ease-in-out;
+}
+
+/*al hacer hover utomatizamos drop shadow para animación chula, reduciendo
+la difuminación, desplazando en las Y la sombra a la par que se 
+incrementando el tamaño de la imagen con transform */
+#botoDreta:hover, #botoEsquerra:hover {
+    filter: drop-shadow(0px 10px 1px rgba(0, 0, 0, 0.25));
+    transform: scale(1.08);
+}
+
+
+
+
+
+
+/************************************/
+/** 4A) Fondos variables y torcido **/
+/************************************/
+
+
+#contenedorTorcidoTop {
+    z-index: -1;   /*ponemos detras del fondo de las cards*/
+
+    position: relative;
+    right: 20em; /*movemos a la izquierda el contenedor para esconder también espacios blancos por la izquierda*/
+    top: -38.8em;
+    height: 80em;
+
+    transform: rotate(-10deg); /*DEFINO LA TRANSFORMACIÓN PARA TORCER EL CONTENEDOR (transform)*/
+    background-color: var(--colorVerdeVue);
+
+    /*hacemos más ancho el contenedor torcido para esconder los espacios enblanco 
+    que se generan por la derecha con la rotación de 10 grados*/
+    /*CUIDADO: genera barra horizontal que corregimos con overflow-x en el elemento padre: ver [4A_1]*/
+    width: 140%;  
+}
+/*ver [4A_1]: corrección de la barra horizontal mencionada en #contenedorTorcidoTop*/
+body {overflow-x: hidden;} 
+
+
+
+/***********************************/
+/** 4A)Diseño de la  card de inflalyzer **/
+/***********************************/
+
+
+#cardInflacio .cardDiferenciasFront {
+    width: 360px; /* Hemos optado para definir las cards con ancho fijo por más control */
+    aspect-ratio: 300/300; /* Proporción de figma (ancho/alto)*/
+    background-color: var(--grisTransparenteCard); /* Color de fondo, por ejemplo u ngris con transparencia */
+    border-radius: 1.4em;
+    padding: 35px; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes*/
+    box-sizing: border-box; /* Para asegurarse de que el padding no afecte el tamaño */
+    box-shadow: 0px 5px 3px rgba(0, 0, 0, 0.15);
+
+    transition: box-shadow var(--tiempoTransicionEstandar) ease-in-out; /*para el hover de cada carta*/
+    background: linear-gradient(to bottom, var( --PI_inicioCard_VUE), var(--PI_finCard_VUE));
+
+    text-align: center;
+}
+
+#cardInflacio .cardDiferenciasFront h1 {
+    font-size: 1.6em;
+}
+
+#cardInflacio .cardDiferenciasFront p {
+    font-size: 1.3em;
+    margin-top: 1.3em;
+    color: white;
+}
+
+#gridInferiorCardInflacio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2em 1.5em 0em 1.5em; /*top right bottom left: el right i el left els fa comprimir*/
+}
+
+#gridInferiorCardInflacio section img {width: 60%;} /*fletxes creixents i decreixents*/
+#gridInferiorCardInflacio section:nth-child(2) p:first-child {font-size: 3em; font-weight: bold; position: relative; top: -.25em;}  /*≃*/
+#gridInferiorCardInflacio section p:last-child {font-size: 1.22em; font-weight: bold; padding-top: .7em;}  /*els numeros de productes d'aument, igual o decrement*/
+
+#nreProductesPreu_INCREMENTAT {color: red;}  /*NUMERO inferior a la fletxa d'amunt*/
+#nreProductesPreu_MANTINGUT {position: relative; top: -1.2em; color: orange;}  /*NUMERO inferior a la ≃*/
+#nreProductesPreu_DECREMENTAT {color: var(--colorVerdeVue);}  /*NUMERO inferior a fletxa avall*/
+
+/*una forma de definir salto de linea en CSS
+  sin usar el <br> de HTML, mejor práctica*/
+.saltoLinea {white-space: pre-line;}
+
+
+
+/*para el hover*/
+#cardInflacio article .cardDiferenciasFront {
+    transition: box-shadow var(--tiempoTransicionEstandar) ease-in-out;
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+}
+#cardInflacio article .cardDiferenciasFront:hover {box-shadow: 0px 5px 3px rgba(0, 0, 0, 0.8);}
+
+/*el paginador 1/30, 2/30 etc. [SI NO SO SELECTOR DESCENDENT NO FUNCION*/
+#cardInflacio #paginesPaginadorINFL { 
+    margin: 0;
+    color: grey;
+    font-weight: bold;
+}
+
+
+/*fondo transición a footer*/
+#fondoTablaDiferencias {
+    position: relative;
+    height: 2424px;  /*808px de alto de cada contenedor de figma por 3 = 2424px*/
+    background: linear-gradient(to bottom, white 0%, var(--marronClaroTabla) 33%, var(--marronOscuroTabla) 66%, var(--negroFooter) 100%);
+}
+
+
+
+
+
+#imatgeCategoriaINFLACIO {
+    filter: drop-shadow(0px 5px 1px rgba(0, 0, 0, 0.25)); 
+    transition: filter var(--tiempoTransicionEstandar) ease-in-out,
+                transform var(--tiempoTransicionEstandar) ease-in-out;
+}
+
+#imatgeCategoriaINFLACIO:hover  {
+    filter: drop-shadow(0px 7px 1px rgba(0, 0, 0, 0.25));
+    transform: scale(1.02);
+}
+
+
+   
+
+   
+
+
+
+
+/*#################################################
+    SECCIÓN 5 (S5) tabla inflalyzer: datos resumidos sobre la inflación: productos comprados
+    en momentos distintos del tiempo, precio minimo y precio maximo historico en ticket de usuario.
+  #################################################*/
+
+#tablaInflalyzer {
+    padding-top: 2em;
+}
+
+
+#tablaInflalyzer table {
+    border-collapse: collapse; /*Hacemos que los borders de la tabla colapsen en uno solo para que se vean lineas finas */
+    background-color: transparent;
+    box-shadow: 8px 7px 2px rgba(0, 0, 0, 0.25);
+}
+
+
+
+#tablaInflalyzer th {border-bottom: 1px solid black;}
+#tablaInflalyzer th, #tablaInflalyzer td {padding: .83em 1em;}
+#tablaInflalyzer th {font-size: var(--tamanyoTabla);}
+
+/*PONEMOS LA SEPARACION VERTICAL ENTRE LA LA SEGUNDA COLUMNA DONDE PONEMOS
+LAS CARACTERISTICAS DE VUE Y LA COLUMNA DE REACT*/
+#tablaInflalyzer th:first-child{border-right: 1px solid black;}
+#tablaInflalyzer td:first-child {border-right: 1px solid black;}
+
+
+
+#tablaInflalyzer td {
+    font-size: var(--tamanyoTabla);
+    text-align: center;
+}
+
+#tablaInflalyzer td:first-child {
+    text-align: left;
+}
+
+/*LAS FILAS IMPARES APARECEN EN UN COLOR LIGERAMENTE DISTINTO A LAS IMPARES*/
+#tablaInflalyzer tbody tr:nth-child(even) {background-color: rgba(238, 238, 238, 0.75);}
+#tablaInflalyzer tbody tr:nth-child(odd) {background-color: rgba(255, 255, 255, 0.75);}
+
+
+/*PONEMOS COLOR VERDE VUE AL PRECIO MÍNIMO DE LA SERIE HISTÓRICA POR PRODUCTO*/
+#tablaInflalyzer table thead tr th:first-child {
+    background-color: var(--colorVerdeVue);
+    color: white; /*verd vue*/
+    text-align: center;
+}
+
+
+ /*PONEMOS COLOR LILA
+ PARA MOSTRAR EL PRECIO MÁXIMO DE LA SERIE HISTÓRICA POR PRODUCTO*/
+ #tablaInflalyzer table thead tr th:nth-child(2) {
+    color: white;
+    background: linear-gradient(90deg, var(--PI_colorAngularGradienteInicio), var(--PI_colorAngularGradienteFinal));
+    text-align: center;
+}
+
+/*PONGO BORDES A LA TABLA DEL INFLALYZER (EN LOS TABLE HEAD A IZQUIERDA Y DERECHA)*/
+#tablaInflalyzer table tr th:first-child {border-top-left-radius: 10px;}
+#tablaInflalyzer table tr th:last-child {border-top-right-radius: 10px;}
+#tablaInflalyzer table tr:last-child td:first-child {border-bottom-left-radius: 10px;}
+#tablaInflalyzer table tr:last-child td:last-child {border-bottom-right-radius: 10px;}

@@ -1,0 +1,233 @@
+    <!DOCTYPE html>
+
+    <!-- NOTA: AQUEST ARXIU SERÀ EL QUE RENNOMBRAREM COM A INDEX.HTML-->
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MercApp.com | analiza los tikets digitales de mercadona</title>
+
+        <!-- aquest dos scripts estan a totes les pagines visibles sense permisos. La seva funció és treure
+        l'usuari de pàgines com aquesta abans(ideades per registrar-se o iniciar sessio) abans de que carregui el DOM
+        i dur-lo automàticament a la pagina corresponent que li pertoqui en funció del seu nivell de permisos dins el token, 
+        si el token NO és expirat.-->
+        <script src="/js/jwt/decodificaJWT.js"></script>
+        <script src="/js/jwt/restringeixVistesPubliques_USUARI_LOGUEJAT.js"></script>
+
+        <!-- estils per a totes les pagines -->
+        <link rel="stylesheet" href="css/estilsGlobals.css"> 
+
+        <!-- estils i javascript ESPECIFICS per a aquesta pagina (alguns potser es podran reutilitzar) -->
+        <link rel="stylesheet" href="css/barraNavegacioSimple.css">
+        <link rel="stylesheet" href="css/landing/estilsBannerInfoSimple.css">
+        <link rel="stylesheet" href="css/landing/inputText.css">
+        <link rel="stylesheet" href="css/landing/estilsCardsLanding.css">
+        
+        <!-- SCRIPT SOLICITUD FETCH POST A SERVIDOR -ENVIEM CORREU I EL
+        SERVIDOR ENS RETORNARÀ JSON DIENT SI L'USUARI HI ES O NO HI ES-->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                const emailInput = document.getElementById('email');
+                const botoEnviarCorreu = document.getElementById('botoEnviarCorreu');
+        
+                
+
+                botoEnviarCorreu.addEventListener('click', function obtinguesDadesBackend() {
+
+                    const email = emailInput.value;
+        
+                    // dins correuApte() fem validacions identiques a les que faria el servidor fent call directa a la api!
+                    if (correuApte(email)) {
+                            
+                        // -------  PAS 1: Envio la solicitud POST ------- 
+                        fetch('http://localhost:8080/api/avaluaUsuari', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',  //OBLIGAT --> DIU AL SERVIDOR QUE EL BODY DE LA PETICIO POST DEL CLIENT AL SERVIDOR SERA JSON (SERA DE FET {"email":"asd@asd.com"})
+                                'Accept': 'application/json'        //OPCIONAL --> DIU QUE EL CLIENT ACCEPTARÀ DEL SERVIDOR UN JSON (EN AQUEST CAS, e.g, SERÀ {"{existeixUsuari: false}"})
+                            },
+                            body: JSON.stringify({ correuElectronic: email }),             //ho recollira un DTO de java al backend
+                        }) // ------- PAS 2: AVALUO SI LA REPSOSTA ES EXITOSA (NO HA DONAT CODIS D'ERROR). SI I NOMÉS SI HO ÉS, CONVERTEIXO DADES A JSON.
+                        .then(response => {
+                            //RESPOSTA EXITOSA
+                            if (response.status == 200)
+                                return response.json(); 
+                            else if (response.status == 400)  //SI CAMP CORREU VALIDAT IGUAL QUE EN SPRING BOOT, NO ES DONARA MAI AQUEST CODI D ERROR!
+                                return response.json().then(data => Promise.reject({ type: 'validacion', data })); //mostro codi enviat pel servidor en forma de json
+                            else 
+                                throw new Error('Error! La resposta de xarxa no ha sigut exitosa!');
+                        }) // ------- PAS 3: MANEJO LA RESPOSTA JSON -------
+                        .then(dadesExitosesJSON => {
+                            
+                            console.log(dadesExitosesJSON); // IMPRIMEIXO RESPOSTA A LA CONSOLA PER DEBUGUEJAR (PRE PRODUCCIÓ)
+                            alert('Usuario existe: ' + dadesExitosesJSON.existeixUsuari+ " ||  teAccesArecursos: "+dadesExitosesJSON.teAccesArecursos); //(PRE PRODUCCIÓ)
+
+                            if (dadesExitosesJSON.existeixUsuari) {
+                                if (dadesExitosesJSON.teAccesArecursos) {
+                                    // -- vas al login --  
+                                    window.location.href = "pas2C_login.html";
+                                    localStorage.setItem('emailUsuariJaAmbAccesArecursos', email); 
+                                } else {
+                                    //-- anara fer que l'usuari introdueixi contrasenya -- 
+                                    localStorage.setItem('emailUsuariNoRec', email);
+                                    window.location.href = "pas2B_introduirContrasenya.html";
+                                }
+                            
+                            } else { //no existeix usuaris
+                                localStorage.setItem('emailNouUsuari', email);
+                                window.location.href = "pas2A_infoBenvinguda.html";  //si l'usuari no existeix cal comensar a dirli de posar la contra
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error en verificar usuari. Backend apagat probablement, o problemes de xarxa...');
+                        });
+            
+                    } else {
+                        emailInput.focus(); //ENVIO EL CURSOR AL CORREU ELECTRONIC
+                    }
+                }); 
+            });
+        </script>
+
+        <script src="js/regexMail.js"></script>
+        <script src="js/inputCorreu.js"></script> <!--envia el correu a la bbdd del form inicial per veure is usuari hi hes o no i decidir segons diagrama-->
+        <script src="js/barraTopRedirigeixLogin.js"></script>
+
+
+        
+
+    </head>
+    <body>
+
+        <!-- capsalera de la pagina. Per a la persona amb sessió iniciada en altres pagines es pot afegir una nav-->
+        <header class="topPagina">
+            <div>
+                <img src="img/lletraPhiLaTeX_vectorial_blanca_clean.png" alt="logoNoCargó">
+            </div>
+            <div>
+                <button id = "botoLogIn">Iniciar sesión</button>
+            </div>
+        </header>
+
+
+        <hr>
+
+
+
+
+        <!-- informació simplificada del producte -->
+        <div id = "infoSimplificadaProducte">
+            <div>
+                <h1 style="display: none">PirApp</h1>
+                <img src="img/mercAppGRAN.png" alt="PirApp" width="100%">
+                <h2>Analiza los tickets digitales olvidados en tu gmail en solo dos minutos: obtén informes de inflación por producto y de gastos por mes.</h2>
+            </div>
+        </div>
+
+
+
+        <!-- INPUT DE LECTURA DE CORREU -->
+        <section class="input-container">
+            <section class="input-wrapper" id = "correuLanding" >
+                <input id="email" class="input-border emailRegistre" required>
+                <label for="email" id = "email-labeleta" class="input-label">Dirección de correo</label>
+                <section id = "bannerMissatges"></section> <!-- millor ubicacio snese que peti -->
+            </section>
+            
+            <button id="botoEnviarCorreu" class="boto-enviar-correu">Regístrate</button> <!-- Agregado -->
+        </section>
+
+
+
+
+
+
+       
+
+
+        <!-- cards productes -->
+        <section class = "contenidorContenidorCarta">
+            <section class="contenidor-carta">
+                <article class="card">
+                    <header>
+                        <h1>“inflalyzer”</h1>
+                    </header>
+                    <section>
+                        <p>Busca <span class = "emfasisCarta">cualquiera de tus productos 
+                            de mercadona</span> y mira si han aumentado de precio o no.</p>
+                            <ul style="display: grid; grid-template-columns: 1fr 1fr; font-size: .7em;">
+                                <li><img src="img/gliphiconAmontonatPerDificultatPaint.png" alt="noCargó!" width="22%"><p>Productos ordenados por frecuencia de compra</p></li>
+                                <li><img src="img/fuegoGlificon.png" alt="noCargó!" width="31%"><p>¡Visualízalo en un gráfico y obtén recta de ajuste!</p></li>
+                            </ul>
+                    </section>
+                    <section  class="ambBorder">
+                        <img src="img/one-shot-imgSample.png" alt="no carrega" width="100%">
+                    </section>
+                    <footer>
+                        <p>paquete: básico</p>
+                    </footer>
+                </article>
+                
+                <article class="card">
+                    <header>
+                        <h1>Exámenes</h1>
+                    </header>
+                    <section>
+                        <p>Haz exámenes  <span class = "emfasisCarta">con memoria de
+                            progreso</span> filtrando items por:</p>
+                            <ul style="display: grid; grid-template-columns: 1fr 1fr 1fr; font-size: .7em;">
+                                <li><img src="img/gliphiconTemps.PNG" alt="noCargó!" width="30%"><p>Año</p></li>
+                                <li><img src="img/fuegoGlificon.png" alt="noCargó!" width="31%"><p>Área</p></li>
+                                <li><img src="img/rayo.png" alt="noCargó!" width="29%"><p>Dificultad</p></li>
+                                <li><img src="img/conjuntBuitSimbolDeOpenOfficeGimp.png" alt="noCargó!" width="28%"><p>no contestados</p></li>
+                                <li><img src="img/creuRojaPaintArtesa.png" alt="noCargó!" width="26%"><p>fallados</p></li>
+                                <li><img src="img/fuegoGlificon.png" alt="noCargó!" width="28%"><p>lorem ipsum</p></li>
+                            </ul>
+                    </section>
+                    <section  class = "contenidor-difuminat">
+                        <img src="img/mobilFullRetallat.png" width="100%" alt="no carrega">
+                    </section>
+                    <footer>
+                        <p>paquete: medio </p>
+                    </footer>
+                </article>
+
+                <article class="card">
+                    <header>
+                        <h1>Grafo conocimiento</h1>
+                    </header>
+                    <section>
+                        <p>Encuentra los <span class = "emfasisCarta">conceptos de pregunta recurrente</span>. Encuentra rápidamente qué hay que estudiar.</p>
+                    
+                    
+                        <ul style="display: grid; grid-template-columns: 1fr 1fr; font-size: .7em;">
+                            <li><img src="img/cervell_IA.png" alt="noCargó!" width="35%"><p>Clasificación por IA</p></li>
+                            <li><img src="img/gliphiconTemps.PNG" alt="noCargó!" width="30%"><p>¡2010- 2024!</p></li>
+                        </ul>
+                    </section>
+                    <section  class="ambBorder">
+                        <img src="img/grafMostraLanding.PNG" alt="no carrega" width="100%">
+                    </section>
+                    <footer>
+                        <p>paquete: Premium</p>
+                    </footer>
+                </article>
+            </section>
+        </section>
+
+
+        
+
+
+
+        
+        
+
+
+
+
+    
+    </body>
+    </html>

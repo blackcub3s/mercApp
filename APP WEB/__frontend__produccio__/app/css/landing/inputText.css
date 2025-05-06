@@ -1,0 +1,121 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0em 0em 30em 0em;
+
+    vertical-align: auto;
+
+
+    
+    background: linear-gradient(to bottom, 
+                            var(--blancoGradiente) 10%, 
+                            var(--azulClaroGradiente) 100%
+                        );
+
+
+}
+
+.input-wrapper {
+    position: relative;
+    width: 20em; /* Adjust width as needed */
+    margin-bottom: 1em;
+}
+
+.input-border {
+    width: 100%;
+    padding: 16px 12px 12px; /* Extra padding at the top to make space for label */
+    border: .1em solid var(--grisMeu); /* Default border color */
+    border-radius: .2em;
+    font-size: 16px;
+    outline: none; /* Remove default focus outline */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.input-border-vermell {
+    border-color: var(--vermellMeu); /* Border color when conditions are met */
+}
+
+.input-border-blau {
+    border-color: var(--contorn_blau); /* Border color when conditions are met */
+}
+
+.input-border-verd {
+    border-color: var(--contorn_verd); /* contorn de la border quan el mail està correcte */
+}
+
+.input-border-default {
+    border-color: var(--grisMeu); /* Default border color */
+}
+
+.input-label {
+    position: absolute;
+    transform: translateY(-50%);
+    background-color: var(--colorFonsInput); /* Match background of input */
+    padding: 0 4px;
+    
+}
+
+.input-border:focus + .input-label,
+.input-border:not(:placeholder-shown) + .input-label {
+    top: 0;
+    left: 12px;
+    font-size: 12px;
+    color: var(--foscMeu);
+    background-color: var(--colorFonsInput); /* Match background of input */
+}
+
+
+#botoEnviarCorreu {
+    padding: 0.6em 1em; /*top i bottom a 0.6 per fer proporcio aurea mes o menys*/
+    font-size: 1em;
+    border-radius: .3em;
+    border: .1em solid black;
+    background-color: green;
+    color: white;
+    font-weight: bold;
+
+    /* TRANSICIO PER AL HOVER */
+    transition: background-color 0.15s ease-in-out,
+                transform 0.15s ease-in-out; 
+    
+}
+
+#botoEnviarCorreu:hover {
+    background-color: rgba(0, 128, 0, 0.8);
+    transform: scale(1.02); /* Slightly increase the size */
+}
+
+/*nota que: boto registrarse es fa petit al mmoent en que 
+s'activa la media query del boot d'iniciar sessio de dalt*/
+@media (max-width: 500px) {
+    #botoEnviarCorreu {
+        font-size: .9em;
+    }  
+}
+
+
+
+@media (max-width: 380px) {
+    .input-wrapper {
+        width: 17em;
+    }  
+}
+
+
+
+@media (max-width: 322px) {
+    .input-wrapper {
+        width: 15em;
+    }  
+}
+
+@media (max-width: 255px) {
+    .input-wrapper {
+        width: 12em;
+    }  
+
+    .input-wrapper button {
+        font-size: 1em;
+    }
+}

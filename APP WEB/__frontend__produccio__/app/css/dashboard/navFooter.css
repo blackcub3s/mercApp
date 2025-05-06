@@ -1,0 +1,342 @@
+/*------------------------------------------------*/
+/*------------------------------------------------*/
+/*---------------ESTILOS GLOBALES-----------------*/
+/*------------------------------------------------*/
+/*------------------------------------------------*/
+
+
+:root {
+
+    /* ---- paleta de colores ---- */
+    --colorBarraNavegacion: rgb(0, 0, 0);
+    --colorBarraNavegacionHover: rgb(194, 194, 194);
+           
+    --negroFooter: black;                   /*footer*/
+
+    --MaximaAnchuraBarraNavegacion: 600px;
+    --MaximaAnchuraFooter: 800px;
+    --tiempoTransicionEstandar: 0.1s;
+    --aumentoTamanyoEstandar: 1.02; /*aumentos para las imagenes al hacer el hover (aumento del 2 por ciento)*/
+}
+
+/*quitamos márgenes y padding de los elementos, 
+para ganar más control en el diseño de la web.*/
+*, html, body {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*buscamos la fuente que recomienda figma, roboto. La hemos */
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    /*Querríamos la semi-bold! Para ello podríamos usar la respuesta de Jesús Carrera 
+    donde se recomienda usar font-weight: 600 ( https://stackoverflow.com/questions/8735872/how-do-i-set-semi-bold-font-via-css-font-weight-of-600-doesnt-make-it-look-l ).
+    
+    Sin embargo font-weight: 600 usa una negrita excesiva más gruesa que la roboto semi-bold de figma, 
+    mientras que fontweight: 500 es lo mismo que dejar el font-weight por defecto. Por lo tanto no podemos definir 
+    la letra para la navbar exactamente igual que en figma.
+    */
+}
+
+/* tamaños de letra */
+/* el tamaño por defecto es, justamente 16px. Si lo quitamos, de hecho, no cambia
+nada. Sin embargo, especificarlo explícitamente nos permite que si queremos 
+variar el tamaño de las fuentes de toda la web, podamos hacer cambios en toda 
+ella -para lo definido en rem o em-. */
+
+html {font-size: 16px;}  /*APUNTE NO MODIFICAR: Se destroza todo*/
+
+/*TAMAÑO DE LOS TITULOS QUE ENCABEZAN CADA SECCIÓN
+(FRONTEND, BACKEND, IA, ETC)*/
+.tituloSeccion {font-size: 2.5rem;}     /*son 40 px en figma. Con el font-size del root a 16 con 2.5rem tenemos los 40px (40 = 16*2.5)*/
+.subTituloSeccion {font-size: 1.45rem; margin-top: 1rem;}  /*TEORICAMENTE: son 26 px en figma. Si el font-size del root es 16 con 1.5rem tenemos los 24  (40 = 16*1.5). Pero lo hemos ajustado, porque la teoria no es igual que la practica*/
+.botonPrimario {
+    background-color: var(--colorAzulBoton);
+    color: white;
+    padding: .65em 1.5em .65em 1.5em;
+    border-radius: .5em;
+    border-style: none; /*quitamos la border vestigial*/
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+    font-size: .62em;
+    text-decoration: none; /*quitamos el subrayado de hipervínculo (elemento a)*/
+    transition: background-color var(--tiempoTransicionEstandar) ease-in-out, 
+                transform var(--tiempoTransicionEstandar) ease-in-out, 
+                box-shadow var(--tiempoTransicionEstandar) ease-in-out; /*TRANSICIÓN PARA EL JOVER*/
+}
+
+
+.botonPrimario:hover {
+    background-color: var(--colorAzulBotonHover); /* Cambia a un tono más oscuro del color azul */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4); /* Sombra más intensa */
+}
+
+/*------------------------------------------------*/
+/*------------------------------------------------*/
+/*---------------BARRA NAVEGACIÓN-----------------*/
+/*------------------------------------------------*/
+/*------------------------------------------------*/
+nav {
+    background-color: var(--colorBarraNavegacion);
+    color: white;
+    padding-top: 1.2em;
+    padding-bottom: 1.2em;
+}
+
+/*Ponemos estilo a los 4 elementos de la primera
+ lista no ordenada (la navbar visible sin clicar)*/
+nav > ul {
+    display: grid;          /*ponemos una grid de 4 columnas, uno para cada elemento de la li del menú de navegación*/
+    grid-template-columns: repeat(4,1fr);  /*definimos las 4 columnas con 4 fracciones de grid*/
+    text-align: center;     /*centramos el texto de cada elemento de navegación dentro de su columna*/ 
+    list-style-type: none;  /*quitamos los bullet points de la lista que conforma la barra de navegación -no debe haberlos-*/
+    font-size: 1em;
+
+    max-width: var(--MaximaAnchuraBarraNavegacion); /*tamaño máximo horizontal*/
+    margin: 0 auto; /*al definir tamaño máximo hay que centrarlo si no queda pegado a la izquierda. Usamos propiedad shorthand de margin.*/    
+}
+
+
+/* ---- INICIO ÁREA COMENTARIO 1 ---- */
+
+/* Queremos conseguir que en condiciones normales (sin hacer hover encima de los elementos de la navbar) 
+haya en todo momento una border "invisible" debajo de cada li de la barra de navegación. Para ello haremos esta border
+del mismo color que la barra de navegación. 
+
+Ello tiene una implicación importante. Su existencia permitirá que
+al hacer hover sobre un li, al cambiar el color de la misma [B]
+la border-bottom no nos moverá los elementos de la web que quedan por debajo cada vez que 
+pasemos el ratón por encima [A] y que está definida. Se puede comprobar el problema que habría si borrásemos la linea comentada
+con [A].
+
+NOTA: esos mismos estilos (subrayado y gris, durante hover) se verán aplicados a la footer también!! Porque queremos
+conservar la misma lógica en ambos sitios 
+
+*/
+
+nav ul li span, footer section section ul li span {
+    border-bottom: 2px solid var(--colorBarraNavegacion); /*[A}*/
+
+    /*hacemos que cambios de propiedades sean graduales en entrada y salida (para el hover)*/
+    transition: background-color var(--tiempoTransicionEstandar) ease-in-out, 
+                border-bottom var(--tiempoTransicionEstandar) ease-in-out;
+
+    /*Conseguimos que cada border inferior de cada li, al hacer hover, se acote solamente al texto que ocupa: */
+    margin: 0 auto;
+    
+}
+
+/*queremos que cada elemento del menú de navegación sea dinámico al pasar por encima*/
+nav ul li span:hover, footer section section ul li span:hover {
+    color: var(--colorBarraNavegacionHover);
+    border-bottom: 2px solid var(--colorBarraNavegacionHover); /*[B]*/
+}   
+
+
+/* ---- FIN ÁREA COMENTARIO 1 ---- */
+
+nav ul li img {
+    margin: 0 0 .05em 0; /*Subimos un pelín la flecha del desplegable hacia arriba*/
+    width: 9%;
+    
+}
+
+/*SITUAMOS EL li de "Servicios" un poco más cerca de mis tickets*/
+nav ul li:first-child {
+    position: relative;
+    left: 1.5em;
+}
+
+
+/*SITUAMOS EL li "Mis tickets" un poco mas cerca de "Mis datos"*/
+nav ul li:nth-child(2) {
+    position: relative;
+    left: .8em;
+}
+
+
+
+
+
+/*SITUAMOS EL li "Contacto" un poco mas cerca de "Mis datos"*/
+nav ul li:last-child {
+    position: relative;
+    right: 1.2em;
+}
+
+/*NOTA: IMPORTANTE PARA QUE NAVBAR Y FOOTER SALGAN CON LOS MISMOS HOVERS
+SUBRAYADOS Y CON COLOR GRIS*/
+nav ul li a, footer section section ul li a {
+    text-decoration: none; /*Quitamos los subrayados vestigiales de los links, que sino se ven en el hover!*/
+    color: inherit;        /*heretamos el color de sus padres, definidos en li y el nav: el blanco y el gris en el hover.*/
+}
+
+
+/* ------------------------------------------------*/
+/* ------------------------------------------------*/
+/* - INCIO CREACIÓN MENÚ DESPLEGABLE DE LA NAVBAR -*/
+/* ------------------------------------------------*/
+/* ------------------------------------------------*/
+
+
+/*SUBMENÚ DESPLEGABLE*/
+nav ul li ul {
+    display: none;  /*Oculto si no pasamos sobre él*/
+    margin-top: 1em;    
+    list-style-type: none;
+}
+
+
+/* MUESTRA SUBMENÚ DESPLEGABLE OCULTO AL PASAR EL RATÓN
+POR ENCIMA DE "Servicios" */
+nav ul li:hover ul {display: block;}
+
+
+/*¡Cuidado! Por motivos que escapan a nuestra comprensión
+cada elemento del menú desplegable queda desplazado horizontalmente
+con un espaciado irregular. Así pues, lo corregimos para cada uno,
+manualmente (ver las as: [A]) Si encontráis alguna forma de 
+solucionarlo, sin este parche, por favor, avisadnos.
+
+Asimismo hemos definido animaciones con la librería Animate.style (que
+cargamos de la CDN como un link en el html) usando el keyframe para
+"fadeInDown" que pasamos en la propiedad "animation" [B].
+
+Estas animaciones serán de distinta duración para cada uno
+de los tres elementos. El primer elemento del desplegable (front-end)
+va a tener .8s de duración, el segundo el doble y el tercero
+el triple, quedando un diseño visual atractivo.*/
+
+/*desplegable "inflación" (inflalyzer)"*/
+nav ul li ul li:first-child {
+    position: relative;
+    left: -.4em;                /*[A]*/
+    animation: fadeInDown;      /*[B]*/
+    animation-duration: .8s;    /*[C]*/
+}
+
+/*desplegable "Categorizer"*/
+nav ul li ul li:nth-child(2) {
+    position: relative;
+    left: .1em;                  /*[A]*/   
+    animation: fadeInDown;      /*[B]*/
+    animation-duration: 1.6s;   /*[C]*/
+}
+
+/*desplegable "Intervalizer"*/
+nav ul li ul li:last-child {
+    position: relative;
+    left: .05em;                /*[A]*/
+    animation: fadeInDown;      /*[B]*/
+    animation-duration: 2.4s;   /*[C]*/
+}
+
+/*Espaciado entre los elementos del desplegable*/
+nav ul li ul li {margin-top: .5em;}
+
+
+nav ul li ul li:hover {color: var(--colorBarraNavegacionHover);}   
+
+
+
+/* ----------------------------------------------*/
+/* -  FIN MENÚ DESPLEGABLE DE LA NAVBAR         -*/
+/* ----------------------------------------------*/
+
+
+
+
+
+
+
+
+
+/*------------------------------------------------*/
+/*------------------------------------------------*/
+/*--------------------FOOTER----------------------*/
+/*------------------------------------------------*/
+/*------------------------------------------------*/
+
+
+footer {
+	background-color: var(--negroFooter);
+	color: white;
+}
+
+/*No queremos decoración en los links*/
+footer a {
+    text-decoration: none;
+    color: white;
+}
+
+/*quitamos los discos en los UL*/
+footer ul {
+    list-style: none;
+}
+
+/*incremento espacio debajo de h1 (Servicios, datos de usuario, contacto)*/
+footer section section h1 {
+    padding-bottom: 1em;
+}
+/*POSICIONO LAS TRES COLUMNAS CENTRADAS CON UN GRID DE TRES COLUMNAS
+(necesito selector descendiente directo, importante para no aplicar a los hijos un grid)*/
+footer > section:first-child {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    max-width: var(--MaximaAnchuraFooter);
+    margin: 0 auto; /*CENTRO HORIZONTAL Y VERTICAL*/
+    justify-items: center;
+    
+}
+
+/*POSICIONO EL MENSAJE DE COPYRIGHT EN EL CENTRO
+(No necesito descendiente directo porque no hay más sections dentro)*/
+footer > section:last-child {
+    padding: 1em 0em; 
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+}
+
+footer section section h1 {
+    font-size: 1.7rem;
+}
+
+footer section section li {
+    font-size: 1.1rem;
+}
+
+
+footer img {
+    width: 2em;
+}
+
+
+
+ 
+#botoEliminarToken {
+    position: absolute;
+    top: 1.05em;
+    right: 1.05em;
+
+    background-color: var(--colorBarraNavegacion);
+    color: red;
+    border-color: red;
+    border: 1px solid red;
+    border-radius: .5em;
+    padding: .5em;
+}
+
+
+/*BOTON PARA ELIMINAR EL TOKEN (VA ENCIMA DE LA NAVBAR DE HECHO)*/
+#botoEliminarToken:hover {
+    background-color: #410404;
+    transition: background-color var(--tiempoTransicionEstandar) ease-in-out;
+}
+
+/*CUIDADO! SE DEFINE JUNTO CON LA NAVBAR, ESTILO COMPARTIDO:
+footer section section ul li span {}   */
+
+/*CUIDADO! SE DEFINE JUNTO CON LA NAVBAR, ESTILO COMPARTIDO:
+footer section section ul li span:hover */

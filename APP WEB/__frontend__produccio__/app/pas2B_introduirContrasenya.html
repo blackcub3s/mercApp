@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PirApp.com | registro</title>
+
+    <!-- aquest dos scripts estan a totes les pagines visibles sense permisos. La seva funció és treure
+    l'usuari de pàgines com aquesta abans(ideades per registrar-se o iniciar sessio) abans de que carregui el DOM
+    i dur-lo automàticament a la pagina corresponent que li pertoqui en funció del seu nivell de permisos dins el token, 
+    si el token NO és expirat.-->
+    <script src="/js/jwt/decodificaJWT.js"></script>
+    <script src="/js/jwt/restringeixVistesPubliques_USUARI_LOGUEJAT.js"></script>
+
+    <!-- estils per a totes les pagines -->
+    <link rel="stylesheet" href="css/estilsGlobals.css"> 
+
+    <!-- estils i javascript ESPECIFICS per a aquesta pagina (alguns potser es podran reutilitzar) -->
+    <link rel="stylesheet" href="css/barraNavegacioSimple.css">
+    
+    <!-- estils per a la barra de correu -->
+    <link rel="stylesheet" href="css/landing/inputText.css">
+
+    <script src="js/barraTopRedirigeixLogin.js"></script>
+
+    <!-- 3 SCRIPTS PER A FER ENVIAMENT DE DADES (també utilitzats en 2C_login, 
+         a excepcio de l'script inputCorreu.js, que aqui no cal)-->
+    <script src="js/regexMail.js"></script>
+    <script src="js/inputContra.js"></script>
+    <script src="js/bannerAlertes.js"></script>
+    
+
+    <style>
+        #infoPerAusuari {
+            margin-top: 2em;
+            display: flex;
+            flex-direction: column; /* Align items vertically */
+            align-items: center;    /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+            height: 100%; /* Take up the full height of the parent container */
+            text-align: center;
+            height: 60vh;
+            padding: 0 2em;
+        }
+
+        /*TÍTOL*/
+        #infoPerAusuari article:first-child h1 {
+            font-size: 2em;
+            padding-bottom: .2em;
+        }
+
+        /*SUBTÍTOL*/
+        #infoPerAusuari article:first-child h2 {
+            font-size: 1.3em;
+        }
+
+
+        /*TITOL "Correo electronico"*/
+        #infoPerAusuari article:nth-child(2) p:first-child {
+            padding-top: 2em;
+        }
+
+        /*CORREU TRET DEL LOCAL*/
+        #infoPerAusuari article:nth-child(2) #correuRecuperatPasAnterior {
+            font-weight: bold;
+        }
+
+        /*titular CONTRASENYA*/
+        #infoPerAusuari article:nth-child(3) p:first-child {
+            padding-top: 1em;
+        }
+
+
+        /*INPUT CONTRASENYA*/
+        #infoPerAusuari article:nth-child(3) input {
+            padding: 1em 3em;
+        }
+
+
+        #contenidorContrasenya {
+            margin-top: 1em;
+            display: grid;
+        }
+
+        #botoEnviarCorreu {
+            margin-top: 1em;
+            padding: 0.6em 1em; /*top i bottom a 0.6 per fer proporcio aurea mes o menys*/
+            font-size: 1em;
+            border-radius: .3em;
+            border: .1em solid black;
+            background-color: green;
+            color: white;
+            font-weight: bold;
+
+            /* TRANSICIO PER AL HOVER */
+            transition: background-color 0.15s ease-in-out,
+                        transform 0.15s ease-in-out; 
+            
+        }
+
+        #botoEnviarCorreu:hover {
+            background-color: rgba(0, 128, 0, 0.8);
+            transform: scale(1.02); /* Slightly increase the size */
+        }
+
+
+        /* media queries */
+        @media screen and (max-width: 600px) {
+            #infoPerAusuari {
+                margin-top: 3em;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            #infoPerAusuari {
+                margin-top: 6em;
+            }
+
+            #infoPerAusuari article:first-child h1 {font-size: 1.7em;} /*de 2em passes a 1.8em*/
+            #infoPerAusuari article:first-child h2 {font-size: 1.2em; padding-top: .5em;} /*de 1.3em passes a 0.2em*/
+
+        }
+    </style>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // OBTING MAIL DEL LOCAL STORAGE SI ES QUE VENIM DE LA LANDING PAGE I L'USUARI QUE POSA EL MAIL JA T ACCES A RECURSOS
+            const email = localStorage.getItem('emailUsuariNoRec');      
+            const domPcorreu = document.getElementById("correuRecuperatPasAnterior");
+
+            // SI I NOMES SI EXISTEIX POSARA EL MAIL
+            if (email) {
+                domPcorreu.textContent = email;
+            }
+            
+
+
+            
+            const contrasenyaInput = document.getElementById('contrasenya');
+            const botoEnviarCorrIcontra = document.getElementById('botoEnviarCorreu');
+            let vermellAlerta = "#F44336";
+            botoEnviarCorrIcontra.addEventListener('click', function obtinguesDadesBackend() {
+
+                const email = localStorage.getItem("emailUsuariNoRec");
+                const contra = contrasenyaInput.value;
+
+                //NOMES FAREM SOLICITUD AL SERVIDOR SI EL CORREU I CONTRA REUNEIXEN UNS MINIMS
+                if (email.length < 1 || contra.length < 1) {
+                    bannerAlerta([], "correoOcontrasenyaVacios","var(--taronjaAlerta)");
+                } else if (correuApte(email)) {
+                    if (contrasenyaApta(contra)) {
+
+
+                        // -------  PAS 1: Envio la solicitud POST ------- 
+                        fetch('http://localhost:8080/api/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',  //OBLIGAT --> DIU AL SERVIDOR QUE EL BODY DE LA PETICIO POST DEL CLIENT AL SERVIDOR SERA JSON (SERA DE FET {"email":"asd@asd.com"})
+                                'Accept': 'application/json'        //OPCIONAL --> DIU QUE EL CLIENT ACCEPTARÀ DEL SERVIDOR UN JSON (EN AQUEST CAS, e.g, SERÀ {"{existeixUsuari: false}"})
+                            },
+                            body: JSON.stringify({ correuElectronic: email, contrasenya: contra }),             //ho recollira un hasmap de java al backend
+                        }) // ------- PAS 2: AVALUO SI LA REPSOSTA ES EXITOSA (NO HA DONAT CODIS D'ERROR). SI I NOMÉS SI HO ÉS, CONVERTEIXO DADES A JSON.
+                        .then(response => {
+                            // Verificar si la resposta es exitosa. 
+                            if (response.status == 200) {
+                                return response.json();          // Convertir la resposta a JSON
+                            }
+                            else if (response.status == 400) {
+                                //Si hem programat les validacions del front CONGRUENTMENT amb les del back, al CODI 400 D'ERROR NO HI ARRIBAREM MAI!
+                                //és aquest el codi generat QUAN S'ACTIVEN les validacions @email i @contra del LoginDTO
+                                //a través de l'anotació @Valid del backend.
+                                return response.json().then(data => Promise.reject({ type: 'validacion', data })); //mostro codi enviat pel servidor en forma de json
+                            }
+                            else {
+                                throw new Error('Error! La resposta de xarxa no ha sigut exitosa!');
+                            }
+
+                        }) // ------- PAS 3: MANEJO LA RESPOSTA JSON -------
+                        .then(dadesExitosesJSON => {
+                            
+                            console.log(dadesExitosesJSON); // Imprimir la resposta en la consola (treure a producio: conte el token d'acces)
+                            if (dadesExitosesJSON.existeixUsuari) {
+                                if (dadesExitosesJSON.contrasenyaCorrecta) {
+                                    let tokenAccesJWT = dadesExitosesJSON.AccessToken;  //extrec el token que anava al body de la response
+                                    localStorage.setItem("AccessToken", tokenAccesJWT); //guardem token al localStorage
+
+                                    if (dadesExitosesJSON.teAccesArecursos) {
+                                        bannerAlerta([email], "jaTeniesAcces","var(--lilaAlerta)"); //no es donara mai! a menys que algu modifiqui localStorage a pas2B en la variable "emailUsuariNoRecposant", posant un mail amb permisos 1
+                                        //window.location.href = "/dashboard.html"; -->  AIXO HO FARÀ restringeixVistesPubliques_USUARI_LOGUEJAT 
+                                    } else { //NO TE ACCES A RECURSOS (USUARI TE CONTA I CONTRASNEYA)
+                                        bannerAlerta([],"guanyaAccesArecursos","var(--verdAlerta)");
+                                        //window.location.href = "/pas4_concedirAccesGmail.html"; --> AIXO HO FARÀ restringeixVistesPubliques_USUARI_LOGUEJAT 
+                                    }
+                                } else { 
+                                    bannerAlerta([email], "contrasenyaIncorrecta","var(--taronjaAlerta)");
+                                }
+                            } else { //no existeix usuari
+                                bannerAlerta([email], "usuariInexistent",vermellAlerta);  
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error en verificar usuari. Backend apagat probablement, o problemes de xarxa...');
+                        });
+
+                    } else {
+                        bannerAlerta(errorsContrasenyaNoApta(contra), "contrasenyaImposible","var(--vermellAlerta)");
+                    }
+                        
+                    
+        
+                } else {
+                    bannerAlerta([email], "formatCorreuIncorrecte",vermellAlerta);
+                }
+            }); 
+
+
+    
+    
+    
+        });
+    </script>
+</head>
+<body>
+
+    <!-- capsalera de la pagina. Per a la persona amb sessió iniciada en altres pagines es pot afegir una nav-->
+    <header class="topPagina" style="background-color: white">
+        <div>
+            <a href="pas1_landingSignUp.html"><img src="img/lletraPhiLaTeX_vectorial_negra_clean.png" alt="logoNoCargó"></a>
+        </div>
+        <div>
+            <button id = "botoLogIn" style = "background-color: white; color: black">Iniciar sesión</button>
+        </div>
+    </header>
+
+    <!--evitem l'ús de la horizontal rule-->
+    <section style="border-bottom: 1px solid grey;"></section>
+
+
+
+
+    <!-- informació simplificada del producte -->
+    <section id = "infoPerAusuari">
+        <article>
+            <h1>¡Te damos de nuevo la bienvenida! </h1>
+            <h2>Escribe tu contraseña para acceder al usuario que empezaste a crear.</h2>
+        </article>
+        <article>
+            <p>Correo electrónico:</p>
+            <p id = "correuRecuperatPasAnterior"></p>
+        </article>
+        <article>
+            <article id = "contenidorContrasenya" class = "input-wrapper">
+                <input id="contrasenya" class="input-border" type="password" name="contrasenya" required>
+                <label for="contrasenya" class="input-label" id = "contra-labeleta">Contraseña</label>
+                <button id = "botoEnviarCorreu">Siguiente</button>
+            </article>
+        </article>
+        <section id = "bannerMissatges"></section> <!-- NOVA LINIA: EVALUAR SI VA BÉ -->
+    </section>
+
+
+
+
+
+
+
+
+
+  
+</body>
+</html>

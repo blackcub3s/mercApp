@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PirApp.com | registro</title>
+
+         <!-- SCRIPT SOLICITUD FETCH POST A SERVIDOR -ENVIEM CORREU I EL
+      SERVIDOR ENS RETORNArà JSON DIENT SI L'USUARI HI ES O NO HI ES, per ara imprimit per consola-->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener referencias a los elementos
+            let vermellAlerta = "#F44336";
+            const emailInput = document.getElementById('email');
+            const contrasenyaInput = document.getElementById('contrasenya');
+            
+
+            
+            const botoEnviarCorrIcontra = document.getElementById('botoEnviarCorreu');
+    
+            // Agregar un event listener al botón
+            botoEnviarCorrIcontra.addEventListener('click', function obtinguesDadesBackend() {
+                
+                // Obtener el valor del input
+                const email = emailInput.value;
+                const contra = contrasenyaInput.value;
+
+                //NOMES FAREM SOLICITUD AL SERVIDOR SI EL CORREU I CONTRA REUNEIXEN UNS MINIMS
+                if (email.length < 1 || contra.length < 1) {
+                    bannerAlerta([], "correoOcontrasenyaVacios","var(--taronjaAlerta)");
+                } else if (correuApte(email)) {
+                    if (contrasenyaApta(contra)) {
+
+
+                        // -------  PAS 1: Envio la solicitud POST ------- 
+                        fetch('http://localhost:8080/api/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',  //OBLIGAT --> DIU AL SERVIDOR QUE EL BODY DE LA PETICIO POST DEL CLIENT AL SERVIDOR SERA JSON (SERA DE FET {"email":"asd@asd.com"})
+                                'Accept': 'application/json'        //OPCIONAL --> DIU QUE EL CLIENT ACCEPTARÀ DEL SERVIDOR UN JSON (EN AQUEST CAS, e.g, SERÀ {"{existeixUsuari: false}"})
+                            },
+                            body: JSON.stringify({ correuElectronic: email, contrasenya: contra }),             //ho recollira un hasmap de java al backend
+                        }) // ------- PAS 2: AVALUO SI LA REPSOSTA ES EXITOSA (NO HA DONAT CODIS D'ERROR). SI I NOMÉS SI HO ÉS, CONVERTEIXO DADES A JSON.
+                        .then(response => {
+                            // Verificar si la resposta es exitosa. 
+                            if (response.status == 200) {
+                                return response.json();          // Convertir la resposta a JSON
+                            }
+                            else if (response.status == 400) {
+                                //Si hem programat les validacions del front CONGRUENTMENT amb les del back, al CODI 400 D'ERROR NO HI ARRIBAREM MAI!
+                                //és aquest el codi generat QUAN S'ACTIVEN les validacions @email i @contra del LoginDTO
+                                //a través de l'anotació @Valid del backend.
+                                return response.json().then(data => Promise.reject({ type: 'validacion', data })); //mostro codi enviat pel servidor en forma de json
+                            }
+                            else {
+                                throw new Error('Error! La resposta de xarxa no ha sigut exitosa!');
+                            }
+
+                        }) // ------- PAS 3: MANEJO LA RESPOSTA JSON -------
+                        .then(dadesExitosesJSON => {
+                            
+                            console.log(dadesExitosesJSON); // Imprimir la resposta en la consola (treure a producio: conte el token d'acces)
+                            if (dadesExitosesJSON.existeixUsuari) {
+                                if (dadesExitosesJSON.contrasenyaCorrecta) {
+                                    let tokenAccesJWT = dadesExitosesJSON.AccessToken;  //extrec el token que anava al body de la response
+                                    localStorage.setItem("AccessToken", tokenAccesJWT); //guardem token al localStorage
+
+                                    if (dadesExitosesJSON.teAccesArecursos) {
+                                        bannerAlerta([],"bienvenidoAlaApp","var(--verdAlerta)");
+                                        //window.location.href = "/dashboard.html"; -->  AIXO HO FARÀ restringeixVistesPubliques_USUARI_LOGUEJAT 
+                                    } else {
+                                        bannerAlerta([email], "usuariExisteixPeroNoteAccesArecursos","var(--lilaAlerta)"); //A NETFLIX ANIRIA A LA PAGINA DELS PLANS DE PAGO (PQ NO PAGA). A mercApp anem a concedir accés al gmail -- 
+                                        //window.location.href = "/pas4_concedirAccesGmail.html"; --> AIXO HO FARÀ restringeixVistesPubliques_USUARI_LOGUEJAT 
+                                    }
+                                } else { 
+                                    bannerAlerta([email], "contrasenyaIncorrecta","var(--taronjaAlerta)");
+                                }
+                            } else { //no existeix usuari
+                                bannerAlerta([email], "usuariInexistent",vermellAlerta);
+
+                                
+                                //window.location.href = "pas2A_infoBenvinguda.html";  //SI EL VOLS REDIRIGIR PER A QUÈ ES REGISTRI
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error en verificar usuari. Backend apagat probablement, o problemes de xarxa...');
+                        });
+
+                    } else {
+                        bannerAlerta(errorsContrasenyaNoApta(contra), "contrasenyaImposible","var(--vermellAlerta)");
+                    }
+                        
+                    
+        
+                } else {
+                    bannerAlerta([email], "formatCorreuIncorrecte",vermellAlerta);
+                }
+            }); 
+        });
+    </script>
+
+
+
+
+
+    <!-- aquest dos scripts estan a totes les pagines visibles sense permisos. La seva funció és treure
+    l'usuari de pàgines com aquesta abans(ideades per registrar-se o iniciar sessio) abans de que carregui el DOM
+    i dur-lo automàticament a la pagina corresponent que li pertoqui en funció del seu nivell de permisos dins el token, 
+    si el token NO és expirat.-->
+    <script src="/js/jwt/decodificaJWT.js"></script>
+    <script src="/js/jwt/restringeixVistesPubliques_USUARI_LOGUEJAT.js"></script>
+
+    <!-- estils per a totes les pagines -->
+    <link rel="stylesheet" href="css/estilsGlobals.css"> 
+
+    <!-- estils i javascript ESPECIFICS per a aquesta pagina (alguns potser es podran reutilitzar) -->
+    <link rel="stylesheet" href="css/barraNavegacioSimple.css">
+    
+    <!-- estils per a la barra de correu -->
+    <link rel="stylesheet" href="css/landing/inputText.css">
+
+    <script src="js/regexMail.js"></script>
+    <script src="js/inputCorreu.js"></script>
+    <script src="js/inputContra.js"></script>
+    <script src="js/bannerAlertes.js"></script>
+
+
+    <!-- script que permet passar el correu d'un usuari que ja està registrat cap al login -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // OBTING MAIL DEL LOCAL STORAGE SI ES QUE VENIM DE LA LANDING PAGE I L'USUARI QUE POSA EL MAIL JA T ACCES A RECURSOS
+            const email = localStorage.getItem('emailUsuariJaAmbAccesArecursos');
+
+            // SI I NOMES SI EXISTEIX POSARA EL MAIL
+            if (email) {
+                document.getElementById('email').value = email;
+            }
+
+            localStorage.removeItem('emailUsuariJaAmbAccesArecursos'); //cal borrar-lo o sino sempre tindràs aquest correu al input del login
+        });
+    </script>
+
+
+    <style>
+        #embolcallPare {
+            display: flex;
+            flex-direction: column; /* Align items vertically */
+            align-items: center;    /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+            height: 100%; /* Take up the full height of the parent container */
+            text-align: center;
+            height: 90vh;
+            
+        }
+
+        #embolcallLogin {
+            border: .05em solid black;
+            padding: 4em 1em 4em 1em;
+            border-radius: .7em;
+            
+        }
+
+        #embolcallLogin h1 {
+            margin-bottom: 1em;
+        }
+
+        #embolcallLogin > #embolcallOblidadaContra {
+            padding-top: 1em;
+            
+        }
+
+        @media (max-width: 900px) {
+            #embolcallLogin {
+
+                margin-top: 6em;
+               
+            }
+        }
+
+
+        @media (max-width: 400px) {
+            #embolcallLogin {
+                border: 0em solid black;
+                height: 100vh;
+                margin-top: 2em;
+                
+                
+            }
+        }
+
+        @media (max-width: 322px) {
+            #embolcallLogin {
+                border: 0em solid black;
+                height: 100vh;
+                margin-top: 5em;
+                font-size: .7em;
+            }
+        }
+    </style>
+
+
+    
+
+</head>
+<body>
+
+    <!-- capsalera de la pagina. Per a la persona amb sessió iniciada en altres pagines es pot afegir una nav-->
+    <header class="topPagina">
+        <div>
+            <a href="pas1_landingSignUp.html"><img src="img/lletraPhiLaTeX_vectorial_blanca_clean.PNG" alt="logoNoCargó"></a>
+        </div>
+    </header>
+
+
+    <hr>
+
+
+
+
+<!-- CONTENIDOR DEL  -->
+<div id="embolcallPare">
+    
+    <!-- INPUT DE LECTURA DE CORREU -->
+     <div id = "embolcallLogin">
+        
+        <h1>Iniciar sesión</h1>
+        
+        <div>
+           
+                <div class="input-wrapper">
+                    <input id="email" class="input-border" required>
+                    <label for="email" class="input-label" id = "email-labeleta">Dirección de correo</label>
+                </div>
+                <div class="input-wrapper">
+                    <input id="contrasenya" class="input-border" type="password" name="contrasenya" required>
+                    <label for="contrasenya" class="input-label" id = "contra-labeleta">Contraseña</label>
+                </div>
+                <button id="botoEnviarCorreu" class="boto-enviar-correu">Inicia Sesión</button> <!-- Agregado -->
+        </div>
+        <section id = "embolcallOblidadaContra">
+            <a href="#">¿Has olvidado tu contraseña?</a>
+        </section>
+     </div>
+     <section id = "bannerMissatges"></section> <!-- millor ubicacio snese que peti -->
+</div>
+
+
+    
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+</body>
+</html>

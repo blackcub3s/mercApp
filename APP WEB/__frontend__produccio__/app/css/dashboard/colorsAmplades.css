@@ -1,0 +1,43 @@
+:root {
+    /*Estos colores hay que añadirlos dentro del root en
+    estilos.css una vez terminada la página interna (PI) de front end.*/
+
+    /*DOS COLORES EXTRA PARA EL DOBLE GRADIENTE LINEAL
+    DE LA SUBPÁGINA INTERNA FRONTEND*/
+    --PI_colorMedioGradienteAZULOSCUROFrontEnd: #002672;
+    --PI_colorMedioGradienteAZULCLAROFrontEnd: #697DFF;
+ 
+    /*COLORES PARA LAS CARDS PRIMERAS CARDS DE LA PÁGINA INTERNA DEL FRONTEND*/
+    --PI_colorInicioGradienteCARDSVUE: #E7DFFF; /*PI significa Página Interna (una página que no es la landing page)*/
+    --PI_colorFinGradienteCardsPaginaInternaFrontEnd: #16005D;
+
+    /*COLORES PARA LAS 4 CARDS DE LA SECCIÓN DE DIFERENCIAS DE LA PÁGINA INTERNA DEL FRONTEND*/
+    --PI_colorAngularGradienteFinal: #ee2494;
+    --PI_colorAngularGradienteInicio: #b424e4;
+    --PI_colorReact: #087ea4;
+    --PI_colorSpans4cards: #FFB007;
+
+    
+    /*GRADIENTE LINEAL DE CADA CARD (DE LAS 4CARDS DE LA SECCIÓN DE DIFERENCIAS DE LA PÁGINA INTERNA DEL FRONTEND*/
+    --PI_inicioCard_VUE: #E7DFFF4c;  /*color original figma #E7DFFF al que se le ha aplicado opacidad del 30%*/
+    --PI_finCard_VUE: #16005dad;     /*color original figma #16005D al que se le ha aplicado opacidad del 60% aprox*/
+    --colorVerdeVue: #41B883;   
+    
+    /*USADO PARA LAS TRES  CARDS DE LAS CARACTERÍSTICAS RESUMIDAS DEL DASHBOARD*/
+    --g: #C0BABA4C; /*color original figma C0BABA al que hemos aplicado opacidad del 30%*/
+    --r: #DB8C8C4C; /*color original figma DB8C8C al que se le ha aplicado opacidad del 30%*/
+    --gHover: #938e8e4c;
+    --rHover: #d251514c;
+
+    /*GRADIENTES FONDO TABLA DIFERENCIAS FRONT-END*/
+    --marronClaroTabla: #D4BEBE;
+    --marronOscuroTabla: #968787;
+
+    /*ANCHO MÁXIMO DE LAS CARDS DE LA PÁGINA INTERNA DE FRONTEND*/
+    --MaximaAnchuraCardsPIfrontend: 1025px;
+    --MaximaAmpladaSwiperArtesa: 1250px;
+
+
+    /*TAMAÑO DE LETRA DE LA TABLA DEL DASHBOARD*/
+    --tamanyoTabla: 1.4em;
+}
