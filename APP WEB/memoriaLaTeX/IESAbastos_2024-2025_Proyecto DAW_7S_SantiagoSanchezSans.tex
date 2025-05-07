@@ -1020,7 +1020,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 
 	
-	Acto seguido, una vea ya creada la imagen que contendrá todo el sistema de archivos de la aplicación y las dependencias, debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de la misma). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Que es el 8000 que va a la derecha de los dos puntos.} -puerto con el que se comunica fastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor con el 8000 también\footnote{El 8000 a la izquierda de los dos puntos}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía ejecutarlo:
+	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Que es el 8000 que va a la derecha de los dos puntos.} -puerto con el que se comunica fastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor con el 8000 también\footnote{El 8000 a la izquierda de los dos puntos}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía ejecutarlo:
 	
 	\begin{lstlisting}[language=bash]
 docker create -p 8000:8000 --name contFastApi back-end-fastapi
@@ -1034,7 +1034,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\end{lstlisting}
 	
 	
-	Ahora el contenedor se podría acceder a través de otro contenedor, de kubernetes o como sea. Hemos usado la red 0.0.0.0, que lo permite. También permite que podamos consultar un endpoint de fastAPI corriendo dentro del contenedor mediante una solicitud get en localhost. En el moemnto de redactar esta parte teníamos en fastapi un endpoint muy sencillo a modo de demostración:
+	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que no hemos usado la IP loopback por defecto del equipo (localhost o 127.0.0.1), sino la IP ``wildcard'' o dirección de red: que permite justamente esta característica. También permite que podamos consultar un endpoint de fastAPI corriendo dentro del contenedor mediante una solicitud get en nuestro localhost. En el momento de redactar esta parte teníamos en fastapi un endpoint muy sencillo a modo de demostración de lo que puede hacer fastAPI dentro de este contenedor arrancado:
 	
 	\FloatBarrier
 	\begin{figure}[H]
