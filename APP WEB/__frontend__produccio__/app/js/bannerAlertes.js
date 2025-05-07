@@ -11,7 +11,7 @@ function bannerAlerta(parametresAlerta, tipusAlerta, colorAlerta) {
     } else if (tipusAlerta == "contrasenyaIncorrecta") {
         banner.innerHTML = `<p>¡La contraseña para la cuenta <strong>${parametresAlerta[0]}</strong> Es incorrecta. <span id="closeBanner" style="cursor:pointer; font-weight:bold; margin-left:10px;">&times;</span></p>`;
     } else if (tipusAlerta == "bienvenidoAlaApp") {
-        banner.innerHTML = `<p> ¡Bienvenido a PirApp! <span id="closeBanner" style="cursor:pointer; font-weight:bold; margin-left:10px;">&times;</span></p>`;       
+        banner.innerHTML = `<p> ¡Bienvenido a <span class = "colorBlauSortidaDades">Merc</span>Δpp! <span id="closeBanner" style="cursor:pointer; font-weight:bold; margin-left:10px;">&times;</span></p>`;       
     } else if (tipusAlerta == "usuariExisteixError") {
         banner.innerHTML = `<p> !El usuario <strong>${parametresAlerta[0]} ya existe y no puede ser registrado!</p>`;
     } else if (tipusAlerta == "algoFueMalConRegistro") {

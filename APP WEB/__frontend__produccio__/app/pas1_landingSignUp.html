@@ -1,11 +1,11 @@
     <!DOCTYPE html>
 
     <!-- NOTA: AQUEST ARXIU SERÀ EL QUE RENNOMBRAREM COM A INDEX.HTML-->
-    <html lang="en">
+    <html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MercApp.com | analiza los tikets digitales de mercadona</title>
+        <title>MercApp | analiza los tikets digitales de Mercadona</title>
 
         <!-- aquest dos scripts estan a totes les pagines visibles sense permisos. La seva funció és treure
         l'usuari de pàgines com aquesta abans(ideades per registrar-se o iniciar sessio) abans de que carregui el DOM
@@ -23,6 +23,10 @@
         <link rel="stylesheet" href="css/landing/inputText.css">
         <link rel="stylesheet" href="css/landing/estilsCardsLanding.css">
         
+
+        <!--Carreguem la font de roboto de google fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
         <!-- SCRIPT SOLICITUD FETCH POST A SERVIDOR -ENVIEM CORREU I EL
         SERVIDOR ENS RETORNARÀ JSON DIENT SI L'USUARI HI ES O NO HI ES-->
         <script>
@@ -121,7 +125,7 @@
         <div id = "infoSimplificadaProducte">
             <div>
                 <h1 style="display: none">PirApp</h1>
-                <img src="img/mercAppGRAN.png" alt="PirApp" width="100%">
+                <img src="img/mercAppGRANv3.png" alt="PirApp" width="100%">
                 <h2>Analiza los tickets digitales olvidados en tu gmail en solo dos minutos: obtén informes de inflación por producto y de gastos por mes.</h2>
             </div>
         </div>
@@ -159,7 +163,7 @@
                             de mercadona</span> y mira si han aumentado de precio o no.</p>
                             <ul style="display: grid; grid-template-columns: 1fr 1fr; font-size: .7em;">
                                 <li><img src="img/gliphiconAmontonatPerDificultatPaint.png" alt="noCargó!" width="22%"><p>Productos ordenados por frecuencia de compra</p></li>
-                                <li><img src="img/fuegoGlificon.png" alt="noCargó!" width="31%"><p>¡Visualízalo en un gráfico y obtén recta de ajuste!</p></li>
+                                <li><img src="img/fuegoGlificon.png" alt="noCargó!" width="31%"><p>¡Visualiza la evolución de precios de un producto en un gráfico!</p></li>
                             </ul>
                     </section>
                     <section  class="ambBorder">
@@ -172,11 +176,10 @@
                 
                 <article class="card">
                     <header>
-                        <h1>Exámenes</h1>
+                        <h1>“Categoryzer”</h1>
                     </header>
                     <section>
-                        <p>Haz exámenes  <span class = "emfasisCarta">con memoria de
-                            progreso</span> filtrando items por:</p>
+                        <p>Clasifica automáticamente los productos encontrados en tus tickets digitales de Mercadona en <span class = "emfasisCarta">11 categorías</span> de producto:</p>
                             <ul style="display: grid; grid-template-columns: 1fr 1fr 1fr; font-size: .7em;">
                                 <li><img src="img/gliphiconTemps.PNG" alt="noCargó!" width="30%"><p>Año</p></li>
                                 <li><img src="img/fuegoGlificon.png" alt="noCargó!" width="31%"><p>Área</p></li>
