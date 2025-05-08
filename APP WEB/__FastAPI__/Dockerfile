@@ -16,7 +16,7 @@ COPY app/servei.py /usr/src/app/
 
 # Entorns de produccio fem servir "uvicorn controlador:app --reload". A aquesta comanda pots afegir
 # el host i el port. Host 0.0.0.0, o IP comodí (network adress) permetra parlar amb altres 
-# contenidors (ex. en kubernetes).
-# faig explicid el port de fastAPI per claredat -per defecte es justament el 8000-.  Reload el trec
-# perque reinicia l'aplicacio si el dodi font canvia.
+# contenidors (ex. en kubernetes) o fins i tot amb el localhost de l'equip anfitrió del contenidor
+# (podrem accedir al contingut del contenidor des de fora)
+# faig explícid el port de fastAPI per claredat -per defecte es justament el 8000-.
 CMD ["uvicorn", "controlador:app", "--host", "0.0.0.0", "--port", "8000"]
