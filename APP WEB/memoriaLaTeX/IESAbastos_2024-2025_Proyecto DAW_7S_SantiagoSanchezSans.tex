@@ -1000,7 +1000,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 	\subsection{Contenerización}
 	
-	Este microservicio lo contenerizaremos gracias a este \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__FastAPI__/Dockerfile}{Dockerfile}. Para hacerlo, usaremos el Dockerfile para crear una imagen desde la imagen python:3-11 alpine\footnote{Las imágenes alpine son ligeras: pesan 100 o 200MB a diferencia de las que provienen de la imagen entera de python, que pesan más de 1GB.} descargada del registry de docker. 
+	Este microservicio lo contenerizaremos gracias a este \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__FastAPI__/Dockerfile}{Dockerfile}. Para hacerlo, usaremos el Dockerfile para crear una imagen desde la imagen python:3-11 alpine\footnote{Las imágenes alpine son ligeras: pesan 100 o 200MB a diferencia de las que provienen de la imagen entera de python, que pesan más de 1GB.} descargada del registry de docker (ver nota sobre instalación de docker\footnote{ Instalar docker en linux no se puede hacer con un solo comando. Si el lector lo quiere instalar y usa linux, le facilito el script que programé hace un tiempo, para poder instalarlo sin preocuparse de nada: \href{https://github.com/blackcub3s/mercApp/blob/main/auxiliars/instalaDocker.sh}{link}. Si el lector usa Windows solamente debe preocuparse de instalar docker desktop y asegurarse que se añade la docker CLI para poder usar comandos desde las terminales disponibles en el sistema.}). 
 	
 	Para crear la imagen con este Dockerfile, para hacer pruebas y ver como se despliega el contenedor, el lector puede probar de crear una imagen denominada ``back-end-fastapi''. Para hacerlo puede moverse a donde está el Dockerfile y ejecutar el siguiente subcomando de docker (\textit{build}), tal que así:
 	
@@ -1020,21 +1020,21 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 
 	
-	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Que es el 8000 que va a la derecha de los dos puntos.} -puerto con el que se comunica fastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor con el 8000 también\footnote{El 8000 a la izquierda de los dos puntos}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía ejecutarlo:
+	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Hacer referencia al 8000 que va a la \textbf{derecha} de los dos puntos.} -puerto con el que se comunica fastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor\footnote{Es el 8000 emplazado a la \textbf{izquierda} de los dos puntos.}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía ejecutarlo:
 	
 	\begin{lstlisting}[language=bash]
 docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\end{lstlisting}
 
 	
-	Una vez creado el contenedor ya podemos arrancarlo. Aqui ya no hay que definir puertos y es opcional usar las flags -a\footnote{Simplemente veremos lo que imprima la terminal} e -i\footnote{Nos permitiría interaccionar con el programa a través de la terminal si fuese necesario}.
+	Una vez creado el contenedor ya podemos arrancarlo. Aqui ya no hay que definir puertos nuevamente porque ya se definieron al crear la imagen. Es también opcional usar las flags -a\footnote{Simplemente veremos lo que imprima la terminal} e -i\footnote{Nos permitiría interaccionar con el programa a través de la terminal si fuese necesario}:
 	
 	\begin{lstlisting}[language=bash]
 		docker start -ai contFastApi
 	\end{lstlisting}
 	
 	
-	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que no hemos usado la IP loopback por defecto del equipo (localhost o 127.0.0.1), sino la IP ``wildcard'' o dirección de red: que permite justamente esta característica. También permite que podamos consultar un endpoint de fastAPI corriendo dentro del contenedor mediante una solicitud get en nuestro localhost. En el momento de redactar esta parte teníamos en fastapi un endpoint muy sencillo a modo de demostración de lo que puede hacer fastAPI dentro de este contenedor arrancado:
+	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que \href{https://github.com/blackcub3s/mercApp/blob/cf678ebf99ce636b64c70c8faa239658a601550d/APP%20WEB/__FastAPI__/Dockerfile#L22}{en esta línea} del dockerfile \textbf{no }hemos usado la IP loopback por defecto del equipo (localhost o 127.0.0.1), sino la IP ``wildcard'' o dirección de red: permite justamente que otros contenedores puedan acceder a este. También permite que podamos consultar un endpoint de fastAPI corriendo dentro del contenedor mediante una solicitud get en nuestro localhost. En el momento de redactar esta parte teníamos en fastapi un endpoint muy sencillo a modo de demostración de lo que puede hacer fastAPI dentro de este contenedor arrancado:
 	
 	\FloatBarrier
 	\begin{figure}[H]
