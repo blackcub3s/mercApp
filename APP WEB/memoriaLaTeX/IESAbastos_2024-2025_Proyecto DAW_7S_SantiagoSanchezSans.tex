@@ -1039,13 +1039,13 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{definición de un endpoint de fastApi que correrá dentro del contenedor docker contFastApi A), configuración del comando para correr fastAPI dentro de los contenedores que se instancien a partir de la imagen del Dockerfile, con la dirección de red 0.0.0.0 que permite salir fuera de los contenedores que se creen con la misma (B) rectángulo rojo) y configuración de que fastAPI correrá en el puerto 8000 de \textbf{dentro} del contenedor (B) rectángulo verde). Finalmente podemos ver el comando que crea el contenedor didiendo que escuche en el 8000 de la red interna del contenedor (C) rectángulo verde y que esto lo saque al puerto 8000 (C naranja) siendo el resultado observable en nuestro equipo anfitrión del contenedor en el localhost en ese mismo puerto 8000 (D, naranja).}
+		\caption{definición de un endpoint de fastApi que correrá dentro del contenedor docker contFastApi (subcaptura A)), configuración del comando para correr fastAPI dentro de los contenedores que se instancien a partir de la imagen del Dockerfile, con la dirección de red 0.0.0.0 que permite exponer endpoints de contenedores que se creen con la misma fuera de esos contenedores (B) rectángulo rojo). También podemos ver la configuración de que fastAPI correrá en el puerto 8000 \textbf{dentro} del contenedor instanciado (B) rectángulo verde). Finalmente, podemos ver también el comando que crea finalmente contenedor desde la imagen, pidiéndole que que escuche en el puerto 8000 de la red interna del contenedor (C) rectángulo verde) y lo de ahí lo saque al puerto 8000 (C) rectángulo naranja) siendo el resultado de la exposición del endpoint observable en nuestro equipo anfitrión del contenedor en el localhost en ese mismo puerto 8000 (D), rectángulo naranja).}
 		\label{fig:demofastapiendpointdummy}
 		\includegraphics[width=1\linewidth]{img/demoFastApiEndpointDummy}
 	\end{figure}
 	\FloatBarrier
 	
-	Para automatizar este proceso de crear imagen con fastAPI y arrancar contenedor para exponer los endpoints de fastAPI desde dentro del contenedor, se puede usar \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{este script en bash} con los comandos anteriores además de comandos para parar y borrar el contenedor ya creado.
+	Para automatizar este proceso de crear imagen con fastAPI y arrancar un contenedor desde la imagen recién creada y, finalmente, exponer los endpoints de fastAPI fuera del contenedor, se puede usar \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{este script en bash}, que incluye todos los comandos necesarios (inclusive aquellos para parar y destruir contenedores antiguos).
 	
 	
 	
@@ -1617,9 +1617,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\subsubsection{Diseño del ``pas4''}
 	
-	\subsection{Arquitectura: páginas privadas (javascript)}
+	\subsection{Arquitectura (JavaScript): páginas privadas}
 	
-	\subsubsection{Arquitectura dashboard}
+	\subsubsection{Arquitectura del dashboard}
 	\label{sec:paginadorJavascriptArquitectura}
 	
 	El \textbf{paginador customizado} que vimos en la figura \ref{fig:imatgeSwiperCustom} requiere JavaScript. El código que lo consigue orquestrar se encuentra en el archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/paginadorInflacio.js}{paginadorInflacio.js}.
