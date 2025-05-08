@@ -1642,9 +1642,72 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\subsubsection{Arquitectura pas4: llamada a google API client}
 	\label{sec:pas4googleAPIclient}
 	
-	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud. En última instancia tenemos que obtener un (\textbf{Client ID}) que identifique nuestra web en relación a google cloud y permita a los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) descargar sus tickets digitales de su correo gmail personal hacia su ordenador (haciendo uso de javascript). 
+	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener un (\textbf{Client ID}) que identifique nuestra web en relación a google cloud.
 	
-	La obtención del Client ID y las configuraciones pertinentes en google cloud las mostramos en el anexo \ref{sec:googleCloud}. Una vez obtenido el Client ID, haremos uso de un script auxiliar que nos ha proporcionado chatGPT (\href{https://github.com/blackcub3s/mercApp/blob/main/llavorsGPT/extraccionCorreosPdfGoogleCloud.html}{\texttt{semilla})}. Ese script es un esqueleto que ha sido modificado de modo que se ajuste a nuestras necesidades hasta llegar al archivo javascript definitivo (\textbf{link a javascript}).
+	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) puedan descargarse sus tickets digitales del correo gmail personal \textit{hacia} su ordenador, mediante uso de JavaScript puro.
+
+	
+	Este javascript lo hemos creado a partir del código auxiliar que nos ha proporcionado chatGPT (\href{https://github.com/blackcub3s/mercApp/blob/main/llavorsGPT/extraccionCorreosPdfGoogleCloud.html}{\texttt{semilla})}. Con este script, hemos obtenido un esqueleto que ha sido modificado de modo que se ajustase a nuestras necesidades hasta llegar al archivo javascript definitivo (\textbf{link a javascript TO DO TO DO TO DO})\footnote{Se podría haber hecho la extracción de tickets desde una nube de google cloud pero finalmente evitamos esta opción porque es más barato y sencillo hacerlo directamente desde el cliente o navegador del usuario (podéis ver información de esa alternativa en anexo \ref{sec:googleCloud}).}.
+
+	\noindent \textbf{PASO 1: Crear un nuevo proyecto en la consola}
+	\vspace{.2em}
+	\hrule
+	\vspace{.5em}
+	
+	Para crear  el nuevo proyecto una vez dentro de la vista general de la consola clicamos encima de MyFirstProject y creamos un proyecto nuevo como vemos en la figura \ref{fig:googleCloudA} en
+	\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}:
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Pasos para crear un nuevo proyecto en la consola de google cloud.}
+		\includegraphics[width=1\linewidth]{img/googleCloudA.png}
+		\label{fig:googleCloudA}
+	\end{figure}
+	\FloatBarrier
+	
+	Una vez detro de la consola le daremos a crear un nuevo proyecto y a este nuevo proyecto lo llamaremos ``descarregaTicketsGmail'':
+	
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Creación de un nuevo proyecto en google cloud}
+		\includegraphics[width=1\linewidth]{img/googleCloudB.png}
+		\label{fig:googleCloudB}
+	\end{figure}
+	\FloatBarrier
+		
+	
+	
+	
+	
+	
+	
+
+	
+	\noindent \textbf{PASO 2: Habilitar la Gmail API}
+	\vspace{.2em}
+	\hrule
+	\vspace{.5em}
+	
+	LOREM LOREM 
+	
+	\noindent \textbf{PASO 3: Configurar la pantalla de consentimiento OAuth}
+	\vspace{.1em}
+	\hrule
+	\vspace{.5em}
+	
+	LOREM LOREM 
+	
+	
+	\noindent \textbf{PASO 4: Crear credenciales OAuth 2.0 para Web}
+	\vspace{.1em}
+	\hrule
+	\vspace{.5em}
+	
+	LOREM LOREM 
 
 	
 	
@@ -2067,32 +2130,41 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 	\endgroup
 	
 	
-	\section{Google cloud: descargar tikets digitales}
+	\section{Google Cloud: descargar tickets digitales mediante cloud}
 	\label{sec:googleCloud}
-		Los pasos a seguir son como prosiguen:
+	
+		NOTA: clica aquí \ref{sec:pas4googleAPIclient} para regresar al texto que referenció este anexo.\\
+		
+	
+		Los pasos a seguir para obtener el ClientID necesario para habilitar usuarios a la descarga de tickets digitales es acceder a \href{https://cloud.google.com}{https://cloud.google.com/} e introducir la información de pago (si ya tenemos pagos periódicos a Google por, por ejemplo, compra de almacenamiento a google drive no habrá que añadirlos). Fijémonos en lo que está disponible: 300 dólares de créditos gratuito durante tres meses. Como vemos en la figura \ref{fig:googlecloud1}.
+		
+		\FloatBarrier
+		\begin{figure}[H]
+			\centering
+			\caption{Crear cuenta gratuita de google cloud}
+			\label{fig:googlecloud1}
+			\includegraphics[width=1\linewidth]{img/googleCloud1.png}
+		\end{figure}
+		\FloatBarrier
+		
+		
+		Si consultamos los servicios gratuitos en \href{https://cloud.google.com/free/docs/free-cloud-features?authuser=2#free-tier-usage-limits}{esta página} tenemos muchos. De ellos los que pueden servirnos para nuestro caso particular podrían ser \textbf{App Engine} y \textbf{Cloud run}. Ambos tienen un free tier distinto. Después de extraer la información detallada de \href{https://cloud.google.com/run/docs/overview/what-is-cloud-run?authuser=2&hl=es-419}{Cloud run} y de \href{https://cloud.google.com/appengine/docs/an-overview-of-app-engine?authuser=2&hl=es-419}{app engine} hay un claro ganador en cuanto a costes para nuestro caso de uso: el primero (ver figura \ref{fig:googleCloud2}).
+		
+		\FloatBarrier
+		\begin{figure}[H]
+			\centering
+			\caption{Dos servicios con free tier que nos pueden ser de utilidad para nuestra aplicación. El que a priori sería más económico sería \textit{cloud run} porque asegura que el proceso escalará a cero cuando no esté en uso, y nos permite activarlo solamente con un evento web (cuando el usuario se acabe de registrar y pida acceso a los tickets)}
+			\label{fig:googleCloud2}
+			\includegraphics[width=1\linewidth]{img/googleCloud2.png}
+		\end{figure}
+		\FloatBarrier
+		
+	\textbf{Cloud run requiere contenerizar una aplicación y subirla al cloud. Sin embargo, aunque podría funcionar para nuestro caso particular, nada gana el hacerlo desde el front end como finalmente se ha hecho.}
+		
+		
 	
 	
-	\noindent \textbf{PASO 1: Habilitar la Gmail API}
-	\vspace{.2em}
-	\hrule
-	\vspace{.5em}
-	
-	LOREM LOREM 
-	
-	\noindent \textbf{PASO 2: Configurar la pantalla de consentimiento OAuth}
-	\vspace{.1em}
-	\hrule
-	\vspace{.5em}
-	
-	LOREM LOREM 
-	
-	
-	\noindent \textbf{PASO 3: Crear credenciales OAuth 2.0 para Web}
-	\vspace{.1em}
-	\hrule
-	\vspace{.5em}
-	
-	LOREM LOREM 
+
 	
 	
 \end{document}
