@@ -1654,8 +1654,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Para crear  el nuevo proyecto una vez dentro de la vista general de la consola clicamos encima de MyFirstProject y creamos un proyecto nuevo como vemos en la figura \ref{fig:googleCloudA} en
-	\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}:
+	Para crear  el nuevo proyecto una vez dentro de la vista general de la consola clicamos encima de MyFirstProject y creamos un proyecto nuevo como vemos en la figura, añadiendo el nombre ``descarregaTicketsGmail'', que será el nombre que le daremos al proyecto (ver figura \ref{fig:googleCloudA}):
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
@@ -1666,18 +1665,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	Una vez detro de la consola le daremos a crear un nuevo proyecto y a este nuevo proyecto lo llamaremos ``descarregaTicketsGmail'':
+
 	
 	
-	\FloatBarrier
-	\setlength{\belowcaptionskip}{3pt}
-	\begin{figure}[H]
-		\centering
-		\caption{Creación de un nuevo proyecto en google cloud}
-		\includegraphics[width=1\linewidth]{img/googleCloudB.png}
-		\label{fig:googleCloudB}
-	\end{figure}
-	\FloatBarrier
 		
 	
 	
@@ -1692,15 +1682,36 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	LOREM LOREM 
+	Para habilitar la API de gmail, que nos permitirá \textbf{ver y manejar datos del inbox de un correo electrónico} (que es la que usaremos para descargar los tickets adjuntos en PDF), debemos entrar en nuestro proyecto recién creado y seguir los menús ``\textit{APIs y servicios}'' $\rightarrow$ \textit{Biblioteca}. Ahí, buscar ``\textit{gmail API}'' y habilitar la Gmail API (figura \ref{fig:googleCloudC}).
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Como habilitar la Gmail API en nuestro proyecto ``descarregaTicketsGMAIL''}
+		\includegraphics[width=1\linewidth]{img/googleCloudC.png}
+		\label{fig:googleCloudC}
+	\end{figure}
+	\FloatBarrier
 	
 	\noindent \textbf{PASO 3: Configurar la pantalla de consentimiento OAuth}
 	\vspace{.1em}
 	\hrule
 	\vspace{.5em}
 	
-	LOREM LOREM 
+	Oauth nos permitirá que los usuarios sean autorizados a servicios de Google como Gmail y, además, también les autenticará para dejar que nuestra aplicación en JavaScript del \texttt{pas4\_concedirAccesGmail.html} pueda acceder a su correo Gmail\footnote{¡Cuidado, no confundir la autenticación y autorización de nuestra aplicación y el manejo de nuestros AccessTokens con la autenticación con Oauth 2.0: esta última es OBLIGATORIA para acceder a los servicios de Google y la controla Google.}.
 	
+	Análogamente al paso anterior seguimos los menús de la izquierda ``\textit{APIs y servicios} $\rightarrow$ \textit{Pantalla de consentimiento OAuth} (ver figura \ref{fig:googleCloudD}).
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Habilitación de la pantalla de consentimiento de OAuth}
+		\includegraphics[width=1\linewidth]{img/googleCloudD}
+		\label{fig:googleCloudD}
+	\end{figure}
+	\FloatBarrier
 	
 	\noindent \textbf{PASO 4: Crear credenciales OAuth 2.0 para Web}
 	\vspace{.1em}
