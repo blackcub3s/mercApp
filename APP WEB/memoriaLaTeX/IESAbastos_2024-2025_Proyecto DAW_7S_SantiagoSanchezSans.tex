@@ -1718,14 +1718,14 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Al pinchar en el círuclo verde de la imagen \ref{fig:googleCloudD} obtenemos una ventana donde podemos configurar el \textit{ClientID}\footnote{Podemos llegar a la \textbf{ventana B} de la figura \ref{fig:googleCloudE} del mismo modo si optamos por seguir una ruta por menús. Ponemos en el buscador ``Apis y servicios'' y acto seguido nos embarcamos en el camino: \textit{Apis y servicios} $\rightarrow$ \textit{credenciales} $\rightarrow$ \textit{+ crear credenciales} $\rightarrow$ \textit{ID de cliente Oauth}.}. El clientID identifica la aplicación que corre en el cloud que estamos creando. Sin él un usuario no podría llegar a hacer una llamada a nuestro cloud autenticándose con su cuenta de google. Al configurarlo (como podemos ver en la imagen \ref{fig:googleCloudE}) nosotros tenemos que decirle a Google de qué dominios y puertos debe permitir llamadas.
+	Al pinchar en el círculo verde de la imagen \ref{fig:googleCloudD} obtenemos una ventana de configuración\footnote{Podemos llegar a esa ventana de configuración -es decir al contenido de la figura \ref{fig:googleCloudE}- del mismo modo si optamos por seguir una ruta por menús: \textit{Apis y servicios} (buscador) $\rightarrow$ \textit{credenciales} $\rightarrow$ \textit{+ crear credenciales} $\rightarrow$ \textit{ID de cliente Oauth}.} que nos permite modificar aquello para lo que sirve el \textit{ClientID}\footnote{El clientID identifica la aplicación que corre en el cloud que estamos creando (descarregaTicketsGmail). Sin él un usuario no podría llegar a hacer una llamada autenticándose con su cuenta de google hacia nuestro cloud.} como podemos ver en la imagen \ref{fig:googleCloudE}. A través de esta configuración tenemos que decirle a Google de qué dominios y de qué puertos puede recibir llamadas para autenticarse.
 	
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Configuración de Client ID. Por ahora definimos \textit{localhost:5500} como una IP y puerto permitidos; sabemos que es la IP loopback del puerto de VSCode, porque haremos la solicitud desde el frontend hacia el cloud. $|$ \textbf{*}: Esto para desarrollo está bien, pero en producción hay que tener mucho cuidado, porque si alguien accede al código con cualquier IP de localhost (cualquier orenador del mundo) y un vscode con live server, puede hacer llamadas a nuestro cloud en nuestro nombre.  $|$ \textbf{**}: En producción añadiremos otros orígenes que el de localhost: hay que poner aqui la IP fija de nuestro servidor o el dominio, siempre habilitando protocolo HTTPS, sino, no funcionará.}
+		\caption{Configuración de Client ID. Por ahora definimos \textit{localhost:5500} como una IP y puerto permitidos; sabemos que es la IP loopback del puerto de VSCode, porque haremos la solicitud desde el frontend hacia el cloud. $|$ \textbf{*}: Esto para desarrollo está bien, pero en producción hay que tener mucho cuidado, porque si alguien accede al código con cualquier IP de localhost (cualquier orenador del mundo) y un vscode con live server, puede hacer llamadas a nuestro cloud en nuestro nombre.  $|$ \textbf{**}: En producción añadiremos otros orígenes que el de localhost: hay que poner aqui la IP fija de nuestro servidor o el dominio (no tenemos uno todavía), siempre habilitando protocolo HTTPS, sino, no funcionará.}
 		\includegraphics[width=1\linewidth]{img/googleCloudE.png}
 		\label{fig:googleCloudE}
 	\end{figure}
@@ -1733,7 +1733,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
-	Después de todo esto la vista que tendremos si entramos en el buscador, en \textbf{credenciales} será esta:
+	Después de la configuración hecha en la imagen \ref{fig:googleCloudE} esta será la vista que tendremos si entramos en el buscador, en las \textbf{credenciales} y vemos los ID de clientes OAuth2.0:
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
@@ -1746,7 +1746,31 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\FloatBarrier
 	
 	
-	\noindent \textbf{PASO 5: Validar la aplicación descargaTicketsGmail para que cualquier usuario externo pueda usarla.}
+	
+	\noindent \textbf{PASO 5: Añadir usuarios al listado de usuarios permitidos (desarrollo)}
+	\vspace{.1em}
+	\hrule
+	\vspace{.5em}
+	
+	Google no deja que cualquier usuario pueda autenticarse con el client ID. Para ello o bien hacemos lo del paso 6 (solo para producción, porque requiere una aplicación ya hecha y justificar a google su uso) o bien \textbf{Guardamos una lista de usuarios autorizados a autorizarse} -valga la redundancia- para que así puedan leer su gmail y descargar sus tickets automáticamente. Esto lo haremos así: Yo añadiré el correo electrónico gmail donde Mercadona me manda los tiquets digital (ver figura \ref{fig:googleCloudB}) y con eso la autenticación será posible, por ahora, solo para este correo.
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Añadir usuario que podrá autenticarse.}
+		\includegraphics[width=1\linewidth]{img/googleCloudB}
+		\label{fig:googleCloudB}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	
+	
+	
+	
+	
+	\noindent \textbf{PASO 6: Validar la aplicación descargaTicketsGmail para que cualquier usuario externo pueda usarla (solo en producción y DESPUÉS de autorización expresa de Google).}
 	\vspace{.1em}
 	\hrule
 	\vspace{.5em}
@@ -1779,17 +1803,21 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		\end{figure}
 		\FloatBarrier
 	
-		Y el último caso es validar. Que google tiene que dar el vistobueno. Sin embargo asumo que esto no va a pasar, al menos no en plazo, con lo cual, directamente añadiremos mi correo para descargar los tikets digitales y vamos por ahora a borrar los permisos restringidos para que google deje usar la aplicación en la demo.
+		Y el último caso es validar. Que google tiene que dar el vistobueno. Sin embargo asumo que esto no va a pasar, al menos no en plazo, con lo cual, directamente solo podremos usar los correos (por ahora solo uno) en el listado de usuarios permitidos mostrado en el PASO 5, para descargar los tickets digitales 
 		
-		\FloatBarrier
-		\setlength{\belowcaptionskip}{3pt}
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=1\linewidth]{img/googleCloudI}
-			\caption{Eliminamos el permiso restringido para que la demo funcione (izquierda); dejamos fe de los pasos seguidos hasta ahora para en un futuro tener una versión de producción. Acto segido añadimos mi correo electrónico donde figuran los tickets digitales de mis compras de mercadona, con el que haremos la extracció de tickets (Derecha).}
-			\label{fig:googlecloudI}
-		\end{figure}
-		\FloatBarrier
+		%y vamos por ahora a borrar los permisos restringidos de la demo.
+		
+		%\FloatBarrier
+		%\setlength{\belowcaptionskip}{3pt}
+		%\begin{figure}[H]
+		%	\centering
+	%			\caption{Eliminamos el permiso restringido para que la demo funcione.}
+	%		\includegraphics[width=1\linewidth]{img/googleCloudI}
+		
+	%		\label{fig:googlecloudI}
+%		\end{figure}
+%		\FloatBarrier
+		
 		
 		
 	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
