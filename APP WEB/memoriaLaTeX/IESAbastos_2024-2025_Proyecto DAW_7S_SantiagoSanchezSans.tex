@@ -1726,7 +1726,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\begin{figure}[H]
 		\centering
 		\caption{Configuración de Client ID. Por ahora definimos \textit{localhost:5500} como una IP y puerto permitidos; sabemos que es la IP loopback del puerto de VSCode, porque haremos la solicitud desde el frontend hacia el cloud. $|$ \textbf{*}: Esto para desarrollo está bien, pero en producción hay que tener mucho cuidado, porque si alguien accede al código con cualquier IP de localhost (cualquier orenador del mundo) y un vscode con live server, puede hacer llamadas a nuestro cloud en nuestro nombre.  $|$ \textbf{**}: En producción añadiremos otros orígenes que el de localhost: hay que poner aqui la IP fija de nuestro servidor o el dominio, siempre habilitando protocolo HTTPS, sino, no funcionará.}
-		\includegraphics[width=1\linewidth]{img/googleCloudE}
+		\includegraphics[width=1\linewidth]{img/googleCloudE.png}
 		\label{fig:googleCloudE}
 	\end{figure}
 	\FloatBarrier

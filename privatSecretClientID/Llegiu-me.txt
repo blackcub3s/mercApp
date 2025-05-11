@@ -1,0 +1,3 @@
+El JSON d'aquesta carpeta no es visible en el repo. Incliu un secret que només es guarda en local i per això
+l'excloem en el gitignore. Les dades corresponen a les que s'observen a la figura \label{fig:googleCloudE} de la memoria
+en LaTeX (la part anonimitzada, és allà).
