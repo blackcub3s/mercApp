@@ -1,4 +1,6 @@
 El JSON d'aquesta carpeta no es visible en el repo. Inclou un secret que només es guarda en local, i per això
 l'excloem en el gitignore. Les dades que volem protegir corresponen a les que s'observen a la 
 figura \label{fig:googleCloudE} de la memoria en LaTeX (la part anonimitzada en negre, de l'extremi inferior esquerre
-de la imatge és el que protegim).
+de la imatge és el que protegim). El secret del client no es pot tornar a baixar.
+
+Només l'utilitzariem si l'aplicacio del cloud corrés en un backend. En el cas aquí present tampoc la farem servir.
