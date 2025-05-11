@@ -1707,8 +1707,8 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Habilitación de la pantalla de consentimiento de OAuth}
-		\includegraphics[width=1\linewidth]{img/googleCloudD}
+		\caption{Habilitación de la pantalla de consentimiento de OAuth: Especificamos el nombre de la aplicación, el correo al que podrán comunicarse los usuarios de la aplicación mercApp del cloud si es necesario, marcamos el radioButton ``usuarios externos'', que hará que puedan utilizar la app en el cloud usuarios si una extensión de correo vinculada a una organización (si no lo marcásemos, estaríamos limitados a usuarios con una extensión específica de organización y no podríamos usar correos gmail!).}
+		\includegraphics[width=1\linewidth]{img/googleCloudD.png}
 		\label{fig:googleCloudD}
 	\end{figure}
 	\FloatBarrier
@@ -1718,15 +1718,25 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	LOREM LOREM 
-
+	Al pinchar en el círuclo verde de la imagen \ref{fig:googleCloudD} obtenemos una ventana donde podemos configurar el \textit{ClientID}\footnote{Podemos llegar a la \textbf{ventana B} de la figura \ref{fig:googleCloudE} del mismo modo si optamos por seguir una ruta por menús. Ponemos en el buscador ``Apis y servicios'' y acto seguido nos embarcamos en el camino: \textit{Apis y servicios} $\rightarrow$ \textit{credenciales} $\rightarrow$ \textit{+ crear credenciales} $\rightarrow$ \textit{ID de cliente Oauth}.}. El clientID identifica la aplicación que corre en el cloud que estamos creando. Sin él un usuario no podría llegar a hacer una llamada a nuestro cloud autenticándose con su cuenta de google. Al configurarlo (como podemos ver en la imagen \ref{fig:googleCloudE}) nosotros tenemos que decirle a Google de qué dominios y puertos debe permitir llamadas.
 	
 	
-
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Configuración de Client ID. Por ahora definimos \textit{localhost:5500} como una IP y puerto permitidos; sabemos que es la IP loopback del puerto de VSCode, porque haremos la solicitud desde el frontend hacia el cloud. $|$ \textbf{*}: Esto para desarrollo está bien, pero en producción hay que tener mucho cuidado, porque si alguien accede al código con cualquier IP de localhost (cualquier orenador del mundo) y un vscode con live server, puede hacer llamadas a nuestro cloud en nuestro nombre.  $|$ \textbf{**}: En producción añadiremos otros orígenes que el de localhost: hay que poner aqui la IP fija de nuestro servidor o el dominio, siempre habilitando protocolo HTTPS, sino, no funcionará.}
+		\includegraphics[width=1\linewidth]{img/googleCloudE}
+		\label{fig:googleCloudE}
+	\end{figure}
+	\FloatBarrier
+		
+		
+	Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar gmail.httponly y verificar la aplicación en el cloud. En caso contrario solo podríamos hacer que un usuario usase el cloud si estuviese añadido manualmente a una \textit{lista de verificación}, lo cual no nos permitiría escalar la aplicación web (si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, en la letra que hay debajo, por defecto queda claro que solo admite usuarios que estén en esta lista).
 	
 	
 	
-	
+		
 	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
 	\label{sec:dashboardFetchLocalStorage}
 	\textbf{TO DO FER-HO}
