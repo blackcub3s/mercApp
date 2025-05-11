@@ -4,9 +4,9 @@ header {
     align-items: center;
     padding: 1em;
     background-color: var(--colorBarraNavegacioSimple);
-
-
 }
+
+/*DEFINIM EL TAMANY I AJUSTAMENT DE L'ICONO MERCAPP PETIT, BÀSICAMENT*/
 header div img {
     height: 2em;
 }
@@ -36,7 +36,7 @@ header div button:hover {
         font-size: .8em;
     }
     header div img {
-        height: 1.5em;
+        height: 1.3em;
     }
     header {
         padding: .8em;

@@ -1,0 +1,9 @@
+\FloatBarrier
+\setlength{\belowcaptionskip}{3pt}
+\begin{figure}[H]
+	\centering
+	\caption{     }
+	\includegraphics[width=1\linewidth]{img/   }
+	\label{fig:     }
+\end{figure}
+\FloatBarrier

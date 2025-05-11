@@ -1730,11 +1730,31 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		\label{fig:googleCloudE}
 	\end{figure}
 	\FloatBarrier
-		
-		
-	Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar gmail.httponly y verificar la aplicación en el cloud. En caso contrario solo podríamos hacer que un usuario usase el cloud si estuviese añadido manualmente a una \textit{lista de verificación}, lo cual no nos permitiría escalar la aplicación web (si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, en la letra que hay debajo, por defecto queda claro que solo admite usuarios que estén en esta lista).
 	
 	
+	
+	Después de todo esto la vista que tendremos si entramos en el buscador, en \textbf{credenciales} será esta:
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Vista de la aplicación cloud después de la creación del ClientID}
+		\includegraphics[width=1\linewidth]{img/googleCloudF}
+		\label{fig:googleCloudF}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	\noindent \textbf{PASO 5: Validar la aplicación descargaTicketsGmail para que cualquier usuario externo pueda usarla.}
+	\vspace{.1em}
+	\hrule
+	\vspace{.5em}
+	
+	
+		Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar gmail.httponly y verificar la aplicación en el cloud. Tal y como está la configuración de ``usuarios externos'' solo podríamos hacer que un usuario usase el cloud mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si además estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud, lo cual no nos permitiría escalar la aplicación web (si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, tenemos una letra pequeña debajo donde se deja claro que por defecto el servicio cloud que acabamos de configurar solo admite usuarios que estén en esa lista).
+		
+		\textbf{CONTINUAR PER AQUI}
 	
 		
 	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
@@ -1742,7 +1762,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\textbf{TO DO FER-HO}
 	
 	
-	\subsection{Diseño de iconos (áreas de producto)}
+	\subsection{Diseño de iconos}
+	
+	\subsubsection{Áreas de producto}
 	
 	Los iconos de las 8 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa y se han editado posteriormente con Gimp para eliminar el fondo y generar transparencia en el mismo (ver \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/categoriesProductes}{carpeta GitHub}).
 	
@@ -1751,6 +1773,8 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Hay que mencionar, sin embargo, que el procedimiento de GIMP ahí mostrado no permite conseguir una transparencia pura del fondo. Para conseguirlo en algunos iconos es indispensable usar otro procedimiento que involucra más pasos pero que nos permite asegurarnos que se elimina por completo el canal alpha del fondo (ver figura \ref{fig:eliminocanalalphaCOMPLEX}). La utilidad de ese último procedimiento en relación al anterior puede verse en la figura \ref{fig:ventatjaProcedComplexVSsimple} donde comparamos la aplicación de ambos procedimientos al mismo icono.
 
+
+	
 	
 	
 	
@@ -1793,7 +1817,21 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 \end{figure}
 \FloatBarrier
 	
+	
+	\subsubsection{Icono mercApp pequeño}
+	\label{sec:iconoMercappPetitMEMORIAPPAL}
+	Este icono también se ha pedido a la IA y se ha editado posteriormente, mostrando el icono grande para que lo usase. Se puede ver en el anexo \ref{sec:edicionMercAppIconoPequenyo} el proceso completo que también involucra edición en gimp . Pero el proceso resumido viene a ser el de la figura: \ref{fig:mercappResumit}.
 		
+		
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{TO DO}
+		\includegraphics[width=1\linewidth]{img/mercappResumit}
+		\label{fig:mercappResumit}
+	\end{figure}
+	\FloatBarrier
 		
 	\chapter{Evaluación y Conclusiones Finales} %OBLIGAT
 	
@@ -2139,6 +2177,21 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 	\end{figure}
 	\FloatBarrier
 	
+	\pagebreak
+	\section{Creación del icono mercapp pequeño: IA con Gimp}
+	\label{sec:edicionMercAppIconoPequenyo}
+	
+	\noindent \textbf{NOTA:} \textit{Podéis regresar al punto de la memoria del que os hemos redirigido clicando en el link de secció siguiente:} \ref{sec:iconoMercappPetitMEMORIAPPAL}
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Proceso completo de creación del icono pequeño de mercApp. El proceso involucra IA generativa y pequeñas ediciones en gimp para retirar canal alpha, pintar el fondo de la delta y añadir una parte redonda con fondo blanco para que se vea en la barra de navegación negra. Existe un icono con la delta blanca para barra de navegación negra que aquí no mostramos.}
+		\includegraphics[width=1\linewidth]{img/edicionMercAppIconoPequenyo.png}
+		\label{fig:edicionMercAppIconoPequenyo}
+	\end{figure}
+	\FloatBarrier
 		
 	% Bibliografía (\chapter(6. Bibliograifa) como implicito)
 	\addcontentsline{toc}{chapter}{7. Bibliografía} 
