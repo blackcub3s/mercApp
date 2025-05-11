@@ -1642,9 +1642,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\subsubsection{Arquitectura pas4: llamada a google API client}
 	\label{sec:pas4googleAPIclient}
 	
-	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener un (\textbf{Client ID}) que identifique nuestra web en relación a google cloud.
+	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener un (\textbf{Client ID}) que identifique nuestra web en relación a Google Cloud.
 	
-	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) puedan descargarse sus tickets digitales del correo gmail personal \textit{hacia} su ordenador, mediante uso de JavaScript puro.
+	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) puedan descargarse sus tickets digitales del correo gmail personal \textit{hacia} una careta de su ordenador, mediante uso de JavaScript puro.
 
 	
 	Este javascript lo hemos creado a partir del código auxiliar que nos ha proporcionado chatGPT (\href{https://github.com/blackcub3s/mercApp/blob/main/llavorsGPT/extraccionCorreosPdfGoogleCloud.html}{\texttt{semilla})}. Con este script, hemos obtenido un esqueleto que ha sido modificado de modo que se ajustase a nuestras necesidades hasta llegar al archivo javascript definitivo (\textbf{link a javascript TO DO TO DO TO DO})\footnote{Se podría haber hecho la extracción de tickets desde una nube de google cloud pero finalmente evitamos esta opción porque es más barato y sencillo hacerlo directamente desde el cliente o navegador del usuario (podéis ver información de esa alternativa en anexo \ref{sec:googleCloud}).}.
@@ -1752,10 +1752,45 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\vspace{.5em}
 	
 	
-		Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar gmail.httponly y verificar la aplicación en el cloud. Tal y como está la configuración de ``usuarios externos'' solo podríamos hacer que un usuario usase el cloud mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si además estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud, lo cual no nos permitiría escalar la aplicación web (si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, tenemos una letra pequeña debajo donde se deja claro que por defecto el servicio cloud que acabamos de configurar solo admite usuarios que estén en esa lista).
+		Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar un scope de permisos denominado \textit{gmail.httponly} y verificar la aplicación en el cloud, siguiendo dentro de donde estabamos. Si no lo hiciéramos, tal y como está la configuración de ``usuarios externos'' , por ahora, solo podríamos conseguir que un usuario usase nuestra aplicación cloud de descarga de pdfs del correo mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si también estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud.
 		
-		\textbf{CONTINUAR PER AQUI}
+		Esto lo que haría sería que no nos permitiría escalar la aplicación web\footnote{Si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, tenemos una letra pequeña debajo donde se deja claro que por defecto el servicio cloud que acabamos de configurar solo admite usuarios que estén en esa lista.}. Para solucionarlo tenemos que añadir el scope necesario como vemos en la figura \ref{fig:googleCloudG}:
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{Ahora vamos a \textit{``Apis y servicios''} $\rightarrow$ \textit{``Credenciales''} clicamos en la credencial oauth 2creada ``mercAppWebPas'' y en acceso a los datos clicamos en agregar permisos. Ahiañadimos el permiso pertinente que encontramos mediante la adición de un ``scope''- Para ver los scopes podemos acceder al link ``más información'', que nos lleva a \href{https://developers.google.com/identity/protocols/oauth2/scopes?hl=es_419}{ésta página}, y de ahí tomar el scope necesario (gmail.readonly). De ahi extraemos el scope que queremos y lo actualizamos con el boton azul marcado en circulo verde en la imagen}
+			\includegraphics[width=1\linewidth]{img/googleCloudG}
+			\label{fig:googleCloudG}
+		\end{figure}
+		\FloatBarrier
+		
+		Después de darle a actualizar en la imagen \ref{fig:googleCloudG} tenemos que guardar esta confgiguración. Para ello segimos los pasos de la imagen \ref{fig:googleCloudH}:
+		
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{Último paso para poder permitir que los usuarios de nuestra aplicación puedan acceder a leer SUS correos electrónicos una vez autenticados, con oauth2. Esta vez vamos a \textit{``Apis y servicios''} $\rightarrow$ \textit{``Credenciales''} $\rightarrow$ \textit{``MercAppWebPas4''} $\rightarrow$ \textbf{\textit{``Acceso a los datos''}} y le damos al \textbf{botón guardar}. }
+			\includegraphics[width=1\linewidth]{img/googleCloudH}
+			\label{fig:googleCloudH}
+		\end{figure}
+		\FloatBarrier
 	
+		Y el último caso es validar. Que google tiene que dar el vistobueno. Sin embargo asumo que esto no va a pasar, al menos no en plazo, con lo cual, directamente añadiremos mi correo para descargar los tikets digitales y vamos por ahora a borrar los permisos restringidos para que google deje usar la aplicación en la demo.
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1\linewidth]{img/googleCloudI}
+			\caption{Eliminamos el permiso restringido para que la demo funcione (izquierda); dejamos fe de los pasos seguidos hasta ahora para en un futuro tener una versión de producción. Acto segido añadimos mi correo electrónico donde figuran los tickets digitales de mis compras de mercadona, con el que haremos la extracció de tickets (Derecha).}
+			\label{fig:googlecloudI}
+		\end{figure}
+		\FloatBarrier
+		
 		
 	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
 	\label{sec:dashboardFetchLocalStorage}
