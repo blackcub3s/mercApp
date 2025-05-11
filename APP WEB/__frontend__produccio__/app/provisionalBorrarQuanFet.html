@@ -15,13 +15,12 @@
 
   <script>
     const CLIENT_ID = '246049552174-fqcrsh2uvcpouptn1tij8t7bh686h4ad.apps.googleusercontent.com';  // <-- HEM AFEGIT EL CLIENT ID!
-    const API_KEY = ''; // Opcional si no usas cuotas avanzadas
-    const SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
+    const SCOPES = 'https://www.googleapis.com/auth/gmail.readonly'; // <-- el mateix scope definit a la API (el read only que diu que nomes pot llegir gmails)
 
     function handleAuthClick() {
       gapi.load('client:auth2', () => {
         gapi.client.init({
-          apiKey: API_KEY,
+          apiKey: "", /*la api key no es necessària per al nostre cas*/
           clientId: CLIENT_ID,
           scope: SCOPES,
           discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest'],
