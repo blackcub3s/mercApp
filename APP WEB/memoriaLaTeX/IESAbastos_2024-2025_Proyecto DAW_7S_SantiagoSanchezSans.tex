@@ -428,47 +428,59 @@
 			
 				Para desarrollar este proyecto se ha trabajado con GitHub y git. Dado que no ha habido trabajo en equipo no se han utilizado pull requests a la rama main sino simplemente se ha seguido la estrategia de crear ramas de característica y, una vez son satisfactorias, hacer un merge en la rama main en local.
 				
-				Un flujo de trabajo habitual es mediante ramas de característica (puede verse anexo \ref{sec:anexoFlujoGit}). También puede verse el GitHub del proyecto a continuación. Dentro del readme del proyecto encontraréis instrucciones para su descarga, clonado y ``despliegue'' (en local) de sus componentes en vuestro ordenador personal utilizando los servidores embedidos en los entornos de desarrollo de workbench, vscode e IntelliJ \textbf{PONER OTRO SI HACE FALTA} si así lo deseáis.
+				Un flujo de trabajo habitual es mediante ramas de característica (puede verse anexo \ref{sec:anexoFlujoGit}). También puede verse el GitHub del proyecto a continuación. Dentro del readme del proyecto encontraréis instrucciones para su descarga y clonado.
+				
+				Las instrucciones para correr los componentes del proyecto en sus respectivos entornos de desarrollo están en el apartado \ref{sec:entornosDesarrollo}. El despliegue de la aplicación mediante contenedores se encuentra explicado en \ref{sec:despliegue}.
 			
 
 			
 			
 			
 			
+				\textbf{Link al repositorio} $\rightarrow$ \href{https://github.com/blackcub3s/mercApp}{https://github.com/blackcub3s/mercApp} 
 			
-			
-			
-			
-			
-			
-			
-			
-			\begin{table}[h!]
-				\centering
-				\begin{tabular}{|p{3.8cm}|p{11cm}|}
-					\hline
-					\textbf{Link al repositorio} & \href{https://github.com/blackcub3s/mercApp}{https://github.com/blackcub3s/mercApp} \\
-					\hline
-					\textbf{Página desplegada} & TO DO \\ % Corregido: Se eliminó la llave extra
-					\hline
-				\end{tabular}
-				\caption{Enlaces  del proyecto.}
-				\label{tabla:enlaces}
-			\end{table}
-
 	
 	
 		
 			\section{Entornos de desarrollo}
+			\label{sec:entornosDesarrollo}
 			
 				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto que permiten sacar provecho de Lombok sin las cuales correr el proyecto en IntelliJ fallará\footnote{¡Para correr el proyecto back-end con\textit{ Spring Boot} abrir con intelliJ la carpeta app!}.
 				
-				Para el frontend se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}. Esto podría hacer las veces de una CDN donde podrían estar alojados los archivos estáticos (HTML, CSS y JavaScript)\footnote{¡El proyecto \textit{front end} con \textit{vanilla javascript} debe abrirse con vscode en la carpeta \textbf{app} y ejeductarlo en live server, si no \textbf{no} funcionará correctamente!}.
+				Para el front-end (archivos estáticos: HTML, CSS y JavaScript) se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500} \footnote{¡El proyecto \textit{front end} con \textit{vanilla javascript} debe abrirse con vscode en la carpeta \textbf{app} y ejecutarlo en live server, si no \textbf{no} funcionará correctamente!}.
 				
 				Para el back-end con fast-api se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}.
+				
+				Para la base de datos mySQL se ha utilizado el editor mySQL workbench que corre en el puerto \textbf{3306}.
 		
 	
-		
+			\section{Despliegue}
+			\label{sec:despliegue}
+				Los componentes del apartado \ref{sec:entornosDesarrollo} de entornos  desarrollo se han \textit{dockerizado} de modo que cada uno de ellos sea un microservicio, a excepción (por ahora), de las bases de datos. Hemos sido cuidadosos de que los microservicios en Docker corran en los mismos puertos que los servidores embedidos con los que hemos hecho el desarrollo de la aplicación mercApp: por claridad y porque múltiples archivos dependen ya de ellos.
+				
+				Para crear la imagen de cada microservicio hemos creado un Dockerfile. Luego, para crear los contenedores y crear de nuevo las imágenes en caso que haya cambios en los archivos, para cada uno de estos microservicios, hay un script denominado \textit{creaImatge\_i\_arrancaContenidor.sh}\footnote{La explicación pormenorizada de sus comandos, para el caso de fastAPI por ejemplo, puede verse en el apartado TAL} que reunirá todos los subcomandos de docker necesarios para el ciclo de vida de su imagen (build), e instanciado de contenedor (create, start, stop, rm). Todo ello haciendo solamente: 
+				
+				\begin{lstlisting}[language=bash]
+	bash creaImatge_i_arrancaContenidor.sh
+				\end{lstlisting}
+				
+				
+				
+				
+				
+				Así, no tenemos que preocuparnos de parar el contenedor, borrarlo y luego crear la imagen (ver imagen \ref{fig:dockeritzacioAplicacioPlantilla}).
+				
+				
+				\FloatBarrier
+				\setlength{\belowcaptionskip}{3pt}
+				\begin{figure}[H]
+					\centering
+					\caption{En rojo los archivos que crean una imagen y arrancan su contenedor, para cada microservicio.}
+					\includegraphics[width=.7\linewidth]{img/dockeritzacioAplicacioPlantilla.png}
+					\label{fig:dockeritzacioAplicacioPlantilla}
+				\end{figure}
+				\FloatBarrier
+				
 			
 
 			
@@ -1056,6 +1068,10 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	
 	\section{Desarrollo del front-end}
+	
+	\subsection{Contenerización}
+	
+	Se ha utilizado un servidor de alto rendimiento para servir los archivos estáticos (HTML, CSS y JavaScript). Podéis ver su dockerfile \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/Dockerfile}{aquí}, y el script que crea la imagen e instancia de contenedor \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/creaImatge_i_arrancaContenidor.sh}{aquí}. Para más información del uso de Docker podéis ver el apartado \ref{sec:conteneritzacioPython} de la contenerización de Python.
 	
 	\subsection{Estructura de la aplicación}
 	\label{sec:estructuraAplicacionFrontEnd}
