@@ -3,4 +3,4 @@
 
 
 # Nomes ho posem per documentacio. El port intern del contenidor es defineix en la comanda CMD de fastAPI
-EXPOSE 8080
+# EXPOSE 8080
