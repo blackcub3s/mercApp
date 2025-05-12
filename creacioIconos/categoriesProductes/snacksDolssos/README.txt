@@ -1,0 +1,2 @@
+ChatGPT ha après de forma espontania a treure el canal alpha durant la conversació. En la generació d'aquest icono, l'icono
+11è ha après a treure-li el canal alpha de manera que la intervenció manual amb GIMP ja no era necessària. Increïble.
