@@ -999,6 +999,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	\section{Desarrollo back-end (microservicio con Python)}
 	
 	\subsection{Contenerización}
+	\label{sec:conteneritzacioPython}
 	
 	Este microservicio lo contenerizaremos gracias a este \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__FastAPI__/Dockerfile}{Dockerfile}. Para hacerlo, usaremos el Dockerfile para crear una imagen desde la imagen python:3-11 alpine\footnote{Las imágenes alpine son ligeras: pesan 100 o 200MB a diferencia de las que provienen de la imagen entera de python, que pesan más de 1GB.} descargada del registry de docker (ver nota sobre instalación de docker\footnote{ Instalar docker en linux no se puede hacer con un solo comando. Si el lector lo quiere instalar y usa linux, le facilito el script que programé hace un tiempo, para poder instalarlo sin preocuparse de nada: \href{https://github.com/blackcub3s/mercApp/blob/main/auxiliars/instalaDocker.sh}{link}. Si el lector usa Windows solamente debe preocuparse de instalar docker desktop y asegurarse que se añade la docker CLI para poder usar comandos desde las terminales disponibles en el sistema.}). 
 	
@@ -1045,7 +1046,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\end{figure}
 	\FloatBarrier
 	
-	Para automatizar este proceso de crear imagen con fastAPI y arrancar un contenedor desde la imagen recién creada y, finalmente, exponer los endpoints de fastAPI fuera del contenedor, se puede usar \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{este script en bash}, que incluye todos los comandos necesarios (inclusive aquellos para parar y destruir contenedores antiguos).
+	Para automatizar el proceso de crear imagen con fastAPI y arrancar contenedor desde esta imagen y, finalmente, exponer los endpoints de fastAPI fuera del contenedor, puede usarse el script en bash \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{creaImatge\_i\_arrancaContenidor.sh}, que incluye todos los comandos necesarios (inclusive aquellos para parar y destruir contenedores antiguos) ubicado aqui (ver figura)
 	
 	
 	

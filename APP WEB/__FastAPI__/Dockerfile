@@ -11,7 +11,10 @@ RUN pip install PyPDF2 && pip install pytz && pip install --no-cache-dir fastapi
 COPY app/controlador.py /usr/src/app/
 COPY app/servei.py /usr/src/app/
 
-# comanda per defecte que s'executarà a l'arrancar en desenvolupament
+# Nomes ho posem per documentacio. El port intern del contenidor es defineix en la comanda CMD de fastAPI
+EXPOSE 8000
+
+# comanda per defecte que s'executara a l'arrancar en desenvolupament
 # CMD ["fastapi", "dev", "controlador.py"]
 
 # Entorns de produccio fem servir "uvicorn controlador:app --reload". A aquesta comanda pots afegir

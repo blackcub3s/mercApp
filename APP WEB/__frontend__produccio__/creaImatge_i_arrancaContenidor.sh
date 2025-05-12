@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#genero la IMATGE back-end-nginx a partir del Dockerfile de la carpeta actual.
+#genero la IMATGE front-end-nginx a partir del Dockerfile de la carpeta actual.
 docker build -t front-end-nginx .
 
 #per si el contenidor derivat de la IMATGE funcionava, el paro. 
@@ -8,7 +8,8 @@ docker build -t front-end-nginx .
 docker stop contNginx
 docker rm contNginx
 
-#creo contenidor contNginx des de la imatge back-end-nginx recent creada.
-#redirecciono port 8000 (dreta dels dospunts) al port XXXX (esquerra dels dos punts)
-docker create -p 8000:8000 --name contNginx back-end-nginx 
+#creo contenidor contNginx des de la imatge front-end-nginx recent creada.
+#redirecciono port 80 de nginx (dreta dels dospunts) al port 5500 (esquerra dels dos punts)
+#ja que vull el mateix numero de port que feiem servir a vscode amb liveserver.
+docker create -p 5500:80 --name contNginx front-end-nginx 
 docker start contNginx
