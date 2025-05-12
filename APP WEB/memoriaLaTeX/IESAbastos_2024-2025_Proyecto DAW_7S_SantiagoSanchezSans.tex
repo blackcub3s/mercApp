@@ -1743,8 +1743,8 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Configuración de Client ID. Por ahora definimos \textit{localhost:5500} como una IP y puerto permitidos; sabemos que es la IP loopback del puerto de VSCode, porque haremos la solicitud desde el frontend hacia el cloud. $|$ \textbf{*}: Esto para desarrollo está bien, pero en producción hay que tener mucho cuidado, porque si alguien accede al código con cualquier IP de localhost (cualquier orenador del mundo) y un vscode con live server, puede hacer llamadas a nuestro cloud en nuestro nombre.  $|$ \textbf{**}: En producción añadiremos otros orígenes que el de localhost: hay que poner aqui la IP fija de nuestro servidor o el dominio (no tenemos uno todavía), siempre habilitando protocolo HTTPS, sino, no funcionará.}
-		\includegraphics[width=1\linewidth]{img/googleCloudE.png}
+		\caption{Configuración de Client ID.  $|$ \textbf{*}: http://localhost:5500 no habrá manera que funcione porque saltará la Content-Security-Policy que impide que hagamos llamadas desde local. Si no hubiera esta CSP, para desarrollo estaría bien, pero en producción habría que tener mucho cuidado, porque si alguien accediese al código con cualquier IP de localhost (cualquier ordenador del mundo) y un vscode con live server, podría hacer llamadas usando el cloud a nuestro nombre  $|$ \textbf{**}: En producción añadiremos otros orígenes que el de localhost: hay que poner aqui la IP fija de nuestro servidor o el dominio (no tenemos uno todavía), siempre habilitando protocolo HTTPS, sino, no funcionará. $|$ \textbf{***}: Para el despliegue en local tendremos que confiar en github pages para hacer la extracción.}
+		\includegraphics[width=1\linewidth]{img/googleCloudE.png} 
 		\label{fig:googleCloudE}
 	\end{figure}
 	\FloatBarrier
@@ -1782,8 +1782,20 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
+	A continuación podemos ver en la figura \ref{fig:googleCloudI} qué pasa cuando tratamos de acceder a autenticarnos en google:
+	
+
 	
 	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{\textbf{IZQUIERDA}: tratamos de loguearnos con un usuario que no esta entre los usuarios de prueba. \textbf{DERECHA}: intentamos acceder con el correo que sí está entre los usuarios de prueba y google nos informa que estamos queriendo consultar los mensajes de correo electrónico y su configuración.}
+		\includegraphics[width=1\linewidth]{img/googleCloudI}
+		\label{fig:googleCloudI}
+	\end{figure}
+	\FloatBarrier
 	
 	
 	

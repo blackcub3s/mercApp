@@ -9,6 +9,7 @@ FROM nginx:alpine
 # copio tots els arxius estatics de l'aplicacio 
 # (docker ho fa de forma recursiva)
 COPY app/ /usr/share/nginx/html
+#COPY default.conf /etc/nginx/conf.d/default.conf #no el copio finalment: el comento perque dona errors i no es pot sortejar la CSP
 
 # exposa el port 80 dins contenidor (nomesw per termes de documentacio)
 EXPOSE 80
