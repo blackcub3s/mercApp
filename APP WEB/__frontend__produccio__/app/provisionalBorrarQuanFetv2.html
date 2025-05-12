@@ -8,10 +8,21 @@
     <!--carrego la api de google-->
     <script src="https://apis.google.com/js/api.js"></script>
 
+    <!--Necessito aquesta línea per fer crides desde localhost:5500 -treballant en local amb vscode- per
+    aconsegir que el navegador no bloqueji certs dominis per la política CSP (Content Security Policy 
+    o Política de seguretat de contingut) que s'està aplicant per seguretat. El que bloqueja concretament és
+    la càrrega d'un script de google des de gstatic.com (la política CSP aplicada era 
+    script-src 'unsafe-inline' 'unsafe-eval' blob: data) i la càrrega d'un script des de https://apis.google.com.
+    La solució rau en fer EXCEPCIONS a aquestes: -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://www.gstatic.com https://apis.google.com 'unsafe-inline';"> -->
+
+
     
+
+
     <script>
 
-        <!-- inicialitzo el client-->
+        /*inicialitzo el client*/
         gapi.load('client:auth2', initClient);
 
         //INICIALITZO EL CLIENT 
