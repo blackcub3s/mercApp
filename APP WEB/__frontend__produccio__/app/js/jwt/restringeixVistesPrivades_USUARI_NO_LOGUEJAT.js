@@ -1,9 +1,9 @@
 //NOTA: Carreguem aquest script en totes les pàgines privades (dashboard.html i pas4_concedirAccesGmail.html).
 //      L'script busca un token d'accés al local storage: si el troba i NO està expirat -o bé no el troba- 
-//      (vol dir que l'usuari no està loguejat) redirigeix a l'usuari a la landing page (pas1 o index) impedint-li 
+//      (vol dir que l'usuari no està loguejat) redirigeix a l'usuari a la landing page (pas1 -index-) impedint-li 
 //      veure les pàgines privades. En cas contrari, si el token existís i no estés expirat (vol dir que l'usuari és loguejat) 
 //      mostraria cada segon el temps que li queda per expirar al token, en segons. 
-//      Un cop expirat el token, evidentment, l'script redirigiria a l'usuari a la landing page (pas1 o index).
+//      Un cop expirat el token, evidentment, l'script redirigiria a l'usuari a la landing page (pas1 o -index-).
 
 
 function zeroPadding(segons) {
@@ -15,7 +15,7 @@ function zeroPadding(segons) {
 
 function redirigeix_a_landing() {
     localStorage.removeItem("AccessToken"); //borrem el token 
-    window.location.href = "pas1_landingSignUp.html";
+    window.location.href = "index.html";
 }
 
 function mostra_temps_restant(secFinsExpiracio) {

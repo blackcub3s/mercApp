@@ -89,7 +89,7 @@
     <!-- capsalera de la pagina. Per a la persona amb sessió iniciada en altres pagines es pot afegir una nav-->
     <header class="topPagina">
         <div>
-            <a href="pas1_landingSignUp.html"><img src="img/iconoPetitMercApPERAFONSNEGRE.png" alt="logoNoCargó"></a>
+            <a href="index.html"><img src="img/iconoPetitMercApPERAFONSNEGRE.png" alt="logoNoCargó"></a>
         </div>
     </header>
 
@@ -134,7 +134,7 @@
             
             const contrasenyaInput = document.getElementById('contrasenya');
             const botoEnviarCorrIcontra = document.getElementById('botoEnviarCorreu');
-            let email = localStorage.getItem("emailNouUsuari"); //recupero el mail del local storage (que prove de pas1_landingSignUp!!)
+            let email = localStorage.getItem("emailNouUsuari"); //recupero el mail del local storage (que prove de pas1_landingSignUp (index.html)!!)
             console.log("correu: ", email); 
             
             botoEnviarCorrIcontra.addEventListener('click', function obtinguesDadesBackend() {
@@ -161,7 +161,7 @@
 
                     //POSO TEMPORITZADOR UN SOL COP PER A TORNAR
                     setTimeout(() => {
-                        window.location.href = 'pas1_landingSignUp.html';
+                        window.location.href = 'index.html';
                     }, tEspera);
                      
                     
@@ -204,7 +204,7 @@
 
                             if (dadesExitosesJSON.existiaUsuari) {
                                 bannerAlerta([email], "usuariExisteixError","var(--vermellAlerta)"); //CAS QUE RARA VEGADA ES DONARA
-                                //window.location.href = "pas1_landingSignUp.html"; //si es donés redirigim a pagina inicial (endpoint registraUsuari no torna si usuari paga o no paga... anem a lo senzill)
+                                //window.location.href = "index.html"; //si es donés redirigim a pagina inicial (endpoint registraUsuari no torna si usuari paga o no paga... anem a lo senzill)
                             } 
                             else { //SI NO EXISTIA USUARI A DINS BASE DE DADES POT SER QUE ARA L'HAGUEM AFEGIT O QUE NO SI HA ANAT MALAMENT. 
                                 if (dadesExitosesJSON.usuariShaRegistrat) {
