@@ -1060,8 +1060,24 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	Para automatizar el proceso de crear imagen con fastAPI y arrancar contenedor desde esta imagen y, finalmente, exponer los endpoints de fastAPI fuera del contenedor, puede usarse el script en bash \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{creaImatge\_i\_arrancaContenidor.sh}, que incluye todos los comandos necesarios (inclusive aquellos para parar y destruir contenedores antiguos) ubicado aqui (ver figura)
 	
+	\subsection{estructura de la aplicación}
 	
 	
+	\subsection{Algoritmo de extracción}
+	
+	La extracción de los tikets se hará a partir de la dirección de correo electrónico con la que mercadona manda los tikets digitales (como podemos ver en \ref{sec:pas4googleAPIclient}). El correo electrónico más antiguo y más nuevo prácticamente no difieren, con lo cual se puede reaprovechar un mismo algoritmo para todos los tickets como podemos ver en la imagen \ref{fig:primerIultimTiketMeuCorreu}:
+	
+	
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{A la \textbf{izquierda}: la primera compra en Mercadona hecha con ticket digital por mi parte: en un supermercado en Catalunya; a la \textbf{derecha} la última compra que se ha hecho por mi parte: en la comunitat valenciana. Nótese que en la extracción hay que tener en cuenta el distinto idioma que se puede dar en distintas comunidades autónomas. La dirección desde la que se mandan los tickets digitales no ha cambiado en dos años y el formato general del tiket es exactamente igual a términos de parseo: Hay que prestar atención a posibles problemas con el unicode (círculo marrón).}
+		\includegraphics[width=1\linewidth]{img/primerIultimTiketMeuCorreu}
+		\label{fig:primerIultimTiketMeuCorreu}
+	\end{figure}
+	\FloatBarrier
 	
 	
 	
@@ -1660,13 +1676,107 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\subsubsection{Arquitectura pas4: llamada a google API client}
 	\label{sec:pas4googleAPIclient}
 	
-	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener un (\textbf{Client ID}) que identifique nuestra web en relación a Google Cloud.
+	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener un (\textbf{Client ID}) que identifique nuestra web en relación a Google Cloud. Todos estos pasos se indican en una sección a parte que recomendamos al lector que lea, porque han supuesto varios días de trabajo \ref{sec:desarrolloCloudGoogleApi}.
 	
-	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) puedan descargarse sus tickets digitales del correo gmail personal \textit{hacia} una careta de su ordenador, mediante uso de JavaScript puro.
+	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) puedan descargarse sus tickets digitales del correo gmail personal \textit{hacia} una careta de su ordenador, mediante uso de JavaScript puro. Se utilizará el remitente de la dirección de correo electrónico desde la que Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com}
 
 	
-	Este javascript lo hemos creado a partir del código auxiliar que nos ha proporcionado chatGPT (\href{https://github.com/blackcub3s/mercApp/blob/main/llavorsGPT/extraccionCorreosPdfGoogleCloud.html}{\texttt{semilla})}. Con este script, hemos obtenido un esqueleto que ha sido modificado de modo que se ajustase a nuestras necesidades hasta llegar al archivo javascript definitivo (\textbf{link a javascript TO DO TO DO TO DO})\footnote{Se podría haber hecho la extracción de tickets desde una nube de google cloud pero finalmente evitamos esta opción porque es más barato y sencillo hacerlo directamente desde el cliente o navegador del usuario (podéis ver información de esa alternativa en anexo \ref{sec:googleCloud}).}.
+	Este javascript lo hemos creado a partir del código auxiliar que nos ha proporcionado chatGPT (\href{https://github.com/blackcub3s/mercApp/blob/main/llavorsGPT/semilaInicialExtraccionCorreos.html}{\texttt{semilla})}. Con este script, hemos obtenido un esqueleto que ha sido modificado de modo que se ajustase a nuestras necesidades hasta llegar al archivo javascript definitivo (\textbf{link a javascript TO DO TO DO TO DO})\footnote{Se podría haber hecho la extracción de tickets desde una nube de google cloud pero finalmente evitamos esta opción porque es más barato y sencillo hacerlo directamente desde el cliente o navegador del usuario (podéis ver información de esa alternativa en anexo \ref{sec:googleCloud}).}.
 
+
+		
+	
+		
+	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
+	\label{sec:dashboardFetchLocalStorage}
+	\textbf{TO DO FER-HO}
+	
+	
+	\subsection{Diseño de iconos}
+	
+	\subsubsection{Áreas de producto}
+	
+	Los iconos de las 8 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa y se han editado posteriormente con Gimp para eliminar el fondo y generar transparencia en el mismo (ver \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/categoriesProductes}{carpeta GitHub}).
+	
+	
+	En la figura \ref{fig:eliminocanalalpha}, podemos ver la creación de uno de los iconos con chatGPT y la eliminación posterior del fondo con GIMP. 
+	
+	Hay que mencionar, sin embargo, que el procedimiento de GIMP ahí mostrado no permite conseguir una transparencia pura del fondo. Para conseguirlo en algunos iconos es indispensable usar otro procedimiento que involucra más pasos pero que nos permite asegurarnos que se elimina por completo el canal alpha del fondo (ver figura \ref{fig:eliminocanalalphaCOMPLEX}). La utilidad de ese último procedimiento en relación al anterior puede verse en la figura \ref{fig:ventatjaProcedComplexVSsimple} donde comparamos la aplicación de ambos procedimientos al mismo icono.
+
+
+	
+	
+	
+	
+\FloatBarrier
+\setlength{\belowcaptionskip}{3pt}
+\begin{figure}[H]
+	\centering
+	\caption{Se ha pedido a chat gpt la creación del icono de verduras y hortalizas. Chat gpt no elimina el canal alpha del fondo automáticamente, así que hemos tenido que tomar la imagen saliente (A), pasarla por Gimp y exportarla  sin el fondo (B). Para hacerlo dentro de gimp seleccionamos el color blanco con la herramienta de selección (varita mágica) y seguimos la ruta \textit{capa} $\rightarrow$ \textit{transparencia} $\rightarrow$ \textit{color a alpha}.}
+	\includegraphics[width=1\linewidth]{img/eliminoCanalAlpha}
+
+
+	\label{fig:eliminocanalalpha}
+\end{figure}
+\FloatBarrier
+
+
+\FloatBarrier
+\setlength{\belowcaptionskip}{3pt}
+\begin{figure}[H]
+	\centering
+	\caption{En determinados casos no es suficiente con la estrategia sencilla del paso anterior y debemos seguir este procedimiento, que incluye el uso de la varita mágica, y de los pasos \textit{Seleccionar} $\rightarrow$ \textit{invertir} (invertir selección) y \textit{Ctrl + X} seguido de \textit{Ctrl + V} como mostramos en la figura.} 
+	\includegraphics[width=1\linewidth]{img/eliminoCanalAlphaCOMPLEX.png}
+
+	
+	\label{fig:eliminocanalalphaCOMPLEX}
+\end{figure}
+\FloatBarrier
+
+
+
+\FloatBarrier
+\setlength{\belowcaptionskip}{3pt}
+\begin{figure}[H]
+	\centering
+	\caption{El procedimiento de Gimp mostrado en la figura \ref{fig:eliminocanalalpha} genera un icono que en contexto se verá como la imagen de la izquierda: la card central del dashboard mostraría un icono con bordes rectangulares no intencionados. El procedimiento de la figura \ref{fig:eliminocanalalphaCOMPLEX}, en cambio, nos da la imagen de la derecha que no tiene fondo alguno y permite que el icono se asente a la perfección en la card.}
+	\includegraphics[width=1\linewidth]{img/ventatjaProcedComplexVSsimple.png}
+
+	
+	\label{fig:ventatjaProcedComplexVSsimple}
+\end{figure}
+\FloatBarrier
+	
+	
+	\subsubsection{Icono mercApp pequeño}
+	\label{sec:iconoMercappPetitMEMORIAPPAL}
+	Este icono también se ha pedido a la IA y se ha editado posteriormente, mostrando el icono grande para que lo usase. Se puede ver en el anexo \ref{sec:edicionMercAppIconoPequenyo} el proceso completo que también involucra edición en gimp . Pero el proceso resumido viene a ser el de la figura: \ref{fig:mercappResumit}.
+		
+		
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{El prompt pasado a ChatGPT para obtener una versión reducida del icono de nuestra APP. Incluso con con typos en el prompt la IA entiende perfectamente lo que necesitamos.}
+		\includegraphics[width=1\linewidth]{img/mercappResumit}
+		\label{fig:mercappResumit}
+	\end{figure}
+	\FloatBarrier
+		
+		
+		
+	\section{Desarrollo Cloud: configuración google api client}
+	\label{sec:desarrolloCloudGoogleApi}
+	
+	\noindent NOTA: regresar a apartado \ref{sec:pas4googleAPIclient} una vez comprendido este apartado, si no se ha leido.
+	
+	Para conseguir que la extracción de tickets funcione en el \textbf{pas4} (sección \ref{sec:pas4googleAPIclient}) es indispensable configurar (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). 
+	
+	Esta configuración es necesaria por varios motivos: El primero, es que tenemos que  obtener el (\textbf{Client ID}) para que se identifique nuestra web en relación a Google Cloud; el segundo, es configurar los ``\textit{scopes}'' que le dicen a Google qué tratamos de conseguir del gmail de los usuarios (aqui lectura de gmails -gmail.readonly-); el tercero, definir un listado de usuarios que permitirán usar nuestra aplicación (durante la fase de desarrollo); y el último, pero no por ello menos importante, la lista de direcciones IP desde las que google deberá permitirnos hacer llamadas a su API.
+	
+	A continuación explicamos todos los pasos de forma pormenorizada para conseguir hacer todo esto:
+	
+	
 	\noindent \textbf{PASO 1: Crear un nuevo proyecto en la consola}
 	\vspace{.2em}
 	\hrule
@@ -1683,17 +1793,17 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-
-	
-	
-		
 	
 	
 	
 	
 	
 	
-
+	
+	
+	
+	
+	
 	
 	\noindent \textbf{PASO 2: Habilitar la Gmail API}
 	\vspace{.2em}
@@ -1784,7 +1894,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	A continuación podemos ver en la figura \ref{fig:googleCloudI} qué pasa cuando tratamos de acceder a autenticarnos en google:
 	
-
+	
 	
 	
 	\FloatBarrier
@@ -1806,112 +1916,36 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\vspace{.5em}
 	
 	
-		Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar un scope de permisos denominado \textit{gmail.httponly} y verificar la aplicación en el cloud, siguiendo dentro de donde estabamos. Si no lo hiciéramos, tal y como está la configuración de ``usuarios externos'' , por ahora, solo podríamos conseguir que un usuario usase nuestra aplicación cloud de descarga de pdfs del correo mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si también estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud.
-		
-		Esto lo que haría sería que no nos permitiría escalar la aplicación web\footnote{Si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, tenemos una letra pequeña debajo donde se deja claro que por defecto el servicio cloud que acabamos de configurar solo admite usuarios que estén en esa lista.}. Para solucionarlo tenemos que añadir el scope necesario como vemos en la figura \ref{fig:googleCloudG}:
-		
-		\FloatBarrier
-		\setlength{\belowcaptionskip}{3pt}
-		\begin{figure}[H]
-			\centering
-			\caption{Ahora vamos a \textit{``Apis y servicios''} $\rightarrow$ \textit{``Credenciales''} clicamos en la credencial oauth 2creada ``mercAppWebPas'' y en acceso a los datos clicamos en agregar permisos. Ahiañadimos el permiso pertinente que encontramos mediante la adición de un ``scope''- Para ver los scopes podemos acceder al link ``más información'', que nos lleva a \href{https://developers.google.com/identity/protocols/oauth2/scopes?hl=es_419}{ésta página}, y de ahí tomar el scope necesario (gmail.readonly). De ahi extraemos el scope que queremos y lo actualizamos con el boton azul marcado en circulo verde en la imagen}
-			\includegraphics[width=1\linewidth]{img/googleCloudG}
-			\label{fig:googleCloudG}
-		\end{figure}
-		\FloatBarrier
-		
-		Después de darle a actualizar en la imagen \ref{fig:googleCloudG} tenemos que guardar esta confgiguración. Para ello segimos los pasos de la imagen \ref{fig:googleCloudH}:
-		
-		
-		\FloatBarrier
-		\setlength{\belowcaptionskip}{3pt}
-		\begin{figure}[H]
-			\centering
-			\caption{Último paso para poder permitir que los usuarios de nuestra aplicación puedan acceder a leer SUS correos electrónicos una vez autenticados, con oauth2. Esta vez vamos a \textit{``Apis y servicios''} $\rightarrow$ \textit{``Credenciales''} $\rightarrow$ \textit{``MercAppWebPas4''} $\rightarrow$ \textbf{\textit{``Acceso a los datos''}} y le damos al \textbf{botón guardar}. }
-			\includegraphics[width=1\linewidth]{img/googleCloudH}
-			\label{fig:googleCloudH}
-		\end{figure}
-		\FloatBarrier
+	Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar un scope de permisos denominado \textit{gmail.httponly} y verificar la aplicación en el cloud, siguiendo dentro de donde estabamos. Si no lo hiciéramos, tal y como está la configuración de ``usuarios externos'' , por ahora, solo podríamos conseguir que un usuario usase nuestra aplicación cloud de descarga de pdfs del correo mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si también estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud.
 	
-		Y el último caso es validar. Que google tiene que dar el vistobueno. Sin embargo asumo que esto no va a pasar, al menos no en plazo, con lo cual, directamente solo podremos usar los correos (por ahora solo uno) en el listado de usuarios permitidos mostrado en el PASO 5, para descargar los tickets digitales.
-		
-		
-	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
-	\label{sec:dashboardFetchLocalStorage}
-	\textbf{TO DO FER-HO}
+	Esto lo que haría sería que no nos permitiría escalar la aplicación web\footnote{Si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, tenemos una letra pequeña debajo donde se deja claro que por defecto el servicio cloud que acabamos de configurar solo admite usuarios que estén en esa lista.}. Para solucionarlo tenemos que añadir el scope necesario como vemos en la figura \ref{fig:googleCloudG}:
 	
-	
-	\subsection{Diseño de iconos}
-	
-	\subsubsection{Áreas de producto}
-	
-	Los iconos de las 8 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa y se han editado posteriormente con Gimp para eliminar el fondo y generar transparencia en el mismo (ver \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/categoriesProductes}{carpeta GitHub}).
-	
-	
-	En la figura \ref{fig:eliminocanalalpha}, podemos ver la creación de uno de los iconos con chatGPT y la eliminación posterior del fondo con GIMP. 
-	
-	Hay que mencionar, sin embargo, que el procedimiento de GIMP ahí mostrado no permite conseguir una transparencia pura del fondo. Para conseguirlo en algunos iconos es indispensable usar otro procedimiento que involucra más pasos pero que nos permite asegurarnos que se elimina por completo el canal alpha del fondo (ver figura \ref{fig:eliminocanalalphaCOMPLEX}). La utilidad de ese último procedimiento en relación al anterior puede verse en la figura \ref{fig:ventatjaProcedComplexVSsimple} donde comparamos la aplicación de ambos procedimientos al mismo icono.
-
-
-	
-	
-	
-	
-\FloatBarrier
-\setlength{\belowcaptionskip}{3pt}
-\begin{figure}[H]
-	\centering
-	\caption{Se ha pedido a chat gpt la creación del icono de verduras y hortalizas. Chat gpt no elimina el canal alpha del fondo automáticamente, así que hemos tenido que tomar la imagen saliente (A), pasarla por Gimp y exportarla  sin el fondo (B). Para hacerlo dentro de gimp seleccionamos el color blanco con la herramienta de selección (varita mágica) y seguimos la ruta \textit{capa} $\rightarrow$ \textit{transparencia} $\rightarrow$ \textit{color a alpha}.}
-	\includegraphics[width=1\linewidth]{img/eliminoCanalAlpha}
-
-
-	\label{fig:eliminocanalalpha}
-\end{figure}
-\FloatBarrier
-
-
-\FloatBarrier
-\setlength{\belowcaptionskip}{3pt}
-\begin{figure}[H]
-	\centering
-	\caption{En determinados casos no es suficiente con la estrategia sencilla del paso anterior y debemos seguir este procedimiento, que incluye el uso de la varita mágica, y de los pasos \textit{Seleccionar} $\rightarrow$ \textit{invertir} (invertir selección) y \textit{Ctrl + X} seguido de \textit{Ctrl + V} como mostramos en la figura.} 
-	\includegraphics[width=1\linewidth]{img/eliminoCanalAlphaCOMPLEX.png}
-
-	
-	\label{fig:eliminocanalalphaCOMPLEX}
-\end{figure}
-\FloatBarrier
-
-
-
-\FloatBarrier
-\setlength{\belowcaptionskip}{3pt}
-\begin{figure}[H]
-	\centering
-	\caption{El procedimiento de Gimp mostrado en la figura \ref{fig:eliminocanalalpha} genera un icono que en contexto se verá como la imagen de la izquierda: la card central del dashboard mostraría un icono con bordes rectangulares no intencionados. El procedimiento de la figura \ref{fig:eliminocanalalphaCOMPLEX}, en cambio, nos da la imagen de la derecha que no tiene fondo alguno y permite que el icono se asente a la perfección en la card.}
-	\includegraphics[width=1\linewidth]{img/ventatjaProcedComplexVSsimple.png}
-
-	
-	\label{fig:ventatjaProcedComplexVSsimple}
-\end{figure}
-\FloatBarrier
-	
-	
-	\subsubsection{Icono mercApp pequeño}
-	\label{sec:iconoMercappPetitMEMORIAPPAL}
-	Este icono también se ha pedido a la IA y se ha editado posteriormente, mostrando el icono grande para que lo usase. Se puede ver en el anexo \ref{sec:edicionMercAppIconoPequenyo} el proceso completo que también involucra edición en gimp . Pero el proceso resumido viene a ser el de la figura: \ref{fig:mercappResumit}.
-		
-		
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{TO DO}
-		\includegraphics[width=1\linewidth]{img/mercappResumit}
-		\label{fig:mercappResumit}
+		\caption{Ahora vamos a \textit{``Apis y servicios''} $\rightarrow$ \textit{``Credenciales''} clicamos en la credencial oauth2 creada ``mercAppWebPas'' y en acceso a los datos clicamos en agregar permisos. Añadimos el permiso pertinente que encontramos mediante la adición de un ``scope''- Para ver los scopes podemos acceder al link ``más información'', que nos lleva a \href{https://developers.google.com/identity/protocols/oauth2/scopes?hl=es_419}{ésta página}, y de ahí copiar el scope necesario (usamos \textbf{gmail.readonly}) y lo actualizamos con el boton azul marcado en el círculo verde de la imagen.}
+		\includegraphics[width=1\linewidth]{img/googleCloudG}
+		\label{fig:googleCloudG}
 	\end{figure}
 	\FloatBarrier
-		
+	
+	Después de darle a actualizar en la imagen \ref{fig:googleCloudG} tenemos que guardar esta configuración. Para ello seguimos los pasos de la imagen \ref{fig:googleCloudH}:
+	
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Último paso para poder permitir que los usuarios de nuestra aplicación puedan acceder a leer SUS correos electrónicos una vez autenticados, con oauth2. Esta vez vamos a \textit{``Apis y servicios''} $\rightarrow$ \textit{``Credenciales''} $\rightarrow$ \textit{``MercAppWebPas4''} $\rightarrow$ \textbf{\textit{``Acceso a los datos''}} y le damos al \textbf{botón guardar}. }
+		\includegraphics[width=1\linewidth]{img/googleCloudH}
+		\label{fig:googleCloudH}
+	\end{figure}
+	\FloatBarrier
+	
+	Y el último caso es validar. Que google tiene que dar el vistobueno. Sin embargo asumo que esto no va a pasar, al menos no en plazo, con lo cual, directamente solo podremos usar los correos (por ahora solo uno) en el listado de usuarios permitidos mostrado en el PASO 5, para descargar los tickets digitales.
+	
+	
 	\chapter{Evaluación y Conclusiones Finales} %OBLIGAT
 	
 
