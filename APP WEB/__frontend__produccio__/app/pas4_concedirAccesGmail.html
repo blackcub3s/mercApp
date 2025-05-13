@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MercApp | Concede acceso a tu correo electrónico</title>
+    
+    <title>MercApp | Descarga los tickets digitales de tu gmail</title>
+
+    <link rel="stylesheet" href="css/dashboard/navFooter.css">
+
 
     <!-- Aquests dos seguents scripts redirigeixen a la landing
      page si el token d'acces està expirat, en refrescar pàgina-->
@@ -20,10 +24,45 @@
     <script src = "js/jwt/tancaSessioEliminantToken.js"></script>    
 
     <!-- prenem l'script d'estracció pujat a github pages. Cal que s'executi en un protocol HTTPS i en un domini
-         permès per la llista de connexions entrtants a Oauth, a google.-->
-    <script src="https://blackcub3s.github.io/mercAppAuxPas4/js/scriptExtraccio.js"></script>
+         permès per la llista de connexions entrtants a Oauth, a google.
+    <script src="https://blackcub3s.github.io/mercAppAuxPas4/js/scriptExtraccio.js"></script>-->
+
+    <style>
+
+        #tresPassos {
+            max-width: 800px;
+            display: grid;
+            grid-template-columns: 1fr;
+            place-items: center;
+            min-height: 100vh;
+            margin: 0 auto;
+        }
+
+        /*#tresPassos section {}*/
+
+        footer {
+            height: 15em;
+            display: flex; /*Centro el contenido del copyright con dispplay flex*/
+        }
+        
+        
+        h1 {font-size: 1.8em;} /*Titulo (pas1, pas2, pas3)*/
+        h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
+    </style>
 </head>
 <body>
+
+
+    <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegación-->
+    <header>
+        <button id = "botoEliminarToken">Cerrar Sesión</button> <!-- botó per a eliminar el token i fer que el javascript automaticament redirigeixi a pas1 (index.html)-->
+        <nav style = "height: 1em;"></nav>
+    </header>
+
+
+
+
+
 
     <section id = "tresPassos">
         <section>
@@ -44,7 +83,28 @@
 
     <p style="color: red">Un cop guardat a mongoDB els tickets podrás emetre un token de accés amb permisos = 1.</p>
 
-    <button id = "botoEliminarToken">Cerrar sesión</button>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- SECCIÓN 6 (S6): footer -->   
+    <footer>
+        <!-- section:last-child del footer-->
+        <section>
+            <p id="copyright"><i>&copy; 2025 | Todos los derechos reservados</i></p>   
+        </section> 
+    </footer>
+
+
 
 </body>
 </html>
