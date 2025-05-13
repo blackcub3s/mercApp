@@ -976,7 +976,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			
 			El motivo de ello es porque no podemos permitir que entren unos datos no validados (nulos, con caracteres peligrosos, etc) a través de \textbf{llamadas directas a la API}. Hay que tener mucho cuidado con esto! 
 			
-			La parte donde definimos la validación de datos de los endpoints de entrada de los datos de usuario está en utils\footnote{podéis ver la imagen completa de la estructura del proyecto SpringBoot si queréis, de nuevo, en \ref{fig:estrucutraAplicacioJAVARESOURCES}} pero se produce parte de validación a través de \textit{Usuaris} $\rightarrow$ \textit{dto}. El esquema para entender como se interelacionan estas clases está en la figura \ref{fig:validacioBackArxius}.
+			La parte donde definimos la validación de datos de los endpoints de entrada de los datos de usuario está en utils\footnote{podéis ver la imagen completa de la estructura del proyecto SpringBoot si queréis, de nuevo, en \ref{fig:estrucutraAplicacioJAVARESOURCES}} pero se produce parte de validación a través de \textit{Usuaris} $\rightarrow$ \textit{dto}. Una primera aproximación o esquema a entender como se interelacionan estos dos tipos de clases está en la figura \ref{fig:validacioBackArxius}.
 			
 			
 			
@@ -991,7 +991,20 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			\FloatBarrier
 			
 			
-			Por ejemplo, para validar los datos de entrada a través del endpoint que recibe llamada del front-end para el incio de sesión, es decir, el endpoint ``\href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#104}{api/login}'' del ControladorUsuari.java de Spring Boot, podréis ver que el tipo de datos que espera este endpoint en el \textit{@RequestBody }(anotación que pide cargar en el parámetro ``dto'' un tipo de datos que se introducirá ahí desde el body de la solicitud POST) no es un tipo de datos primitivo, ni una clase predefinida de java: sino una clase definida por nosotros. A esa clase la hemos llamado LoginDTO. Los data transfer objects o DTOs son simplemente clases Java, y mediante sus atributos definen los nombres exactos que tienen que tener las claves entrantes del body de las solicitudes POST y aplican restricciones a los valores que éstas llevan asociadas\footnote{Acordémonos que las entradas de datos por por el cuerpo de una solicitud POST se ponen formato JSON por convenio} según unas expresiones que definimos dentro de cada clase de anotación, si y solo si, añadimos la anotación \textbf{@Valid}: con esta anotación activamos las clases de anotación que ponemos encima de los atributos de los DTOs, que son las que hacen la validación de datos. En la imagen \ref{fig:validacioBackArxiusDetallLogin} siguiente se ve muy claro qué es lo que realmente está pasando:
+			Vamos a hablar en términos concretos. Pongamos por caso que queremos validar los datos de entrada que llegan al endpoint que recibe la llamada del front-end para el incio de sesión, es decir, el endpoint ``\href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#104}{api/login}'' (muy importante ver esta línea) del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{ControladorUsuari.java} de Spring Boot. 
+			
+			Debemos entender que en este caso, cuando se haga una llamada exitosa a ese controlador, podríamos tendremos un body del estilo siguiente:
+			
+				
+			\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+{"correuElectronic" : "acces@gmail.com", "contrasenya" : "12345678Mm\_" }
+			\end{lstlisting}
+			
+	
+			
+
+			
+			Según los términos esperados las clases utilizadas y activadads para validar estos datos de entrada serán las de la figura \ref{fig:validacioBackArxiusDetallLoginVA}:
 			
 			
 			
@@ -999,16 +1012,34 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			\setlength{\belowcaptionskip}{3pt}
 			\begin{figure}[H]
 				\centering
-				\caption{\textbf{TO DO}explicar}
-				\includegraphics[width=1\linewidth]{img/validacioBackArxiusDetallLogin}
-				\label{fig:validacioBackArxiusDetallLogin}
+				\caption{Activación de clases de validación para responder a una solicitud POST de inicio de sesión hecha hacia el endpoint \textit{/api/login} del controlador UsuariControlador.java}
+				\includegraphics[width=1\linewidth]{img/validacioBackArxiusDetallLoginVA}
+				\label{fig:validacioBackArxiusDetallLoginVA}
 			\end{figure}
 			\FloatBarrier
 			
 			
+			 Asimismo, en la figura  \ref{fig:validacioBackArxiusDetallLoginVB} podréis ver exactamente qué es lo que está pasando para la llamada a este endpoint. Podréis ver en esencia como existe una clase LoginDTO\footnote{Los data transfer objects o DTOs son simplemente clases Java que mediante sus atributos definen los nombres exactos que tienen que tener las claves entrantes del body de las solicitudes POST y, además, aplican restricciones a los valores que éstas llevan asociadas según unas anotaciones definidas encima, que asimismo llaman a otras anotaciones de las clases de anotación, si y solo si, añadimos la anotación \textbf{@Valid} antes del parámetro dto del UsuariControlador.} que permite hacer la validación de datos cuando un usuario inicia sesión, a través de anotaciones personalizadas (@CorreuElectronic y @contrasenya) que a su vez llaman a otras anotaciones propias del framework springboot (@pattern, para aplicar expresiones regulares; @NotBlank para evitar que el campo esté vacío, etc):
+			
+			
+			
+
+			
+			
+			\FloatBarrier
+			\setlength{\belowcaptionskip}{3pt}
+			\begin{figure}[H]
+				\centering
+				\caption{Veremos que en \textit{UsuariControlador.java} (imagen de la derecha) el tipo de datos que espera el endpoint \textit{api/login} se guarda en el parámetro de entrada \textit{dto}. Esto pasa gracias a la anotación \textbf{@RequestBody} que mapea la entrada en formato JSON con el parámetro de entrada que esté a su derecha: en este caso \textit{dto}. dto tiene que tener un formato compatible con los datos JSON entrantes por el body de la solicitud POST, obviamente. El dto está tipado con \textit{LoginDTO}, que es una clase que hemos definido nosotros y permite recoger los datos entrantes hacendo un match entre los nombres de las claves del JSON y los nombres de los atributos de la clase. Esta clase también permite definir las validaciones mediante anotaciones personalizadas, que están justamente encima de cada atributo y permiten validar los datos para ese atributo. Estas anotaciones en LoginDTO se activan si y solo si \textit{UsuariControlador.java} tiene definida la anotación \textbf{@Valid} al lado del parámetro dto. Las dos anotaciones personalizadas de LoginDTO son \textbf{@Contrasenya} y \textbf{@CorreuElectronic} que llaman asimismo a otras clases de anotación ya definidas del lenguaje: \textit{@pattern}, para aplicar expresiones regulares o \textit{@NotBlank} para evitar que el campo esté vacío}.
+				\includegraphics[width=1\linewidth]{img/validacioBackArxiusDetallLoginVB}
+				\label{fig:validacioBackArxiusDetallLoginVB}
+			\end{figure}
+			\FloatBarrier
 			
 		
-			Podría parecer complejo hacer lo que hemos hecho en la figura \ref{fig:validacioBackArxiusDetallLogin}, pero una vez guardarmos campos en la base de datos a través de múltiples endpoints que requieren modificaciones parciales de esos campos hacerlo así tiene utilidad y es una buena práctica en Java.
+			Podría parecer complejo hacer lo que hemos hecho en la figura \ref{fig:validacioBackArxiusDetallLoginVB}, pero una vez guardarmos campos en la base de datos a través de múltiples endpoints que requieren modificaciones parciales de esos campos hacerlo así tiene utilidad y es una buena práctica en Java.
+			
+			Todos los endpoints de la clase UsuariControlador.java están protegidos con validaciones para evitar que entren caracteres problemáticos, como podéis ver en las expresiones regulares definidas en ValidacionsUsuari.java.
 
 			\subsection{Hasheado de contraseñas}
 			\label{sec:implementacioHashContra}
@@ -1064,7 +1095,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 
 	
-	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Hacer referencia al 8000 que va a la \textbf{derecha} de los dos puntos.} -puerto con el que se comunica fastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor\footnote{Es el 8000 emplazado a la \textbf{izquierda} de los dos puntos.}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía ejecutarlo:
+	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Hacer referencia al 8000 que va a la \textbf{derecha} de los dos puntos.} -puerto con el que se comunica fastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor\footnote{Es el 8000 emplazado a la \textbf{izquierda} de los dos puntos.}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía arrancar el contenedor:
 	
 	\begin{lstlisting}[language=bash]
 docker create -p 8000:8000 --name contFastApi back-end-fastapi
@@ -1078,7 +1109,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\end{lstlisting}
 	
 	
-	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que  \href{https://github.com/blackcub3s/mercApp/blob/cf678ebf99ce636b64c70c8faa239658a601550d/APP%20WEB/__FastAPI__/Dockerfile#L22}{en esta línea} del dockerfile hemos definido el host de la aplicacion fastAPI desde dentro del contenedor para que sea la IP 0.0.0.0 . \textbf{No }hemos usado la IP loopback por defecto (localhost, loopback o 127.0.0.1), sino la IP ``wildcard'' o dirección de red (0.0.0.0). Si usáramos la localhost dentro del contenedor la aplicación estaría usando la direccion de dentro de la red del contenedor, pero no saldría fuera de este y sería inútil! La dirección 0.0.0.0 nos permite justamente que podamos acceder a los endpoints de fastAPI desde el localhost del sistema host no solo desde el localhost del propio contenedor. Es decir, no spermite que podamos acceder desde el navegador de nuestro ordenador -fuera del contenedor- o desde otros contenedores corriendo en nuestra máquina. Véase en la figura \ref{fig:demofastapiendpointdummy} siguiente lo que puede hacer nuestro contenedor con esta configuración y como se construye, de forma más pormenorizada:
+	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que  \href{https://github.com/blackcub3s/mercApp/blob/cf678ebf99ce636b64c70c8faa239658a601550d/APP%20WEB/__FastAPI__/Dockerfile#L22}{en esta línea} del dockerfile hemos definido el host de la aplicacion fastAPI desde dentro del contenedor para que sea la IP 0.0.0.0 . \textbf{No }hemos usado la IP loopback por defecto (localhost, loopback o 127.0.0.1), sino la IP ``wildcard'' o dirección de red (0.0.0.0). Si usáramos la localhost dentro del contenedor la aplicación estaría usando la direccion de dentro de la red del contenedor, pero no saldría fuera de este y sería inútil! La dirección 0.0.0.0 nos permite justamente que podamos acceder a los endpoints de fastAPI desde el localhost del sistema host no solo desde el localhost del propio contenedor. Es decir, nos permite que podamos acceder desde el navegador de nuestro ordenador -desde fuera del contenedor- o desde otros contenedores que estén corriendo en nuestra máquina. Véase en la figura \ref{fig:demofastapiendpointdummy} siguiente lo que puede hacer nuestro contenedor con esta configuración y como se construye, de forma más pormenorizada:
 	
 	\FloatBarrier
 	\begin{figure}[H]
@@ -1093,6 +1124,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	\subsection{estructura de la aplicación}
 	
+	\textbf{TO DO}
 	
 	\subsection{Algoritmo de extracción}
 	
@@ -1110,6 +1142,8 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\end{figure}
 	\FloatBarrier
 	
+	\textbf{CONTINUAR TO DO TO DO TO DO TO DO}
+	
 	
 	
 	
@@ -1118,7 +1152,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	\subsection{Contenerización}
 	
-	Se ha utilizado un servidor de alto rendimiento para servir los archivos estáticos (HTML, CSS y JavaScript). Podéis ver su dockerfile \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/Dockerfile}{aquí}, y el script que crea la imagen e instancia de contenedor \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/creaImatge_i_arrancaContenidor.sh}{aquí}. Para más información del uso de Docker podéis ver el apartado \ref{sec:conteneritzacioPython} de la contenerización de Python.
+	Se ha utilizado Nginx, un servidor de alto rendimiento para servir los archivos estáticos (HTML, CSS y JavaScript). Podéis ver su dockerfile \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/Dockerfile}{aquí}, y el script que crea la imagen e instancia de contenedor \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/creaImatge_i_arrancaContenidor.sh}{aquí}. Para más información del uso de Docker podéis ver el apartado \ref{sec:conteneritzacioPython} de la contenerización de Python.
 	
 	\subsection{Estructura de la aplicación}
 	\label{sec:estructuraAplicacionFrontEnd}
@@ -1239,6 +1273,8 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 <script src="/js/jwt/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.js">
 </script>
 \end{lstlisting}
+
+
 	
 	En el primero tenemos la función para extraer el payload de un token. Y en el segundo está la lógica que acabamos de explicar en los párrafos anteriores (ver figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT}):
 	
