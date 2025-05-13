@@ -976,7 +976,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			
 			El motivo de ello es porque no podemos permitir que entren unos datos no validados (nulos, con caracteres peligrosos, etc) a través de \textbf{llamadas directas a la API}. Hay que tener mucho cuidado con esto! 
 			
-			La parte donde definimos la validación de datos de los endpoints de entrada de los datos de usuario está en utils\footnote{podéis ver la imagen completa de la estructura del proyecto SpringBoot si queréis, de nuevo, en \ref{fig:estrucutraAplicacioJAVARESOURCES}} pero también en \textit{Usuaris} $\rightarrow$ \textit{dto}. El esquema para entenderlo está en la figura  \ref{fig:validacioBackArxius}:
+			La parte donde definimos la validación de datos de los endpoints de entrada de los datos de usuario está en utils\footnote{podéis ver la imagen completa de la estructura del proyecto SpringBoot si queréis, de nuevo, en \ref{fig:estrucutraAplicacioJAVARESOURCES}} pero se produce parte de validación a través de \textit{Usuaris} $\rightarrow$ \textit{dto}. El esquema para entender como se interelacionan estas clases está en la figura \ref{fig:validacioBackArxius}.
 			
 			
 			
@@ -991,13 +991,24 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			\FloatBarrier
 			
 			
-			Por ejemplo, para validar los datos de entrada a través del endpoint que recibe llamada del front-end para el incio de sesión (el endpoint ``api/login'' de Spring Boot, que podéis verlo en este  de \href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#104}{Snippet de GitHub} o en la siguiente imagen:
+			Por ejemplo, para validar los datos de entrada a través del endpoint que recibe llamada del front-end para el incio de sesión, es decir, el endpoint ``\href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#104}{api/login}'' del ControladorUsuari.java de Spring Boot) podréis ver que el tipo de datos que espera este endpoint en el @RequestBody (anotación que pide cargar en el parámetro ``dto'' un tipo de datos que se introducirá ahí desde el body de la solicitud POST) no es un tipo de datos primitivo, ni una clase predefinida de java: sino una clase definida por nosotros. A esa clase la hemos llamado LoginDTO. Los data transfer objects o DTOs definen mediante atributos de clase Java los nombres que tienen que tener las claves entrantes del body de las solicitudes POST y aplican restricciones a los valores que estas continen según unas expresiones que definimos dentro de cada clase de anotación. En la imagen \ref{fig:validacioBackArxiusDetallLogin} siguiente se ve muy claro qué es lo que realmente está pasando:
 			
 			
-			\textbf{	TO DO }
+			
+			\FloatBarrier
+			\setlength{\belowcaptionskip}{3pt}
+			\begin{figure}[H]
+				\centering
+				\caption{\textbf{TO DO}explicar}
+				\includegraphics[width=1\linewidth]{img/validacioBackArxiusDetallLogin}
+				\label{fig:validacioBackArxiusDetallLogin}
+			\end{figure}
+			\FloatBarrier
+			
+			
 			
 		
-			
+			Podría parecer complejo hacer lo que hemos hecho en la figura \ref{fig:validacioBackArxiusDetallLogin}, pero una vez guardarmos campos en la base de datos a través de múltiples endpoints que requieren modificaciones parciales de esos campos hacerlo así tiene utilidad y es una buena práctica en Java.
 
 			\subsection{Hasheado de contraseñas}
 			\label{sec:implementacioHashContra}
