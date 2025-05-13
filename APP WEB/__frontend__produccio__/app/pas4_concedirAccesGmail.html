@@ -22,13 +22,29 @@
     <!-- prenem l'script d'estracció pujat a github pages. Cal que s'executi en un protocol HTTPS i en un domini
          permès per la llista de connexions entrtants a Oauth, a google.-->
     <script src="https://blackcub3s.github.io/mercAppAuxPas4/js/scriptExtraccio.js"></script>
-    
-
 </head>
 <body>
-    <p>Farem tot lo necessari per obtenir els recursos per guanyar rapidament
-         permisos a 1 (en pirApp seria pagar algo, en mercApp tenir els PDFs descarregats al usuari)</p>
+
+    <section id = "tresPassos">
+        <section>
+            <h1>Paso 1: Descargar tickets digitales</h1>
+            <h2>Autentícate a tu gmail y escoge una cuenta de gmail que tenga más dos tickets digitales dentro. Verás como se descargan todos tus tikets digitales (hasta 1000 de ellos).</h2>
+        </section>
+        <section>
+            <h1>Paso 2: Mandar tus tickets descargados en tu ordenador a nuestro back-end para procesarlos</h1>
+            <h2>Selecciona todos los tickets digitales que se descargaron en la carpeta descargas y adjuntalos</h2>
+        </section>
+        <section>
+            <h1>Paso 3: Relájate y espera a que guardemos tus datos en nuestra base de datos.</h1>
+            <h2>Si quieres puedes organizar tus tikets digitales en una carpeta distinta para luego poder ver 
+                cómo de precisa es nuestra extracción de datos.
+            </h2>
+        </section>
+    </section>
+
+    <p style="color: red">Un cop guardat a mongoDB els tickets podrás emetre un token de accés amb permisos = 1.</p>
 
     <button id = "botoEliminarToken">Cerrar sesión</button>
+
 </body>
 </html>
