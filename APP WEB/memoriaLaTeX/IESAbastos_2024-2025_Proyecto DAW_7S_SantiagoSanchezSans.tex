@@ -475,7 +475,7 @@
 				\setlength{\belowcaptionskip}{3pt}
 				\begin{figure}[H]
 					\centering
-					\caption{En rojo los archivos que crean una imagen y arrancan su contenedor, para cada microservicio.}
+					\caption{En rojo los archivos que crean una imagen y arrancan su contenedor, para cada microservicio. NOTA: Importante correr el script en bash con la terminal en el \textit{mismo nivel} del árbol de directorios al que pertenece.}
 					\includegraphics[width=.7\linewidth]{img/dockeritzacioAplicacioPlantilla.png}
 					\label{fig:dockeritzacioAplicacioPlantilla}
 				\end{figure}
@@ -974,7 +974,27 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			
 			Los endpoints del back-end a los que apuntamos con llamadas fetch desde los campos de formulario de correo electrónico y contraseña desde el HTML deben protegerse también en el back-end, no solamente en el front.
 			
-			El motivo de ello es porque no podemos permitir que entren unos datos no validados (nulos, con caracteres peligrosos) a través de \textbf{llamadas directas a la API}. Hay que tener mucho cuidado con esto! \textbf{	TO DO }
+			El motivo de ello es porque no podemos permitir que entren unos datos no validados (nulos, con caracteres peligrosos, etc) a través de \textbf{llamadas directas a la API}. Hay que tener mucho cuidado con esto! 
+			
+			La parte donde definimos la validación de datos de los endpoints de entrada de los datos de usuario está en utils\footnote{podéis ver la imagen completa de la estructura del proyecto SpringBoot si queréis, de nuevo, en \ref{fig:estrucutraAplicacioJAVARESOURCES}} pero también en \textit{Usuaris} $\rightarrow$ \textit{dto}. El esquema para entenderlo está en la figura  \ref{fig:validacioBackArxius}:
+			
+			
+			
+			\FloatBarrier
+			\setlength{\belowcaptionskip}{3pt}
+			\begin{figure}[H]
+				\centering
+				\caption{\textbf{Izquierda}: Archivos de clases de anotación (@), la clase donde se definen mensajes de error que aprovecharán las clases de anotación $|$  \textbf{Derecha}: los DTOs o \textit{Data Transfer Objects} que es donde se aplican las validaciones definidas en las clases de anotación.}
+				\includegraphics[width=.8\linewidth]{img/validacioBackArxius.png}
+				\label{fig:validacioBackArxius}
+			\end{figure}
+			\FloatBarrier
+			
+			
+			Por ejemplo, para validar los datos de entrada a través del endpoint que recibe llamada del front-end para el incio de sesión (el endpoint ``api/login'' de Spring Boot, que podéis verlo en este  de \href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#104}{Snippet de GitHub} o en la siguiente imagen:
+			
+			
+			\textbf{	TO DO }
 			
 		
 			
@@ -1929,7 +1949,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\vspace{.5em}
 	
 	
-	Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar un scope de permisos denominado \textit{gmail.httponly} y verificar la aplicación en el cloud, siguiendo dentro de donde estabamos. Si no lo hiciéramos, tal y como está la configuración de ``usuarios externos'' , por ahora, solo podríamos conseguir que un usuario usase nuestra aplicación cloud de descarga de pdfs del correo mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si también estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud.
+	Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar un scope de permisos específico que se de denomina \textit{gmail.httponly} y deberemos verificar aplicación en el cloud. Si no lo hiciéramos, tal y como está la configuración de ``usuarios externos'' , por ahora, solo podríamos conseguir que un usuario usase nuestra aplicación cloud de descarga de pdfs del correo mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si también estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud.
 	
 	Esto lo que haría sería que no nos permitiría escalar la aplicación web\footnote{Si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, tenemos una letra pequeña debajo donde se deja claro que por defecto el servicio cloud que acabamos de configurar solo admite usuarios que estén en esa lista.}. Para solucionarlo tenemos que añadir el scope necesario como vemos en la figura \ref{fig:googleCloudG}:
 	
@@ -1937,7 +1957,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Ahora vamos a \textit{``Apis y servicios''} $\rightarrow$ \textit{``Credenciales''} clicamos en la credencial oauth2 creada ``mercAppWebPas'' y en acceso a los datos clicamos en agregar permisos. Añadimos el permiso pertinente que encontramos mediante la adición de un ``scope''- Para ver los scopes podemos acceder al link ``más información'', que nos lleva a \href{https://developers.google.com/identity/protocols/oauth2/scopes?hl=es_419}{ésta página}, y de ahí copiar el scope necesario (usamos \textbf{gmail.readonly}) y lo actualizamos con el boton azul marcado en el círculo verde de la imagen.}
+		\caption{Ahora vamos a \textit{``Apis y servicios''} $\rightarrow$ \textit{``Credenciales''} clicamos en la credencial oauth2 creada ``mercAppWebPas4'' y en acceso a los datos clicamos en agregar permisos. Añadimos el permiso pertinente que encontramos mediante la adición de un ``scope''- Para ver los scopes podemos acceder al link ``más información'', que nos lleva a \href{https://developers.google.com/identity/protocols/oauth2/scopes?hl=es_419}{ésta página}, y de ahí copiar el scope necesario (usamos \textbf{gmail.readonly}) y lo actualizamos con el botón azul marcado en el círculo verde de la imagen.}
 		\includegraphics[width=1\linewidth]{img/googleCloudG}
 		\label{fig:googleCloudG}
 	\end{figure}
