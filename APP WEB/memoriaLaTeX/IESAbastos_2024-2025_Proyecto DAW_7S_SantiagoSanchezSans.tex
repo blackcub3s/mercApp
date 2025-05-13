@@ -1676,15 +1676,16 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\subsubsection{Arquitectura pas4: llamada a google API client}
 	\label{sec:pas4googleAPIclient}
 	
-	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener el \textbf{Client ID} que identifique nuestra web en relación a Google Cloud. Todos estos pasos se indican en una sección a parte que recomendamos al lector que lea, porque ha supuesto varios días de trabajo \ref{sec:desarrolloCloudGoogleApi}.
+	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de Google Cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener el \textbf{Client ID} que identifique nuestra web en relación a Google Cloud. Todos estos pasos se indican en una sección a parte que recomendamos al lector que lea, porque ha supuesto varios días de trabajo \ref{sec:desarrolloCloudGoogleApi}.
 	
-	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) puedan descargarse sus tickets digitales del correo gmail personal \textit{hacia} la carpeta de descargas de su ordenador, mediante uso de JavaScript puro. Se utilizará el remitente de la dirección de correo electrónico desde la que Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com}.
-
+	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}), siempre que tengan una cuenta de google con tickets digitales de mercadona enviados por el supermercado, puedan descargárselos al ordenador en el que están navegando: concretamente en la carpeta de descargas de su ordenador. Esto lo haremos mediante javascript puro. 
+	
+	Para ello Se utilizará el remitente de la dirección  de correo electrónico desde la que Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus  pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com} y las línea de código donde conseguimos esta descarga las marcamos en este  \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/03deec7187c1194e20d324830b7c8ea8f4d3671b/js/scriptExtraccio.js#L89-L92}{snippet} de github (nótese que en este script solamente descargamos 1 solo correo). Esto es porque solamente descargando correos de 5 en cinco de golpe, ya consumimos el free tier que nos ofrece google: 300 dollares. \textbf{Dado lo prohibitivo de su coste hemos decidido  descargar solamente el último tiket cada vez que llamemos a la API, para evitar incurrir en costos necesarios. Y ya  proveemos el proyecto con varios tickets digitales con los que trabajar.}
 	
 	
 	La extracción de tickets \underline{no se puede hacer en local con javascript} porque las políticas de seguridad del navegadorno permiten scripts llamando a API de google sin HTTPS. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado desde la configuración de la consola de google (Que ya hemos hecho). Para ello he creado este repositorio para hacer descargas de tickets (\href{https://github.com/blackcub3s/mercAppAuxPas4/}{repo mrcAppAuxPas4}).
 	
-	De este repo, el único archivo que usaremos en \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este (\href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccio.js}{scriptExtraccio.js}). Para poder correr el script usaremos su ruta en github pages (no el del repositorio github, sino el que se carga en la página de github pages que hace el deploy de este mismo repositorio). Esto lo haremos haciendo uso de la URL del script, pero sin el grupo ``blob/main''. Luego lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente.}:
+	De este repo, el único archivo que usaremos en \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este (\href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccio.js}{scriptExtraccio.js}). Para poder correr el script usaremos su ruta en GitHub Pages (no el del repositorio GitHub, sino el que se carga en la página de GitHub Pages que hace el deploy de este mismo repositorio). Esto lo haremos haciendo uso de la URL del script, pero sin el grupo ``blob/main''. Luego lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente.}:
 	
 	\begin{lstlisting}[language=java, basicstyle=\ttfamily\small]
 <script src="https://blackcub3s.github.io/
@@ -1781,11 +1782,11 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\noindent NOTA: regresar a apartado \ref{sec:pas4googleAPIclient} una vez comprendido este apartado, si no se ha leido.
 	
-	Para conseguir que la extracción de tickets funcione en el \textbf{pas4} (sección \ref{sec:pas4googleAPIclient}) es indispensable configurar (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). 
+	Para conseguir que la extracción de tickets funcione en el \textbf{pas4} (sección \ref{sec:pas4googleAPIclient}) es indispensable hacer múltiples configuraciones en la página de desarrolladores de google denominada \href{https://console.cloud.google.com/}{https://console.cloud.google.com/}. 
 	
-	Esta configuración es necesaria por varios motivos: El primero, es que tenemos que  obtener el (\textbf{Client ID}) para que se identifique nuestra web en relación a Google Cloud; el segundo, es configurar los ``\textit{scopes}'' que le dicen a Google qué tratamos de conseguir del gmail de los usuarios (aqui lectura de gmails -gmail.readonly-); el tercero, definir un listado de usuarios que permitirán usar nuestra aplicación (durante la fase de desarrollo); y el último, pero no por ello menos importante, la lista de direcciones IP desde las que google deberá permitirnos hacer llamadas a su API.
+	Estas configuraciones son necesaria por varios motivos: el \textit{primero}, es que tenemos que  obtener el (\textbf{Client ID}) para que se identifique nuestra web en relación a Google Cloud; el \textit{segundo}, es configurar los ``\textit{scopes}'' que le dicen a Google qué tratamos de conseguir del Gmail de los usuarios que se autoricen ante google mediante su mecanismo de autenticación denominado Oauth2 (aquí el Scope es solo para lectura de gmails -gmail.readonly-); el \textit{tercero}, definir un listado de usuarios que permitirán usar nuestra aplicación (durante la fase de desarrollo); y el último, pero no por ello menos importante, la lista de direcciones IP desde las que google deberá permitirnos hacer llamadas a su API.
 	
-	A continuación explicamos todos los pasos de forma pormenorizada para conseguir hacer todo esto:
+	A continuación explicamos todos los pasos de forma pormenorizada para conseguir aplicar de forma satisfactoria las configuraciones que nos permitirán que un usuario pueda autenticarse con OAuth2 ante google y descargar tikets digitales de su correo gmail personal:
 	
 	
 	\noindent \textbf{PASO 1: Crear un nuevo proyecto en la consola}
@@ -1793,7 +1794,8 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Para crear  el nuevo proyecto una vez dentro de la vista general de la consola clicamos encima de MyFirstProject y creamos un proyecto nuevo como vemos en la figura, añadiendo el nombre ``descarregaTicketsGmail'', que será el nombre que le daremos al proyecto (ver figura \ref{fig:googleCloudA}):
+	Para crear  el nuevo proyecto una vez dentro de la vista general de la consola clicamos encima de MyFirstProject e introducimos sau nombre: lo llamaremos ``descarregaTicketsGmail''(ver figura \ref{fig:googleCloudA}):
+	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
@@ -1821,13 +1823,13 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Para habilitar la API de gmail, que nos permitirá \textbf{ver y manejar datos del inbox de un correo electrónico} (que es la que usaremos para descargar los tickets adjuntos en PDF), debemos entrar en nuestro proyecto recién creado y seguir los menús ``\textit{APIs y servicios}'' $\rightarrow$ \textit{Biblioteca}. Ahí, buscar ``\textit{gmail API}'' y habilitar la Gmail API (figura \ref{fig:googleCloudC}).
+	Para habilitar la API de gmail, que nos permitirá \textbf{ver y manejar datos del inbox de un correo electrónico} (que es la que usaremos para descargar los tickets adjuntos en PDF), debemos entrar en nuestro proyecto recién creado y seguir los menús ``\textit{APIs y servicios}'' $\rightarrow$ \textit{Biblioteca}. Ahí, buscar ``\textit{gmail API}'' y habilitarla (figura \ref{fig:googleCloudC}).
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Como habilitar la Gmail API en nuestro proyecto ``descarregaTicketsGMAIL''}
+		\caption{Habilitación de la GmailAPI en el proyecto ``descarregaTicketsGMAIL''}
 		\includegraphics[width=1\linewidth]{img/googleCloudC.png}
 		\label{fig:googleCloudC}
 	\end{figure}
@@ -1846,7 +1848,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Habilitación de la pantalla de consentimiento de OAuth: Especificamos el nombre de la aplicación, el correo al que podrán comunicarse los usuarios de la aplicación mercApp del cloud si es necesario, marcamos el radioButton ``usuarios externos'', que hará que puedan utilizar la app en el cloud usuarios sin una extensión de correo vinculada a una organización especifica (si no lo marcásemos, estaríamos limitados a usuarios con una extensión específica de organización y no podríamos usar correos gmail!).}
+		\caption{Habilitación de la pantalla de consentimiento de OAuth: Especificamos el nombre de la aplicación, el correo al que podrán comunicarse los usuarios de la aplicación mercApp del cloud si es necesario, marcamos el radioButton ``usuarios externos'', que hará que puedan utilizar la app en el cloud usuarios sin una extensión de correo vinculada a una organización especifica (¡si no lo marcásemos, estaríamos limitados a usuarios con una extensión específica de organización y no podríamos usar correos gmail!).}
 		\includegraphics[width=1\linewidth]{img/googleCloudD.png}
 		\label{fig:googleCloudD}
 	\end{figure}
@@ -1891,7 +1893,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Google no deja que cualquier usuario pueda autenticarse con el client ID. Para ello o bien hacemos lo del paso 6 (solo para producción, porque requiere una aplicación ya hecha y justificar a google su uso) o bien \textbf{Guardamos una lista de usuarios autorizados a autorizarse} -valga la redundancia- para que así puedan leer su gmail y descargar sus tickets automáticamente. Esto lo haremos así: Yo añadiré el correo electrónico gmail donde Mercadona me manda los tiquets digital (ver figura \ref{fig:googleCloudB}) y con eso la autenticación será posible, por ahora, solo para este correo.
+	Google no deja que cualquier usuario pueda autenticarse con el client ID. Para ello o bien hacemos lo del paso 6 (que luego veremos que es solo para producción, porque requiere una aplicación ya hecha y justificar a Google su uso mediante una muestra que ellos -dicen- que van a evaluar) o bien \textbf{Guardamos una lista de usuarios autorizados a autorizarse} -valga la redundancia- para que así puedan leer su gmail y descargar sus tickets automáticamente. Esto lo haremos así: Yo añadiré el correo electrónico gmail donde Mercadona me manda a mi los tiquets digitales (ver figura \ref{fig:googleCloudB}) y con eso la autenticación será posible, por ahora, solo para este correo.
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
