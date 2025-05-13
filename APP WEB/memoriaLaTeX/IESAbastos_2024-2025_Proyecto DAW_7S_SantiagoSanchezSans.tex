@@ -1660,28 +1660,39 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\textbf{TO DO PARLAR DEL GRAFIC D'INFLACIO I DEL SEU JAVASCRIPT (continuacio inflalyzer)}
 	
-	\textbf{TO DO PARLAR DEL DIAGRAMA DE SECTORS I DEL SEU JAVASCRIPT}
+	\textbf{TO DO PARLAR DEL DIAGRAMA DE SECTORS I DEL JS}
 	
-	\textbf{TO DO PARLAR DEL CATEGORIZER I DON ESTA EL JAVASCRIPT}
+	\textbf{TO DO PARLAR DEL CATEGORIZER I DEL JS}
 	
-	\textbf{TO DO PARLAR DEL INTERVALIZER I DON ESTA EL JAVASCRIPT}
+	\textbf{TO DO PARLAR DEL INTERVALIZER I DEL JS}
 	
 	
 	
 	La extracción de datos de la base de datos se hace principalmente desde \href{	https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/extractorDadesPersistencia_enCarregarPagina.js}{extractorDadesPersistencia\_enCarregarPagina.js}
 	
-	\textbf{HI HA MES ARXIUS DE PERSISTENCIA? REAVALUAHO MENTRES PROGRAMES SI N'AFEGEIXES MES??}
+	\textbf{HI HA MES ARXIUS DE PERSISTENCIA? REAVALUAHO??}
 	
 	
 	\subsubsection{Arquitectura pas4: llamada a google API client}
 	\label{sec:pas4googleAPIclient}
 	
-	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener un (\textbf{Client ID}) que identifique nuestra web en relación a Google Cloud. Todos estos pasos se indican en una sección a parte que recomendamos al lector que lea, porque han supuesto varios días de trabajo \ref{sec:desarrolloCloudGoogleApi}.
+	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de google cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener el \textbf{Client ID} que identifique nuestra web en relación a Google Cloud. Todos estos pasos se indican en una sección a parte que recomendamos al lector que lea, porque ha supuesto varios días de trabajo \ref{sec:desarrolloCloudGoogleApi}.
 	
-	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) puedan descargarse sus tickets digitales del correo gmail personal \textit{hacia} una careta de su ordenador, mediante uso de JavaScript puro. Se utilizará el remitente de la dirección de correo electrónico desde la que Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com}
+	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}) puedan descargarse sus tickets digitales del correo gmail personal \textit{hacia} la carpeta de descargas de su ordenador, mediante uso de JavaScript puro. Se utilizará el remitente de la dirección de correo electrónico desde la que Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com}.
 
 	
-	Este javascript lo hemos creado a partir del código auxiliar que nos ha proporcionado chatGPT (\href{https://github.com/blackcub3s/mercApp/blob/main/llavorsGPT/semilaInicialExtraccionCorreos.html}{\texttt{semilla})}. Con este script, hemos obtenido un esqueleto que ha sido modificado de modo que se ajustase a nuestras necesidades hasta llegar al archivo javascript definitivo (\textbf{link a javascript TO DO TO DO TO DO})\footnote{Se podría haber hecho la extracción de tickets desde una nube de google cloud pero finalmente evitamos esta opción porque es más barato y sencillo hacerlo directamente desde el cliente o navegador del usuario (podéis ver información de esa alternativa en anexo \ref{sec:googleCloud}).}.
+	
+	La extracción de tickets \underline{no se puede hacer en local con javascript} porque las políticas de seguridad del navegadorno permiten scripts llamando a API de google sin HTTPS. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado desde la configuración de la consola de google (Que ya hemos hecho). Para ello he creado este repositorio para hacer descargas de tickets (\href{https://github.com/blackcub3s/mercAppAuxPas4/}{repo mrcAppAuxPas4}).
+	
+	De este repo, el único archivo que usaremos en \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este (\href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccio.js}{scriptExtraccio.js}). Para poder correr el script usaremos su ruta en github pages (no el del repositorio github, sino el que se carga en la página de github pages que hace el deploy de este mismo repositorio). Esto lo haremos haciendo uso de la URL del script, pero sin el grupo ``blob/main''. Luego lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente.}:
+	
+	\begin{lstlisting}[language=java, basicstyle=\ttfamily\small]
+<script src="https://blackcub3s.github.io/
+             mercAppAuxPas4/js/scriptExtraccio.js"></script>
+	\end{lstlisting}
+	
+	
+
 
 
 		
