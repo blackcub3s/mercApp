@@ -1735,8 +1735,14 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Finalmente lo que sí es una diferencia en relación al dashboard es que se ha automatizado la propiedad dropshadow utilizando JavaScript en lugar de haciéndolo con CSS. La idea era crear una sombra que fuese reactiva al ratón, automatizada para que genere una sombra de dirección opuesta a la desviación que hay entre el centro del icono y el punto donde está el ratón en caso que se emplace por encima de este icono.
 	
-	Este script no fue programado a mano, sino que se generó simplemente con un prompt, se ajustaron los valores de blur del dropshadow, la división del vector opuesto para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después del dom.
+	\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/dropShadowReactiu.js}{Este script} no fue programado a mano, sino que se generó simplemente con un prompt, como podemos ver en la figura \ref{fig:promptScriptDropShadow}. Luego se ajustaron los valores de blur del dropshadow, la división del vector opuesto para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después del dom. El propio script se consigue con los eventos 
 	
+	\begin{figure}[H]
+		\centering
+		\caption{Desde el prompt inicial al código final}
+		\includegraphics[width=1\linewidth]{img/promptScriptDropShadow}
+		\label{fig:promptScriptDropShadow}
+	\end{figure}
 	
 	
 	\subsection{Arquitectura (JavaScript): páginas privadas}
