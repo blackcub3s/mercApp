@@ -1747,10 +1747,34 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}), siempre que tengan una cuenta de google con tickets digitales de mercadona enviados por el supermercado, puedan descargárselos al ordenador en el que están navegando: concretamente en la carpeta de descargas de su ordenador. Esto lo haremos mediante javascript puro. 
 	
-	Para ello Se utilizará el remitente de la dirección  de correo electrónico desde la que Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus  pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com} y las línea de código donde conseguimos esta descarga las marcamos en este  \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/03deec7187c1194e20d324830b7c8ea8f4d3671b/js/scriptExtraccio.js#L89-L92}{snippet} de github (nótese que en este script solamente descargamos 1 solo correo). Esto es porque solamente descargando correos de 5 en cinco de golpe, ya consumimos el free tier que nos ofrece google: 300 dollares. \textbf{Dado lo prohibitivo de su coste hemos decidido  descargar solamente el último tiket cada vez que llamemos a la API, para evitar incurrir en costos necesarios. Y ya  proveemos el proyecto con varios tickets digitales con los que trabajar.}
+	Para ello Se utilizará el remitente de la dirección  de correo electrónico desde la que Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus  pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com} y las línea de código donde conseguimos esta descarga las marcamos en este  \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/03deec7187c1194e20d324830b7c8ea8f4d3671b/js/scriptExtraccio.js#L89-L92}{snippet} de github (nótese que en este script solamente descargamos 1 solo correo). Esto es porque solamente descargando correos de 5 en cinco de golpe, ya consumimos el free tier que nos ofrece google: 300 dollares. Esto es porque para testear en ese commit nos servia, por aquel entonces.
+	
+	A medida que hemos ido desarrollando hemos llegado a lo siguiente: Si descargamos 500 pdfs de golpe, Google puede ralentizar las descargas o impedir que sigamos descargando. Esto pasa porque existen unas cuotas máximas que podemos usar para descargar. En la siguiente página de  developers.google \cite{gmail_api_quota} (\href{https://developers.google.com/workspace/gmail/api/reference/quota?hl=es-419}{link}) podemos ver que cada una de las funciones que usamos en el script par extraer los correos electrónicos consumen ciertas unidades de quota. Nosotros usamos \textbf{messages.attachments.get}, \textbf{users.messages.list} y \textbf{messages.attachments.get}, que tienen un uso de quotas por cada llamada cada uno de 5 unidades. Es decir, cada ticket descargado para un usuario nos va a consumir un total de 15 unidades. Si ese mismo usuario se descarga 500 tickets digitales adjuntos de los correos en un segundo -la api va rápida- supondrán 7500 unidades de cuota gastadas de golpe. Si el usuario decide volver a autenticarse y volver a descargar va a gastar las 15 000 unidades y fácilmente podrá excederse de esta cuota y nos daría \textit{userRateLimitExceeded}. Esto es un aspecto que en una versión más definitiva deberíamos pulir (se puede añadir batch processing, para descargar por lotes si queremos aumentar el límite de tickets digitales descargables) pero para la versión que nos ocupa no vamos a hacerlo. Asimismo, el límite de frecuencia global por proyecto son 1 200 000 unidades de cuota por minuto, lo cual nos daría la posibilidad de tener hasta 160 usuarios concurrentes en un minuto suponiendo que cada uno de ellos hasga como máximo una descarga de 500 tikets \footnote{1200000 (uc/min)/7500 (uc/usuario) = 160 usuarios/min} sin dar \textit{rateLimitExceeded}. En la figura \ref{fig:quotesGoogleDevelopers} siguiente podéis ver los límites de la página de desarrolladores de google que enlazamos antes y en la figura \ref{fig:quotesGoogleDevelopersUSADES}
 	
 	
-	La extracción de tickets \underline{no se puede hacer en local con javascript} porque las políticas de seguridad del navegadorno permiten scripts llamando a API de google sin HTTPS. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado desde la configuración de la consola de google (Que ya hemos hecho). Para ello he creado este repositorio para hacer descargas de tickets (\href{https://github.com/blackcub3s/mercAppAuxPas4/}{repo mrcAppAuxPas4}).
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Unidades de cuota de procesamiento que nuestra aplicación no puede exceder al hacer llamadas a gmailAPI sin incurrir en excesos \cite{gmail_api_quota}.}
+		\includegraphics[width=1\linewidth]{img/quotesGoogleDevelopers.png}
+		\label{fig:quotesGoogleDevelopers}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{La cantidad de unidades de cuota que consume una solicidud a la gmailAPI varía según el método al que se llama. En la siguiente tabla, se describe el uso exacto de las unidades de cuota por cada uno de los tres métodos de gmail API utilizados cuando un usuario descarga un ticket de mercApp. Concretamente, al descargar un ticket, un usuario gasta un total de 15 unidades de cuota (uc) \cite{gmail_api_quota}.}
+		\includegraphics[width=1\linewidth]{img/quotesGoogleDevelopersUSADES}
+		\label{fig:quotesGoogleDevelopersUSADES}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	La extracción de tickets \underline{no se puede hacer en local con javascript} porque las políticas de seguridad del navegador no permiten scripts llamando a API de google sin HTTPS. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado desde la configuración de la consola de google (Que ya hemos hecho). Para ello he creado este repositorio para hacer descargas de tickets (\href{https://github.com/blackcub3s/mercAppAuxPas4/}{repo mrcAppAuxPas4}).
 	
 	De este repo, el único archivo que usaremos en \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este (\href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccio.js}{scriptExtraccio.js}). Para poder correr el script usaremos su ruta en GitHub Pages (no el del repositorio GitHub, sino el que se carga en la página de GitHub Pages que hace el deploy de este mismo repositorio). Esto lo haremos haciendo uso de la URL del script, pero sin el grupo ``blob/main''. Luego lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente.}:
 	
