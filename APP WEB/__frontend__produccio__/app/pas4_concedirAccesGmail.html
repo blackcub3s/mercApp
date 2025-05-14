@@ -25,10 +25,18 @@
 
     <!-- prenem l'script d'estracció pujat a github pages. Cal que s'executi en un protocol HTTPS i en un domini
          permès per la llista de connexions entrtants a Oauth, a google.-->
-    <script src="https://blackcub3s.github.io/mercAppAuxPas4/js/scriptExtraccio.js"></script>
+    <script src="https://blackcub3s.github.io/mercAppAuxPas4/js/scriptExtraccioBoto.js"></script>
 
+    <!-- Script que genera una sombra dinàmica de sentit oposat al sentit en la direcció que pren 
+     el centre de l'icono vers el punt del ratolí sobre l'icono-->
+    <script src="/js/pas4/dropShadowReactiu.js"></script>
 </head>
 <body>
+
+
+
+
+
 
 
     <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegació-->
@@ -54,14 +62,14 @@
                     500 tickets automáticamente (los más recientes).</h2>
             </section>
             <section class = "contenidorIconos">
-                <img src="img/pas4/iconoDescarrega.png" alt="TEST">
+                <img src="img/pas4/iconoDescarrega.png" id = "botoLoginGoogle" alt="boto descarrega">
             </section>
         </section>
 
         <!-- PAS 2: PETICIÓ A USUARI DE PUJAR ELS tickets DIGITALS MANUALMENT AL BACKEND -->
         <section>
             <section  class = "contenidorIconos">
-                <img src="img/pas4/editiconoPujar.png" alt="TEST">
+                <img src="img/pas4/iconoPujar.png" alt="TEST">
             </section>
             <section>
                 <h1>Paso 2: Mándanos tus tickets</h1>
@@ -108,8 +116,5 @@
             <p id="copyright"><i>&copy; 2025 | Todos los derechos reservados</i></p>   
         </section> 
     </footer>
-
-
-
 </body>
 </html>

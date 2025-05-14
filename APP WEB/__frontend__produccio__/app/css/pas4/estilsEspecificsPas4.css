@@ -1,3 +1,8 @@
+:root {
+    --tiempoTransicionEstandar: 0.1s;
+    --aumentoTamanyoEstandar: 1.02;
+}
+
 #tresPassos {
     max-width: 800px;
     margin: 0 auto;
@@ -10,10 +15,30 @@
     grid-template-columns: repeat(2, 1fr);
 }
 
-/*Definim el tamany de les imatges*/
+/*Definim el tamany de les 3 imatges dels 3 passos*/
 #tresPassos img {
     width: 15em;
+    /*filter: drop-shadow(7px 6px 2px rgba(0, 0, 0, 0.25)); /*Ho deleguem a javascript!*/
+    transition: filter var(--tiempoTransicionEstandar) ease-out, 
+                transform var(--tiempoTransicionEstandar) ease-out;
 }
+
+
+#tresPassos img:hover {
+    /*filter: drop-shadow(7px 10px 2px rgba(0, 0, 0, 0.25));*/ /*Ho deleguem a javascript!*/
+    transform: scale(var(--aumentoTamanyoEstandar));
+}
+
+/*Fem que el cursor canvii a dit per clicar quan passem per damunt
+de la imatge de la descàrrega. Aquesta imatge actuarà com a botó per 
+descarregar els tickets!*/
+#tresPassos section:first-child  section:nth-child(2) {cursor: pointer;}
+#tresPassos section:nth-child(2) section:first-child {cursor: pointer;} /*fem el mateix a la imatge dels adjunts*/
+
+
+#tresPassos section:first-child section:first-child {padding: 2em;} /*paragraf tikets (paso 1)*/
+#tresPassos section:nth-child(2) section:nth-child(2) {padding: 2em;} /*paragraf tikets (paso 1)*/
+#tresPassos section:last-child section:first-child {padding: 2em;} /*paragraf relájate (paso 3)*/
 
 footer {
     height: 15em;

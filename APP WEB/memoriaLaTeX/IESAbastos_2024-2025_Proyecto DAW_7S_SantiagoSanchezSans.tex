@@ -1718,6 +1718,27 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\subsubsection{Diseño del ``pas4''}
 	
+	El diseño del pas4 no entraña mucha más dificultad que el diseño del dashboard. Se ha seguido un procedimiento parecido para la generación de iconos que en el dashboard (los iconos generados se hicieron con IA y se extrajo el canal alpha con gimp: podéis verlos en la carpeta de \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/iconosPas4}{edición de iconos}).
+	
+	El icono para cerrar sesión es el mismo que en el dashboard y se han eliminado todos los links de la navBar. Luego se ha definido un grid con dos columnas, alternando imágenes y texto, tal que así:
+	
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Vista del grid de dos columnas del pas4 (versión definitiva puede variar ligeramente en su padding)}
+		\includegraphics[width=1\linewidth]{img/pas4Grid2cols}
+
+		\label{fig:pas4grid2cols}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	Finalmente lo que sí es una diferencia en relación al dashboard es que se ha automatizado la propiedad dropshadow utilizando JavaScript en lugar de haciéndolo con CSS. La idea era crear una sombra que fuese reactiva al ratón, automatizada para que genere una sombra de dirección opuesta a la desviación que hay entre el centro del icono y el punto donde está el ratón en caso que se emplace por encima de este icono.
+	
+	Este script no fue programado a mano, sino que se generó simplemente con un prompt, se ajustaron los valores de blur del dropshadow, la división del vector opuesto para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después del dom.
+	
+	
+	
 	\subsection{Arquitectura (JavaScript): páginas privadas}
 	
 	\subsubsection{Arquitectura del dashboard}
@@ -1749,7 +1770,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Para ello, se utilizará el remitente de la dirección  de correo electrónico desde la que  Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus  pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com} y las líneas de código donde conseguimos esta descarga las marcamos en este  \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/03deec7187c1194e20d324830b7c8ea8f4d3671b/js/scriptExtraccio.js#L89-L92}{snippet} de GitHub (nótese que en este script de este commit concreto de GitHub solamente descargamos 1 solo correo, dado que  era código de prueba pero en la versión definitiva pedimos 500).
 	
-	A medida que hemos ido desarrollando hemos llegado a la siguiente conclusión: Aunque descarguemos 500  pdfs de golpe, Google en principio no va a ralentizar las descargas. Esto pasa porque existen unas cuotas máximas que podemos usar para descargar. y estas son generosas. En la siguiente página de  developers.google \cite{gmail_api_quota} (\href{https://developers.google.com/workspace/gmail/api/reference/quota?hl=es-419}{link}) podemos ver que cada una de las funciones que usamos en el script par extraer los correos electrónicos consumen ciertas unidades de quota. Nosotros usamos \textbf{messages.attachments.get}, \textbf{users.messages.list} y \textbf{messages.attachments.get}, que tienen un uso de quotas por cada llamada cada uno de 5 unidades. Por ello, cada ticket descargado para un usuario nos va a consumir un total de 15 unidades. Si ese mismo usuario se descarga 500 tickets digitales adjuntos de los correos en un segundo -la API va rápida- supondrán 7500 unidades de cuota gastadas de golpe: esto ya sería suficiente para este proyecto. Si el usuario, sin embargo, decide volver a autenticarse  otra vez y quiere descargar de nuevo los tickets va a gastar las 15 000 unidades y va a excederse de la cuota si lo intenta por tercera vez, dándonos\textit{userRateLimitExceeded}: Esto sí sería un aspecto que en una versión más definitiva deberíamos pulir (se puede añadir batch processing, para descargar por lotes si queremos aumentar el límite de tickets digitales descargables); pero para la versión que nos ocupa no vamos a hacerlo porque asumimos que dar capacidad de análisis a los últimos 500  tickets digitales de correo es más que suficiente. Asimismo, el límite de frecuencia global por proyecto son 1 200 000 unidades de cuota por minuto, lo cual nos daría la posibilidad de tener hasta 160 usuarios concurrentes en un minuto ,suponiendo que cada uno de ellos hiciese como máximo una descarga de 500  tickets \footnote{1200000 (uc/min)/7500 (uc/usuario) = 160 usuarios/min} sin dar \textit{rateLimitExceeded}. En la figura \ref{fig:quotesGoogleDevelopers} siguiente podéis ver los límites de la página de desarrolladores de google que enlazamos antes y en la figura \ref{fig:quotesGoogleDevelopersUSADES}
+	A medida que hemos ido desarrollando hemos llegado a la siguiente conclusión: Aunque descarguemos 500  pdfs de golpe, Google en principio no va a ralentizar las descargas. Esto pasa porque existen unas cuotas máximas que podemos usar para descargar. y estas son generosas. En la siguiente página de  developers.google \cite{gmail_api_quota} (\href{https://developers.google.com/workspace/gmail/api/reference/quota?hl=es-419}{link}) podemos ver que cada una de las funciones que usamos en el script par extraer los correos electrónicos consumen ciertas unidades de quota. Nosotros usamos \textbf{messages.attachments.get}, \textbf{users.messages.list} y \textbf{messages.attachments.get}, que tienen un uso de quotas por cada llamada cada uno de 5 unidades. Por ello, cada ticket descargado para un usuario nos va a consumir un total de 15 unidades. Si ese mismo usuario se descarga 500 tickets digitales adjuntos de los correos en un segundo -la API va rápida- supondrán 7500 unidades de cuota gastadas de golpe: esto ya sería suficiente para este proyecto. Si el usuario, sin embargo, decide volver a autenticarse  otra vez y quiere descargar de nuevo los tickets va a gastar las 15 000 unidades y va a excederse de la cuota si lo intenta por tercera vez, dándonos\textit{userRateLimitExceeded}: Esto sí sería un aspecto que en una versión más definitiva deberíamos pulir (se puede añadir batch processing, para descargar por lotes si queremos aumentar el límite de tickets digitales descargables); pero para la versión que nos ocupa no vamos a hacerlo porque asumimos que dar capacidad de análisis a los últimos 500  tickets digitales de correo es más que suficiente. Asimismo, el límite de frecuencia global por proyecto son 1 200 000 unidades de cuota por minuto, lo cual nos daría la posibilidad de tener hasta 160 usuarios concurrentes en un minuto ,suponiendo que cada uno de ellos hiciese como máximo una descarga de 500  tickets \footnote{1 200 000 \textit{(uc/min)} / 7500 \textit{(uc/usuario)} = 160 \textit{\textit{usuarios/min}}} sin dar \textit{rateLimitExceeded}. En la figura \ref{fig:quotesGoogleDevelopers} siguiente podéis ver los límites de la página de desarrolladores de google que enlazamos antes y en la figura \ref{fig:quotesGoogleDevelopersUSADES}
 	
 	
 	\FloatBarrier
