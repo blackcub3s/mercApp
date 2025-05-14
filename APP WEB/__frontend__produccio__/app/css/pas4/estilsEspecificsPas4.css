@@ -1,0 +1,29 @@
+#tresPassos {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/*Amb grid definim dues columnes, una per a h1 i h2 i l'altra per la imatge*/
+#tresPassos > section  {
+    padding-top: 3em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/*Definim el tamany de les imatges*/
+#tresPassos img {
+    width: 15em;
+}
+
+footer {
+    height: 15em;
+    display: flex; /*Centro el contenido del copyright con dispplay flex*/
+}
+
+
+h1 {font-size: 1.8em;} /*Titulo (pas1, pas2, pas3)*/
+h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
+
+.contenidorIconos {
+    margin: 0 auto; /*centro les imatgtes (els tres iconos*/
+}

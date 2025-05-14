@@ -7,7 +7,7 @@
     <title>MercApp | Descarga los tickets digitales de tu gmail</title>
 
     <link rel="stylesheet" href="css/dashboard/navFooter.css">
-
+    <link rel="stylesheet" href="css/pas4/estilsEspecificsPas4.css">
 
     <!-- Aquests dos seguents scripts redirigeixen a la landing
      page si el token d'acces està expirat, en refrescar pàgina-->
@@ -24,35 +24,14 @@
     <script src = "js/jwt/tancaSessioEliminantToken.js"></script>    
 
     <!-- prenem l'script d'estracció pujat a github pages. Cal que s'executi en un protocol HTTPS i en un domini
-         permès per la llista de connexions entrtants a Oauth, a google.-->
-    <script src="https://blackcub3s.github.io/mercAppAuxPas4/js/scriptExtraccio.js"></script>
+         permès per la llista de connexions entrtants a Oauth, a google.
+    <script src="https://blackcub3s.github.io/mercAppAuxPas4/js/scriptExtraccio.js"></script>-->
 
-    <style>
-
-        #tresPassos {
-            max-width: 800px;
-            display: grid;
-            grid-template-columns: 1fr;
-            place-items: center;
-            margin: 0 auto;
-        }
-
-        /*#tresPassos section {}*/
-
-        footer {
-            height: 15em;
-            display: flex; /*Centro el contenido del copyright con dispplay flex*/
-        }
-        
-        
-        h1 {font-size: 1.8em;} /*Titulo (pas1, pas2, pas3)*/
-        h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
-    </style>
 </head>
 <body>
 
 
-    <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegación-->
+    <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegació-->
     <header>
         <button id = "botoEliminarToken">Cerrar Sesión</button> <!-- botó per a eliminar el token i fer que el javascript automaticament redirigeixi a pas1 (index.html)-->
         <nav style = "height: 1em;"></nav>
@@ -62,22 +41,49 @@
 
 
 
-
+    
     <section id = "tresPassos">
+
+        <!-- PAS 1: PRIMERA SECCIÓ D'INFORMACIÓ DE DESCARREGA DELS tickets DIGITALS -->
         <section>
-            <h1>Paso 1: Descargar tickets digitales</h1>
-            <h2>Autentícate a tu gmail y escoge una cuenta de gmail que tenga más dos tickets digitales dentro. Verás como se descargan todos tus tikets digitales (hasta 1000 de ellos).</h2>
+            <section>
+                <h1>Paso 1: Descarga tus tickets</h1>
+                <h2>Habilita ventanas emergentes y luego autentícate en tu gmail 
+                    y escoge aquella cuenta
+                    que tenga más de dos tickets digitales dentro. Descarga hasta
+                    500 tickets automáticamente (los más recientes).</h2>
+            </section>
+            <section class = "contenidorIconos">
+                <img src="img/pas4/iconoDescarrega.png" alt="TEST">
+            </section>
         </section>
+
+        <!-- PAS 2: PETICIÓ A USUARI DE PUJAR ELS tickets DIGITALS MANUALMENT AL BACKEND -->
         <section>
-            <h1>Paso 2: Mandar tus tickets descargados en tu ordenador a nuestro back-end para procesarlos</h1>
-            <h2>Selecciona todos los tickets digitales que se descargaron en la carpeta descargas y adjuntalos</h2>
+            <section  class = "contenidorIconos">
+                <img src="img/pas4/editiconoPujar.png" alt="TEST">
+            </section>
+            <section>
+                <h1>Paso 2: Mándanos tus tickets</h1>
+                <h2>Selecciona todos los tickets digitales que se 
+                    descargaron en la carpeta descargas y adjúntalos</h2>
+            </section>
         </section>
+
         <section>
-            <h1>Paso 3: Relájate y espera a que guardemos tus datos en nuestra base de datos.</h1>
-            <h2>Si quieres puedes organizar tus tikets digitales en una carpeta distinta para luego poder ver 
-                cómo de precisa es nuestra extracción de datos.
-            </h2>
+            <section>
+                <h1>Paso 3: Relájate y espera a que los guardemos en la base de datos.</h1>
+                <h2>Ya que tienes todos tus tickets, si quieres, no los borres y guárdalos
+                    en una carpeta segura para luego poder ver cómo de precisa 
+                    es nuestra extracción de datos. Una vez guardados te redirigiremos automáticamente
+                    a la página definitiva.
+                </h2>
+            </section>
+            <section  class = "contenidorIconos">
+                <img src="img/pas4/iconoEspera.png" alt="TEST">
+            </section>
         </section>
+
     </section>
 
     <p style="color: red">Un cop guardat a mongoDB els tickets podrás emetre un token de accés amb permisos = 1.</p>
