@@ -458,7 +458,7 @@
 			\label{sec:despliegue}
 				Los componentes del apartado \ref{sec:entornosDesarrollo} de entornos  desarrollo se han \textit{dockerizado} de modo que cada uno de ellos sea un microservicio, a excepción (por ahora), de las bases de datos. Hemos sido cuidadosos de que los microservicios en Docker corran en los mismos puertos que los servidores embedidos con los que hemos hecho el desarrollo de la aplicación mercApp: por claridad y porque múltiples archivos dependen ya de ellos.
 				
-				Para crear la imagen de cada microservicio hemos creado un Dockerfile. Luego, para crear los contenedores y crear de nuevo las imágenes en caso que haya cambios en los archivos, para cada uno de estos microservicios, hay un script denominado \textit{creaImatge\_i\_arrancaContenidor.sh}\footnote{La explicación pormenorizada de sus comandos, para el caso de fastAPI por ejemplo, puede verse en el apartado TAL} que reunirá todos los subcomandos de docker necesarios para el ciclo de vida de su imagen (build), e instanciado de contenedor (create, start, stop, rm). Todo ello haciendo solamente: 
+				Para crear la imagen de cada microservicio hemos creado un Dockerfile. Luego, para crear los contenedores y crear de nuevo las imágenes en caso que haya cambios en los archivos, para cada uno de estos microservicios, hay un script denominado \textit{creaImatge\_i\_arrancaContenidor.sh}\footnote{La explicación pormenorizada de sus comandos, para el caso de fastAPI por ejemplo, puede verse en el apartado \ref{sec:conteneritzacioPython}} que reunirá todos los subcomandos de docker necesarios para el ciclo de vida de la creación de imagen (build) y subsecuente instanciado de contenedor (create, start, stop, rm). Todo ello haciendo solamente desde la terminal de Linux o desde la terminal de git bash en Windows: 
 				
 				\begin{lstlisting}[language=bash]
 	bash creaImatge_i_arrancaContenidor.sh
@@ -1044,7 +1044,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			\subsection{Hasheado de contraseñas}
 			\label{sec:implementacioHashContra}
 			
-			Las contraseñas de los usuarios no se han guardado en texto plano. Por seguridad, se han guardado en forma de hash, es decir, con encriptación unidireccional. A tal efecto se ha utilizado la librería bcrypt de Spring security\cite{bcryptPasswordEncoder} y se ha hecho una clase \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/EncriptaContrasenyes.java}{EncriptaContrasenyes.java} que ha permitido envolver las funciones de bcrypt usadas con nombres más pedagógicos (ver figura \ref{fig:hashejatContrasenyes}).
+			Las contraseñas de los usuarios no se han guardado en texto plano. Por seguridad, se han guardado en forma de hash, es decir, con encriptación unidireccional. A tal efecto se ha utilizado la librería bcrypt de Spring security\cite{bcryptPasswordEncoder} y se ha hecho una clase \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/EncriptaContrasenyes.java}{EncriptaContrasenyes.java} que ha permitido envolver con nombres más pedagógicos las funciones de bcrypt que han sido usadas  (ver figura \ref{fig:hashejatContrasenyes}).
 			
 			\FloatBarrier
 			\begin{figure}[H]
@@ -1109,7 +1109,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\end{lstlisting}
 	
 	
-	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que  \href{https://github.com/blackcub3s/mercApp/blob/cf678ebf99ce636b64c70c8faa239658a601550d/APP%20WEB/__FastAPI__/Dockerfile#L22}{en esta línea} del dockerfile hemos definido el host de la aplicacion fastAPI desde dentro del contenedor para que sea la IP 0.0.0.0 . \textbf{No }hemos usado la IP loopback por defecto (localhost, loopback o 127.0.0.1), sino la IP ``wildcard'' o dirección de red (0.0.0.0). Si usáramos la localhost dentro del contenedor la aplicación estaría usando la direccion de dentro de la red del contenedor, pero no saldría fuera de este y sería inútil! La dirección 0.0.0.0 nos permite justamente que podamos acceder a los endpoints de fastAPI desde el localhost del sistema host no solo desde el localhost del propio contenedor. Es decir, nos permite que podamos acceder desde el navegador de nuestro ordenador -desde fuera del contenedor- o desde otros contenedores que estén corriendo en nuestra máquina. Véase en la figura \ref{fig:demofastapiendpointdummy} siguiente lo que puede hacer nuestro contenedor con esta configuración y como se construye, de forma más pormenorizada:
+	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que  \href{https://github.com/blackcub3s/mercApp/blob/cf678ebf99ce636b64c70c8faa239658a601550d/APP%20WEB/__FastAPI__/Dockerfile#L22}{en esta línea} del dockerfile hemos definido el host de la aplicación fastAPI desde dentro del contenedor para que sea la IP 0.0.0.0 . \textbf{No }hemos usado la IP loopback por defecto (localhost, loopback o 127.0.0.1), sino la IP ``wildcard'' o dirección de red (0.0.0.0). Si usáramos la localhost dentro del contenedor la aplicación estaría usando la direccion de dentro de la red del contenedor, pero no saldría fuera de este y sería inútil! La dirección 0.0.0.0 nos permite justamente que podamos acceder a los endpoints de fastAPI desde el localhost del sistema host no solo desde el localhost del propio contenedor. Es decir, nos permite que podamos acceder desde el navegador de nuestro ordenador -desde fuera del contenedor- o desde otros contenedores que estén corriendo en nuestra máquina. Véase en la figura \ref{fig:demofastapiendpointdummy} siguiente lo que puede hacer nuestro contenedor con esta configuración y como se construye, de forma más pormenorizada:
 	
 	\FloatBarrier
 	\begin{figure}[H]
@@ -1145,6 +1145,19 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\textbf{CONTINUAR TO DO TO DO TO DO TO DO}
 	
 	
+	\subsection{Gestión de solicitudes: token de acceso}
+	
+	Con fastAPI no emitimos tokens de acceso: esto lo gestionamos con Spring Boot. Con fastAPI los recibimos y los procesamos. Si al recibirlos son válidos y no caducados, permitimos solicitudes entrantes. 
+	
+	Por ejemplo, en el endpoint del \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/controlador.py}{controlador.py} de fastAPI denominado ``/api/subir-tickets-pdf'' podemos ver que hay una línea donde pone esto:
+	
+	 ``payload\_token: dict = Depends(verificar\_token) ''
+	 
+	 Esta línea lo que está haciendo es llamar a la función verificar\_token en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/jwtUtil.py}{jwtUtils.py}. Este archivo Python, al que convenientemente le hemos puesto el mismo nombre que la clase en Java donde guardábamos el secret con el que generábamos los tokens, no es casual: justamente aquí también guardamos una copia del secret!
+	
+	Ese ``secret'' es indispensable para validar si el token entrante en este y otros endpoints es válido o no. Es por ello que se ha puesto por duplicado tanto en el back-end de fastAPI (Python) como en el back-end de Spring Boot (Java).
+	
+	Es importante mencionar que la gestión de tokens en FastAPI se hace mucho más sencilla que con Spring Boot. Por ejemplo, con FastAPI podemos conseguir que los endpoints no permitan solicitudes entrantes si el token ha caducado sin tener que gestionar la lógica de programación manualmente como sí teníamos que hacer con java (recordemos este archivo): con la librería \textit{jose} \cite{pythonJose} (un nombre aparentemente muy español pero cuyo acrónimo significa \textit{JavaScript Object Signing and Encryption (JOSE)}) se hace todo muy rápido.
 	
 	
 	
