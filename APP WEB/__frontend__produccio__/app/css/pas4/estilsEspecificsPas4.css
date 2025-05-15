@@ -6,6 +6,10 @@
     --fiGradient:#ffd9b6;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+}
 
 
 body {
