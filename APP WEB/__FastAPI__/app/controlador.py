@@ -45,7 +45,7 @@ def mostraUsuariSegur(id, Authorization: str = Header(...)): #FORÇO A LLEGIR UN
 @app.post("/api/subir-tickets-pdf")                                 
 async def pujarPdfsTicketDigital(
     arxius: list[UploadFile] = File(...),           # File(...) diu que ha d'entrar dades de multipart/form-data com els navegadors ho pujen.
-    payload_token: dict = Depends(verificar_token)  #Valida el jwt amb la funcio verificar_token de jwtUtil.py i n'agrafa el seu return
+    payload_token: dict = Depends(verificar_token)  #Valida el jwt amb la funcio verificar_token de jwtUtil.py i n'agrafa el seu return.
 ):  
     
     permisos = payload_token.get("permisos", "clauDesconeguda")
