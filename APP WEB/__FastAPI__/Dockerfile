@@ -4,12 +4,14 @@ FROM python:3.11-alpine
 #especifiquem directori de treball on hi haura l arrel de l aplicacio (estandar) 
 WORKDIR /usr/src/app 
 
-#PyPDF2p parseja pdf a text | pytz manejar be zones temporals a espanya | uvicorn important per a correr fastAPI
-RUN pip install PyPDF2 && pip install pytz && pip install --no-cache-dir fastapi uvicorn
+#PyPDF2p parseja pdf a text | per pytz manejar be zones temporals a espanya | uvicorn important per a correr fastAPI |
+#python jose es per manejar el jwt i veure si es valid amb el secret | multipart per llegir dades de formularis (adjunts)
+RUN pip install PyPDF2 && pip install pytz && pip install --no-cache-dir fastapi uvicorn && pip install python-jose && pip install python-multipart
 
 #copiem els scripts a l'arrel de la imatge
 COPY app/controlador.py /usr/src/app/
 COPY app/servei.py /usr/src/app/
+COPY app/jwtUtil.py /usr/src/app/
 
 # Nomes ho posem per documentacio. El port intern del contenidor es defineix en la comanda CMD de fastAPI
 EXPOSE 8000

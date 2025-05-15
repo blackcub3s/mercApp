@@ -11,4 +11,4 @@ docker rm contFastApi
 #creo contenidor contFastApi des de la imatge back-end-fastapi recent creada.
 #redirecciono port 8000 (dreta dels dospunts) al port XXXX (esquerra dels dos punts)
 docker create -p 8000:8000 --name contFastApi back-end-fastapi 
-docker start contFastApi
+docker start -a contFastApi #redirigeixo la sortida per veure errors
