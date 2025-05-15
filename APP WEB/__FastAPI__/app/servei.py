@@ -1,7 +1,5 @@
-
 #!/usr/bin/python3
 
-import urllib.request
 from datetime import datetime
 import os
 import PyPDF2
