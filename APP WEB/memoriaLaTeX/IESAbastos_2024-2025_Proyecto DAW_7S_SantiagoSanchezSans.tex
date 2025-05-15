@@ -1720,25 +1720,27 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	El diseño del pas4 no entraña mucha más dificultad que el diseño del dashboard. Se ha seguido un procedimiento parecido para la generación de iconos que en el dashboard (los iconos generados se hicieron con IA y se extrajo el canal alpha con gimp: podéis verlos en la carpeta de \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/iconosPas4}{edición de iconos}).
 	
-	El icono para cerrar sesión es el mismo que en el dashboard y se han eliminado todos los links de la navBar. Luego se ha definido un grid con dos columnas, alternando imágenes y texto, tal que así:
+	El icono para cerrar sesión es el mismo que en el dashboard y se han eliminado todos los links de la navBar. Luego se ha definido para la versión desktop un grid con dos columnas, alternando imágenes y texto, tal que así:
 	
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Vista del grid de dos columnas del pas4 (versión definitiva puede variar ligeramente en su padding)}
+		\caption{Vista del grid de dos columnas del pas4 en la versión desktop}
 		\includegraphics[width=1\linewidth]{img/pas4Grid2cols}
 
 		\label{fig:pas4grid2cols}
 	\end{figure}
 	\FloatBarrier
 	
-	Un aspecto diferencial con el \textbf{dashboard} es que el diseño responsive de la parte clave ha implicado generar una media query en la que le pedíamos en los selectores descendientes \textbf{TO DO} que invirtieran el orden de las imágenes: nótese que en el HTML la imagen de descarga de tickets y la de ``relájese'' aparecen en orden inverso porque queremos alternar los iconos y el texto en la vista de escritorio en un grid de dos columnas. Sin embargo, este diseño de escritorio hace que al ponerlo en vertical en un grid de una sola columna tanto el icono de ``descarga tickets'' como el de ``relájese'' aparezcan en orden inverso. La solución está en ahcer que la primera fila del grid en esos casos, que es el texto, ocupe la segunda posicion mediante la propiedad ``grid-row: 2'' como podemos ver en la imagen \ref{fig:pas4grid1col}
+	Un aspecto diferencial con el \textbf{dashboard} es que el diseño responsive de la parte clave ha implicado generar una media query en la que le pedíamos en los selectores descendientes que invirtieran el orden en el que aparecían el contenedor de las imágenes en relación al texto (h1 y h2): nótese que en el HTML la imagen de descarga de tickets y la de ``relájese'' aparecen en después del contenedor de h1 y h2 del texto porque queremos hacer que aparezcan a la derecha: así alternan los iconos y el texto en la vista de escritorio en un grid de dos columnas. 
+	
+	Sin embargo, este diseño de la versión de escritorio produce que al ponerlo en vertical en un grid de una sola columna para la versión mobile tanto el icono de ``descarga tickets'' como el de ``relájese'' aparezcan en orden inverso (debajo del texto y no encima). La solución a esta problemática está en hacer que la primera fila del grid en esos casos, que es el texto, ocupe la segunda posición en la columna vertical mediante la propiedad \textit{grid-row: 2} como podemos ver en la imagen \ref{fig:pas4grid1col} (mismo código en contexto, marcado línea a línea \href{https://github.com/blackcub3s/mercApp/blob/75141ebaa42e677993ba88e1dfe73d417ef6386c/APP%20WEB/__frontend__produccio__/app/css/pas4/estilsEspecificsPas4.css#L57-L65}{aquí}). En esta misma imagen también podemos ver la adición de una línea separadora en la versión mobile.
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Media query para diseño responsive del grid de dos columnas de la versión desktop, convertido en un grid de uan columna en la versión definitiva: uso de ``grid-row''.}
+		\caption{Media query para diseño responsive del grid de dos columnas de la versión desktop de \textbf{pas4}, convertido en un grid de una columna en la versión definitiva: uso de ``grid-row'' indispensable para compensar alternancia texto e imagen en el grid de dos columnas (se puede ver código en contexto en este snippet de GitHub). Se añaden dos líneas separadoras entre los tres pasos.}
 		\includegraphics[width=1\linewidth]{img/pas4grid1col}
 		\label{fig:pas4grid1col}
 	\end{figure}
@@ -1746,7 +1748,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Finalmente lo que sí es una diferencia en relación al dashboard es que se ha automatizado la propiedad dropshadow utilizando JavaScript en lugar de haciéndolo con CSS. La idea era crear una sombra que fuese reactiva al ratón, automatizada para que genere una sombra de dirección opuesta a la desviación que hay entre el centro del icono y el punto donde está el ratón en caso que se emplace por encima de este icono.
 	
-	\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/dropShadowReactiu.js}{Este script} no fue programado a mano, sino que se generó simplemente con un prompt, como podemos ver en la figura \ref{fig:promptScriptDropShadow}. Luego se ajustaron los valores de blur del dropshadow, la división del vector opuesto para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después del dom. El propio script se consigue con los eventos 
+	\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/dropShadowReactiu.js}{Este script} no fue programado a mano, sino que se generó simplemente con un prompt, como podemos ver en la figura \ref{fig:promptScriptDropShadow}. Después del código que proporcionó el prompt, se ajustaron los valores de blur del dropshadow, la división que afecta al módulo del vector opuesto al vector que va del centro del icono hasta el ratón para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después del dom. El propio script se consigue con los eventos \textit{mousemove} y \textit{mouseleave}:
 	
 	\begin{figure}[H]
 		\centering

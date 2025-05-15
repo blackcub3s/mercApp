@@ -1,11 +1,17 @@
 :root {
     --tiempoTransicionEstandar: 0.1s;
     --aumentoTamanyoEstandar: 1.02;
+    --colorTitolsPas4: rgba(211, 65, 7, 0.781);
+    --iniciGradient: #fafafa;
+    --fiGradient: #e6cfc1;
 }
+
+body {background: linear-gradient(to bottom, var(--iniciGradient), var(--fiGradient));}
 
 #tresPassos {
     max-width: 800px;
     margin: 0 auto;
+
 }
 
 /*Amb grid definim dues columnes, una per a h1 i h2 i l'altra per la imatge*/
@@ -40,18 +46,19 @@ descarregar els tickets!*/
 #tresPassos section:nth-child(2) section:nth-child(2) {padding: 2em;} /*paragraf tikets (paso 1)*/
 #tresPassos section:last-child section:first-child {padding: 2em;} /*paragraf relájate (paso 3)*/
 
+
 footer {
     height: 15em;
     display: flex; /*Centro el contenido del copyright con dispplay flex*/
 }
 
 
-h1 {font-size: 1.8em;} /*Titulo (pas1, pas2, pas3)*/
+h1 {font-size: 1.8em; padding-bottom: .5em;} /*Titulo (pas1, pas2, pas3)*/
 h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 
-.contenidorIconos {
-    margin: 0 auto; /*centro les imatgtes (els tres iconos*/
-}
+.colorEnfasisTitol {color: var(--colorTitolsPas4);}
+.contenidorIconos {margin: 0 auto;} /*centro les imatgtes (els tres iconos*/
+
 
 
 /*MEDIA QUERIES (per a disseny responsive)*/
@@ -60,6 +67,10 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
         grid-template-columns: 1fr; /*Pasamos a una sola columna de grid*/
     }  
 
+    /*Invertimos orden de grupo imagen y grupo h1/h2 en paso1 y paso3*/
     #tresPassos > section:first-child section:first-child {grid-row: 2;} /*ponemos la img de iconoDescarrega antes del texto Paso1 (porque con el grid aparecería al reves ya que el orden en el html es alrevés para que apareciese la imagen a la derecha)*/
     #tresPassos > section:last-child section:first-child {grid-row: 2;} /*Idem al caso anterior: pero con la sección de relájate y espera a que guardemos los datos*/
+
+    /*Añadimos línea separadora para la página responsive*/
+    #tresPassos > section:first-child, #tresPassos > section:nth-child(2) {border-bottom: 1px dashed black;} 
 }
