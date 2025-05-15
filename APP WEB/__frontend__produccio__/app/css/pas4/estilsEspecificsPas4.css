@@ -62,6 +62,4 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 
     #tresPassos > section:first-child section:first-child {grid-row: 2;} /*ponemos la img de iconoDescarrega antes del texto Paso1 (porque con el grid aparecería al reves ya que el orden en el html es alrevés para que apareciese la imagen a la derecha)*/
     #tresPassos > section:last-child section:first-child {grid-row: 2;} /*Idem al caso anterior: pero con la sección de relájate y espera a que guardemos los datos*/
-
-    
 }

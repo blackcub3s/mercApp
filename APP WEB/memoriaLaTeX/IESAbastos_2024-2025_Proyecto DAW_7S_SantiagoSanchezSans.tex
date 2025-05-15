@@ -1732,9 +1732,17 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	Un aspecto diferencial con el \textbf{dashboard} es que el diseño responsive de la parte clave ha implicado generar una sola media query en la que le pedíamos en los selectores descendientes \textbf{TO DO}
+	Un aspecto diferencial con el \textbf{dashboard} es que el diseño responsive de la parte clave ha implicado generar una media query en la que le pedíamos en los selectores descendientes \textbf{TO DO} que invirtieran el orden de las imágenes: nótese que en el HTML la imagen de descarga de tickets y la de ``relájese'' aparecen en orden inverso porque queremos alternar los iconos y el texto en la vista de escritorio en un grid de dos columnas. Sin embargo, este diseño de escritorio hace que al ponerlo en vertical en un grid de una sola columna tanto el icono de ``descarga tickets'' como el de ``relájese'' aparezcan en orden inverso. La solución está en ahcer que la primera fila del grid en esos casos, que es el texto, ocupe la segunda posicion mediante la propiedad ``grid-row: 2'' como podemos ver en la imagen \ref{fig:pas4grid1col}
 	
-	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Media query para diseño responsive del grid de dos columnas de la versión desktop, convertido en un grid de uan columna en la versión definitiva: uso de ``grid-row''.}
+		\includegraphics[width=1\linewidth]{img/pas4grid1col}
+		\label{fig:pas4grid1col}
+	\end{figure}
+	\FloatBarrier
 	
 	Finalmente lo que sí es una diferencia en relación al dashboard es que se ha automatizado la propiedad dropshadow utilizando JavaScript en lugar de haciéndolo con CSS. La idea era crear una sombra que fuese reactiva al ratón, automatizada para que genere una sombra de dirección opuesta a la desviación que hay entre el centro del icono y el punto donde está el ratón en caso que se emplace por encima de este icono.
 	
