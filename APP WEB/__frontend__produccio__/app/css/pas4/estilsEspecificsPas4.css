@@ -2,11 +2,16 @@
     --tiempoTransicionEstandar: 0.1s;
     --aumentoTamanyoEstandar: 1.02;
     --colorTitolsPas4: rgba(211, 65, 7, 0.781);
-    --iniciGradient: #fafafa;
-    --fiGradient: #e6cfc1;
+    --iniciGradient: white;
+    --fiGradient:#ffd9b6;
 }
 
-body {background: linear-gradient(to bottom, var(--iniciGradient), var(--fiGradient));}
+
+
+body {
+    background: linear-gradient(135deg, var(--iniciGradient), var(--fiGradient));
+}
+
 
 #tresPassos {
     max-width: 800px;

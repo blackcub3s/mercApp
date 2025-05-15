@@ -1746,9 +1746,21 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	Finalmente lo que sí es una diferencia en relación al dashboard es que se ha automatizado la propiedad dropshadow utilizando JavaScript en lugar de haciéndolo con CSS. La idea era crear una sombra que fuese reactiva al ratón, automatizada para que genere una sombra de dirección opuesta a la desviación que hay entre el centro del icono y el punto donde está el ratón en caso que se emplace por encima de este icono.
+	Además, en pas4 utilizamos un \textit{linear gradient} con un ángulo de 135 grados de blanco a naranja claro, muy sutil (ver la siguiente figura, \ref{fig:gradientlineal135grauspas4}). Con el fondo blanco ya queda perfecto, como hemos visto en la figura \ref{fig:pas4grid1col}; pero para darle un toque más congruente con las páginas públicas y la página privada del dashboard hemos visto conveniente aplicarlo dado que usamos esta técnica en muchas de ellas:
 	
-	\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/dropShadowReactiu.js}{Este script} no fue programado a mano, sino que se generó simplemente con un prompt, como podemos ver en la figura \ref{fig:promptScriptDropShadow}. Después del código que proporcionó el prompt, se ajustaron los valores de blur del dropshadow, la división que afecta al módulo del vector opuesto al vector que va del centro del icono hasta el ratón para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después del dom. El propio script se consigue con los eventos \textit{mousemove} y \textit{mouseleave}:
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{Gradiente lineal a 135 grados para el diseño del pas4}
+		\includegraphics[width=1\linewidth]{img/gradientLineal135grausPas4}
+		\label{fig:gradientlineal135grauspas4}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	Finalmente lo que sí es una diferencia en relación al dashboard es que se ha automatizado la propiedad dropshadow utilizando JavaScript en lugar de haciéndolo con CSS. La idea era crear una sombra que fuese reactiva al ratón, automatizada cuya dirección sea opuesta a la desviación que hay entre el centro del icono y el punto donde está el ratón (en caso que se emplace por encima de este icono).
+	
+	Esto se ha hecho posible gracias a  \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/dropShadowReactiu.js}{este script}. No fue programado a mano, sino que se generó simplemente con el prompt que aparece em la izquierda de la figura \ref{fig:promptScriptDropShadow}. Después del código que proporcionó el prompt, se ajustaron los valores de blur del dropshadow, la división que afecta al módulo del vector opuesto al vector que va del centro del icono hasta el ratón para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después de los elementos del DOM. El propio script se consigue con los eventos \textit{mousemove} y \textit{mouseleave}:
 	
 	\begin{figure}[H]
 		\centering
