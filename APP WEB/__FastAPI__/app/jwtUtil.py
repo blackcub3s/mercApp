@@ -18,7 +18,7 @@ def verificar_token(authorization: str = Header(...)):
     
     token = authorization[len("Bearer "):]
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])  #decode ja fa la verificació també de si està caducat o no!
         return payload # torno el payload cap al controlador!
     except JWTError:
         raise HTTPException(
