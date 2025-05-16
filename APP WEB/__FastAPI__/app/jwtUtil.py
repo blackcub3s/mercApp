@@ -6,7 +6,9 @@ ALGORITHM = "HS256"
 
 # AQUESTA FUNCIÓ no només valida el token amb el secret, sino que també impedeix que -carregada en el controlador
 # corresponent- pugui entrar una solicitud si el toquen està caducat. No cal ni manejar la lògica amb els segons des de la 
-# epoch: ho fa tot el framework...
+# epoch: ho fa tot el framework.
+
+#NOTA: Logica de quins endpoints estan autoritzats en funció de permisos es maneja a cada controlador corresponent.
 def verificar_token(authorization: str = Header(...)):
     if not authorization.startswith("Bearer "):
         raise HTTPException(
