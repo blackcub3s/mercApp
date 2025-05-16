@@ -31,7 +31,6 @@ body {
 #tresPassos {
     max-width: 800px;
     margin: 0 auto;
-
 }
 
 /*Amb grid definim dues columnes, una per a h1 i h2 i l'altra per la imatge*/
@@ -60,18 +59,11 @@ descarregar els tickets!*/
 #tresPassos section:first-child  section:nth-child(2) {cursor: pointer;}
 #tresPassos section:nth-child(2) section:first-child {cursor: pointer;} /*fem el mateix a la imatge dels adjunts*/
 
-
+#tresPassos > section:first-child {padding-top: 4em;} /*Poso padding entre el section del pas1 i la header*/
 #tresPassos section:first-child section:first-child {padding: 2em;} /*paragrafs tikets (paso 1)*/
 #tresPassos section:nth-child(2) section:nth-child(2) {padding: 2em;} /*paragrafs tikets (paso 1)*/
 #tresPassos section:last-child section:first-child {padding: 2em;} /*paragrafs relájate (paso 3)*/
-
-
-footer {
-    margin-top: 7em;
-    height: 15em;
-    display: flex; /*Centro el contenido del copyright con dispplay flex*/
-}
-
+#tresPassos > section:last-child {padding-bottom: 7em;} /*Poso padding entre el section del pas3 i la footer*/
 
 h1 {font-size: 1.8em; padding-bottom: .5em;} /*Titulo (pas1, pas2, pas3)*/
 h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/

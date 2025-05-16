@@ -1,0 +1,29 @@
+ /*amb display flex centro verticlament el 
+ text de la footer sense links (copyright)*/
+#footer {
+    font-size: 1.3em;
+    height: 15em;
+    display: flex;
+    background-color: black;
+    place-items: center; /*centro verticalemnt (indispensable a index no a pas4)*/
+    place-content: center; /*centro horitzontalmen (indispensable a index no a pas4)*/
+}
+
+/*Posiciono icono linkedin en posició correcta */
+#footer section:first-child article:first-child img {
+    position: relative; 
+    top:.5em; 
+    width: 1.5em;
+}
+
+/*Poso text de copyright i nom santi a blanc*/
+#footer section:first-child article:first-child p {
+    color: white;
+}
+
+/*Posiciono text todos los derechos reservados i li poso color */
+#footer section:first-child article:first-child p:nth-child(2) {
+    font-size: 1em;
+    padding-left: .5em;
+    color: grey;
+}
