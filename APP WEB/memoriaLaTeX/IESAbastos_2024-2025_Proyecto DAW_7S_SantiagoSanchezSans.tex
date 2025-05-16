@@ -1803,56 +1803,61 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	La extracción de datos de la base de datos se hace principalmente desde \href{	https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/extractorDadesPersistencia_enCarregarPagina.js}{extractorDadesPersistencia\_enCarregarPagina.js}
 	
 	\textbf{HI HA MES ARXIUS DE PERSISTENCIA? REAVALUAHO??}
+		\textbf{HI HA MES ARXIUS DE PERSISTENCIA? REAVALUAHO??}
 	
-	
-	\subsubsection{Arquitectura pas4: llamada a google API client}
+	\subsubsection{Arquitectura pas4}
 	\label{sec:pas4googleAPIclient}
+	
+	
+	
+		
+	\noindent \textbf{PARTE 1: llamada a google API client}
+	\hrule
+	\vspace{.5em}
 	
 	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de Google Cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener el \textbf{Client ID} que identifique nuestra web en relación a Google Cloud. Todos estos pasos se indican en una sección a parte que recomendamos al lector que lea, porque ha supuesto varios días de trabajo: la sección \ref{sec:desarrolloCloudGoogleApi}.
 	
-	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}), siempre que tengan una cuenta de google con tickets digitales de Mercadona enviados por el supermercado, puedan descargárselos al ordenador en el que están navegando: concretamente en la carpeta de descargas de su ordenador. Esto lo haremos mediante Javascript puro. 
+	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}), siempre que tengan una cuenta de google con tickets digitales de Mercadona enviados por el supermercado, puedan descargárselos a la carpeta de descargas del ordenador en el que están navegando mediante\textbf{un solo click} y una autenticación a su cuenta de Google: concretamente en la carpeta de descargas de su ordenador. Esto lo haremos mediante Javascript puro, cuando el usuario pulse el icono mostrado en la figura \ref{fig:pujarticketspas4}:
 	
-	Para ello, se utilizará el remitente de la dirección  de correo electrónico desde la que  Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus  pdfs. La dirección es: \textbf{ticket\_digital@mail.mercadona.com} y las líneas de código donde conseguimos esta descarga las marcamos en este  \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/e899ea50757bf3367c523f5a21d59f79bdb381ad/js/scriptExtraccioBoto.js#L89-L93}{snippet} de GitHub (pedimos hasta un máximo de 500 pdfs).
-	
-	A medida que hemos ido desarrollando hemos llegado a la siguiente conclusión: Aunque descarguemos 500  pdfs de golpe, Google en principio no va a ralentizar las descargas. Esto pasa porque existen unas cuotas máximas que podemos usar para descargar. y estas son generosas. En la siguiente página de  developers.google \cite{gmail_api_quota} (\href{https://developers.google.com/workspace/gmail/api/reference/quota?hl=es-419}{link}) podemos ver que cada una de las funciones que usamos en el script par extraer los correos electrónicos consumen ciertas unidades de quota. Nosotros usamos \textbf{messages.attachments.get}, \textbf{users.messages.list} y \textbf{messages.attachments.get}, que tienen un uso de quotas por cada llamada cada uno de 5 unidades. Por ello, cada ticket descargado para un usuario nos va a consumir un total de 15 unidades. Si ese mismo usuario se descarga 500 tickets digitales adjuntos de los correos en un segundo -la API va rápida- supondrán 7500 unidades de cuota gastadas de golpe: esto ya sería suficiente para este proyecto. Si el usuario, sin embargo, decide volver a autenticarse  otra vez y quiere descargar de nuevo los tickets va a gastar las 15 000 unidades y va a excederse de la cuota si lo intenta por tercera vez, dándonos\textit{userRateLimitExceeded}: Esto sí sería un aspecto que en una versión más definitiva deberíamos pulir (se puede añadir batch processing, para descargar por lotes si queremos aumentar el límite de tickets digitales descargables); pero para la versión que nos ocupa no vamos a hacerlo porque asumimos que dar capacidad de análisis a los últimos 500  tickets digitales de correo es más que suficiente. Asimismo, el límite de frecuencia global por proyecto son 1 200 000 unidades de cuota por minuto, lo cual nos daría la posibilidad de tener hasta 160 usuarios concurrentes en un minuto ,suponiendo que cada uno de ellos hiciese como máximo una descarga de 500  tickets \footnote{1 200 000 \textit{(uc/min)} / 7500 \textit{(uc/usuario)} = 160 \textit{\textit{usuarios/min}}} sin dar \textit{rateLimitExceeded}. En la figura \ref{fig:quotesGoogleDevelopers} siguiente podéis ver los límites de la página de desarrolladores de google que enlazamos antes y en la figura \ref{fig:quotesGoogleDevelopersUSADES}
-	
-	
-	\FloatBarrier
-	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Unidades de cuota de procesamiento que nuestra aplicación no puede exceder al hacer llamadas a gmailAPI sin incurrir en excesos \cite{gmail_api_quota}.}
-		\includegraphics[width=1\linewidth]{img/quotesGoogleDevelopers.png}
-		\label{fig:quotesGoogleDevelopers}
+		\caption{Pulsando sobre el icono iniciamos la llamada a la api de google: con ello autenticamos el usuario y éste concede acceso a su correo donde están los tikets digitales dentro, que se descargan al sistema automáticamente}
+		\includegraphics[width=1\linewidth]{img/pujarTicketsPas4}
+
+		\label{fig:pujarticketspas4}
 	\end{figure}
-	\FloatBarrier
 	
 	
-	\FloatBarrier
-	\setlength{\belowcaptionskip}{3pt}
-	\begin{figure}[H]
-		\centering
-		\caption{La cantidad de unidades de cuota que consume una solicidud a la gmailAPI varía según el método al que se llama. En la siguiente tabla, se describe el uso exacto de las unidades de cuota por cada uno de los tres métodos de gmail API que utilizamos cuando un usuario descarga un ticket del correo. Concretamente, en este caso, un usuario gasta un total de 15 unidades de cuota (uc). \cite{gmail_api_quota}.}
-		\includegraphics[width=1\linewidth]{img/quotesGoogleDevelopersUSADES}
-		\label{fig:quotesGoogleDevelopersUSADES}
-	\end{figure}
-	\FloatBarrier
+	Para hacer esta búsqueda se utilizará el remitente de la dirección  de correo electrónico desde la que  Mercadona nos manda los tickets digitales para poder filtrar los correos y descargar sus  pdfs (\textbf{ticket\_digital@mail.mercadona.com}) y las líneas de código donde conseguimos esta descarga las marcamos en este  \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/e899ea50757bf3367c523f5a21d59f79bdb381ad/js/scriptExtraccioBoto.js#L89-L93}{snippet} de GitHub (pedimos hasta un máximo de 500 pdfs) del archivo javascript con el que conseguimos la descarga: \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccioBoto.js}{scriptExtraccioBoto.js}\footnote{Luego explicamos por qué este script pertenece a un repositorio auxiliar}.
+	
+	A medida que hemos ido desarrollando hemos llegado a la siguiente conclusión: Aunque descarguemos 500  pdfs de golpe, Google en principio no va a ralentizar las descargas. Se ha probado para mi caso particular: se descargaron 281 tickets digitales en 2-3 minutos desde mi cuenta de Gmail. Si bien existen unas cuotas máximas que podemos usar para descargar, estas son generosas y no se van a superar para nuestro caso de uso (podéis ver en anexo \ref{sec:googleQuotas} el cálculo de unidades de cuota por ticket descargado, unidades de cuota por minuto por usuario de mercApp y unidades de cuota por minuto del sistema ante usuarios concurrentes). 
 	
 	
-	La extracción de tickets \underline{no se puede hacer en local con javascript} porque las políticas de seguridad de de google le dicen al navegador que impida las llamadas a su API (se activa algo llamado la ``Content-Security-Policy''): esto pasa porque, entendemos, al no tener HTTPS el origen no es seguro. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado manualmente desde la configuración de la consola de Google (Que ya hemos hecho). Para ello se ha creado este repositorio para hacer descargas de tickets (\href{https://github.com/blackcub3s/mercAppAuxPas4/}{repo mercAppAuxPas4}).
+	La extracción de tickets \underline{no se puede hacer en local con javascript} porque las políticas de seguridad de google le dicen al navegador que impida las llamadas a su API (se activa algo llamado la ``Content-Security-Policy''): esto pasa porque, entendemos, al no tener HTTPS -porque nuestro proyecto corre en local- el origen no es seguro. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado manualmente desde la configuración de la consola de Google (Que ya hemos hecho). Para ello se ha creado este repositorio para hacer descargas de tickets (\href{https://github.com/blackcub3s/mercAppAuxPas4/}{repo mercAppAuxPas4}).
 	
-	De este repo, el único archivo que usaremos para que podamos alimentar nuestro archivo \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este: \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccio.js}{scriptExtraccio.js}. Para poder correr el script usaremos su ruta en GitHub Pages (no la ruta del repositorio GitHub, sino la ruta que tiene el archivo cuando se carga en la página de GitHub Pages que hace el deploy de este mismo repositorio). Esto lo haremos haciendo uso de la URL del repositorio, pero sin el grupo ``blob/main'' en ella. Luego, lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente para la ocasión.}:
+	De este repo, el único archivo que usaremos para que podamos alimentar nuestro archivo \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este: \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccioBoto.js}{scriptExtraccioBoto.js}. Para poder correr el script usaremos su ruta en GitHub Pages (no la ruta del repositorio GitHub, sino la ruta que tiene el archivo cuando se carga en la página de GitHub Pages que hace el deploy de este mismo repositorio). Esto lo haremos haciendo uso de la URL del repositorio, pero sin el grupo ``blob/main'' en ella. Luego, lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente para la ocasión.}:
 	
 	\begin{lstlisting}[language=java, basicstyle=\ttfamily\small]
 <script src="https://blackcub3s.github.io/
-             mercAppAuxPas4/js/scriptExtraccio.js"></script>
+             mercAppAuxPas4/js/scriptExtraccioBoto.js"></script>
 	\end{lstlisting}
 	
 	
 
 
-
-		
+	\noindent \textbf{PARTE2: Subir los tickets digitales del ordenador a servidor fastAPI}
+	\hrule
+	\vspace{.5em}
+	
+	
+	Esto lo hacemos aqui:
+	
+	
+	\textbf{TO DO TO DO}
+			
+	\noindent \textbf{PARTE 3: Navegador espera que termine el proceso y recibe token de acceso con permisos 1}
+	\hrule
+	\vspace{.5em}
 	
 		
 	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
@@ -2537,6 +2542,38 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 		\FloatBarrier
 		
 	\textbf{Cloud run requiere contenerizar una aplicación y subirla al cloud. Sin embargo, aunque podría funcionar para nuestro caso particular, nada gana el hacerlo desde el front end como finalmente se ha hecho.}
+		
+	\section{Google cloud: cálculo de unidades de cuota}
+	\label{sec:googleQuotas}
+	
+	\noindent \textbf{NOTA:} \textit{Podéis regresar al origen de este anexo con un click aquí: \ref{sec:pas4googleAPIclient}} \\
+	
+	
+	
+	En la siguiente página de  developers.google \cite{gmail_api_quota} (\href{https://developers.google.com/workspace/gmail/api/reference/quota?hl=es-419}{link}) podemos ver que cada una de las funciones que usamos en el script \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccioBoto.js}{scriptExtraccioBoto.js} usado para extraer los tickets de los correos electrónicos del Gmail de un usuario consumen ciertas unidades de quota de la API de Google. Nosotros usamos \textbf{messages.attachments.get}, \textbf{users.messages.list} y \textbf{messages.attachments.get}, que tienen un uso de quotas por cada llamada cada uno de 5 unidades. Por ello, cada ticket descargado para un usuario nos va a consumir un total de 15 unidades. Si ese mismo usuario se descarga 500 tickets digitales adjuntos de los correos en un segundo -asumiendo que la API fuese del orden de 100 veces más rápida de lo que lo es en realidad- supondrán 7500 unidades de cuota gastadas de golpe: esto ya sería suficiente para este proyecto. Si el usuario, sin embargo, decide volver a autenticarse  otra vez y quiere descargar de nuevo los tickets va a gastar las 15 000 unidades y va a excederse de la cuota si lo intenta por tercera vez, dándonos\textit{userRateLimitExceeded}: Esto sí sería un aspecto que en una versión más definitiva deberíamos pulir (se puede añadir batch processing, para descargar por lotes si queremos aumentar el límite de tickets digitales descargables); pero para la versión que nos ocupa no vamos a hacerlo porque asumimos que dar capacidad de análisis a los últimos 500  tickets digitales de correo es más que suficiente. Asimismo, el límite de frecuencia global por proyecto son 1 200 000 unidades de cuota por minuto, lo cual nos daría la posibilidad de tener hasta 160 usuarios concurrentes en un minuto ,suponiendo que cada uno de ellos hiciese como máximo una descarga de 500  tickets \footnote{1 200 000 \textit{(uc/min)} / 7500 \textit{(uc/usuario)} = 160 \textit{\textit{usuarios/min}}} sin dar \textit{rateLimitExceeded}. En la figura \ref{fig:quotesGoogleDevelopers} siguiente podéis ver los límites de la página de desarrolladores de google que enlazamos antes y en la figura \ref{fig:quotesGoogleDevelopersUSADES}
+	
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Unidades de cuota de procesamiento que nuestra aplicación no puede exceder al hacer llamadas a gmailAPI sin incurrir en excesos \cite{gmail_api_quota}.}
+		\includegraphics[width=1\linewidth]{img/quotesGoogleDevelopers.png}
+		\label{fig:quotesGoogleDevelopers}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{La cantidad de unidades de cuota que consume una solicidud a la gmailAPI varía según el método al que se llama. En la siguiente tabla, se describe el uso exacto de las unidades de cuota por cada uno de los tres métodos de gmail API que utilizamos cuando un usuario descarga un ticket del correo. Concretamente, en este caso, un usuario gasta un total de 15 unidades de cuota (uc). \cite{gmail_api_quota}.}
+		\includegraphics[width=1\linewidth]{img/quotesGoogleDevelopersUSADES}
+		\label{fig:quotesGoogleDevelopersUSADES}
+	\end{figure}
+	\FloatBarrier
+		
 		
 		
 	
