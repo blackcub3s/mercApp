@@ -1,3 +1,6 @@
+ /*CSS USAT EN pas4 i en index.html: pàgines on no hi ha links
+ a la footer (a part del link de linkedin)*/
+ 
  /*amb display flex centro verticlament el 
  text de la footer sense links (copyright)*/
 #footer {
@@ -12,7 +15,7 @@
 /*Posiciono icono linkedin en posició correcta */
 #footer section:first-child article:first-child img {
     position: relative; 
-    top:.5em; 
+    top:.4em; 
     width: 1.5em;
 }
 
