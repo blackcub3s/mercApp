@@ -1132,19 +1132,19 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	\textbf{NOTA:} \textit{la petición POST con JavaScript desde el front-end hacia el endpoint de subida de datos se mostró en la PARTE 2 del apartado anterior \ref{sec:pas4googleAPIclient}, sobre front-end}
 	
-	Al recibir el servidor de FastAPI una solicitud POST con los PDFs adjuntos y el Token de acceso con permisos a 0 en el endpoint /api/subir-tickets-pdf vamos a empezar una solicitud de extracción de datos de los tikets. A continuación mostramos exhaustivamente los 5 pasos o partes, que deberán ejecutarse con éxito y de forma SECUENCIAL para que el proceso funcione correctamente:
+	Al recibir el servidor de FastAPI una solicitud POST con los PDFs adjuntos y el Token de acceso con permisos a 0 en el endpoint /api/subir-tickets-pdf vamos a empezar la extracción de datos de los tickets. A continuación mostramos exhaustivamente los 5 pasos o partes, que deberán ejecutarse con éxito todas y cada una de ellas, y de forma SECUENCIAL, para que el proceso funcione correctamente y devuelva una RESPONSE con código de éxito:
 	
 	\begin{itemize}
 	\setlength{\itemsep}{-.3em}
-		\item \textbf{PARTE 1}: FastAPI recibe la POST \textbf{request} con los tickets adjuntos desde el cliente junto con el token con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin}.
-		\item \textbf{PARTE 2}: FastAPI parsea todos los tickets con un algoritmo de extracción [\ref{sec:PARTE2_FASTAPI}].
+		\item \textbf{PARTE 1}: FastAPI recibe la POST \textbf{REQUEST} con los tickets adjuntos desde el cliente junto con el token con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin}.
+		\item \textbf{PARTE 2}: FastAPI delega en el service de Python (PyPDF2) el parseo de todos los tickets con un algoritmo de extracción [\ref{sec:PARTE2_FASTAPI}].
 		\item \textbf{PARTE 3}: FastAPI manda los tickets parseados a MongoDB [\ref{sec:PARTE3_FASTAPI}].
 		\item \textbf{PARTE 4}: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot: ahí se actualiza la variable de permisos en la bbdd mySql, y se recibe como respuesta un nuevo token de acceso fresco con los permisos actualizados a 1 [\ref{sec:PARTE4_FASTAPI}].
 		\item \textbf{PARTE 5}: FastAPI manda la \textbf{RESPONSE} con el nuevo token de acceso con permisos a 1 al front-end, a la página pas4 (el pas4 ya redirigirá automáticamente al dashboard)[\ref{sec:PARTE5_FASTAPI}].
 	\end{itemize}
 
 	
-	NDespués de esto El pas4 del front-end redirigirá automáticamente al dashboard.
+	Después de todo esto, al recibir en el front-end el nuevo token de acceso con permisos a 1, el pas4 del front-end redirigirá automáticamente al dashboard sin que tengamos que hacer nada más (vuélvase a ver la lógica de redirecciones en la figura \ref{fig:restringeixVistesPrivadesUSUARINOLOGUEJAT}, que es la que nos lo gestionará automáticamente)
 	
 		
 		
@@ -1913,8 +1913,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Al termi
 		
-	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
-	\label{sec:dashboardFetchLocalStorage}
+	\subsection{Arquitectura (JavaScript): páginas públicas}
+	\label{sec:arquitecturaPaginesPubliques}
+	
 	\textbf{TO DO FER-HO}
 	
 	
@@ -1983,7 +1984,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{El prompt pasado a ChatGPT para obtener una versión reducida del icono de nuestra APP. Incluso con con typos en el prompt la IA entiende perfectamente lo que necesitamos.}
+		\caption{El prompt pasado a ChatGPT para obtener una versión reducida del icono de nuestra APP. Incluso con con typos en el prompt la IA entiende perfectamente lo que necesitamos. Último paso completado con Gimp.}
 		\includegraphics[width=1\linewidth]{img/mercappResumit}
 		\label{fig:mercappResumit}
 	\end{figure}
@@ -1991,14 +1992,14 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		
 		
 		
-	\section{Desarrollo Cloud: configuración google api client}
+	\section{Desarrollo Cloud: configuración google API client}
 	\label{sec:desarrolloCloudGoogleApi}
 	
-	\noindent NOTA: regresar a apartado \ref{sec:pas4googleAPIclient} una vez comprendido este apartado, si no se ha leido.
+	\noindent \textit{\textbf{NOTA:} Se puede regresar a sección \ref{sec:pas4googleAPIclient} una vez comprendido este apartado, en acso que el lector no la haya leido todavía.}
 	
 	Para conseguir que la extracción de tickets funcione en el \textbf{pas4} (sección \ref{sec:pas4googleAPIclient}) es indispensable hacer múltiples configuraciones en la página de desarrolladores de google denominada \href{https://console.cloud.google.com/}{https://console.cloud.google.com/}. 
 	
-	Estas configuraciones son necesaria por varios motivos: el \textit{primero}, es que tenemos que  obtener el (\textbf{Client ID}) para que se identifique nuestra web en relación a Google Cloud; el \textit{segundo}, es configurar los ``\textit{scopes}'' que le dicen a Google qué tratamos de conseguir del Gmail de los usuarios que se autoricen ante google mediante su mecanismo de autenticación denominado Oauth2 (aquí el Scope es solo para lectura de gmails -gmail.readonly-); el \textit{tercero}, definir un listado de usuarios que permitirán usar nuestra aplicación (durante la fase de desarrollo); y el último, pero no por ello menos importante, la lista de direcciones IP desde las que google deberá permitirnos hacer llamadas a su API.
+	Estas configuraciones son necesarias por varios motivos: el \textit{primero}, es que tenemos que  obtener el (\textbf{Client ID}) para que se identifique nuestra web en relación a Google Cloud; el \textit{segundo}, es configurar los ``\textit{scopes}'' que le dicen a Google qué tratamos de conseguir del Gmail de los usuarios que se autoricen ante google mediante su mecanismo de autenticación denominado Oauth2 (aquí el Scope es solo para lectura de gmails -gmail.readonly-); el \textit{tercero}, definir un listado de usuarios que permitirán usar nuestra aplicación (durante la fase de desarrollo); y el \textit{último}, pero no por ello menos importante, la lista de direcciones IP desde las que Google deberá permitirnos hacer llamadas a su API.
 	
 	A continuación explicamos todos los pasos de forma pormenorizada para conseguir aplicar de forma satisfactoria las configuraciones que nos permitirán que un usuario pueda autenticarse con OAuth2 ante google y descargar tikets digitales de su correo gmail personal:
 	
