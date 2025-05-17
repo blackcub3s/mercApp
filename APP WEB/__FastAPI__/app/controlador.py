@@ -1,45 +1,30 @@
 from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, status
 from fastapi import Header # per poder processar les headers i agafar el token fix
+from fastapi.middleware.cors import CORSMiddleware #Cal importar-ho per permetre el CORS des del navegador (que corre en port diferent)
 import os
 from jwtUtil import verificar_token
 import servei
 
 
 
-
 app = FastAPI()
 
-# fes ullada a 
-# https://fastapi.tiangolo.com/#run-it
-
-# ENDPOINTS PROVA RESTCLIENT --------------------
-@app.get("/api/usuari/{id}")
-def mostraUsuari(id):        # id es enter (pots tipar-lo si vols)
-    return {"dadesUsuari" : "les dades de l'usuari "+str(id)+" ASD."}
 
 
-
-@app.get("/api/usuariSegur/{id}")
-def mostraUsuariSegur(id, Authorization: str = Header(...)): #FORÇO A LLEGIR UN TOKEN D'ACCES.
-    
-    return {
-        "dadesUsuari" : "les dades de l'usuari "+str(id),
-        "authToken": Authorization
-    }
-#FI ENDPOINTS PROVAR RESTCLIENT --------------------
-
-
-
-@app.get("/api/usuari/{id}/tickets")
-def mostraUsuariSegur(id, Authorization: str = Header(...)): #FORÇO A LLEGIR UN TOKEN D'ACCES.
-    llTickets = servei.mostraLlistaTickets()
-    d = {
-        "authToken": Authorization,
-        "llTickets" : llTickets
-    }
-    return d
-
-
+# CONFIGURO AQUÍ LA POLÍTICA CORS
+# (PERMETO ELS ORIGENS DELS QUE FAREM PETICIONS)
+app.add_middleware(
+	CORSMiddleware,
+	allow_origins=[
+		"http://127.0.0.1:5500", #permetre crides del client DEL FRONTEND (live server o nginx de docker, corrent al 5500)
+		"http://localhost:5500", # idem (pero especifico localhost)
+		"http://localhost:8080", #permetre crides del BACKEND DE SPRING BOOT (PER SI FEM CRIDES COM UN CLIENT, AMB RESTCLIENT)
+        "http://127.0.0.1:8080", # idem (pero epsecifico localhost)
+	],
+	allow_credentials=True,
+	allow_methods=["*"],
+	allow_headers=["*"], #permetre tokens acces per header (ja anava bé però per si de cas)
+)
 
 
 
@@ -90,3 +75,46 @@ async def pujarPdfsTicketDigital(
             llJudicis.append({"archivo": nomArxiu, "estado": "Guardado correctamente"})
 
     return {"estadosArchivos" : llJudicis}
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+
+#ENDPOINTS PROVA RESTCLIENT
+@app.get("/api/usuari/{id}")
+def mostraUsuari(id):        # id es enter (pots tipar-lo si vols)
+    return {"dadesUsuari" : "les dades de l'usuari "+str(id)+" ASD."}
+
+
+
+@app.get("/api/usuariSegur/{id}")
+def mostraUsuariSegur(id, Authorization: str = Header(...)): #FORÇO A LLEGIR UN TOKEN D'ACCES.
+    
+    return {
+        "dadesUsuari" : "les dades de l'usuari "+str(id),
+        "authToken": Authorization
+    }
+#FI ENDPOINTS PROVAR RESTCLIENT --------------------
+
+
+
+@app.get("/api/usuari/{id}/tickets")
+def mostraUsuariSegur(id, Authorization: str = Header(...)): #FORÇO A LLEGIR UN TOKEN D'ACCES.
+    llTickets = servei.mostraLlistaTickets()
+    d = {
+        "authToken": Authorization,
+        "llTickets" : llTickets
+    }
+    return d
+
+
+"""

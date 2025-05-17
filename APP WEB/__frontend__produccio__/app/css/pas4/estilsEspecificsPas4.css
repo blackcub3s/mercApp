@@ -54,10 +54,9 @@ body {
 }
 
 /*Fem que el cursor canvii a dit per clicar quan passem per damunt
-de la imatge de la descàrrega. Aquesta imatge actuarà com a botó per 
-descarregar els tickets!*/
+de la imatge de la descàrrega. Idem per a l'imatge de pujar els tickets (el clip)!*/
 #tresPassos section:first-child  section:nth-child(2) {cursor: pointer;}
-#tresPassos section:nth-child(2) section:first-child {cursor: pointer;} /*fem el mateix a la imatge dels adjunts*/
+#tresPassos section:nth-child(2) section:first-child label {cursor: pointer;} /*fem el mateix a la imatge dels adjunts*/
 
 #tresPassos > section:first-child {padding-top: 4em;} /*Poso padding entre el section del pas1 i la header*/
 #tresPassos section:first-child section:first-child {padding: 2em;} /*paragrafs tikets (paso 1)*/
@@ -71,7 +70,8 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 .colorEnfasisTitol {color: var(--colorTitolsPas4);}
 .contenidorIconos {margin: 0 auto;} /*centro les imatgtes (els tres iconos)*/
 
-
+/*OCULTO L'INPUT REAL DEL FORMULARI: ja que el click serà a partir de la imatge o icono del clip!*/
+#inputOcultEntradesPDFs {display: none;}
 
 /*MEDIA QUERIES (per a disseny responsive)*/
 @media (max-width: 700px) {
