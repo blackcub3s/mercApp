@@ -1126,23 +1126,63 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	\textbf{TO DO}
 	
-	\subsection{Algoritmo de extracción}
-	
-	La extracción de los tikets se hará a partir de la dirección de correo electrónico con la que mercadona manda los tikets digitales (como podemos ver en \ref{sec:pas4googleAPIclient}). El correo electrónico más antiguo y más nuevo prácticamente no difieren, con lo cual se puede reaprovechar un mismo algoritmo para todos los tickets como podemos ver en la imagen \ref{fig:primerIultimTiketMeuCorreu}:
-	
+	\subsection{Solicitud de subida y parseo de datos}
+	\label{sec:solicitudDeExtraccion}
 	
 	
-	\FloatBarrier
-	\setlength{\belowcaptionskip}{3pt}
-	\begin{figure}[H]
-		\centering
-		\caption{A la \textbf{izquierda}: la primera compra en Mercadona hecha con ticket digital por mi parte: en un supermercado en Catalunya; a la \textbf{derecha} la última compra que se ha hecho por mi parte: en la comunitat valenciana. Nótese que en la extracción hay que tener en cuenta el distinto idioma que se puede dar en distintas comunidades autónomas. La dirección desde la que se mandan los tickets digitales no ha cambiado en dos años y el formato general del tiket es exactamente igual a términos de parseo: Hay que prestar atención a posibles problemas con el unicode (círculo marrón).}
-		\includegraphics[width=1\linewidth]{img/primerIultimTiketMeuCorreu}
-		\label{fig:primerIultimTiketMeuCorreu}
-	\end{figure}
-	\FloatBarrier
+	\textbf{NOTA:} \textit{la petición POST con JavaScript desde el front-end hacia el endpoint de subida de datos se mostró en la PARTE 2 del apartado anterior \ref{sec:pas4googleAPIclient}, sobre front-end}
 	
-	\textbf{CONTINUAR TO DO TO DO TO DO TO DO}
+	Al recibir el servidor de FastAPI una solicitud POST con los PDFs adjuntos y el Token de acceso con permisos a 0 en el endpoint /api/subir-tickets-pdf vamos a empezar una solicitud de extracción de datos de los tikets. A continuación mostramos exhaustivamente los 5 pasos o partes, que deberán ejecutarse con éxito y de forma SECUENCIAL para que el proceso funcione correctamente:
+	
+	\begin{itemize}
+	\setlength{\itemsep}{-.3em}
+		\item \textbf{PARTE 1}: FastAPI recibe la POST \textbf{request} con los tickets adjuntos desde el cliente junto con el token con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin}.
+		\item \textbf{PARTE 2}: FastAPI parsea todos los tickets con un algoritmo de extracción [\ref{sec:PARTE2_FASTAPI}].
+		\item \textbf{PARTE 3}: FastAPI manda los tickets parseados a MongoDB [\ref{sec:PARTE3_FASTAPI}].
+		\item \textbf{PARTE 4}: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot: ahí se actualiza la variable de permisos en la bbdd mySql, y se recibe como respuesta un nuevo token de acceso fresco con los permisos actualizados a 1 [\ref{sec:PARTE4_FASTAPI}].
+		\item \textbf{PARTE 5}: FastAPI manda la \textbf{RESPONSE} con el nuevo token de acceso con permisos a 1 al front-end, a la página pas4 (el pas4 ya redirigirá automáticamente al dashboard)[\ref{sec:PARTE5_FASTAPI}].
+	\end{itemize}
+
+	
+	NDespués de esto El pas4 del front-end redirigirá automáticamente al dashboard.
+	
+		
+		
+		
+		
+		\subsubsection{PARTE 1:  FastAPI recibe la POST \textbf{request} con los tickets adjuntos desde el cliente}
+		\label{sec:PARTE1_FASTAPI}
+		
+		\textbf{TO DO}
+		
+		\subsubsection{PARTE 2: FastAPI parsea todos los tickets con un algoritmo de extracción}
+		\label{sec:PARTE2_FASTAPI}
+		El correo electrónico más antiguo y más nuevo prácticamente no difieren, con lo cual se puede reaprovechar un mismo algoritmo para todos los tickets como podemos ver en la imagen \ref{fig:primerIultimTiketMeuCorreu}:
+		
+		
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{A la \textbf{izquierda}: la primera compra en Mercadona hecha con ticket digital por mi parte: en un supermercado en Catalunya; a la \textbf{derecha} la última compra que se ha hecho por mi parte: en la comunitat valenciana. Nótese que en la extracción hay que tener en cuenta el distinto idioma que se puede dar en distintas comunidades autónomas. La dirección desde la que se mandan los tickets digitales no ha cambiado en dos años y el formato general del tiket es exactamente igual a términos de parseo: Hay que prestar atención a posibles problemas con el unicode (círculo marrón).}
+			\includegraphics[width=1\linewidth]{img/primerIultimTiketMeuCorreu}
+			\label{fig:primerIultimTiketMeuCorreu}
+		\end{figure}
+		\FloatBarrier
+		
+		\textbf{CONTINUAR TO DO TO DO TO DO TO DO}
+		
+	
+		
+		\subsubsection{PARTE 3: FastAPI manda los tickets parseados a MongoDB}
+		\label{sec:PARTE3_FASTAPI}
+		
+		\subsubsection{PARTE 4: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot: ahí se actualiza la variable de permisos en la bbdd mySql, y se recibe como respuesta un nuevo token de acceso fresco con los permisos actualizados a 1}
+		\label{sec:PARTE4_FASTAPI}
+		
+		\subsubsection{PARTE 5: FastAPI manda la \textbf{RESPONSE} con el nuevo token de acceso con permisos a 1 al front-end, a la página pas4 (el pas4 ya redirigirá automáticamente al dashboard)}
+		\label{sec:PARTE5_FASTAPI}
 	
 	
 	\subsection{Gestión de solicitudes: token de acceso}
@@ -1845,20 +1885,33 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 
 
-	\noindent \textbf{PARTE2: Subir los tickets digitales del ordenador a servidor fastAPI}
+	\noindent \textbf{PARTE2: Subir tickets digitales del ordenador del usuario con JavaSceript hacia el back-end de fastAPI para su procesamiento}
 	\hrule
 	\vspace{.5em}
 	
+		
+	\textbf{NOTA:} \textit{El procesado que involucra servidor lo mostraremos en otra sección: la parte de la solicitud de subida y parseo de datos en fastAPI: sección \ref{sec:solicitudDeExtraccion}.}
 	
-	Esto lo hacemos aqui:
 	
+	La subida de tickets digitales desde el front-end la hacemos como vemos en la figura \ref{fig:pujarticketspas5}:
 	
-	\textbf{TO DO TO DO}
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\caption{llamada al endpoint de fastAPI \textit{/api/subir-tickets-pdf} para subida de tickets mediante una solicitud POST con javascript (fetch), activada con el click en el icono marcado.}
+		\includegraphics[width=1\linewidth]{img/pujarTicketsPas5}
+		\label{fig:pujarticketspas5}
+	\end{figure}
+	\FloatBarrier
+	
+	\textbf{TO DO TO DO POSAR A LA IMATGE ANTERIOR UN FRAGMENT DEL JAVASCRIPT QUE FA LA CRIDA EN PAS4 CAP A ENDPOOINT API/suvir-tickets-pdfs}
+
 			
 	\noindent \textbf{PARTE 3: Navegador espera que termine el proceso y recibe token de acceso con permisos 1}
 	\hrule
 	\vspace{.5em}
 	
+	Al termi
 		
 	\subsection{arquitectura dashboard: llamada fetch inicial a back-end mongoDB y posteriores a localStorage}
 	\label{sec:dashboardFetchLocalStorage}
