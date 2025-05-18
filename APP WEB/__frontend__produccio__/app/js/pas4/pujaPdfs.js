@@ -43,13 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error en la solicitud: ' + response.status + " || Missatge: " + response.message);
-                } else {
-                    alert("Tikets pujats!");
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Resultado:', data);
+                posaMissatgesAusuari_PASO2_mandanosTickets(data.subidos, data.rechazados)
+                console.log(`Subidos: ${data.subidos} || Rechazados: ${data.rechazados}`);
             })
             .catch(error => {
                 console.error('Error al subir los PDFs:', error);

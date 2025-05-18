@@ -29,7 +29,12 @@
          permès per la llista de connexions entrtants a Oauth, a google.-->
     <script src="https://blackcub3s.github.io/mercAppAuxPas4/js/scriptExtraccioBoto.js"></script>
 
+    <!--Carreguem arxiu d'alertes (primer) i arxiu que puja els PDFs al
+    back-end (segon)-->
+    <script src="js/pas4/alertesPas4.js"></script>
     <script src="js/pas4/pujaPdfs.js"></script>
+
+
 </head>
 <body>
 
@@ -75,14 +80,19 @@
                     <img src="img/pas4/iconoPujar.png" alt="IMAGEN NO CARGÓ: ¡Clica Aquí para subir los tickets en PDF!">
                 </label>
                 <input type="file" id="inputOcultEntradesPDFs" multiple accept="application/pdf">
-                
+            
             </section>
             <section>
                 <h1><span class = "colorEnfasisTitol">Paso 2</span>: Mándanos tus tickets</h1>
                 <h2>Selecciona todos los tickets digitales que se 
-                    descargaron en la carpeta descargas y adjúntalos.</h2>
+                    descargaron en la carpeta descargas y adjúntalos (¡no cambies su nombre!).</h2>
             </section>
+
+            <!-- aquí pujarem els banners informatius (nombre d'arxius pujats)-->
+            <section id = "bannerMissatgeArxiusPujats"></section>
+            
         </section>
+
 
         <section>
             <section>

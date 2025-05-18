@@ -3,13 +3,15 @@ from fastapi import Header # per poder processar les headers i agafar el token f
 from fastapi.middleware.cors import CORSMiddleware #Cal importar-ho per permetre el CORS des del navegador (que corre en port diferent)
 import os
 from jwtUtil import verificar_token
-import servei
+import serveiTickets
+import serveiValidacions
 
 
 
 app = FastAPI()
 
-
+KB_MAXIM_TICKET_DIGITAL = 80 # empiricament el 2023 els tickets de mercadona pesaven 36KB
+KB_MINIM_TICKET_DIGITAL = 15 # empiricament al 2025 els tickets pesaven 33KB (deixem marge)
 
 # CONFIGURO AQUÍ LA POLÍTICA CORS
 # (PERMETO ELS ORIGENS DELS QUE FAREM PETICIONS)
@@ -29,8 +31,9 @@ app.add_middleware(
 
 
 #Endpoint que en cridar-lo permet pujar PDFs a través del body de la solicitud
-#IMPORTANT: requereix token valid, no caducat i amb permisos a 0 (convidat) o 2 (admin). 
-#Per ara no deixa al usuario permisos a 1 perque ja tenen tickets pujats a mongoDB.
+#IMPORTANT: requereix token valid, no caducat i amb permisos a 0 (convidat) o 2 (admin) i que els PDF tinguin
+# un tamany determint comprès entre KB_MINIM_TICKET_DIGITAL i KB_MAXIM_TICKET_DIGITAL.
+#NOTA: no deixem pujar amb usuari a permisos 1 perque ja si té permisos a 1 és que ja té tickets pujats a mongoDB.
 @app.post("/api/subir-tickets-pdf")                                 
 async def pujarPdfsTicketDigital(
     arxius: list[UploadFile] = File(...),           # File(...) diu que ha d'entrar dades de multipart/form-data com els navegadors ho pujen.
@@ -53,28 +56,49 @@ async def pujarPdfsTicketDigital(
 
 
     llJudicis = []
+    nRefusats = 0
     for arxiu in arxius:
 
         #AVALUA EL TIPUS MIME (BUSCO application/pdf)
         if arxiu.content_type != "application/pdf": 
-            llJudicis.append({"archivo": arxiu.filename, "estado" : "No es un PDF" })
+            llJudicis.append({"archivo": arxiu.filename, "estado" : "No guardado! No es un PDF" })
+            nRefusats += 1 
         else:
             #Guardo arxiu dins el servidor de fastAPI
             arxiuBinari = await arxiu.read() #tipus bytes
+            tamanyFitxerKB = round(len(arxiuBinari) / 1024, 1) # com que és tipus bytes puc passar a KB
             nomArxiu = os.path.basename(arxiu.filename)
-
-            #Creo directori tickets si no existeix i trec el path
-            directoriOnGuardar = f"./tickets/{idUsuari_enToken}"
-            os.makedirs(directoriOnGuardar, exist_ok=True)
-            path = os.path.join(directoriOnGuardar, nomArxiu) 
             
-            #creo l'arxiu
-            with open(path, "wb") as f: #wb de write binary
-                f.write(arxiuBinari)
+            # --- SI EL TAMANY DE FITXER ES CORRECTE EL GUARDEM A LA CARPETA DEL SERVIDOR --
+            # (NOTEU que python admet la sintaxi matemàtica de l'estil A <= B <= C,
+            # que en en Python es pot escriure (A <= B) and (B <= C) i en altres llenguatges com
+            # Java o Javascript (A <= B) && (B <= C) 
+            if KB_MINIM_TICKET_DIGITAL <= tamanyFitxerKB <= KB_MAXIM_TICKET_DIGITAL:
+                
+                #Comprovo si el nom de l'arxiu és el que m'espero en un ticket de Mercadona
+                if serveiValidacions.ticketValidat(nomArxiu):
 
-            llJudicis.append({"archivo": nomArxiu, "estado": "Guardado correctamente"})
+                    #creo directori tickets si no existeix i trec el path
+                    directoriOnGuardar = f"./tickets/{idUsuari_enToken}"
+                    os.makedirs(directoriOnGuardar, exist_ok=True)
+                    path = os.path.join(directoriOnGuardar, nomArxiu) 
+                    
+                    #creo l'arxiu en mode d'escriptura (w) amb la b de binari
+                    with open(path, "wb") as f: 
+                        f.write(arxiuBinari)
 
-    return {"estadosArchivos" : llJudicis}
+                    llJudicis.append({"archivo": nomArxiu, "estado": "Guardado correctamente", "tamany" : tamanyFitxerKB})
+                else:
+                    nRefusats += 1 #si nom no és correcte conto que és ticket refusat
+                    llJudicis.append({"archivo": nomArxiu, "estado": "Archivo rechazado y no guardado (NOMBRE incorrecto)!", "tamany" : tamanyFitxerKB})
+            else:
+                nRefusats += 1 #si tamany no és correcte conto que és ticket refusat
+                llJudicis.append({"archivo": nomArxiu, "estado": "Archivo rechazado y no guardado (tamaño incorrecto!)", "tamany" : tamanyFitxerKB})
+    return {
+                "subidos" : len(llJudicis) - nRefusats, 
+                "rechazados" : nRefusats, 
+                "estadosArchivos" : llJudicis
+            }
 
 
 

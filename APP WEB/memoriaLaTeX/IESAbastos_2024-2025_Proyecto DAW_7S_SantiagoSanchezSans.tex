@@ -1199,6 +1199,22 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	Es importante mencionar que la gestión de tokens en FastAPI se hace mucho más sencilla que con Spring Boot. Por ejemplo, con FastAPI podemos conseguir que los endpoints no permitan solicitudes entrantes si el token ha caducado sin tener que gestionar la lógica de programación manualmente como sí teníamos que hacer con java (recordemos este archivo): con la librería \textit{jose} \cite{pythonJose} (un nombre aparentemente muy español pero cuyo acrónimo significa \textit{JavaScript Object Signing and Encryption (JOSE)}) se hace todo muy rápido.
 	
+	\subsection{Validación de datos (end-point entrada PDFs)}
+	
+	La validación de los datos se ha hecho con mucho cuidado antes de guardar los PDFs en el sistema de archivos del servidor. Será el usuario el que se descargue los tickets en pdf de su gmail. Pero no podemos confiar que sea responsable y suba archivos sin alterar.
+	
+	Por ende, se han verificado que se suban archivos en PDF (MIME type ``application/pdf''). En caso que el archivo entrante sea, en efecto PDF, se ha mirado que los tamaños de los archivos estén comprendidos entre unos límites razonables (cada Ticket digital de Mercadona ocupaba 36KB en 2023, mientras que en 2025 lo han reducido a 33KB). Un ejemplo de subida al sistema de archivos del servidor, teniendo en cuenta las validaciones, se puede ver en la figura \ref{fig:validacionsArxiusPujadaEndpointTickets}.
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Llamada al endpoint ``/api/subir-tickets-pdf' $|$.\textbf{ Izquierda}: Solicitud POST con Postman: en verde, los archivos que se suben correctamente; en rojo archivos que el servidor rechazará gracias a las validaciones que hemos puesto en fastAPI. $|$ \textbf{Derecha}: lo mismo que hacemos con PostMan pero con el navegador.'}
+		\includegraphics[width=1\linewidth]{img/validacionsArxiusPujadaEndpointTickets}
+		\label{fig:validacionsArxiusPujadaEndpointTickets}
+	\end{figure}
+	\FloatBarrier
+	
 	
 	
 	\section{Desarrollo del front-end}

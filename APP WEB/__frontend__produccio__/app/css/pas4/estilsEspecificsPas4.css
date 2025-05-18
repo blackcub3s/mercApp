@@ -73,6 +73,24 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 /*OCULTO L'INPUT REAL DEL FORMULARI: ja que el click serà a partir de la imatge o icono del clip!*/
 #inputOcultEntradesPDFs {display: none;}
 
+
+
+/*MANEIG DEL FEEDBACK PER AL PAS 2 
+(AFEGEIXO TERCER SECTION DINS EL SECTION DE PAS2)*/
+#bannerMissatgeArxiusPujats {color: var(--colorTitolsPas4);}
+#bannerMissatgeArxiusPujats > ul {
+    text-align: center;
+    border: 2px dashed var(--colorTitolsPas4);
+    border-radius: .2em;
+    font-size: 1.2em;
+    list-style: none;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+
+
+
 /*MEDIA QUERIES (per a disseny responsive)*/
 @media (max-width: 700px) {
     #tresPassos > section {
