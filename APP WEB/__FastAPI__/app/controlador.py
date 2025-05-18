@@ -74,7 +74,6 @@ async def pujarPdfsTicketDigital(
             # que en en Python es pot escriure (A <= B) and (B <= C) i en altres llenguatges com
             # Java o Javascript (A <= B) && (B <= C) 
             if KB_MINIM_TICKET_DIGITAL <= tamanyFitxerKB <= KB_MAXIM_TICKET_DIGITAL:
-                
                 #Comprovo si el nom de l'arxiu és el que m'espero en un ticket de Mercadona
                 if serveiValidacions.ticketValidat(nomArxiu):
 
@@ -82,7 +81,7 @@ async def pujarPdfsTicketDigital(
                     directoriOnGuardar = f"./tickets/{idUsuari_enToken}"
                     os.makedirs(directoriOnGuardar, exist_ok=True)
                     path = os.path.join(directoriOnGuardar, nomArxiu) 
-                    
+
                     #creo l'arxiu en mode d'escriptura (w) amb la b de binari
                     with open(path, "wb") as f: 
                         f.write(arxiuBinari)
@@ -97,6 +96,7 @@ async def pujarPdfsTicketDigital(
     return {
                 "subidos" : len(llJudicis) - nRefusats, 
                 "rechazados" : nRefusats, 
+                "existentes" : serveiValidacions.mostraTicketsExistentsDinsCarpetaUsuari(idUsuari_enToken),
                 "estadosArchivos" : llJudicis
             }
 

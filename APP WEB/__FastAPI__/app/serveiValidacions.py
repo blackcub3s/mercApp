@@ -1,3 +1,5 @@
+import os 
+
 #PRE: data format AAAAMMDD
 #POST: llista strings [DD, MM, AAAA] -format espanyol-
 def dataAllista(dataAnglo):
@@ -24,7 +26,16 @@ def ticketValidat(strTicket):
         return False
     except Exception:
         return False
-    
+
+#PRE: Un idUsuari (enter)
+#POST: El nombre de fitxers (s'esperen tickets digitals) que existeixen dins 
+#      la carpeta de l'usuari
+def mostraTicketsExistentsDinsCarpetaUsuari(idUsuari):
+    try:
+       return len(os.listdir(f"./tickets/{idUsuari}"))
+    except FileNotFoundError: #No existeix la carpeta o la ruta recollim l'excepció (n'hi hauria 0!)
+        return 0
+      
 
 #TESTS (NO S'EXECUTEN AL IMPORTAR L'ARXIU, NOMÉS EN EXECTUAR DIRECTAMET AQUEST ARXIU
 if __name__ == "__main__":

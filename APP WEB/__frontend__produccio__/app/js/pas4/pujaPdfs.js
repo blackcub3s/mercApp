@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: 'POST',
                 headers: {
                     'Authorization': "Bearer " + tokenAcces
-                    // No pongas Content-Type manualmente cuando usas FormData
                 },
                 body: dadesFormulari
             })
@@ -47,8 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(data => {
-                posaMissatgesAusuari_PASO2_mandanosTickets(data.subidos, data.rechazados)
-                console.log(`Subidos: ${data.subidos} || Rechazados: ${data.rechazados}`);
+                posaMissatgesAusuari_PASO2_mandanosTickets(data.subidos, data.rechazados, data.existentes)
+                console.log(`Subidos: ${data.subidos} || Rechazados: ${data.rechazados} || existentes: ${data.existentes}`);
             })
             .catch(error => {
                 console.error('Error al subir los PDFs:', error);

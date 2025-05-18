@@ -89,6 +89,11 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
     margin-bottom: 2em;
 }
 
+#bannerMissatgeArxiusPujats > ul li:last-child {
+    border-top: 2px dashed var(--colorTitolsPas4);
+    background-color: var(--fiGradient);
+}
+
 
 
 /*MEDIA QUERIES (per a disseny responsive)*/

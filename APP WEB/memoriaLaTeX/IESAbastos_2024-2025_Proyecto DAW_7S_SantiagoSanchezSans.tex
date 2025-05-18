@@ -1203,7 +1203,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	La validación de los datos se ha hecho con mucho cuidado antes de guardar los PDFs en el sistema de archivos del servidor tanto en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/controlador.py}{controlador.py} como en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiValidacions.py}{servei.py}. Será el usuario el que se descargue los tickets en pdf de su gmail; pero no podemos confiar que sea responsable y suba archivos sin alterar.
 	
-	Por ende, se han verificado que se suban archivos en PDF (MIME type ``application/pdf''). En caso que el archivo entrante sea, en efecto PDF, se ha mirado que los tamaños de los archivos estén comprendidos entre unos límites razonables (cada Ticket digital de Mercadona ocupaba 36KB en 2023, mientras que en 2025 lo han reducido a 33KB). Un ejemplo de subida al sistema de archivos del servidor, teniendo en cuenta las validaciones, se puede ver en la figura \ref{fig:validacionsArxiusPujadaEndpointTickets}.
+	Por ende, se han verificado que se suban archivos en PDF (MIME type ``application/pdf''). En caso que el archivo entrante sea, en efecto PDF, se ha mirado que los tamaños de los archivos estén comprendidos entre unos límites razonables (cada Ticket digital de Mercadona ocupaba 36KB en 2023, mientras que en 2025 se redujo a 33KB,). Un ejemplo de subida al sistema de archivos del servidor, teniendo en cuenta las validaciones, se puede ver en la figura \ref{fig:validacionsArxiusPujadaEndpointTickets}.
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
