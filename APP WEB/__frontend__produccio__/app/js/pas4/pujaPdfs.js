@@ -3,14 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     /*Prenc l'icono del clip!*/
     const iconoAdjuntaTickets = document.getElementById("labelIconoPujar");
     iconoAdjuntaTickets.addEventListener("click", () => {
-        console.log("icono clicat!");
 
         /*PRIMER DE TOT. PUJO ELS PDFS */
         const input = document.querySelector('#inputOcultEntradesPDFs');
 
-        /*EVALUO SI L'USUARI HA SELECCIONAT ELS ARXIUS QUAN HI HAGI HAGUT UN CANVI
-        EN L'INPUT! SI NO, NO FAIG SOLICITUD FETCH! AIXI M'ESTALVIO UN BOTO DE PUJAR I 
-        UN BOTÓ DE SUBMIT DE FORMULARI. TOT AMB L'ICONO DEL CLIP!*/
+        /*EVALUO SI L'USUARI HA SELECCIONAT ELS ARXIUS QUAN HI HAGI HAGUT UN CANVI EN L'INPUT! SI NO, 
+        NO FAIG SOLICITUD FETCH! AIXI M'ESTALVIO UN BOTO DE PUJAR. TOT AMB L'ICONO DEL CLIP!*/
         input.addEventListener("change", () => {
 
             const arxiusPujats = input.files;
@@ -19,10 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
             const dadesFormulari = new FormData();
             for (let i = 0; i < arxiusPujats.length; i++) {
-                dadesFormulari.append('arxius', arxiusPujats[i]); // "arxius" es el campo que espera FastAPI
+                dadesFormulari.append('arxius', arxiusPujats[i]); // "arxius" es el camp que espera FastAPI
                 console.log(arxiusPujats[i].name);
             }
 

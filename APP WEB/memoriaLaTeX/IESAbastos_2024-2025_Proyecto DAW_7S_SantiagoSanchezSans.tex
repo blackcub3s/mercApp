@@ -1906,9 +1906,11 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 
 
-	\noindent \textbf{PARTE2: Subir tickets digitales del ordenador del usuario con JavaSceript hacia el back-end de fastAPI para su procesamiento}
+	\noindent \textbf{PARTE2: Subir tickets digitales del ordenador del usuario al sistema de archivos del proyecto con fastAPI (JavaScript)}
 	\hrule
 	\vspace{.5em}
+	
+	
 	
 	
 	
@@ -1923,14 +1925,31 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	\textbf{TO DO TO DO POSAR A LA IMATGE ANTERIOR UN FRAGMENT DEL JAVASCRIPT QUE FA LA CRIDA EN PAS4 CAP A ENDPOOINT API/suvir-tickets-pdfs}
+	Al clicar en ese icono activaremos un evento change que abrirá un cuadro de diálogo para subir los pdfs, y cuando le demos a abrir automáticamente hará una solicitud fetch al endpoint \textit{/api/subir-tickets-pdf} del controlador de fastAPI: subiendo los pdfs al sistema de archivos -aquí todavía no queremos guardado en base de datos- (el codigo javascript que lo consigue conforma íntegramente todo el contenido del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/pujaPdfs.js}{pujaPdfs.js}, que es donde está la solicitud POST con la función fetch correspondiente).
+	
+	Nótese que para subir PDFs necesitamos un formulario: normalmente usaríamos el botón que se genera con la etiqueta HTML \textit{input}. Pero en este caso no hay ni rastro de él. Esto es porque es la propia imagen la que hace la función de botón \textit{input}: es mediante click a ella que se consigue llamar a la etiqueta input, gracias a que está anidada en la etiqueta \textit{label} y que usamos el atributo for que la enlaza mediante id a la etiqueta \textit{input} (véase imagen \ref{fig:pujarTicketsAuxiliarLabelHTML}).
+	
+	
+	\begin{figure}[H]
+		\centering
+		\caption{Código HTML que posibilita ocultar el botón \textit{input} y hacer que sea el icono de la imagen del Paso 2 el que tenga su comportamiento, permitiendo así brir el menú contextual y subir los tickets. Detalle del Fragmento CSS para ocultar el input y de como tomamos el input que contendrá los PDFs con.}
+		\includegraphics[width=1\linewidth]{img/pujarTicketsAuxiliarLabelHTML}
+
+		\label{fig:pujarTicketsAuxiliarLabelHTML}
+	\end{figure}
+	
 
 			
-	\noindent \textbf{PARTE 3: Navegador espera que termine el proceso y recibe token de acceso con permisos 1}
+	\noindent \textbf{PARTE 3: Mandar a procesar los tickets subidos en el paso 2 mediante el back-end}
 	\hrule
 	\vspace{.5em}
 	
-	Al termi
+	
+	
+	
+	\textbf{TO DO}
+	
+	Una vez terminada la parte 3 el navegador recibe token de acceso con permisos 1 (y se redirige automáticamente al dashboard, como ya vimos en los scripts de protección de vistas públicas)
 		
 	\subsection{Arquitectura (JavaScript): páginas públicas}
 	\label{sec:arquitecturaPaginesPubliques}
