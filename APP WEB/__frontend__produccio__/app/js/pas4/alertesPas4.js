@@ -18,10 +18,13 @@ function posaMissatgesAusuari_PASO2_mandanosTickets(pujats, refusats, ticketsExi
 function posaMissatgesAusuari_PASO2_contaTicketsSistemaArxiusServidor(ticketsExistents) {
     const bannerMissatgesPas4 = document.getElementById("bannerMissatgeArxiusPujats");
 
-    bannerMissatgesPas4.innerHTML = `   <ul>
-                                            <li>has facilitado <b>${ticketsExistents} tickets</b> al sistema</li>
-                                        </ul>
-                                    `
+    if (ticketsExistents != 0) {
+        bannerMissatgesPas4.innerHTML = `   <ul>
+                                                <li>has facilitado <b>${ticketsExistents} tickets</b> al sistema</li>
+                                            </ul>
+                                        `
+    }
+
 
     //HEM DE TREURE EL BORDER QUE SEPARA ELS PUJATS I REFUSATS dels TICKETSEXISTENTS. PERQUÈ EN AQUESTA VISTA
     //NO NECESSITEM UN BORDER DAMUNT DEL LI DELS TICKETS EXISTENTS
