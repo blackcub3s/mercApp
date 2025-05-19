@@ -1136,7 +1136,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	\begin{itemize}
 	\setlength{\itemsep}{-.3em}
-		\item \textbf{PARTE 1}: FastAPI recibe la POST \textbf{REQUEST} con los tickets adjuntos desde el cliente junto con el token con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin}.
+		\item \textbf{PARTE 1}: FastAPI recibe la POST \textbf{REQUEST} en el endpoint del controlador \href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L111-L128}{/api/subir-tickets-pdf} con los tickets adjuntos desde el cliente junto con el token con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin}.
 		\item \textbf{PARTE 2}: FastAPI delega en el service de Python (PyPDF2) el parseo de todos los tickets con un algoritmo de extracción [\ref{sec:PARTE2_FASTAPI}].
 		\item \textbf{PARTE 3}: FastAPI manda los tickets parseados a MongoDB [\ref{sec:PARTE3_FASTAPI}].
 		\item \textbf{PARTE 4}: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot: ahí se actualiza la variable de permisos en la bbdd mySql, y se recibe como respuesta un nuevo token de acceso fresco con los permisos actualizados a 1 [\ref{sec:PARTE4_FASTAPI}].
@@ -1153,7 +1153,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\subsubsection{PARTE 1:  FastAPI recibe la POST \textbf{request} con los tickets adjuntos desde el cliente}
 		\label{sec:PARTE1_FASTAPI}
 		
-		\textbf{TO DO}
+		La solicitud se hace al endpoint \protect\href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L111-L128}{/api/subir-tickets-pdf}. Ahí se adjuntan los pdfs (la validacion de datos de este endpoint se especifica en sección \ref{sec:validacioDadesApiSubirtickets}).
 		
 		\subsubsection{PARTE 2: FastAPI parsea todos los tickets con un algoritmo de extracción}
 		\label{sec:PARTE2_FASTAPI}
@@ -1197,15 +1197,15 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	Es importante mencionar que la gestión de tokens en Python (FastAPI) se hace notablemente más sencilla que con Java (Spring Boot). Por ejemplo, con FastAPI podemos conseguir que los endpoints no permitan solicitudes entrantes si el token ha caducado sin tener que gestionar la lógica de programación manualmente como sí teníamos que hacer con Spring Boot: en Spring Boot necesitábamos programar un total de 4 clases (dos clases para definir creación del token de acceso \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt/AccessToken.java}{AccessToken.java} y lectura \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt/JwtUtil.java}{JwtUtil.java}; otra clase para manejar las excepciones de un token expirado y forzar que solo usuarios con un cierto id puedan acceder a contenidos: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java}{FiltreAutenticacioJwt.java}; y finalmente una clase que defina un Bean que permita acceso a determinados endpoints a determinados usuarios según permisos, con la función requestMatchers: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/ConfiguracioSeguretat.java}{ConfiguracioSeguretat.java}). Por el contrario, en FastAPI, con la librería de Python \textit{JOSE} \cite{pythonJose}\footnote{un nombre aparentemente muy español pero cuyo acrónimo significa \textit{JavaScript Object Signing and Encryption (JOSE)}} se hace todo muy rápido.
 	
-	\subsection{Validación de datos (end-point entrada PDFs)}
-
+	\subsection{Validación de datos (``/api/subir-tickets-pdf'')}
+	\label{sec:validacioDadesApiSubirtickets}
 
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Llamada al endpoint ``\href{www.google.com}{/api/subir-tickets-pdf}' $|$.\textbf{ Izq}: Solicitud POST con Postman: en verde, archivos que se suben correctamente; en rojo, archivos que servidor rechaza con las validaciones en fastAPI. $|$ \textbf{Der}: Solicitud POST con el navegador $|$ \textbf{Debajo}: PDFs subidos al sistema de archivos del servidor con fastAPI.}
+		\caption{Llamada al endpoint ``/api/subir-tickets-pdf'' $|$.\textbf{ Izq}: Solicitud POST con Postman: en verde, archivos que se suben correctamente; en rojo, archivos que servidor rechaza con las validaciones en fastAPI. $|$ \textbf{Der}: Solicitud POST con el navegador $|$ \textbf{Debajo}: PDFs subidos al sistema de archivos del servidor con fastAPI.}
 		\includegraphics[width=1\linewidth]{img/validacionsArxiusPujadaEndpointTickets} 
 		\label{fig:validacionsArxiusPujadaEndpointTickets}
 	\end{figure}
@@ -1867,6 +1867,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\label{sec:pas4googleAPIclient}
 	
 	
+	\textbf{NOTA:} \textit{las peticiones HTTP hacia fastAPI vistas desde el punto de vista del back-end, se muestran en la sección \ref{sec:solicitudDeExtraccion} y son complementarias a este apartado -que sólo está dedicado al front-end-.}
+	
+	
 	
 		
 	\noindent \textbf{PARTE 1: llamada a google API client}
@@ -1907,8 +1910,6 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-		
-	\textbf{NOTA:} \textit{El procesado que involucra servidor lo mostraremos en otra sección: la parte de la solicitud de subida y parseo de datos en fastAPI: sección \ref{sec:solicitudDeExtraccion}.}
 	
 	
 	La subida de tickets digitales desde el front-end la hacemos como vemos en la figura \ref{fig:pujarticketspas5}:
