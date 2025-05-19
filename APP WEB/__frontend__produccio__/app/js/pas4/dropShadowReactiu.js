@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const deltaY = y - centerY;
 
             // Invertimo perquè la sombra vagi en la direcció oposada
-            const offsetX = -deltaX / 5;  // escala la sombra, ajusta el divisor
-            const offsetY = -deltaY / 5;
+            const offsetX = -deltaX / 7;  // escala la sombra, ajusta el divisor
+            const offsetY = -deltaY / 7;
 
             img.style.filter = `drop-shadow(${offsetX}px ${offsetY}px 2px rgba(0, 0, 0, 0.25))`;
         });
