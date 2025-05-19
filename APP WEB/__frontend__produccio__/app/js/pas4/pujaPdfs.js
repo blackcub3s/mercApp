@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /*Prenc l'icono del clip!*/
     const iconoAdjuntaTickets = document.getElementById("labelIconoPujar");
-
     iconoAdjuntaTickets.addEventListener("click", () => {
         console.log("icono clicat!");
 

@@ -37,7 +37,8 @@ def mostraTicketsExistentsDinsCarpetaUsuari(idUsuari):
         return 0
       
 
-#TESTS (NO S'EXECUTEN AL IMPORTAR L'ARXIU, NOMÉS EN EXECTUAR DIRECTAMET AQUEST ARXIU
+#TESTS (NO S'EXECUTEN AL IMPORTAR L'ARXIU, NOMÉS EN EXECTUAR DIRECTAMENT DES DE LA TERMINAL
+#AMB COMANDA --> "python serveiValidacions.py"
 if __name__ == "__main__":
     print(ticketValidat("20240131 Mercadona 2,00 €.pdf"))   # True
     print(ticketValidat("20240131 Mercadona 2,00 €.pdf"))   # True
@@ -46,5 +47,5 @@ if __name__ == "__main__":
     print(ticketValidat("20240117 Mercadona 2,00.pdf"))     # False (falta euro)
     print(ticketValidat("2024 Mercadona 2,00 €.pdf"))       # False (data massa curta)
     print(ticketValidat(""))                                # False (string buit)
-    print(ticketValidat("asqowpee-´`+`'')(-)<>.pdf"))       # Fakse (Caracters raros)
+    print(ticketValidat("asqowpee-´`+`'')(-)<>.pdf"))       # False (Caracters raros)
     print(ticketValidat("20240117 Carrefour 2,00 €.pdf"))   # False (fiquem un super que no és)
