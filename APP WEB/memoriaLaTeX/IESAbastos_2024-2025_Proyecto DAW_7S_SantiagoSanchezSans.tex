@@ -305,10 +305,7 @@
 			
 			\textbf{REQUISITO B:} Mostrar {\textbf{gasto total en distintas ventanas temporales}} del usuario: períodos de 1, 3, 6 meses y un año), independientemente del centro de Mercadona en el que se compre (todos juntos).
 			
-			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 13 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carne, pescado, hogar e higiene personal, Pan y pastelería, pasta, arroz y legumbres, Snacks y dulces, Mascotas, sin clasificar.
-			
-			
-			\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
+			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 13 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carne, pescado, hogar e higiene personal, Pan y pastelería, pasta, arroz y legumbres, Snacks y dulces, Mascotas, sin clasificar\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
 			
 			
 			%REQUISIT D I E NO EREN A LA REDACCCIO DEL PROJECTE INICIAL CREC
@@ -407,7 +404,7 @@
 				\begin{figure}[H]
 					\centering
 					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTRE.png}
-					\caption{Simplificación de los caminos activados en el diagrama de sistemas durante el registro de un usuario, hasta que este tiene acceso al dashboard de visualización con éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash contraseña. c) Mandamos vista al usuario para que nos dé acceso a tickets digitales junto con token de acceso con permisos = 0. d) usuario se autentica con \textbf{google API client.} e) tickets regresan al navegador. f) fastAPI recoge los  tickets y los parsea a formato JSON estructurado. g) fastAPI delega en SpringBoot la persistencia de datos. h) la persistencia de los tickets se hace en MongoDB. i) Spring Boot manda token de acceso con permisos = 1 para que frontend muestre el análisis de los tikets en el dashboard.}
+					\caption{Simplificación de los caminos activados en el diagrama de sistemas durante el registro de un usuario, hasta que este tiene acceso al dashboard de visualización con éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash contraseña. c) Mandamos token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con \textbf{google API client.} e) tickets regresan al navegador. f) fastAPI recoge los  tickets y los parsea a formato JSON estructurado. g) fastAPI delega en SpringBoot la persistencia de datos. h) la persistencia de los tickets se hace en MongoDB. i) Spring Boot manda token de acceso con permisos = 1 para que frontend muestre el análisis de los tikets en el dashboard.}
 					\label{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE} 
 				\end{figure}
 				\FloatBarrier
@@ -1822,7 +1819,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	Un aspecto diferencial con el \textbf{dashboard} es que el diseño responsive ha implicado generar una media query en la que le pedíamos en los selectores descendientes que invirtieran el orden en el que aparecían el contenedor de las imágenes en relación al contenedor del texto (h1 y h2): nótese que en el HTML el icono descarga de tickets y el icono del engranaje aparecen después del contenedor de h1 y h2 del texto porque queremos hacer que aparezcan a la derecha: así alternan los iconos y el texto en la vista de escritorio en un grid de dos columnas. 
+	Un aspecto diferencial con el \textbf{dashboard} es que el diseño responsive ha implicado generar una media query en la que le pedíamos en los selectores descendientes que invirtieran el orden en el que aparecían el contenedor de las imágenes en relación al contenedor del texto (h1 y h2): nótese que en el HTML el icono descarga de tickets y el icono del engranaje aparecen después del contenedor del texto porque queremos hacer que aparezcan a la derecha: así alternan los iconos y el texto en la vista de escritorio en un grid de dos columnas. 
 	
 	Sin embargo, este diseño de la versión de escritorio tiene un inconveniente: que al ponerlo en vertical en un grid de una sola columna para la versión mobile tanto el icono de ``descarga tickets'' como el de ``relájese'' aparezcan en orden inverso (debajo del texto y no encima). La solución a esta problemática está en hacer que la primera fila del grid en esos casos, que es el texto, ocupe la segunda posición en la columna vertical mediante la propiedad \textit{grid-row: 2} como podemos ver en la imagen \ref{fig:pas4grid1col} (mismo código en contexto, marcado línea a línea \href{https://github.com/blackcub3s/mercApp/blob/75141ebaa42e677993ba88e1dfe73d417ef6386c/APP%20WEB/__frontend__produccio__/app/css/pas4/estilsEspecificsPas4.css#L57-L65}{aquí}). En esta misma imagen también podemos ver la adición de una línea separadora en la versión mobile.
 	
