@@ -35,7 +35,8 @@ def mostraTicketsExistentsDinsCarpetaUsuari(idUsuari):
        return len(os.listdir(f"./tickets/{idUsuari}"))
     except FileNotFoundError: #No existeix la carpeta o la ruta recollim l'excepció (n'hi hauria 0!)
         return 0
-      
+
+
 
 #TESTS (NO S'EXECUTEN AL IMPORTAR L'ARXIU, NOMÉS EN EXECTUAR DIRECTAMENT DES DE LA TERMINAL
 #AMB COMANDA --> "python serveiValidacions.py"
