@@ -29,5 +29,40 @@ function posaMissatgesAusuari_PASO2_contaTicketsSistemaArxiusServidor(ticketsExi
     //HEM DE TREURE EL BORDER QUE SEPARA ELS PUJATS I REFUSATS dels TICKETSEXISTENTS. PERQUÈ EN AQUESTA VISTA
     //NO NECESSITEM UN BORDER DAMUNT DEL LI DELS TICKETS EXISTENTS
     const liTicketsExistents = document.querySelector('#bannerMissatgeArxiusPujats > ul > li:last-child');
-    liTicketsExistents.style.borderTop = '0px dashed var(--colorTitolsPas4)';
+    if (liTicketsExistents) {
+        liTicketsExistents.style.borderTop = '0px dashed var(--colorTitolsPas4)';
+    }
+}
+
+
+
+function posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(ticketsExistents) {
+        const bannerMissatgesPas3_Parseig = document.getElementById("bannerMissatge_PAS3_PARSEIG");
+
+    if (ticketsExistents == 0) {
+        bannerMissatgesPas3_Parseig.innerHTML = `<ul>
+                                                    <li>No subiste tickets! Vuelve al paso 2</li>
+                                                </ul>
+                                                `
+    } else if (ticketsExistents == 1) {
+        bannerMissatgesPas3_Parseig.innerHTML = `<ul>
+                                                    <li>Vuelve al paso 2. Añade más tickets.</li>
+                                                </ul>
+                                                `
+    } else {
+        bannerMissatgesPas3_Parseig.innerHTML = `<ul>
+                                                    <li>TO DO --> POSA AQUI MISSATGE D EXIT O D ERROR DE PARSEIG.</li>
+                                                </ul>`
+                                                                                         
+    }
+    
+
+
+    //HEM DE TREURE EL BORDER QUE SEPARA ELS PUJATS I REFUSATS dels TICKETSEXISTENTS. PERQUÈ EN AQUESTA VISTA
+    //NO NECESSITEM UN BORDER DAMUNT DEL LI DELS TICKETS EXISTENTS
+    const liTicketsExistents = document.querySelector('#bannerMissatge_PAS3_PARSEIG > ul > li:last-child');
+    if (liTicketsExistents) {
+        liTicketsExistents.style.borderTop = '0px dashed var(--colorTitolsPas4)';
+    }
+    
 }

@@ -57,6 +57,7 @@ body {
 de la imatge de la descàrrega. Idem per a l'imatge de pujar els tickets (el clip)!*/
 #tresPassos section:first-child  section:nth-child(2) {cursor: pointer;}
 #tresPassos section:nth-child(2) section:first-child label {cursor: pointer;} /*fem el mateix a la imatge dels adjunts*/
+#tresPassos section:nth-child(3) section:nth-child(2) {cursor: pointer;} /*fem el mateix a la imatge de l'engranatge*/
 
 #tresPassos > section:first-child {padding-top: 4em;} /*Poso padding entre el section del pas1 i la header*/
 #tresPassos section:first-child section:first-child {padding: 2em;} /*paragrafs tikets (paso 1)*/
@@ -96,6 +97,35 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 
 
 
+
+
+
+/*MANEIG DEL FEEDBACK PER AL PAS 3 
+(AFEGEIXO TERCER SECTION DINS EL SECTION DE PASD 3)*/
+#bannerMissatge_PAS3_PARSEIG {
+    color: var(--colorTitolsPas4);
+}
+
+#bannerMissatge_PAS3_PARSEIG > ul {
+    text-align: center;
+    border: 2px dashed var(--colorTitolsPas4);
+    border-radius: .2em;
+    font-size: 1.2em;
+    list-style: none;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+#bannerMissatge_PAS3_PARSEIG > ul li:last-child {
+    border-top: 2px dashed var(--colorTitolsPas4);
+    background-color: var(--fiGradient);
+}
+
+
+
+
+
+
 /*MEDIA QUERIES (per a disseny responsive)*/
 @media (max-width: 700px) {
     #tresPassos > section {
@@ -104,7 +134,7 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 
     /*Invertimos orden de grupo imagen y grupo h1/h2 en paso1 y paso3*/
     #tresPassos > section:first-child section:first-child {grid-row: 2;} /*ponemos la img de iconoDescarrega antes del texto Paso1 (porque con el grid aparecería al reves ya que el orden en el html es alrevés para que apareciese la imagen a la derecha)*/
-    #tresPassos > section:last-child section:first-child {grid-row: 2;} /*Idem al caso anterior: pero con la sección de relájate y espera a que guardemos los datos*/
+    #tresPassos > section:last-child section:first-child {grid-row: 2;} /*Idem al caso anterior: pero con la sección de engranaje que guardemos los datos*/
 
     /*Añadimos línea separadora para la página responsive*/
     #tresPassos > section:first-child, #tresPassos > section:nth-child(2) {border-bottom: 1px dashed black;} 

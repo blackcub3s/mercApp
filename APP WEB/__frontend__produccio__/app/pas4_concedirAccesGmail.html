@@ -35,6 +35,7 @@
     <script src="js/pas4/alertesPas4.js"></script>
     <script src="js/pas4/pujaPdfs.js"></script>
     <script src="js/pas4/contaPdfsPujats.js"></script>
+    <script src="js/pas4/demanaExtraccioPdfs.js"></script>
 
 
 </head>
@@ -93,10 +94,9 @@
 
             <!-- aquí pujarem els banners informatius (nombre d'arxius pujats)-->
             <section id = "bannerMissatgeArxiusPujats"></section>
-            
         </section>
 
-
+        <!-- PAS 3: ENGRANATGE AMB EL QUE SE SOL·LICITA L'EXTRACCIÓ DE LES DADES DELS PDFs -->
         <section>
             <section>
                 <h1><span class = "colorEnfasisTitol">Paso 3</span>: Inicia la extracción de datos.</h1>
@@ -105,8 +105,11 @@
                     en PDF y analizará sus datos. Al terminar serás redirigido a tu <i>dashboard</i> de visualización de datos.</h2>
             </section>
             <section  class = "contenidorIconos">
-                <img src="img/pas4/engranatgeProcessament.png" alt="Clica para procesar PDFs">
+                <img id = "botoDemanaExtraccioPdfs" src="img/pas4/engranatgeProcessament.png" alt="Clica para procesar PDFs">
             </section>
+
+            <!-- aquí pujarem els banners informatius (del parseig i pujada a BBDD)-->
+            <section id = "bannerMissatge_PAS3_PARSEIG"></section>
         </section>
 
     </section>

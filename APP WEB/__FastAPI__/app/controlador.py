@@ -129,6 +129,27 @@ async def contaPDFsPujatsAservidor(payload_token: dict = Depends(verificar_token
 
 
 
+@app.post("/api/parsea-y-guarda-pdfs-en-bbdd")                                 
+async def pujarPdfsTicketDigital(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
+    
+    permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
+    idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
+
+    #PERMETO usuaris amb [permisos a (0)] --> no tenen tickets a mongoDB (els del pas4), però SÍ poden tenir PDFs pujats al sistema d'arxius
+    #                                          [permisos a (2)] --> son admins i poden fer el que volen.
+    # -----------------------------------------------------------------------------------------------------
+    #NO PERMETO usuaris amb [permisos a (1)] --> JA tenen tickets pujats a mongoDB. No els donarem PER ARA possibilitat de pujar més tickets.
+    permisosPermesos = [0,2] 
+    if permisos_enToken not in permisosPermesos:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Els permisos permesos son només: {permisosPermesos}"
+        )
+    
+    
+    return {
+        "existentes" : serveiValidacions.mostraTicketsExistentsDinsCarpetaUsuari(idUsuari_enToken), 
+    }
 
 
 
