@@ -38,6 +38,7 @@ body {
     padding-top: 3em;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    place-items: center; /*centrem iconos!*/
 }
 
 /*Definim el tamany de les 3 imatges dels 3 passos*/
