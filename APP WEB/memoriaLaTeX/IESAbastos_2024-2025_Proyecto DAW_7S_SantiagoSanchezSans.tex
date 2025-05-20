@@ -1130,17 +1130,16 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\label{sec:solicitudDeExtraccion}
 	
 	
-	\textbf{NOTA:} \textit{la petición POST con JavaScript desde el front-end hacia el endpoint de subida de datos se mostró en la PARTE 2 del apartado anterior \ref{sec:pas4googleAPIclient}, sobre front-end}
+	\textbf{NOTA:} \textit{la petición POST con JavaScript desde el front-end hacia el endpoint de subida de datos que mostraremos en las próximas líneas ya se mostró en la PARTE 2 del apartado anterior \ref{sec:pas4googleAPIclient}, dedicada a JavaScript en el front-end.}
 	
 	Al recibir el servidor de FastAPI una solicitud POST con los PDFs adjuntos y el Token de acceso con permisos a 0 en el endpoint /api/subir-tickets-pdf vamos a empezar la extracción de datos de los tickets. A continuación mostramos exhaustivamente los 5 pasos o partes, que deberán ejecutarse con éxito todas y cada una de ellas, y de forma SECUENCIAL, para que el proceso funcione correctamente y devuelva una RESPONSE con código de éxito:
 	
 	\begin{itemize}
 	\setlength{\itemsep}{-.3em}
-		\item \textbf{PARTE 1}: FastAPI recibe la POST \textbf{REQUEST} en el endpoint del controlador \href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L111-L128}{/api/subir-tickets-pdf} con los tickets adjuntos desde el cliente junto con el token con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin}.
-		\item \textbf{PARTE 2}: FastAPI delega en el service de Python (PyPDF2) el parseo de todos los tickets con un algoritmo de extracción [\ref{sec:PARTE2_FASTAPI}].
-		\item \textbf{PARTE 3}: FastAPI manda los tickets parseados a MongoDB [\ref{sec:PARTE3_FASTAPI}].
-		\item \textbf{PARTE 4}: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot: ahí se actualiza la variable de permisos en la bbdd mySql, y se recibe como respuesta un nuevo token de acceso fresco con los permisos actualizados a 1 [\ref{sec:PARTE4_FASTAPI}].
-		\item \textbf{PARTE 5}: FastAPI manda la \textbf{RESPONSE} con el nuevo token de acceso con permisos a 1 al front-end, a la página pas4 (el pas4 ya redirigirá automáticamente al dashboard)[\ref{sec:PARTE5_FASTAPI}].
+		\item \textbf{PARTE 1}:PARTE 1:  FastAPI recibe la POST \textbf{request} con los tickets adjuntos desde el cliente \href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L111-L128}{/api/subir-tickets-pdf} con los tickets adjuntos desde el cliente junto con el token con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin}.
+		\item \textbf{PARTE 2}: FastAPI parsea todos los tickets con un algoritmo de extracción [\ref{sec:PARTE2_FASTAPI}].
+		\item \textbf{PARTE 3}: FastAPI manda a MongoDB los datos de los tickets parseados [\ref{sec:PARTE3_FASTAPI}].
+		\item \textbf{PARTE 4}: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot, se actualiza permisos en bbdd, y este último le manda de vuelta un nuevo token (con permisos a 1) [\ref{sec:PARTE4_FASTAPI}].
 	\end{itemize}
 
 	
@@ -1153,11 +1152,14 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\subsubsection{PARTE 1:  FastAPI recibe la POST \textbf{request} con los tickets adjuntos desde el cliente}
 		\label{sec:PARTE1_FASTAPI}
 		
-		La solicitud se hace al endpoint \protect\href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L111-L128}{/api/subir-tickets-pdf}. Ahí se adjuntan los pdfs (la validacion de datos de este endpoint se especifica en sección \ref{sec:validacioDadesApiSubirtickets}).
+		La solicitud HTTP mencionada en el título se dirige el endpoint \href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L111-L128}{/api/subir-tickets-pdf}\footnote{Recordamos que se produce al clicar al icono del clip en el pas4.}.Con esta solicitud conseguimos adjuntar los pdfs del ordenador del usuario al sistema de archivos del servidor (la validación de datos de este endpoint se especifica en sección \ref{sec:validacioDadesApiSubirtickets}).
 		
 		\subsubsection{PARTE 2: FastAPI parsea todos los tickets con un algoritmo de extracción}
 		\label{sec:PARTE2_FASTAPI}
-		El correo electrónico más antiguo y más nuevo prácticamente no difieren, con lo cual se puede reaprovechar un mismo algoritmo para todos los tickets como podemos ver en la imagen \ref{fig:primerIultimTiketMeuCorreu}:
+		
+		Para iniciar el parseo de ficheros se empieza con una llamada POST al endpoint \href{https://github.com/blackcub3s/mercApp/blob/f5413ed8cf7ed88c5ed18299564b836d27c52bd4/APP%20WEB/__FastAPI__/app/controlador.py#L132-L152}{/api/parsea-y-guarda-pdfs-en-bbdd}\footnote{Recordamos que esta llamada se hace con el click al engranaje del pas4.}. El algoritmo de extracción se encuentra en el archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiTickets.py}{serveiTickets.py} al que llamamos desde el controlador mencionado y su programación ha sido posible gracias a la existencia de la librería PyPDF2 \cite{PyPDF2}.
+		
+		El correo electrónico más antiguo y más nuevo contienen tickets que prácticamente no difieren. Por ello el algoritmo de extracción servirá para todos los tickets de Mercadona: como podemos ver en la imagen \ref{fig:primerIultimTiketMeuCorreu}.
 		
 		
 		
@@ -1165,29 +1167,45 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\setlength{\belowcaptionskip}{3pt}
 		\begin{figure}[H]
 			\centering
-			\caption{A la \textbf{izquierda}: la primera compra en Mercadona hecha con ticket digital por mi parte: en un supermercado en Catalunya; a la \textbf{derecha} la última compra que se ha hecho por mi parte: en la comunitat valenciana. Nótese que en la extracción hay que tener en cuenta el distinto idioma que se puede dar en distintas comunidades autónomas. La dirección desde la que se mandan los tickets digitales no ha cambiado en dos años y el formato general del tiket es exactamente igual a términos de parseo: Hay que prestar atención a posibles problemas con el unicode (círculo marrón).}
+			\caption{A la \textbf{izquierda}: la primera compra en Mercadona que hice en 2023 con ticket digital, en un supermercado en Catalunya; a la \textbf{derecha} la última compra que se hizo: en la Comunitat Valenciana. Nótese que en la extracción hay que tener en cuenta el distinto idioma que se puede dar en distintas comunidades autónomas (Euskadi, Galicia no han sido testeadas). La dirección de correo desde la que se mandan los tickets digitales no ha cambiado en dos años y el formato general del ticket es exactamente igual en términos de parseo: hay que prestar, empero, atención a posibles problemas con UNICODE (círculo marrón) en tickets antiguos.}
 			\includegraphics[width=1\linewidth]{img/primerIultimTiketMeuCorreu}
 			\label{fig:primerIultimTiketMeuCorreu}
 		\end{figure}
 		\FloatBarrier
 		
-		\textbf{CONTINUAR TO DO TO DO TO DO TO DO}
 		
 	
 		
-		\subsubsection{PARTE 3: FastAPI manda los tickets parseados a MongoDB}
+		\subsubsection{PARTE 3: FastAPI manda a MongoDB los datos de los tickets parseados}
 		\label{sec:PARTE3_FASTAPI}
 		
-		\subsubsection{PARTE 4: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot: ahí se actualiza la variable de permisos en la bbdd mySql, y se recibe como respuesta un nuevo token de acceso fresco con los permisos actualizados a 1}
+		
+		Mientas dura la llamada POST al endpoint \href{https://github.com/blackcub3s/mercApp/blob/f5413ed8cf7ed88c5ed18299564b836d27c52bd4/APP%20WEB/__FastAPI__/app/controlador.py#L132-L152}{/api/parsea-y-guarda-pdfs-en-bbdd}, que iniciamos en la PARTE 1, va a acontecer el guadado de los datos extraídos en un formato para poder hacer búsquedas eficientes en una base de datos NOSql: MongoDB.
+		
+		Desde el algoritmo de extracción que ya hemos mencionado (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiTickets.py}{serveiTickets.py}) podemos ver que hacemos llamada a funciones que residen en la capa de persistencia de nuestro back-end de fastAPI \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/repositoriTickets.py}{repositoriTickets.py}, que es la responsable de guardar los datos a MongoDB.
+		
+		\textbf{NOTA}: \textit{Este paso se puede alargar dependiendo del número de tickets que debamos procesar. Si se diese el caso el protocolo HTTP no nos serviría y deberíamos explorar otros caminos (Websockets, gPRC), porque el navegador podría no permitir tener una conexión abierta mucho tiempo; en el momento de la entrega del proyecto puede que hayamos tomado alguno de esos caminos alternativos -pero a ser posible se seguirá con protocolo HTTP por simplicidad-.}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		\subsubsection{PARTE 4: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot, se actualiza permisos en bbdd, y este último le manda de vuelta un nuevo token (con permisos a 1)}
 		\label{sec:PARTE4_FASTAPI}
 		
-		\subsubsection{PARTE 5: FastAPI manda la \textbf{RESPONSE} con el nuevo token de acceso con permisos a 1 al front-end, a la página pas4 (el pas4 ya redirigirá automáticamente al dashboard)}
-		\label{sec:PARTE5_FASTAPI}
+		Desde FastAPI haremos una llamada (como si fuese un cliente) hacia Spring Boot. Si el token entrante es válido, se actualizará la variable de permisos en la bbdd mySql cambiándose de 0 a 1. Acto seguido, Springboot nos mandará de vuelta un nuevo token de acceso ``fresco'' con los permisos actualizados a 1. Al recibirlo en el cliente (\texttt{pas4\_concedirAccesGmail.html}) con JavaScript seremos dirigidos al dashboard en menos de un segundo).
+		
+		
 	
 	
 	\subsection{Gestión de solicitudes: token de acceso}
 	
-	Con fastAPI no emitimos tokens de acceso: esto lo gestionamos con Spring Boot. Con fastAPI los recibimos y  procesamos: \textbf{si al hacerlo son válidos y no caducados, permitimos solicitudes entrantes.}
+	Con fastAPI no emitimos tokens de acceso: esto lo gestionamos con Spring Boot. Con fastAPI los recibimos del cliente y los procesamos\footnote{A excepción del caso especial de la PARTE 4!}: \textbf{si al hacerlo son válidos y no caducados, permitimos solicitudes entrantes.}
 	
 	Por ejemplo, en dos endpoints de fastAPI (``\textit{/api/subir-tickets-pdf}'' y ``\textit{/api/conta-pdfs-servidor}'') llamados desde \texttt{pas4\_concedirAccesGmail.html} en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/controlador.py}{controlador.py}  podemos ver esta línea:``\textit{payload\_token: dict = Depends(verificar\_token)}''
 	 
@@ -1213,9 +1231,9 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	
 	Al subir PDFs al sistema de archivos del servidor hemos tenido mucho cuidado, como vemos en la figura \ref{fig:validacionsArxiusPujadaEndpointTickets}.
-	La validación de los datos se ha hehco antes de guardar los PDFs en el sistema de archivos del servidor, desde el lado del servidor (no desde el cliente). Se ha hecho trabajo en este aspecto tanto en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/controlador.py}{controlador.py} como en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiValidacions.py}{serveiValidacions.py}. 
+	La validación de los datos se ha hecho antes de guardar los PDFs en el sistema de archivos del servidor, desde el lado del servidor (no desde el cliente). Se ha hecho trabajo en este aspecto tanto en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/controlador.py}{controlador.py} como en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiValidacions.py}{serveiValidacions.py}. 
 	
-	Sabemos que Será el usuario el que se descargue los tickets en pdf de su gmail; pero luego, no podemos confiar que este sea responsable y suba archivos sin alterar al sistema de archivos de fastAPI. Por ende, se han verificado que se suban archivos en PDF (MIME type ``application/pdf'') como tipo de datos entrante. Luego, se ha mirado que los tamaños de los archivos estén comprendidos entre unos límites razonables, dado que cada Ticket digital de Mercadona ocupaba 36KB en 2023, reduciéndose a 33KB en 2025, podemos establecer unos intervalos (véase detalle de líneas en \href{https://github.com/blackcub3s/mercApp/blob/88fce1d375b0ca0d59814bbda12e42573be376b6/APP%20WEB/__FastAPI__/app/controlador.py#L13-L14}{este commit}).
+	Sabemos que será el usuario quien se descargue los tickets en pdf de su Hmail; pero luego, no podemos confiar que este sea responsable y suba archivos sin alterar al sistema de archivos de fastAPI. Por ende, se han verificado que se suban archivos en PDF (MIME type ``application/pdf'') como tipo de datos entrante. Luego, se ha mirado que los tamaños de los archivos estén comprendidos entre unos límites razonables, dado que cada Ticket digital de Mercadona ocupaba 36KB en 2023, reduciéndose a 33KB en 2025, podemos establecer unos intervalos (véase detalle de líneas en \href{https://github.com/blackcub3s/mercApp/blob/88fce1d375b0ca0d59814bbda12e42573be376b6/APP%20WEB/__FastAPI__/app/controlador.py#L13-L14}{este commit}).
 	
 	
 	
@@ -1864,11 +1882,11 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\textbf{HI HA MES ARXIUS DE PERSISTENCIA? REAVALUAHO??}
 		\textbf{HI HA MES ARXIUS DE PERSISTENCIA? REAVALUAHO??}
 	
-	\subsubsection{Arquitectura pas4}
+	\subsubsection{Arquitectura pas4\_concedirAccesGmail.html}
 	\label{sec:pas4googleAPIclient}
 	
 	
-	\textbf{NOTA:} \textit{las peticiones HTTP hacia fastAPI vistas desde el punto de vista del back-end, se muestran en la sección \ref{sec:solicitudDeExtraccion} y son complementarias a este apartado -que sólo está dedicado al front-end-.}
+	\textbf{NOTA:} \textit{las peticiones HTTP hacia fastAPI (controlador.py) vistas desde el punto de vista del back-end, se muestran en la sección \ref{sec:solicitudDeExtraccion} y son complementarias a este apartado -que sólo está dedicado al front-end-.}
 	
 	
 	

@@ -1,0 +1,1 @@
+print("Aqui farem les operacions de persistència cap a mongoDB")
