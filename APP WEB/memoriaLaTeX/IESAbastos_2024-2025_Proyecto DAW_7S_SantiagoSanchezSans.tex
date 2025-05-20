@@ -1907,7 +1907,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 
 
-	\noindent \textbf{PARTE2: Subir tickets digitales del ordenador del usuario al sistema de archivos del proyecto de fastAPI (llamada JavaScript $\rightarrow$ \textit{api/subir-tickets-pdf})}
+	\noindent \textbf{PARTE 2: Subir tickets digitales del ordenador del usuario al sistema de archivos del proyecto de fastAPI (llamada JavaScript $\rightarrow$ \textit{api/subir-tickets-pdf})}
 	\hrule
 	\vspace{.5em}
 	
@@ -1926,7 +1926,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	Al clicar en ese icono (evento \textit{click}) activaremos un evento change anidado en el evento \textit{click} que lo que hará será abrir un cuadro de diálogo para subir los pdfs, y después de seleccionarlos al darle al botón abrir automáticamente hará una solicitud fetch al endpoint \textit{/api/subir-tickets-pdf} del controlador de fastAPI: subiendo los pdfs al sistema de archivos -aquí todavía no queremos guardarlo en base de datos porque primero tenemos que parsear\footnote{Minar o extraer los datos del PDF a formato estructurado de lenguaje de programación para su posterior almacenado.} los PDFs- (el codigo javascript que lo consigue conforma íntegramente todo el contenido del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/pujaPdfs.js}{pujaPdfs.js}, que es donde está la solicitud POST con la función fetch correspondiente).
+	Al clicar en ese icono (evento \textit{click}) activaremos un evento change anidado en el evento \textit{click} que lo que hará será abrir un cuadro de diálogo para subir los pdfs, y después de seleccionarlos al darle al botón abrir automáticamente hará una solicitud fetch al endpoint \textit{/api/subir-tickets-pdf} del controlador de fastAPI: subiendo los pdfs al sistema de archivos -aquí todavía no queremos guardarlo en base de datos porque primero tenemos que parsear\footnote{Minar o extraer los datos del PDF a formato estructurado de lenguaje de programación para su posterior almacenado.} los PDFs- (el código JavaScript que lo consigue conforma íntegramente todo el contenido del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/pujaPdfs.js}{pujaPdfs.js}, que es donde está la solicitud POST con la función fetch correspondiente).
 	
 	Nótese que para subir PDFs necesitamos un formulario: normalmente usaríamos el botón que se genera con la etiqueta HTML \textit{input}. Pero en este caso no hay ni rastro de él. Esto es porque hemos conseguido que sea la propia imagen la que hace la función de \textit{input}: es mediante click a ella que se consigue llamar a la etiqueta input, gracias a que está anidada en la etiqueta \textit{label} y que usamos el atributo for que hace enlace entre el click de la imagen y el de la etiqueta \textit{input} (véase imagen \ref{fig:pujarTicketsAuxiliarLabelHTML}).
 	
@@ -1947,10 +1947,16 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
+	\begin{figure}[H]
+		\centering
+		\caption{Llamada al endpoint de fastAPI\textit{/api/conta-pdfs-servidor} mediante el click en el icono de engranaje (flecha): con ello conseguimos mandar al servidor una solicitud POST para que, para un usuario determinado -proporcionado token-, parsee los PDFs existentes en la carpeta tikets/idUsuario del sistema de archivos del servidor de fastAPI: si los PDFs tienen el contenido esperado en su interior ese parseo se persistirá en la base de datos MongoDB y automáticamente se redirigirá al usuario a dashboard.html}
+		\includegraphics[width=1\linewidth]{img/part3pas4engranatge}
+
+		\label{fig:part3pas4engranatge}
+	\end{figure}
 	
-	\textbf{TO DO}
+	La tercera parte de mandar a procesar los tickets también la haremos mediante click al icono del engranaje. Al hacer click se hará la llamada a endpoint especificada en la figura \ref{fig:part3pas4engranatge}. Esta llamada a endpoint la hacemos mediante el archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/demanaExtraccioPdfs.js}{demanaExtraccioPdfs.js}
 	
-	Una vez terminada la parte 3 el navegador recibe token de acceso con permisos 1 (y se redirige automáticamente al dashboard, como ya vimos en los scripts de protección de vistas públicas)
 		
 	\subsection{Arquitectura (JavaScript): páginas públicas}
 	\label{sec:arquitecturaPaginesPubliques}
