@@ -388,7 +388,7 @@
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercapp.png}
-			\caption{Diagrama de sistemas de la aplicación mercApp. Tenemos el back-end principal (Spring Boot) donde se mandan a guardar y leer tanto los usuarios (mySql) como los tickets (MongoDB). El back-end secundario, con fastAPI, parsea los tickets y los pasa a formato estructurado JSON para hacer que Spring Boot lo persista en en MongoDB. Google API Client permite extracción de tickets del gmail del usuario. El front-end con "Vanilla" JavaScript muestra las vistas al usuario en función del token de acceso.}
+			\caption{Diagrama de sistemas de la aplicación mercApp. Tenemos el back-end de Spring Boot, donde se mandan a guardar y leer tanto los usuarios (mySql) y gracias al cual se gestiona el enrutamiento de vistas públicas. Tenemos el back-end de fastAPI, que parsea los tickets dugutakes y los pasa a formato estructurado JSON que va a persistir a MongoDB. Google API Client permite extracción de tickets del Gmail del usuario a petición del navegador. El front-end con "Vanilla" JavaScript muestra las vistas al usuario en función del token de acceso que expide Spring Boot.}
 
 			
 			\label{fig:diagramaSistemesAplicacioMercapp} 
@@ -396,7 +396,7 @@
 		\FloatBarrier
 				
 				
-			\subsection{Camino durante registro de usuario}
+			\subsection{Camino recorrido durante el registro de usuario}
 				
 				
 				\setlength{\belowcaptionskip}{3pt}
@@ -404,13 +404,13 @@
 				\begin{figure}[H]
 					\centering
 					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTRE.png}
-					\caption{Simplificación de los caminos activados en el diagrama de sistemas durante el registro de un usuario, hasta que este tiene acceso al dashboard de visualización con éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash contraseña. c) Mandamos token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con \textbf{google API client} en la Gmail API con OAuth2 e) tickets regresan al navegador y se descargan al ordenador del usuario. f) fastAPI recoge los  tickets y los parsea a formato JSON estructurado para guardarlos en MongoDB. g) fastAPI delega en SpringBoot la persistencia de datos. h) la persistencia de los tickets se hace en MongoDB. i) Spring Boot manda token de acceso con permisos = 1 para que frontend muestre el análisis de los tikets en el dashboard.}
+					\caption{Simplificación de los caminos activados en el diagrama de sistemas durante el registro de un usuario, hasta que este tiene acceso al dashboard de visualización con éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash contraseña. c) Mandamos token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con \textbf{google API client} en la Gmail API con OAuth2 e) tickets regresan al navegador y se descargan al ordenador del usuario. f) fastAPI recibe los tickets del ordenador del usuario y los parsea a formato JSON estructurado. g) Los tickets estructurados se guardan en MongoDB h) fastAPI pasa el token de acceso con permisos a 0 hacia Spring Boot y le pide uno con permisos a 1. i) Spring Boot guarda permisos a 1 a la BBDD mySQL j) Spring Boot regresa a fastAPI el token de acceso recién expedido con permisos a 1. k) FastAPI manda el token de acceso con permisos = 1 de vuelta al frontend (RESPONSE) para que JavaScript muestre automáticamente el dashboard con el análisis de los tikets digitales.}
 					\label{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE} 
 				\end{figure}
 				\FloatBarrier
 				
 				
-		\subsection{Camino durante inicio de sesión}
+		\subsection{Camino recorrido durante el inicio de sesión}
 		
 	\textbf{TO DO}
 		
