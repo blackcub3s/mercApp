@@ -61,10 +61,11 @@ de la imatge de la descàrrega. Idem per a l'imatge de pujar els tickets (el cli
 #tresPassos section:nth-child(3) section:nth-child(2) {cursor: pointer;} /*fem el mateix a la imatge de l'engranatge*/
 
 #tresPassos > section:first-child {padding-top: 4em;} /*Poso padding entre el section del pas1 i la header*/
-#tresPassos section:first-child section:first-child {padding: 2em;} /*paragrafs tikets (paso 1)*/
-#tresPassos section:nth-child(2) section:nth-child(2) {padding: 2em;} /*paragrafs tikets (paso 1)*/
-#tresPassos section:last-child section:first-child {padding: 2em;} /*paragrafs relájate (paso 3)*/
+#tresPassos section:first-child section:first-child {padding: 2em;} /*paragrafs extreur tickets (paso 1)*/
+#tresPassos section:nth-child(2) section:nth-child(2) {padding: 2em;} /*paragrafs pujar tickets (paso 2)*/
+#tresPassos section:last-child section:first-child {padding: 2em;} /*paragrafs engranatge (paso 3)*/
 #tresPassos > section:last-child {padding-bottom: 7em;} /*Poso padding entre el section del pas3 i la footer*/
+
 
 h1 {font-size: 1.8em; padding-bottom: .5em;} /*Titulo (pas1, pas2, pas3)*/
 h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
@@ -105,6 +106,7 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 (AFEGEIXO TERCER SECTION DINS EL SECTION DE PASD 3)*/
 #bannerMissatge_PAS3_PARSEIG {
     color: var(--colorTitolsPas4);
+    grid-column: 2; /* Així el banner soritrà a la segona columna del grid, no a la primera.*/
 }
 
 #bannerMissatge_PAS3_PARSEIG > ul {
@@ -117,6 +119,7 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
     margin-right: 2em;
     margin-bottom: 2em;
 }
+
 #bannerMissatge_PAS3_PARSEIG > ul li:last-child {
     border-top: 2px dashed var(--colorTitolsPas4);
     background-color: var(--fiGradient);
