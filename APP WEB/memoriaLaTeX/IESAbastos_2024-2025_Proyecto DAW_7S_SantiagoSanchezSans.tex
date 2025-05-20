@@ -404,7 +404,7 @@
 				\begin{figure}[H]
 					\centering
 					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTRE.png}
-					\caption{Simplificación de los caminos activados en el diagrama de sistemas durante el registro de un usuario, hasta que este tiene acceso al dashboard de visualización con éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash contraseña. c) Mandamos token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con \textbf{google API client.} e) tickets regresan al navegador. f) fastAPI recoge los  tickets y los parsea a formato JSON estructurado. g) fastAPI delega en SpringBoot la persistencia de datos. h) la persistencia de los tickets se hace en MongoDB. i) Spring Boot manda token de acceso con permisos = 1 para que frontend muestre el análisis de los tikets en el dashboard.}
+					\caption{Simplificación de los caminos activados en el diagrama de sistemas durante el registro de un usuario, hasta que este tiene acceso al dashboard de visualización con éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash contraseña. c) Mandamos token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con \textbf{google API client} en la Gmail API con OAuth2 e) tickets regresan al navegador y se descargan al ordenador del usuario. f) fastAPI recoge los  tickets y los parsea a formato JSON estructurado para guardarlos en MongoDB. g) fastAPI delega en SpringBoot la persistencia de datos. h) la persistencia de los tickets se hace en MongoDB. i) Spring Boot manda token de acceso con permisos = 1 para que frontend muestre el análisis de los tikets en el dashboard.}
 					\label{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE} 
 				\end{figure}
 				\FloatBarrier
@@ -448,7 +448,7 @@
 				
 				Para el back-end con fast-api se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}.
 				
-				Para la base de datos mySQL se ha utilizado el editor mySQL workbench que corre en el puerto \textbf{3306}.
+				Para la base de datos mySQL se ha utilizado el editor mySQL workbench que corre en el puerto \textbf{3306}. Y para MongoDB \textbf{TO DO TO DO MONGO}
 		
 	
 			\section{Despliegue}
