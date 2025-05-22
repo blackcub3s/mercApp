@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 //CORRESPONDENCIA CODIS BBDD AMB DESCRIPCIONS DE CATEOGORIA PER IMPRIMIR PER PANTALLA
 const categoriesTEXT = {
     1: "verdura y hortalizas",    

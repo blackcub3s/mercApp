@@ -335,25 +335,23 @@
 		 
 		\subsection{Back-end: Java (Spring Boot) y Python (FastAPI)}
 		
-			- Back-end con Java (springboot para el login y la autenticación de usuarios: con este framework guardaremos datos en la BBDD mySQL).
+			- Back-end con Java (Spring Boot) para gestionar los usuarios: guardarlos en bbdd y hacer \underline{autenticación y autorización de usuarios} mediante token JWT: con este framework persistiremos datos en la BBDD mySQL.
 			
-			- fastAPI parseará el contenido de los mismos: con sklearn, numpy y spacy que luego se podrán pasar a la BBDD mongoDB mediante Spring Boot.
+			- El Back-end con Python (FastAPI) se usará para \underline{gestionar los tickets} y sus datos: \textit{en primer lugar}, parseará el contenido de los tickets en PDF mediante pyPDF; \textit{en segundo lugar}, guardará (y luego leerá) de MongoDB los datos extraídos por parseo de los tickets digitales, asegurando así búsquedas eficientes; \textit{en tercer lugar}, si queda tiempo antes de la presentación final, se usarán módulos de Python como sklearn, spacy y Numpy para procesar con lenguaje natural (NLP) cada producto y categorizarlo automáticamente en una de estas \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/categories.js}{12 categorías} de alimentación distintas (en lugar de hacer la clasificación manual); \textit{en cuarto lugar}, incluirá la posibilidad de autenticar y autorizar conexiones entrantes pero no de generar nuevos tokens de acceso.
 			
-			
-		\textit{	Spring Boot se encargará de la \textbf{persistencia} de los datos de los tickets, hacia mongoDB y de su lectura. Python solamente extraerá o p\textbf{arseará el contenido de los tickets} mandando sus datos hacia el back-end de spring boot directamente.}
 		
 		\subsection{Cloud: Google API Client}
 		
-					-\textbf{ Google API Client} nos permitirá acceder a los tickets de los usuarios y permitirle \textbf{al usuario descargarlos a su ordenador mediante javascript}.
+					-\textbf{Google API Client}, y más específicamente la Gmail API, permitirá a cada usuario descargarse en cuestión de uno o dos minutos hasta 500 tickets digitales de su gmail directamente a su ordenador mediante Oauth2. Esto lo haremos con un script en JavaScript.
 			
 		\subsection{BBDD: MySQL y MongoDB}
 		
 		
-		Para guardar los datos de los usuarios se debe usar un sistema de gestión de base de datos relacional. Hemos escogido MySQL dado que es el que hemos visto en el grado superior y estamos bien versados en ello.
+		Para guardar los datos de los usuarios se debe usar un sistema de gestión de base de datos relacional. Hemos escogido MySQL dado que es el que hemos visto en el grado superior y ya lo conocemos.
 		
 		Sin embargo, los productos de Mercadona no los conocemos de antemano ni tenemos una lista exhaustiva de los mismos. Además, el número de productos que se pueden encontrar en un ticket varía en cada compra, por lo que no podemos usar una base de datos relacional tradicional como MySQL o PostgreSQL porque se trata de información no estructurada. En su lugar, usaremos MongoDB, una BBDD NoSQL que almacena datos en formato JSON y permite, además, búsquedas eficientes.
 		
-		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. Cuando inicie sesión y consulte sus datos de tickets, estos se descargarán de mongoDB y almacenarán en el localStorage del cliente (navegador). En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor, hasta que expire el token de acceso del usuario: en cuyo caso se borrarán los datos del localStorage.
+		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. Cuando inicie sesión y consulte sus datos de tickets, estos se descargarán de mongoDB y almacenarán en el localStorage del cliente (navegador). En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor, hasta que expire el token de acceso del usuario: caso en el que, ahora sí, se borrarán los datos del localStorage. Esta es la implementación ideal; pero si hay falta de tiempo haremos extracción directa de la base de datos cada vez que el usuario actualice la página del dashboard (que no es lo ideal).
 		
 
 
@@ -361,15 +359,15 @@
 		
 		\section{Secuenciación de tareas}
 		
-		El desarrollo del proyecto ha empezado entorno el \textbf{7 de marzo de 2025} (el día después de la sesión informativa sobre proyectos). Desde ese día hasta el día \textbf{21 abril} se ha invertido tiempo en la parte del front-end para gestionar el registro e inicio de sesion (páginas públicas) del proyecto, en comunión y en paralelo con el sistema de autenticación y autorización y securización de las APIs vinculadas a la tabla Usuari en el back-end (el entramado más o menos complejo que mostramos en la figura \ref{fig:diagramaMercaAppFront} principalmente) y todo lo redactado de la parte de SpringBoot del proyecto (ver apartado \ref{sec:parteSpringBoot}).
+		El desarrollo del proyecto ha empezado entorno el \textbf{7 de marzo de 2025} (el día después de la sesión informativa sobre proyectos). Desde ese día hasta el día \textbf{21 abril} se ha invertido tiempo en la parte del front-end para gestionar el registro e inicio de sesión (páginas públicas) del proyecto, en comunión y en paralelo con el sistema de autenticación, autorización y securización de las APIs vinculadas a la tabla Usuari en el back-end (el entramado más o menos complejo que mostramos en la figura \ref{fig:diagramaMercaAppFront} principalmente) y todo lo redactado de la parte de SpringBoot del proyecto (ver apartado \ref{sec:parteSpringBoot}).
 		
-		Durante el horario de las prácticas de Lãberit (iniciadas el 10 de marzo) hasta el viernes 11 se ha diseñado el back-end en Java Spring Boot en paralelo a la realización del curso introductorio de Spring Boot mandado por la empresa (ver imagen \ref{fig:estrucutraAplicacioJAVARESOURCES}, recuadro en rojo, verde y azul). También se ha creado el enlace del back-end con java hasta el back-end de fastAPI donde haremos la explotación de tickets.
+		Durante el horario de las prácticas de Lãberit (iniciadas el 10 de marzo) hasta el viernes 11 se ha diseñado el back-end en Java Spring Boot en paralelo a la realización del curso introductorio de Spring Boot mandado por la empresa (ver imagen \ref{fig:estrucutraAplicacioJAVARESOURCES}, recuadro en rojo, verde y azul).
 		
 		Fuera del horario de prácticas desde el \textbf{21 de abril} hasta el \textbf{24 de mayo} (día previo a la entrega de la memoria) se programarán las dos páginas privadas: 
 		
 		\begin{itemize}
 			\item \texttt{pas4\_ConcedirAccesGmail.html}: que da acceso a tickets digitales (donde se hará la integración con API de Google).
-			\item \texttt{dashboard.html}: \textbf{que saca datos de una API de Spring Boot que a su vez extraerá los datos de la API de FastAPI, que a su vez se conectará con MongoDB.}
+			\item \texttt{dashboard.html}: que obtiene datos de la API de FastAPI que a su vez extraerá los datos de MongoDB.
 		\end{itemize}
 
 		
@@ -388,7 +386,7 @@
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercapp.png}
-			\caption{Diagrama de sistemas de la aplicación mercApp. Tenemos el back-end de Spring Boot, donde se mandan a guardar y leer tanto los usuarios (mySql) y gracias al cual se gestiona el enrutamiento de vistas públicas. Tenemos el back-end de fastAPI, que parsea los tickets dugutakes y los pasa a formato estructurado JSON que va a persistir a MongoDB. Google API Client permite extracción de tickets del Gmail del usuario a petición del navegador. El front-end con "Vanilla" JavaScript muestra las vistas al usuario en función del token de acceso que expide Spring Boot.}
+			\caption{Diagrama de sistemas de la aplicación mercApp. Tenemos el back-end de Spring Boot, donde se mandan a guardar y leer tanto los usuarios (mySql) y gracias al cual se gestiona el enrutamiento de vistas públicas. Tenemos el back-end de fastAPI, que parsea los tickets digitales y los pasa a formato estructurado JSON que va a persistir a MongoDB. Google API Client permite extracción de tickets del Gmail del usuario a petición del navegador. El front-end con ``Vanilla'' JavaScript muestra las vistas al usuario en función del token de acceso que expide Spring Boot.}
 
 			
 			\label{fig:diagramaSistemesAplicacioMercapp} 
@@ -403,8 +401,8 @@
 				\FloatBarrier
 				\begin{figure}[H]
 					\centering
-					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTRE.png}
-					\caption{Simplificación de los caminos activados en el diagrama de sistemas durante el registro de un usuario, hasta que este tiene acceso al dashboard de visualización con éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash contraseña. c) Mandamos token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con \textbf{google API client} en la Gmail API con OAuth2 e) tickets regresan al navegador y se descargan al ordenador del usuario. f) fastAPI recibe los tickets del ordenador del usuario y los parsea a formato JSON estructurado. g) Los tickets estructurados se guardan en MongoDB h) fastAPI pasa el token de acceso con permisos a 0 hacia Spring Boot y le pide uno con permisos a 1. i) Spring Boot guarda permisos a 1 a la BBDD mySQL j) Spring Boot regresa a fastAPI el token de acceso recién expedido con permisos a 1. k) FastAPI manda el token de acceso con permisos = 1 de vuelta al frontend (RESPONSE) para que JavaScript muestre automáticamente el dashboard con el análisis de los tikets digitales.}
+					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTRE_ALTERNATIU.png}
+					\caption{Diagrama de sistemas en que se muestran los caminos activados durante el registro de un usuario: desde que este introduce su correo electrónico y su contraseña por primera vez hasta que este tiene acceso al dashboard de visualización, siempre que haya éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash de la contraseña. c) Mandamos al front token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con la Gmail API de google API Client, con OAuth2, y automáticamente se pide la descarga de sus tickets digitales e) tickets digitales en PDF regresan al navegador y se descargan al ordenador del usuario. f) cuando el usuario lo quiera subirá a fastAPI los tickets del ordenador del usuario y los parseará a formato JSON estructurado. Luego cuando esté satisfecho pedirá que se parseen los tickets g) Los tickets estructurados se guardan en MongoDB h) fastAPI pasa el token de acceso con permisos a 0 hacia Spring Boot y le pide uno con permisos a 1. i) Spring Boot guarda permisos a 1 a la BBDD mySQL j) Spring Boot regresa a fastAPI el token de acceso recién expedido con permisos a 1. k) FastAPI manda el token de acceso con permisos = 1 de vuelta al frontend para que JavaScript muestre automáticamente el dashboard con el análisis de los tickets digitales.}
 					\label{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE} 
 				\end{figure}
 				\FloatBarrier
@@ -412,9 +410,9 @@
 				
 		\subsection{Camino recorrido durante el inicio de sesión}
 		
-	\textbf{TO DO}
+
 		
-	
+	\pagebreak
 	\chapter{Desarrollo del proyecto} %OBLIGAT
 	
 
@@ -442,11 +440,11 @@
 			\section{Entornos de desarrollo}
 			\label{sec:entornosDesarrollo}
 			
-				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto que permiten sacar provecho de Lombok sin las cuales correr el proyecto en IntelliJ fallará\footnote{¡Para correr el proyecto back-end con\textit{ Spring Boot} abrir con intelliJ la carpeta app!}.
+				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto. Por ejemplo, es necesario usar Lombok como extensión: sin ella el proyecto en IntelliJ fallará\footnote{¡Para correr el proyecto back-end con\textit{Spring Boot} abrir con intelliJ la carpeta app!}.
 				
-				Para el front-end (archivos estáticos: HTML, CSS y JavaScript) se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500} \footnote{¡El proyecto \textit{front end} con \textit{vanilla javascript} debe abrirse con vscode en la carpeta \textbf{app} y ejecutarlo en live server, si no \textbf{no} funcionará correctamente!}.
+				Para el front-end (archivos estáticos: HTML, CSS y JavaScript) se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto\textbf{5500}\footnote{¡El proyecto \textit{front end} con \textit{vanilla javascript} debe abrirse con vscode en la carpeta \textbf{app} y ejecutarlo en live server, si no \textbf{no} funcionará correctamente!}.
 				
-				Para el back-end con fast-api se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}.
+				Para el back-end de Python con FastAPI se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}\footnote{Se recomienda ejecutar desde la carpeta app haciendo el comando \textit{FastApi dev controlador.py}} .
 				
 				Para la base de datos mySQL se ha utilizado el editor mySQL workbench que corre en el puerto \textbf{3306}. Y para MongoDB \textbf{TO DO TO DO MONGO}
 		
@@ -455,7 +453,7 @@
 			\label{sec:despliegue}
 				Los componentes del apartado \ref{sec:entornosDesarrollo} de entornos  desarrollo se han \textit{dockerizado} de modo que cada uno de ellos sea un microservicio, a excepción (por ahora), de las bases de datos. Hemos sido cuidadosos de que los microservicios en Docker corran en los mismos puertos que los servidores embedidos con los que hemos hecho el desarrollo de la aplicación mercApp: por claridad y porque múltiples archivos dependen ya de ellos.
 				
-				Para crear la imagen de cada microservicio hemos creado un Dockerfile. Luego, para crear los contenedores y crear de nuevo las imágenes en caso que haya cambios en los archivos, para cada uno de estos microservicios, hay un script denominado \textit{creaImatge\_i\_arrancaContenidor.sh}\footnote{La explicación pormenorizada de sus comandos, para el caso de fastAPI por ejemplo, puede verse en el apartado \ref{sec:conteneritzacioPython}} que reunirá todos los subcomandos de docker necesarios para el ciclo de vida de la creación de imagen (build) y subsecuente instanciado de contenedor (create, start, stop, rm). Todo ello haciendo solamente desde la terminal de Linux o desde la terminal de git bash en Windows: 
+				Para crear la imagen de cada microservicio hemos creado un Dockerfile. Luego, para crear los contenedores y crear de nuevo las imágenes en caso que haya cambios en los archivos, para cada uno de estos microservicios, hay un script denominado \textit{creaImatge\_i\_arrancaContenidor.sh}\footnote{La explicación pormenorizada de sus comandos, para el caso de FastAPI por ejemplo, puede verse en el apartado \ref{sec:conteneritzacioPython}} que reunirá todos los subcomandos de docker necesarios para el ciclo de vida de la creación de imagen (build) y subsecuente instanciado de contenedor (create, start, stop, rm). Todo ello haciendo solamente desde la terminal de Linux o desde la terminal de git bash en Windows: 
 				
 				\begin{lstlisting}[language=bash]
 	bash creaImatge_i_arrancaContenidor.sh
@@ -1092,7 +1090,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 
 	
-	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Hacer referencia al 8000 que va a la \textbf{derecha} de los dos puntos.} -puerto con el que se comunica fastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor\footnote{Es el 8000 emplazado a la \textbf{izquierda} de los dos puntos.}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía arrancar el contenedor:
+	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Hacer referencia al 8000 que va a la \textbf{derecha} de los dos puntos.} -puerto con el que se comunica FastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor\footnote{Es el 8000 emplazado a la \textbf{izquierda} de los dos puntos.}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía arrancar el contenedor:
 	
 	\begin{lstlisting}[language=bash]
 docker create -p 8000:8000 --name contFastApi back-end-fastapi
@@ -1106,18 +1104,18 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\end{lstlisting}
 	
 	
-	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que  \href{https://github.com/blackcub3s/mercApp/blob/cf678ebf99ce636b64c70c8faa239658a601550d/APP%20WEB/__FastAPI__/Dockerfile#L22}{en esta línea} del dockerfile hemos definido el host de la aplicación fastAPI desde dentro del contenedor para que sea la IP 0.0.0.0 . \textbf{No }hemos usado la IP loopback por defecto (localhost, loopback o 127.0.0.1), sino la IP ``wildcard'' o dirección de red (0.0.0.0). Si usáramos la localhost dentro del contenedor la aplicación estaría usando la direccion de dentro de la red del contenedor, pero no saldría fuera de este y sería inútil! La dirección 0.0.0.0 nos permite justamente que podamos acceder a los endpoints de fastAPI desde el localhost del sistema host no solo desde el localhost del propio contenedor. Es decir, nos permite que podamos acceder desde el navegador de nuestro ordenador -desde fuera del contenedor- o desde otros contenedores que estén corriendo en nuestra máquina. Véase en la figura \ref{fig:demofastapiendpointdummy} siguiente lo que puede hacer nuestro contenedor con esta configuración y como se construye, de forma más pormenorizada:
+	Ahora el contenedor se podría acceder a través de otro contenedor. Nótese que  \href{https://github.com/blackcub3s/mercApp/blob/cf678ebf99ce636b64c70c8faa239658a601550d/APP%20WEB/__FastAPI__/Dockerfile#L22}{en esta línea} del dockerfile hemos definido el host de la aplicación FastAPI desde dentro del contenedor para que sea la IP 0.0.0.0 . \textbf{No }hemos usado la IP loopback por defecto (localhost, loopback o 127.0.0.1), sino la IP ``wildcard'' o dirección de red (0.0.0.0). Si usáramos la localhost dentro del contenedor la aplicación estaría usando la direccion de dentro de la red del contenedor, pero no saldría fuera de este y sería inútil! La dirección 0.0.0.0 nos permite justamente que podamos acceder a los endpoints de FastAPI desde el localhost del sistema host no solo desde el localhost del propio contenedor. Es decir, nos permite que podamos acceder desde el navegador de nuestro ordenador -desde fuera del contenedor- o desde otros contenedores que estén corriendo en nuestra máquina. Véase en la figura \ref{fig:demofastapiendpointdummy} siguiente lo que puede hacer nuestro contenedor con esta configuración y como se construye, de forma más pormenorizada:
 	
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{definición de un endpoint de fastApi que correrá dentro del contenedor docker contFastApi (subcaptura A)), configuración del comando para correr fastAPI dentro de los contenedores que se instancien a partir de la imagen del Dockerfile, con la dirección de red 0.0.0.0 que permite exponer endpoints de contenedores que se creen con la misma fuera de esos contenedores (B) rectángulo rojo). También podemos ver la configuración de que fastAPI correrá en el puerto 8000 \textbf{dentro} del contenedor instanciado (B) rectángulo verde). Finalmente, podemos ver también el comando que crea finalmente contenedor desde la imagen, pidiéndole que que escuche en el puerto 8000 de la red interna del contenedor (C) rectángulo verde) y lo de ahí lo saque al puerto 8000 (C) rectángulo naranja) siendo el resultado de la exposición del endpoint observable en nuestro equipo anfitrión del contenedor en el localhost en ese mismo puerto 8000 (D), rectángulo naranja).}
+		\caption{definición de un endpoint de FastApi que correrá dentro del contenedor docker contFastApi (subcaptura A)), configuración del comando para correr FastAPI dentro de los contenedores que se instancien a partir de la imagen del Dockerfile, con la dirección de red 0.0.0.0 que permite exponer endpoints de contenedores que se creen con la misma fuera de esos contenedores (B) rectángulo rojo). También podemos ver la configuración de que FastAPI correrá en el puerto 8000 \textbf{dentro} del contenedor instanciado (B) rectángulo verde). Finalmente, podemos ver también el comando que crea finalmente contenedor desde la imagen, pidiéndole que que escuche en el puerto 8000 de la red interna del contenedor (C) rectángulo verde) y lo de ahí lo saque al puerto 8000 (C) rectángulo naranja) siendo el resultado de la exposición del endpoint observable en nuestro equipo anfitrión del contenedor en el localhost en ese mismo puerto 8000 (D), rectángulo naranja).}
 		\label{fig:demofastapiendpointdummy}
 		\includegraphics[width=1\linewidth]{img/demoFastApiEndpointDummy}
 	\end{figure}
 	\FloatBarrier
 	
-	Para automatizar el proceso de crear imagen con fastAPI y arrancar contenedor desde esta imagen y, finalmente, exponer los endpoints de fastAPI fuera del contenedor, puede usarse el script en bash \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{creaImatge\_i\_arrancaContenidor.sh}, que incluye todos los comandos necesarios (inclusive aquellos para parar y destruir contenedores antiguos) ubicado aqui (ver figura)
+	Para automatizar el proceso de crear imagen con FastAPI y arrancar contenedor desde esta imagen y, finalmente, exponer los endpoints de FastAPI fuera del contenedor, puede usarse el script en bash \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{creaImatge\_i\_arrancaContenidor.sh}, que incluye todos los comandos necesarios (inclusive aquellos para parar y destruir contenedores antiguos) ubicado aqui (ver figura)
 	
 	\subsection{estructura de la aplicación}
 	
@@ -1179,7 +1177,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		
 		Mientas dura la llamada POST al endpoint \href{https://github.com/blackcub3s/mercApp/blob/f5413ed8cf7ed88c5ed18299564b836d27c52bd4/APP%20WEB/__FastAPI__/app/controlador.py#L132-L152}{/api/parsea-y-guarda-pdfs-en-bbdd}, que iniciamos en la PARTE 1, va a acontecer el guadado de los datos extraídos en un formato para poder hacer búsquedas eficientes en una base de datos NOSql: MongoDB.
 		
-		Desde el algoritmo de extracción que ya hemos mencionado (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiTickets.py}{serveiTickets.py}) podemos ver que hacemos llamada a funciones que residen en la capa de persistencia de nuestro back-end de fastAPI \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/repositoriTickets.py}{repositoriTickets.py}, que es la responsable de guardar los datos a MongoDB.
+		Desde el algoritmo de extracción que ya hemos mencionado (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiTickets.py}{serveiTickets.py}) podemos ver que hacemos llamada a funciones que residen en la capa de persistencia de nuestro back-end de FastAPI \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/repositoriTickets.py}{repositoriTickets.py}, que es la responsable de guardar los datos a MongoDB.
 		
 		\textbf{NOTA}: \textit{Este paso se puede alargar dependiendo del número de tickets que debamos procesar. Si se diese el caso el protocolo HTTP no nos serviría y deberíamos explorar otros caminos (Websockets, gPRC), porque el navegador podría no permitir tener una conexión abierta mucho tiempo; en el momento de la entrega del proyecto puede que hayamos tomado alguno de esos caminos alternativos -pero a ser posible se seguirá con protocolo HTTP por simplicidad-.}
 		
@@ -1202,13 +1200,13 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	\subsection{Gestión de solicitudes: token de acceso}
 	
-	Con fastAPI no emitimos tokens de acceso: esto lo gestionamos con Spring Boot. Con fastAPI los recibimos del cliente y los procesamos\footnote{A excepción del caso especial de la PARTE 4!}: \textbf{si al hacerlo son válidos y no caducados, permitimos solicitudes entrantes.}
+	Con fastAPI no emitimos tokens de acceso: esto lo gestionamos con Spring Boot. Con FastAPI los recibimos del cliente y los procesamos\footnote{A excepción del caso especial de la PARTE 4!}: \textbf{si al hacerlo son válidos y no caducados, permitimos solicitudes entrantes.}
 	
-	Por ejemplo, en dos endpoints de fastAPI (``\textit{/api/subir-tickets-pdf}'' y ``\textit{/api/conta-pdfs-servidor}'') llamados desde \texttt{pas4\_concedirAccesGmail.html} en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/controlador.py}{controlador.py}  podemos ver esta línea:``\textit{payload\_token: dict = Depends(verificar\_token)}''
+	Por ejemplo, en dos endpoints de FastAPI (``\textit{/api/subir-tickets-pdf}'' y ``\textit{/api/conta-pdfs-servidor}'') llamados desde \texttt{pas4\_concedirAccesGmail.html} en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/controlador.py}{controlador.py}  podemos ver esta línea:``\textit{payload\_token: dict = Depends(verificar\_token)}''
 	 
 	 Esta línea lo que está haciendo es llamar a la función verificar\_token en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/jwtUtil.py}{jwtUtils.py}. Este archivo Python, al que convenientemente le hemos puesto el mismo nombre que el que tenía la clase en Java (Spring Boot) donde guardábamos el secret con el que generábamos los tokens desde el otro back-end, no es casual: justamente aquí también guardamos una copia del mismo secret!
 	
-	Ese ``secret'' es indispensable para validar si el token entrante en cualquiera de los endpoints que tenemos es válido o no (i.e. no se ha manipulado y podemos certificar su origen como token expedido desde Spring Boot). Es por ello que se ha puesto por duplicado tanto en el back-end de fastAPI (Python) como en el back-end de Spring Boot (Java).
+	Ese ``secret'' es indispensable para validar si el token entrante en cualquiera de los endpoints que tenemos es válido o no (i.e. no se ha manipulado y podemos certificar su origen como token expedido desde Spring Boot). Es por ello que se ha puesto por duplicado tanto en el back-end de FastAPI (Python) como en el back-end de Spring Boot (Java).
 	
 	Es importante mencionar que la gestión de tokens en Python (FastAPI) se hace notablemente más sencilla que con Java (Spring Boot). Por ejemplo, con FastAPI podemos conseguir que los endpoints no permitan solicitudes entrantes si el token ha caducado sin tener que gestionar la lógica de programación manualmente como sí teníamos que hacer con Spring Boot: en Spring Boot necesitábamos programar un total de 4 clases (dos clases para definir creación del token de acceso \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt/AccessToken.java}{AccessToken.java} y lectura \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt/JwtUtil.java}{JwtUtil.java}; otra clase para manejar las excepciones de un token expirado y forzar que solo usuarios con un cierto id puedan acceder a contenidos: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java}{FiltreAutenticacioJwt.java}; y finalmente una clase que defina un Bean que permita acceso a determinados endpoints a determinados usuarios según permisos, con la función requestMatchers: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/ConfiguracioSeguretat.java}{ConfiguracioSeguretat.java}). Por el contrario, en FastAPI, con la librería de Python \textit{JOSE} \cite{pythonJose}\footnote{un nombre aparentemente muy español pero cuyo acrónimo significa \textit{JavaScript Object Signing and Encryption (JOSE)}} se hace todo muy rápido y solamente con las dos primeras funciones del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/jwtUtil.py}{jwtUtil.py} lo hemos podido solventar.
 	
@@ -1220,7 +1218,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Llamada al endpoint ``/api/subir-tickets-pdf'' $|$.\textbf{ Izq}: Solicitud POST con Postman: en verde, archivos que se suben correctamente; en rojo, archivos que servidor rechaza con las validaciones en fastAPI. $|$ \textbf{Der}: Solicitud POST con el navegador $|$ \textbf{Debajo}: PDFs subidos al sistema de archivos del servidor con fastAPI.}
+		\caption{Llamada al endpoint ``/api/subir-tickets-pdf'' $|$.\textbf{ Izq}: Solicitud POST con Postman: en verde, archivos que se suben correctamente; en rojo, archivos que servidor rechaza con las validaciones en FastAPI. $|$ \textbf{Der}: Solicitud POST con el navegador $|$ \textbf{Debajo}: PDFs subidos al sistema de archivos del servidor con FastAPI.}
 		\includegraphics[width=1\linewidth]{img/validacionsArxiusPujadaEndpointTickets} 
 		\label{fig:validacionsArxiusPujadaEndpointTickets}
 	\end{figure}
@@ -1883,7 +1881,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\label{sec:pas4googleAPIclient}
 	
 	
-	\textbf{NOTA:} \textit{las peticiones HTTP hacia fastAPI (controlador.py) vistas desde el punto de vista del back-end, se muestran en la sección \ref{sec:solicitudDeExtraccion} y son complementarias a este apartado -que sólo está dedicado al front-end-.}
+	\textbf{NOTA:} \textit{las peticiones HTTP hacia FastAPI (controlador.py) vistas desde el punto de vista del back-end, se muestran en la sección \ref{sec:solicitudDeExtraccion} y son complementarias a este apartado -que sólo está dedicado al front-end-.}
 	
 	
 	
@@ -1922,7 +1920,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 
 
-	\noindent \textbf{PARTE 2: Subir tickets digitales del ordenador del usuario al sistema de archivos del proyecto de fastAPI (llamada JavaScript $\rightarrow$ \textit{api/subir-tickets-pdf})}
+	\noindent \textbf{PARTE 2: Subir tickets digitales del ordenador del usuario al sistema de archivos del proyecto de FastAPI (llamada JavaScript $\rightarrow$ \textit{api/subir-tickets-pdf})}
 	\hrule
 	\vspace{.5em}
 	
@@ -1935,13 +1933,13 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{llamada al endpoint de fastAPI \textit{/api/subir-tickets-pdf} para subida de tickets mediante una solicitud POST con javascript (fetch), activada con el click en el icono marcado con \textit{la flecha roja}.}
+		\caption{llamada al endpoint de FastAPI \textit{/api/subir-tickets-pdf} para subida de tickets mediante una solicitud POST con javascript (fetch), activada con el click en el icono marcado con \textit{la flecha roja}.}
 		\includegraphics[width=1\linewidth]{img/pujarTicketsPas5}
 		\label{fig:pujarticketspas5}
 	\end{figure}
 	\FloatBarrier
 	
-	Al clicar en ese icono (evento \textit{click}) activaremos un evento change anidado en el evento \textit{click} que lo que hará será abrir un cuadro de diálogo para subir los pdfs, y después de seleccionarlos al darle al botón abrir automáticamente hará una solicitud fetch al endpoint \textit{/api/subir-tickets-pdf} del controlador de fastAPI: subiendo los pdfs al sistema de archivos -aquí todavía no queremos guardarlo en base de datos porque primero tenemos que parsear\footnote{Minar o extraer los datos del PDF a formato estructurado de lenguaje de programación para su posterior almacenado.} los PDFs- (el código JavaScript que lo consigue conforma íntegramente todo el contenido del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/pujaPdfs.js}{pujaPdfs.js}, que es donde está la solicitud POST con la función fetch correspondiente).
+	Al clicar en ese icono (evento \textit{click}) activaremos un evento change anidado en el evento \textit{click} que lo que hará será abrir un cuadro de diálogo para subir los pdfs, y después de seleccionarlos al darle al botón abrir automáticamente hará una solicitud fetch al endpoint \textit{/api/subir-tickets-pdf} del controlador de FastAPI: subiendo los pdfs al sistema de archivos -aquí todavía no queremos guardarlo en base de datos porque primero tenemos que parsear\footnote{Minar o extraer los datos del PDF a formato estructurado de lenguaje de programación para su posterior almacenado.} los PDFs- (el código JavaScript que lo consigue conforma íntegramente todo el contenido del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/pujaPdfs.js}{pujaPdfs.js}, que es donde está la solicitud POST con la función fetch correspondiente).
 	
 	Nótese que para subir PDFs necesitamos un formulario: normalmente usaríamos el botón que se genera con la etiqueta HTML \textit{input}. Pero en este caso no hay ni rastro de él. Esto es porque hemos conseguido que sea la propia imagen la que hace la función de \textit{input}: es mediante click a ella que se consigue llamar a la etiqueta input, gracias a que está anidada en la etiqueta \textit{label} y que usamos el atributo for que hace enlace entre el click de la imagen y el de la etiqueta \textit{input} (véase imagen \ref{fig:pujarTicketsAuxiliarLabelHTML}).
 	
@@ -1964,7 +1962,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\begin{figure}[H]
 		\centering
-		\caption{Llamada al endpoint de fastAPI\textit{/api/conta-pdfs-servidor} mediante el click en el icono de engranaje (flecha): con ello conseguimos mandar al servidor una solicitud POST para que, para un usuario determinado -proporcionado token-, parsee los PDFs existentes en la carpeta tikets/idUsuario del sistema de archivos del servidor de fastAPI: si los PDFs tienen el contenido esperado en su interior ese parseo se persistirá en la base de datos MongoDB y automáticamente se redirigirá al usuario a dashboard.html}
+		\caption{Llamada al endpoint de FastAPI\textit{/api/conta-pdfs-servidor} mediante el click en el icono de engranaje (flecha): con ello conseguimos mandar al servidor una solicitud POST para que, para un usuario determinado -proporcionado token-, parsee los PDFs existentes en la carpeta tikets/idUsuario del sistema de archivos del servidor de FastAPI: si los PDFs tienen el contenido esperado en su interior ese parseo se persistirá en la base de datos MongoDB y automáticamente se redirigirá al usuario a dashboard.html}
 		\includegraphics[width=1\linewidth]{img/part3pas4engranatge}
 
 		\label{fig:part3pas4engranatge}
