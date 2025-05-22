@@ -401,8 +401,8 @@
 				\FloatBarrier
 				\begin{figure}[H]
 					\centering
-					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTRE_ALTERNATIU.png}
-					\caption{Diagrama de sistemas en que se muestran los caminos activados durante el registro de un usuario: desde que este introduce su correo electrónico y su contraseña por primera vez hasta que este tiene acceso al dashboard de visualización, siempre que haya éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash de la contraseña. c) Mandamos al front token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con la Gmail API de google API Client, con OAuth2, y automáticamente se pide la descarga de sus tickets digitales e) tickets digitales en PDF regresan al navegador y se descargan al ordenador del usuario. f) cuando el usuario lo quiera subirá a fastAPI los tickets del ordenador del usuario y los parseará a formato JSON estructurado. Luego cuando esté satisfecho pedirá que se parseen los tickets g) Los tickets estructurados se guardan en MongoDB h) fastAPI pasa el token de acceso con permisos a 0 hacia Spring Boot y le pide uno con permisos a 1. i) Spring Boot guarda permisos a 1 a la BBDD mySQL j) Spring Boot regresa a fastAPI el token de acceso recién expedido con permisos a 1. k) FastAPI manda el token de acceso con permisos = 1 de vuelta al frontend para que JavaScript muestre automáticamente el dashboard con el análisis de los tickets digitales.}
+					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTREbo.png}
+					\caption{Diagrama de sistemas en que se muestran los caminos activados durante el registro de un usuario (no superusuario): desde que este introduce su correo electrónico y su contraseña por primera vez hasta que este tiene acceso al dashboard de visualización, siempre que haya éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash de la contraseña. c) Mandamos al front token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con la Gmail API de google API Client, con OAuth2, y automáticamente se pide la descarga de sus tickets digitales e) tickets digitales en PDF regresan al navegador y se descargan al ordenador del usuario. f) cuando el usuario lo quiera subirá a fastAPI los tickets del ordenador del usuario y los parseará a formato JSON estructurado. Luego cuando esté satisfecho pedirá que se parseen los tickets g) Los tickets estructurados se guardan en MongoDB h) fastAPI pasa el token de acceso con permisos a 0 hacia Spring Boot y le pide uno con permisos a 1. i) Spring Boot guarda permisos a 1 a la BBDD mySQL j) Spring Boot regresa a fastAPI el token de acceso recién expedido con permisos a 1. k) FastAPI obtiene los datos de los tickets de usuario de MongoDB l) FastAPI manda el token de acceso con permisos = 1 y los datos extraidos de MongoDB (información de los tickets) de vuelta al frontend para que JavaScript muestre automáticamente el dashboard de visualización.}
 					\label{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE} 
 				\end{figure}
 				\FloatBarrier
@@ -410,6 +410,25 @@
 				
 		\subsection{Camino recorrido durante el inicio de sesión}
 		
+
+
+		\setlength{\belowcaptionskip}{3pt}
+		\FloatBarrier
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIINICISESSIO.png}
+			\caption{Diagrama de sistemas en que se muestran los caminos activados durante el \textit{inicio de sesión} de un usuario (no superusuario) que ya fue registrado y facilitó sus tickets digitales para su extracción o minado -parseo- y persistencia: desde que este introduce su correo electrónico y su contraseña hasta que visualiza el dashboard, siempre que haya éxito en todas las partes del proceso: a) Usuario escribe y manda correo y contraseña. b) Obtenemos usuario y hash de la BBDD y en Spring Boot vemos que son coincidentes con los que escribió el usuario por el front-end. c) Mandamos al front-end el token de acceso con permisos a 1 y automáticamente el front redirigirá a \textit{dashboard}.}
+			\label{fig:diagramaSistemesAplicacioMercappCAMIINICISESSIO} 
+		\end{figure}
+		\FloatBarrier
+		
+
+
+
+
+
+
+
 
 		
 	\pagebreak
