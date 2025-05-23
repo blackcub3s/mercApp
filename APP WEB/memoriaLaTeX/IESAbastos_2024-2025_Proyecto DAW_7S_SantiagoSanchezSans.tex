@@ -70,7 +70,7 @@
 			
 			\vspace*{5cm} 
 
-			\LARGE{Creación de un dashboard para usuarios del ticket digital de Mercadona con visualización de la evolución temporal de precios en productos habitualmente adquiridos, costes de compras por intervalos temporales y gastos por áreas de producto.}
+			\LARGE{Creación de un dashboard para usuarios del ticket digital de Mercadona con visualización de gastos: evolución de precios en productos, gastos por área de producto y ventana temporal.}
 			
 			\vfill
 			
@@ -981,7 +981,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 
 		
 		
-			\subsection{Validación de datos (End-points back)}
+			\subsection{Validación de datos (endpoints back-end)}
 			\label{sec:validacioDadesBACK}
 			
 			\textit{NOTA: Los datos validados en el back-end siguen las mismas expresiones regulares y restricciones que las validaciones hechas en el front-end (ver sección \ref{sec:validacioDadesFRONT}).}
@@ -1005,9 +1005,9 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			\FloatBarrier
 			
 			
-			Vamos a hablar en términos concretos. Pongamos por caso que queremos validar los datos de entrada que llegan al endpoint que recibe la llamada del front-end para el incio de sesión, es decir, el endpoint ``\href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#104}{api/login}'' (muy importante ver esta línea) del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{ControladorUsuari.java} de Spring Boot. 
+			Vamos a hablar en términos concretos. Pongamos por caso que queremos validar los datos de entrada que llegan a través del endpoint que recibe la llamada POST del front-end para el inicio de sesión, es decir, el endpoint ``\href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103}{api/login}'' del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{ControladorUsuari.java} de Spring Boot. 
 			
-			Debemos entender que en este caso, cuando se haga una llamada exitosa a ese controlador, podríamos tendremos un body del estilo siguiente:
+			Debemos entender que en este caso, cuando se haga una llamada exitosa a ese controlador, tendremos un \textit{body} del estilo siguiente:
 			
 				
 			\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
@@ -1018,7 +1018,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			
 
 			
-			Según los términos esperados las clases utilizadas y activadads para validar estos datos de entrada serán las de la figura \ref{fig:validacioBackArxiusDetallLoginVA}:
+			Según los términos esperados las clases utilizadas y activadas para validar estos datos de entrada serán las de la figura \ref{fig:validacioBackArxiusDetallLoginVA}:
 			
 			
 			
@@ -1109,7 +1109,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 	
 
 	
-	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Hacer referencia al 8000 que va a la \textbf{derecha} de los dos puntos.} -puerto con el que se comunica FastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor\footnote{Es el 8000 emplazado a la \textbf{izquierda} de los dos puntos.}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía arrancar el contenedor:
+	Acto seguido, una vez ya creada la imagen que contendrá todo el sistema de archivos de la aplicación con Python y sus dependencias (\textit{pip install ...}), debemos usar esta imagen para derivar de ella un contenedor (es decir, crear una instancia de esa imagen). Crearemos el contenedor de nombre \textit{contFastApi} a partir de la imagen anterior y le pediremos que exponga el puerto 8000\footnote{Hace referencia al 8000 que va a la \textbf{derecha} de los dos puntos.} -puerto con el que se comunica FastAPI en el interior del contenedor- y haremos que exponga ese puerto también al exterior del contenedor\footnote{Es el 8000 emplazado a la \textbf{izquierda} de los dos puntos.}. Podemos hacerlo con run o con create. En este caso con create porque no queremos todavía arrancar el contenedor:
 	
 	\begin{lstlisting}[language=bash]
 docker create -p 8000:8000 --name contFastApi back-end-fastapi
@@ -1134,23 +1134,23 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\end{figure}
 	\FloatBarrier
 	
-	Para automatizar el proceso de crear imagen con FastAPI y arrancar contenedor desde esta imagen y, finalmente, exponer los endpoints de FastAPI fuera del contenedor, puede usarse el script en bash \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{creaImatge\_i\_arrancaContenidor.sh}, que incluye todos los comandos necesarios (inclusive aquellos para parar y destruir contenedores antiguos) ubicado aqui (ver figura)
+	Para automatizar el proceso de crear imagen con FastAPI y arrancar contenedor desde esta imagen y, finalmente, exponer los endpoints de FastAPI fuera del contenedor, puede usarse el script en bash \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/creaImatge_i_arrancaContenidor.sh}{creaImatge\_i\_arrancaContenidor.sh}, que incluye todos los comandos necesarios (inclusive aquellos para parar y destruir contenedores antiguos).
 	
 	\subsection{estructura de la aplicación}
 	
-	\textbf{TO DO}
+	\textbf{TO DO TO DO TO DO TO DO POSA AQUÍ IMATGE DE L'ARQUITECTURA SEGUIDA}
 	
 	\subsection{Solicitud de subida y parseo de datos}
 	\label{sec:solicitudDeExtraccion}
 	
 	
-	\textbf{NOTA:} \textit{la petición POST con JavaScript desde el front-end hacia el endpoint de subida de datos que mostraremos en las próximas líneas ya se mostró en la PARTE 2 del apartado anterior \ref{sec:pas4googleAPIclient}, dedicada a JavaScript en el front-end.}
+	\textbf{NOTA:} \textit{las peticiones POST con JavaScript desde el front-end hacia los end points de subida de PDFs y de parseo de PDFs, que mostraremos en las próximas líneas del lado del servidor, ya se mencionaron como se activan mediante el front-end en la PARTE 2 y 3 del apartado \ref{sec:pas4googleAPIclient}, dedicado exclusivamente a JavaScript en el front-end.}
 	
-	Al recibir el servidor de FastAPI una solicitud POST con los PDFs adjuntos y el Token de acceso con permisos a 0 en el endpoint /api/subir-tickets-pdf vamos a empezar la extracción de datos de los tickets. A continuación mostramos exhaustivamente los 5 pasos o partes, que deberán ejecutarse con éxito todas y cada una de ellas, y de forma SECUENCIAL, para que el proceso funcione correctamente y devuelva una RESPONSE con código de éxito:
+	A continuación mostramos los 5 pasos o partes, que deberán ejecutarse con éxito todas y cada una de ellas, y de forma SECUENCIAL, para que el proceso funcione correctamente y devuelva una RESPONSE con código de éxito:
 	
 	\begin{itemize}
 	\setlength{\itemsep}{-.3em}
-		\item \textbf{PARTE 1}:PARTE 1:  FastAPI recibe la POST \textbf{request} con los tickets adjuntos desde el cliente \href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L111-L128}{/api/subir-tickets-pdf} con los tickets adjuntos desde el cliente junto con el token con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin}.
+		\item \textbf{PARTE 1}: FastAPI recibe la POST \textbf{request} con los tickets adjuntos desde el cliente en el endpoint \href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L37}{/api/subir-tickets-pdf} junto con el \textit{token de acceso} con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin. Ese token lo expidió Spring Boot al acceder a pas4, pero ahora lo usa fastAPI para permitir acceso a su API.}.
 		\item \textbf{PARTE 2}: FastAPI parsea todos los tickets con un algoritmo de extracción [\ref{sec:PARTE2_FASTAPI}].
 		\item \textbf{PARTE 3}: FastAPI manda a MongoDB los datos de los tickets parseados [\ref{sec:PARTE3_FASTAPI}].
 		\item \textbf{PARTE 4}: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot, se actualiza permisos en bbdd, y este último le manda de vuelta un nuevo token (con permisos a 1) [\ref{sec:PARTE4_FASTAPI}].
@@ -1911,11 +1911,12 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de Google Cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener el \textbf{Client ID} que identifique nuestra web en relación a Google Cloud. Todos estos pasos se indican en una sección a parte que recomendamos al lector que lea, porque ha supuesto varios días de trabajo: la sección \ref{sec:desarrolloCloudGoogleApi}.
 	
-	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}), siempre que tengan una cuenta de google con tickets digitales de Mercadona enviados por el supermercado, puedan descargárselos a la carpeta de descargas del ordenador en el que están navegando mediante\textbf{un solo click} y una autenticación a su cuenta de Google: concretamente en la carpeta de descargas de su ordenador. Esto lo haremos mediante Javascript puro, cuando el usuario pulse el icono mostrado en la figura \ref{fig:pujarticketspas4}:
+	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}), siempre que tengan un Gmail con tickets digitales de Mercadona enviados por el supermercado y guardados en el inbox de su correo, puedan descargárse los tickets mencionados a la carpeta de descargas de su ordenador mediante \textbf{un solo click}: el click que ellos mismos harán al icono mostrado en la figura \ref{fig:pujarticketspas4}. Este click activará script de JavaScript que le mostrará al usuario una ventana de google que le propondrá autenticarse con Oauth2 y cedernos control de descarga de sus tickets; sin más pasos, los tickets digitales empezarán a descargarse en su ordenador: dándole control de ver de antemano todas sus compras.
+	
 	
 	\begin{figure}[H]
 		\centering
-		\caption{Pulsando sobre el icono iniciamos la llamada a la api de google: con ello autenticamos el usuario y éste concede acceso a su correo donde están los tikets digitales dentro, que se descargan al sistema automáticamente}
+		\caption{Pulsando sobre el icono iniciamos la llamada a la API de Gmail: con ello autenticamos el usuario y éste concede acceso a su correo en cuyo inbox se encuentran los tickets digitales, que se descargan al sistema automáticamente.}
 		\includegraphics[width=1\linewidth]{img/pujarTicketsPas4}
 
 		\label{fig:pujarticketspas4}
@@ -1927,7 +1928,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	A medida que hemos ido desarrollando hemos llegado a la siguiente conclusión: Aunque descarguemos 500  pdfs de golpe, Google en principio no va a ralentizar las descargas. Se ha probado para mi caso particular: se descargaron 281 tickets digitales en 2-3 minutos desde mi cuenta de Gmail. Si bien existen unas cuotas máximas que podemos usar para descargar, estas son generosas y no se van a superar para nuestro caso de uso (podéis ver en anexo \ref{sec:googleQuotas} el cálculo de unidades de cuota por ticket descargado, unidades de cuota por minuto por usuario de mercApp y unidades de cuota por minuto del sistema ante usuarios concurrentes). 
 	
 	
-	La extracción de tickets \underline{no se puede hacer en local con javascript} porque las políticas de seguridad de google le dicen al navegador que impida las llamadas a su API (se activa algo llamado la ``Content-Security-Policy''): esto pasa porque, entendemos, al no tener HTTPS -porque nuestro proyecto corre en local- el origen no es seguro. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado manualmente desde la configuración de la consola de Google (Que ya hemos hecho). Para ello se ha creado este repositorio para hacer descargas de tickets (\href{https://github.com/blackcub3s/mercAppAuxPas4/}{repo mercAppAuxPas4}).
+	La extracción de tickets \underline{no se puede} hacer \textit{en local} con JavaScript porque las políticas de seguridad de Google le dicen al navegador que impida las llamadas a su API (se activa algo llamado la ``Content-Security-Policy''): esto pasa porque, entendemos, al no tener HTTPS -porque nuestro proyecto corre en local- el origen no es seguro. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado manualmente desde la configuración de la consola de Google (que ya hemos hecho). Para ello se ha creado este repositorio para hacer descargas de tickets \href{https://github.com/blackcub3s/mercAppAuxPas4/}{mercAppAuxPas4}.
 	
 	De este repo, el único archivo que usaremos para que podamos alimentar nuestro archivo \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este: \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccioBoto.js}{scriptExtraccioBoto.js}. Para poder correr el script usaremos su ruta en GitHub Pages (no la ruta del repositorio GitHub, sino la ruta que tiene el archivo cuando se carga en la página de GitHub Pages que hace el deploy de este mismo repositorio). Esto lo haremos haciendo uso de la URL del repositorio, pero sin el grupo ``blob/main'' en ella. Luego, lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente para la ocasión.}:
 	
@@ -1939,7 +1940,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 
 
-	\noindent \textbf{PARTE 2: Subir tickets digitales del ordenador del usuario al sistema de archivos del proyecto de FastAPI (llamada JavaScript $\rightarrow$ \textit{api/subir-tickets-pdf})}
+	\noindent \textbf{PARTE 2: Subir tickets digitales del ordenador del usuario al sistema de archivos del servidor de FastAPI}
 	\hrule
 	\vspace{.5em}
 	
@@ -1958,14 +1959,14 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	Al clicar en ese icono (evento \textit{click}) activaremos un evento change anidado en el evento \textit{click} que lo que hará será abrir un cuadro de diálogo para subir los pdfs, y después de seleccionarlos al darle al botón abrir automáticamente hará una solicitud fetch al endpoint \textit{/api/subir-tickets-pdf} del controlador de FastAPI: subiendo los pdfs al sistema de archivos -aquí todavía no queremos guardarlo en base de datos porque primero tenemos que parsear\footnote{Minar o extraer los datos del PDF a formato estructurado de lenguaje de programación para su posterior almacenado.} los PDFs- (el código JavaScript que lo consigue conforma íntegramente todo el contenido del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/pujaPdfs.js}{pujaPdfs.js}, que es donde está la solicitud POST con la función fetch correspondiente).
+	 El código JavaScript que consigue la subida de tickets digitales al sistema de archivos del servidor de FastAPI conforma íntegramente todo el contenido del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/pujaPdfs.js}{pujaPdfs.js}. El código de ese archivo cobrará vida al clicar en el icono naranja de la figura anterior (evento \textit{click}) que, a su vez, activará un evento \textit{change} anidado que permitirá la apertura de un cuadro de diálogo para seleccionar y subir los PDFs que el usuario desee, dándole al botón abrir. Esto, automáticamente, hará que el archivo que acabamos de comentar haga una solicitud POST con la función \textit{fetch} al endpoint \textit{/api/subir-tickets-pdf} del controlador de FastAPI, subiendo así los tickets en PDF al sistema de archivos -aquí todavía no queremos guardar los datos de los PDFs en base de datos, porque primero tenemos que parsearlos-\footnote{Parsear se podría definir como ``minar'' o ``extraer'' los datos del PDF (productos, precios, unidades, código de ticket) a un formato estructurado transferible a objetos del lenguaje de programación.}.
 	
-	Nótese que para subir PDFs necesitamos un formulario: normalmente usaríamos el botón que se genera con la etiqueta HTML \textit{input}. Pero en este caso no hay ni rastro de él. Esto es porque hemos conseguido que sea la propia imagen la que hace la función de \textit{input}: es mediante click a ella que se consigue llamar a la etiqueta input, gracias a que está anidada en la etiqueta \textit{label} y que usamos el atributo for que hace enlace entre el click de la imagen y el de la etiqueta \textit{input} (véase imagen \ref{fig:pujarTicketsAuxiliarLabelHTML}).
+	Nótese que para subir PDFs necesitamos un formulario: normalmente usaríamos el botón que se genera con la etiqueta de los formularios \textit{input}. Pero no hay botón. ¿Por qué? Pues porque hemos conseguido que sea la propia imagen la que hace la función de \textit{input}, mientras que el \textit{input} lo hemos escondido (véase figura \ref{fig:pujarTicketsAuxiliarLabelHTML}).
 	
 	
 	\begin{figure}[H]
 		\centering
-		\caption{Código HTML que posibilita ocultar el botón \textit{input} y hacer que sea el icono de la imagen del Paso 2 el que tenga su comportamiento, permitiendo así brir el menú contextual y subir los tickets. Detalle del Fragmento CSS para ocultar el input y de como tomamos el input que contendrá los PDFs con.}
+		\caption{Anidamos la imagen en la etiqueta \textit{label} con valor en atributo \textit{for} compartido con id de la imagen. Así conseguimos que la imagen del Paso 2, al ser clicada, tenga comportamiento de botón input: abrir menú contextual y adjuntar tickets en PDF. Mediante CSS ocultamos el botón que genera el input: ya no es útil.}
 		\includegraphics[width=1\linewidth]{img/pujarTicketsAuxiliarLabelHTML}
 
 		\label{fig:pujarTicketsAuxiliarLabelHTML}
@@ -1973,7 +1974,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 
 			
-	\noindent \textbf{PARTE 3: Mandar a procesar los tickets subidos en el paso 2 mediante el back-end}
+	\noindent \textbf{PARTE 3: Pedir al servidor el parseo de PDFs subidos en el paso 2}
 	\hrule
 	\vspace{.5em}
 	
@@ -1981,19 +1982,19 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\begin{figure}[H]
 		\centering
-		\caption{Llamada al endpoint de FastAPI\textit{/api/conta-pdfs-servidor} mediante el click en el icono de engranaje (flecha): con ello conseguimos mandar al servidor una solicitud POST para que, para un usuario determinado -proporcionado token-, parsee los PDFs existentes en la carpeta tikets/idUsuario del sistema de archivos del servidor de FastAPI: si los PDFs tienen el contenido esperado en su interior ese parseo se persistirá en la base de datos MongoDB y automáticamente se redirigirá al usuario a dashboard.html}
+		\caption{Llamada al endpoint \textit{/api/parsea-y-guarda-pdfs-en-bbdd} de FastAPI mediante el click en el icono de engranaje (flecha): con ello conseguimos mandar al servidor una solicitud POST para que, para un usuario determinado -proporcionado token-, parsee los PDFs existentes en la carpeta \textit{tickets/idUsuario} del sistema de archivos del servidor donde esté el back-end de FastAPI: si los PDFs tienen el contenido esperado en su interior ese parseo se persistirá en la base de datos MongoDB y automáticamente se redirigirá al usuario a dashboard.html}
 		\includegraphics[width=1\linewidth]{img/part3pas4engranatge}
 
 		\label{fig:part3pas4engranatge}
 	\end{figure}
 	
-	La tercera parte de mandar a procesar los tickets también la haremos mediante click al icono del engranaje. Al hacer click se hará la llamada a endpoint especificada en la figura \ref{fig:part3pas4engranatge}. Esta llamada a endpoint la hacemos mediante el archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/demanaExtraccioPdfs.js}{demanaExtraccioPdfs.js}
+	Como vemos en la figura \ref{fig:part3pas4engranatge} para mostrar el PASO 3 dedicado a procesar o parsear los tickets, si clicamos en el engranaje activaremos una llamada POST a un endpoint del back-end de fastAPI mediante el script \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/demanaExtraccioPdfs.js}{demanaExtraccioPdfs.js} que le dará la señal de empezar la extracción y guardar en MongoDB.
 	
 		
 	\subsection{Arquitectura (JavaScript): páginas públicas}
 	\label{sec:arquitecturaPaginesPubliques}
 	
-	\textbf{TO DO FER-HO}
+	\textbf{TO DO FER-HO TO DO FER-HO TO DO FER-HO TO DO FER-HO TO DO FER-HO TO DO FER-HO}
 	
 	
 	\subsection{Diseño de iconos}
