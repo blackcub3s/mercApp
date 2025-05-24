@@ -32,8 +32,8 @@ app.add_middleware(
 
 #Endpoint que en cridar-lo permet pujar PDFs a través del body de la solicitud
 #IMPORTANT: requereix token valid, no caducat i amb permisos a 0 (convidat) o 2 (admin) i que els PDF tinguin
-# un tamany determint comprès entre KB_MINIM_TICKET_DIGITAL i KB_MAXIM_TICKET_DIGITAL.
-#NOTA: no deixem pujar amb usuari a permisos 1 perque ja si té permisos a 1 és que ja té tickets pujats a mongoDB.
+# un tamany determinat comprès entre KB_MINIM_TICKET_DIGITAL i KB_MAXIM_TICKET_DIGITAL.
+#NOTA: no deixem pujar amb usuari a permisos 1 perque ja si té permisos a 1 és que ja té tickets pujats a mongoDB i no cal pujar més pdfs.
 @app.post("/api/subir-tickets-pdf")                                 
 async def pujarPdfsTicketDigital(
     arxius: list[UploadFile] = File(...),           # File(...) diu que ha d'entrar dades de multipart/form-data com els navegadors ho pujen.
