@@ -80,10 +80,11 @@ async def pujarPdfsTicketDigital(payload_token: dict = Depends(verificar_token))
     idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
     permetSolicitudsEntrantsNomesA([0,2], permisos_enToken)
     
-    totTicketOK, llJudicis, nTicketsBenParsejats = serveiTickets.parsejaTicketsIguardaEnMONGODB(idUsuari_enToken) #hauria de se asincrono? 
+    totTicketOK, llJudicis, nTicketsBenParsejats, nTicketsBenGuardats = serveiTickets.parsejaTicketsIguardaEnMONGODB(idUsuari_enToken) #hauria de se asincrono? 
     return {
         "existentes" : serveiValidacions.mostraTicketsExistentsDinsCarpetaUsuari(idUsuari_enToken),
         "processatsCorrectament" : totTicketOK,
+        "nTicketsBenGuardats" : nTicketsBenGuardats,
         "ticketsBenParsejatsIpersistits" : nTicketsBenParsejats,
         "llJudicis" : llJudicis
         }

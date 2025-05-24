@@ -5,7 +5,7 @@ import os
 import PyPDF2
 import pytz
 from serveiValidacions import ticketValidat
-
+import repositoriTickets
         
         
 #PRE: - llJudicis: una llista buida (passada per referència)
@@ -113,16 +113,18 @@ def pdf_to_text(file_path):
 def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
     textPDF = pdf_to_text(doc) 
     if textPDF == "errorPdfAtext":
-        ll_judicis.append({"archivo": doc, "estado": "Parseo función pdf_to_text falló."})
-        print(f"\tError parseig: ${doc}")       
+        ll_judicis.append({"archivo": doc, "estado": "Parseo función pdf_to_text falló."})    
     else:
+        nTicketsBenParsejats += 1
+
+        #Elimino salts de linia 
         ll_linies_PDF = textPDF.split("\n")
         for i in range(len(ll_linies_PDF)):
             print(ll_linies_PDF[i]) # BRUTAL FUNCIONA!!!!
             
 
         jsonTicket = {"to do" : "per a fer posar aqui la estructura mongo"}
-        nTicketsBenParsejats += 1
+        
         ll_judicis.append({"archivo": doc, "estado": "Parseo OK."})
 
 
@@ -136,29 +138,34 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
 def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
     totTicketOK = True
     nTicketsBenParsejats = 0
+    nTicketsBenGuardats = 0
     llJudicis = []
     directoriOnLlegir = f"./tickets/{idUsuari_enToken}"
     try:
         llistTickets = os.listdir(directoriOnLlegir)
+        
         for nomArxiu in llistTickets:
             path = os.path.join(directoriOnLlegir, nomArxiu) 
             nTicketsBenParsejats, jsonTicket = fesScrapTicketMercadona(path, llJudicis, nTicketsBenParsejats) #llJudicis passada per refernecia
-            #aqui guarda a mongo db el jsonTicket
             
-            totTicketOk = False  #aquo posa totTicketOK a false si nalgun ticket no es parseja b o be no es guarda b a mongo
-        return totTicketOK, llJudicis, nTicketsBenParsejats
+            # TO DO --> aqui guarda a mongo db el jsonTicket
+            nTicketsBenGuardats = repositoriTickets.persisteixTicket_a_MONGODB(nTicketsBenGuardats)
+
+
+
+
+            # FI TO DO --> 
+        # tot s'ha processat b si el nombre de tickets dins el sistema d arxius de l'usuari en el servidor
+        # coincideix amb el nombre de tickets correctament parsejats i tambe amb el de guardats. Aleshores tot el que 
+        # ha enviat l'usuari dins el servidor en el PASO 2 s'ha aconsegit processar i persistir íntegrament en el PASO 3
+        totTicketOK = len(llistTickets) == nTicketsBenParsejats == nTicketsBenGuardats 
+        return totTicketOK, llJudicis, nTicketsBenParsejats, nTicketsBenGuardats
     
     except FileNotFoundError:
         print("Ruta no trobada! Aquest error no es donarà mai si s'activa aquest afunció des de crida a /api/parsea-y-guarda-pdfs-en-bbdd")
     
 
-
-
-
-
-    # FI TESTEJA
-
-    return totTicketOK, llJudicis, nTicketsBenParsejats #mantenir noms de variables  #NOTA: si vols comensar afegir nTicketsBenGuardats (si s escau i posarho a tot arreu)
+    
 
 
 if __name__ == "__main__":

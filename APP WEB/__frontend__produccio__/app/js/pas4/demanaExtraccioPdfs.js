@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             return response.json();
         })
-        .then(data => {                               //enter                                       //boolea
-            console.log("existents en servidor: "+ data.existentes + "processatsCorrectament: " + data.processatsCorrectament + "ticketsBenParsejatsIpersistits: " + data.ticketsBenParsejatsIpersistits) 
+        .then(data => {                               //enter                                       //boolea                                                //nTickets persistits a mongo
+            console.log("existents en servidor: "+ data.existentes + "processatsCorrectament: " + data.processatsCorrectament + "nTicketsBenGuardats: " + data.nTicketsBenGuardats + "ticketsBenParsejatsIpersistits: " + data.ticketsBenParsejatsIpersistits) 
             if (data.existentes <= 2)
                 posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.existentes) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
             else {
