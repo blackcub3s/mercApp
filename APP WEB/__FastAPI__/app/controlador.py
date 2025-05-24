@@ -55,8 +55,10 @@ async def pujarPdfsTicketDigital(
             llJudicis.append({"archivo": arxiu.filename, "estado" : "No guardado! No es un PDF" })
             nRefusats += 1 
         else:
-            #Guardo arxiu dins el servidor de fastAPI
-            arxiuBinari = await arxiu.read() #tipus bytes
+            #Guardo arxiu dins el servidor de fastAPI.
+            #tipus bytes. await arxiu.read() funciona b per a pdfs petits (menys de 80 kb), pero compte perquè si posen arxiu gran 
+            #el servidor el voldrà llegir igualment i ho carregarà tot en memoria inclòs abans de comprovar tamany). Millorable.
+            arxiuBinari = await arxiu.read() 
             tamanyFitxerKB = round(len(arxiuBinari) / 1024, 1) # com que és tipus bytes puc passar a KB
             nomArxiu = os.path.basename(arxiu.filename)
             
