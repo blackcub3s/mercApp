@@ -128,7 +128,16 @@ async def guardaTicketsAsistemaDarxius(llJudicis, idUsuari_enToken, arxius):
                 llJudicis.append({"archivo": nomArxiu, "estado": "Archivo rechazado y no guardado (tamaño incorrecto!)", "tamany" : tamanyFitxerKB})
     return nRefusats
 
+#PRE: Torna true si ha aconseguit guardar i parsejar els tickets a la BBDD
+#POST: torna False i ha fallat qualsevol tiket o qualsevol guardada a la BBDD TO DO millora controlador.
+def parsejaTicketsIguardaEnMONGODB():
+    totTicketOK = False
+    llJudicis = [{"asd" : "ijk", "lsf" : "kor"}]
+    nTicketsBenParsejats = 4
     
+    #TO DO AQUI
+
+    return totTicketOK, llJudicis, nTicketsBenParsejats #mantenir noms de variables
 
 
 if __name__ == "__main__":

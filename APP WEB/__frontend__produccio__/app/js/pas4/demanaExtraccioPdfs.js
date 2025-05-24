@@ -24,10 +24,21 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             return response.json();
         })
-        .then(data => {
-            console.log("existents en servidor: "+ data.existentes) //TREU MES DADES
-            posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.existentes) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
-            
+        .then(data => {                               //enter                                       //boolea
+            console.log("existents en servidor: "+ data.existentes + "processatsCorrectament: " + data.processatsCorrectament + "ticketsBenParsejatsIpersistits: " + data.ticketsBenParsejatsIpersistits) 
+            if (data.existentes <= 2)
+                posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.existentes) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
+            else {
+
+                if (data.processatsCorrectament) {
+                    const missatge = "";
+                    //xupare aqui token a 1 i posar-lo a local storage
+                } else {
+                    const missatge = `parsejats: ${data.processatsCorrectament} | fallats: 69`;
+                }
+                posaMissatgesAusuari_PASO3_estatProcessament(data.processatsCorrectament, data.existentes, data.ticketsBenParsejatsIpersistits);
+            }
+
             //console.log(`Parseados correctamente: ${data.ticketsParseadosOK} || Fallados en parseo: ${data.ticketsParseadosFAIL} || Subidos a MongoDB: ${data.bbddOK}`);
         })
         .catch(error => {
