@@ -466,7 +466,7 @@
 			
 				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto. Por ejemplo, es necesario usar Lombok como extensión: sin ella el proyecto en IntelliJ fallará\footnote{¡Para correr el proyecto back-end con\textit{Spring Boot} abrir con intelliJ la carpeta app!}.
 				
-				Para el front-end (archivos estáticos: HTML, CSS y JavaScript) se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto\textbf{5500}\footnote{¡El proyecto \textit{front end} con \textit{vanilla javascript} debe abrirse con vscode en la carpeta \textbf{app} y ejecutarlo en live server, si no \textbf{no} funcionará correctamente!}.
+				Para el front-end (archivos estáticos: HTML, CSS y JavaScript) se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}\footnote{¡El proyecto \textit{front end} con \textit{vanilla javascript} debe abrirse con vscode en la carpeta \textbf{app} y ejecutarlo en live server, si no \textbf{no} funcionará correctamente!}.
 				
 				Para el back-end de Python con FastAPI se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}\footnote{Se recomienda ejecutar desde la carpeta app haciendo el comando \textit{FastApi dev controlador.py}} .
 				
@@ -487,7 +487,7 @@
 				
 				
 				
-				Así, no tenemos que preocuparnos de parar el contenedor, borrarlo y luego crear la imagen (ver imagen \ref{fig:dockeritzacioAplicacioPlantilla}).
+				Así, no tenemos que preocuparnos de parar el contenedor, borrarlo y luego crear la imagen (ver imagen \ref{fig:dockeritzacioAplicacioPlantilla})\footnote{ A futuro planteamos hacer el despliegue con un sistema de orquestración de contenedores como es Kubernetes, subiendo las imágenes a un registry; por ahora no lo haremos y quien quiera desplegarlo en su ordenador para probarlo puede hacerlo fácilmente creando las imágenes e instanciando los contenedores con los scripts en Bash en rojo. No se hará porque las barras bajas de los nombres de las carpetas probablemente darán problemas: la memoria tiene ya muchos links al GitHub que dependen que estas rutas estén bien y por ahora no se tocará.}.
 				
 				
 				\FloatBarrier
@@ -505,6 +505,8 @@
 			
 			\section{Desarrollo back-end (Spring Boot)}
 			\label{sec:parteSpringBoot}
+			
+				\subsection{Contenerización}
 			
 				\subsection{Estructura de la aplicación}
 				\label{sec:estructuraAplicacion}
@@ -1312,8 +1314,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\setlength{\itemsep}{-.3em}
 		
 		\item \textbf{\textcolor{taronjaBrillant}{\underline{rectángulos naranja}}}. $\rightarrow$ Representan las \underline{vistas} -archivos html- a las que redirige JavaScript mediante la llamada a $window.location.href$ a partir de los resultados de las llamadas a endpoint de APIs.
-		\item \textbf{\textcolor{yellowfosforito!90!black}{\underline{rombos amarillos}}} $\rightarrow$ Representación de \underline{decisiones} del back-end de \textbf{Spring Boot} hechas como respuesta a peticiones de front-end a sus endpoints.
-. %75 per cent groc fosforito i 25 negre entenc
+		\item \textbf{\textcolor{yellowfosforito!90!black}{\underline{rombos amarillos}}} $\rightarrow$ Representación de \underline{decisiones} del back-end de \textbf{Spring Boot} hechas como respuesta a peticiones de front-end a sus endpoints.%75 per cent groc fosforito i 25 negre entenc
 		\item \textbf{\textcolor{blauCian}{\underline{rombo azul cian}}} $\rightarrow$ Una \underline{decisión} del back-end de \textbf{FastAPI} en respuesta a petición front-end a un endpoint de su API. 
 		
 		\item\textbf{\textcolor{green!70!white}{\underline{rectángulos verdes}}} $\rightarrow$ Representan \underline{expedición de tokens} de acceso (JWT) desde el endpoint del que emanan y su enviado a la vista a la que apuntan \footnote{Consultad la estructura de los mismos en la figura \ref{fig:jwtioMostraPayload}.}.
@@ -1325,8 +1326,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: \textit{end-point} de Spring Boot que evalúa si el correo electrónico introducido pertenece a un usuario registrado y qué permisos tiene.
 			\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: \textit{end-point} de Spring Boot que registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las \textit{claims} de su \textit{payload}\footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}.
 			\item \textbf{\textcolor{blue}{[\texttt{/api/login}]}}: \textit{end-point} de Spring Boot que gestiona el proceso de autenticación y generación del \textit{JWT Access Token} con tres niveles de permisos posibles (0, 1 y 2).
-			\item POSAR ENDPOINT FAST API [/api/parsea-y-guarda-pdfs-en-bbdd] \textbf{I POSARLO AL GRAFIC TIKZ TAMBE}
-			
+			\item\textbf{\textcolor{purple}{[\texttt{/api/parsea-y-guarda-pdfs-en-bbdd}]}}: \textit{end-point} de FastAPI que traslada al front-end un token de acceso expedido por Spring Boot con permisos a 1.
 		\end{itemize}
 		
 		
@@ -1374,7 +1374,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	Sin embargo, no todo es ideal. Siempre existen concesiones (o como diríamos en inglés ``trade-offs''). Al tener el front-end y el back-end desacoplados esto también aumenta considerablemente la complejidad inicial en el desarrollo: la protección de las vistas a usuarios que no deben visualizarlas se hace más difícil porque no las sirve el back-end y no las puede proteger directamente este\footnote{A diferencia de lo que sí haría una aplicación back-end hecha en php tradicional como las que hemos visto en desarrollo web entorno servidor, donde servimos el HTML desde dentro del mismo PHP).}.
 	
-	Por ejemplo, del mismo modo que los endpoints de nuestra API del back-end en Spring Boot están protegidos y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado o no tenga en el \textit{payload} el ``idUsuari'' que permita el acceso a un cierto recurso), también pasará que ciertas páginas del front-end no podrán obtener la información deseada si llaman a un end-point para el que no tienen autorización: en este caso ello tendrá implicaciones para las vistas, y deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesión y/o bien redirigir al usuario a la página correcta, por ejemplo. Nosotros hemos optado por este último enfoque.
+	Por ejemplo, del mismo modo que los endpoints de nuestra API del back-end en Spring Boot o del back-end de FastAPI están protegidos por token y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado o no tenga en el \textit{payload} el ``idUsuari'' que permita el acceso a un cierto recurso), también pasará que ciertas páginas del front-end no podrán obtener la información deseada si llaman a un end-point para el que no tienen autorización: en este caso ello tendrá implicaciones para las vistas, y deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesión y/o bien redirigir al usuario a la página correcta, por ejemplo. Nosotros hemos optado por este último enfoque.
 	
 	Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript para redirigir a los usuarios.
 	

@@ -54,7 +54,7 @@
 	\node (dec5) [decisionBackend, below of=dec4, yshift=-2cm, text width=1.5cm] {¿Hay acceso a recursos?};
 	\node (jwtLOGIN) [nodeAccessToken, below of=dec5, yshift=-1.3cm, text width=3cm] {\textbf{AccessToken} \\$permisos \geq 1$};
 	
-	\node (jwtLOGIN4) [nodeAccessToken, right of=concedido, xshift=2cm, text width=3cm] {\textbf{AccessToken} \\$permisos = 1$};
+	\node (jwtLOGIN4) [nodeAccessToken, right of=concedido, xshift=2.3cm, text width=3cm] {\textbf{AccessToken} \\$permisos = 1$};
 
 	
 	\node (dashboard) [trapeziSortida, right of=concedido, xshift=7cm] {dashboard};
@@ -157,9 +157,8 @@
 	
 	
 	\draw [arrow] (jwtLOGIN) -- (dashboard) node[midway, yshift=.3cm, xshift=2cm] {};
-	\draw [linia] (concedido) -- (jwtLOGIN4)  node[midway, yshift=.2cm, xshift=-.1cm] {S\'{i}};
+	\draw [linia] (concedido) -- (jwtLOGIN4)  node[midway, yshift=.2cm, xshift=-.5cm] {S\'{i}};
 	
-	\draw [linia] (concedido) -- (jwtLOGIN4)  node[midway, yshift=.2cm, xshift=-.1cm] {S\'{i}};
 	
 	\draw [arrow] (jwtLOGIN4) -- (dashboard);
 	
@@ -208,7 +207,16 @@
 	node[midway, left=1cm, text width=3cm, align=center, rotate=90] {\textbf{\textcolor{brown}{[/api/registraUsuari]}}};
 	
 	
+	% Claudator que agrupa els nodes de la /api/parsea-y-guarda-pdfs-en-bbdd de fastapi (esquerra)
+	\draw[decorate, decoration={brace, amplitude=10pt}, thick, dashed, draw=purple]
+	([xshift=-1.7cm]concedido.south) -- ([xshift=-1.7cm]concedido.north)
+	node[midway, left=1.3cm, yshift=5cm, rotate=90] {\textbf{\textcolor{purple}{[/api/parsea-y-guarda-pdfs-en-bbdd]}}};
+
 	
+	% Claudator que agrupa els nodes de la /api/parsea-y-guarda-pdfs-en-bbdd de fastapi (dreta). Es clau mirror.
+	\draw[decorate, decoration={brace, mirror, amplitude=10pt}, thick, dashed, draw=purple]  %sense mirror va a l'esquerra
+	([xshift=1.7cm]concedido.south) -- ([xshift=1.7cm]concedido.north)
+	node[midway, left=1cm, yshift=1.5cm, text width=3cm, align=center, rotate=90] {};
 	
 	
 	
