@@ -6,67 +6,6 @@ import PyPDF2
 import pytz
 from serveiValidacions import ticketValidat
 
-
-s = '' #on posaré l'string de la notificació
-
-# COMPUTO L'HORA A ESPANYA (EL CONTENIDOR TÉ UNA HORA DIFERENT) i l'imprimeixo per pantalla. IIndispensable usar pytz
-def imprimeix_hora_espanyola():
-    global s 
-
-    current_time = str(datetime.now(pytz.timezone("Europe/Madrid")))  #per escollir timezone fas pytz.all_timezones
-    dia, hora = current_time.split()
-    dia, hora = dia.split("-"), hora.split(":")
-    dia.reverse()
-
-    missatge = "execució script --> [ "+dia[0]+"/"+dia[1]+"/"+dia[2]+" || "+hora[0]+":"+hora[1]+"h ]"
-    s = s + missatge + "\n"
-    print(missatge)
-
-
-#FUNCIO FETA PER XAT GPT
-def pdf_to_text(file_path):
-    try:
-        text = ""
-        with open(file_path, "rb") as file:
-            reader = PyPDF2.PdfReader(file)
-            for page_num in range(len(reader.pages)):
-                page = reader.pages[page_num]
-                text += page.extract_text() + "\n"
-        return text
-    except PyPDF2.errors.PdfReadError:
-        return "errorPdfAtext"
-
-
-
-
-# PRE: una llista de tuples on primer element
-#      tupla es nom del pdf a cercar. Els pdfs de la tupla han d'existir al directori on s'executa el programa.
-# POST: S'imprimeix cada linia que té una ocurrència de qualsevol dels elements
-#      (especialitats) de ll_esp (llista especialitats)-
-def fesScrapDocuments(ll_docs):
-    global s 
-
-    for doc in ll_docs:
-        print("------------------------------\n")
-
-        s = s + " -- cerca en --> ["+doc[0]+"]"+"\n"
-        print(" -- cerca en --> ["+doc[0]+"]")
-        
-        textPDF = pdf_to_text(doc[0]) 
-        if textPDF == "errorPdfAtext":
-            s = s + "\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n"
-            print("\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n")            
-        else:
-            ll_linies_PDF = textPDF.split("\n")
-            for i in range(len(ll_linies_PDF)):
-                print("AQUI EXTREU LA INFO DEL TICKET DIGITAL")
-    
-#PRE: una llista d'especialitats de la qual prendras els noms dels pdfs de la primera columna
-#POST: pdfs esborrats de la carpeta
-def esborra_pdfs(ll_esp, carregatPdfs):
-    if carregatPdfs:
-        for pdf, url in ll_esp:
-            os.remove(pdf)
         
         
 #PRE: - llJudicis: una llista buida (passada per referència)
@@ -128,16 +67,98 @@ async def guardaTicketsAsistemaDarxius(llJudicis, idUsuari_enToken, arxius):
                 llJudicis.append({"archivo": nomArxiu, "estado": "Archivo rechazado y no guardado (tamaño incorrecto!)", "tamany" : tamanyFitxerKB})
     return nRefusats
 
-#PRE: Torna true si ha aconseguit guardar i parsejar els tickets a la BBDD
-#POST: torna False i ha fallat qualsevol tiket o qualsevol guardada a la BBDD TO DO millora controlador.
-def parsejaTicketsIguardaEnMONGODB():
-    totTicketOK = False
-    llJudicis = [{"asd" : "ijk", "lsf" : "kor"}]
-    nTicketsBenParsejats = 4
-    
-    #TO DO AQUI
 
-    return totTicketOK, llJudicis, nTicketsBenParsejats #mantenir noms de variables
+
+
+
+
+
+
+
+# COMPUTO L'HORA A ESPANYA (EL CONTENIDOR TÉ UNA HORA DIFERENT) i l'imprimeixo per pantalla. IIndispensable usar pytz
+def imprimeix_hora_espanyola():
+    current_time = str(datetime.now(pytz.timezone("Europe/Madrid")))  #per escollir timezone fas pytz.all_timezones
+    dia, hora = current_time.split()
+    dia, hora = dia.split("-"), hora.split(":")
+    dia.reverse()
+
+    missatge = "execució script --> [ "+dia[0]+"/"+dia[1]+"/"+dia[2]+" || "+hora[0]+":"+hora[1]+"h ]"
+    print(missatge)
+
+#PRE: una llista de paths de pdfs
+#POST: pdfs esborrats de la carpeta (testejar encara!!)
+def esborra_pdfs(ll, carregatPdfs):
+    if carregatPdfs:
+        for pdf in ll:
+            os.remove(pdf)
+
+#FUNCIO FETA PER XAT GPT
+def pdf_to_text(file_path):
+    try:
+        text = ""
+        with open(file_path, "rb") as file:
+            reader = PyPDF2.PdfReader(file)
+            for page_num in range(len(reader.pages)):
+                page = reader.pages[page_num]
+                text += page.extract_text() + "\n"
+        return text
+    except PyPDF2.errors.PdfReadError:
+        return "errorPdfAtext"
+
+
+# PRE: doc es el document (PATH O NOM?)
+#      tupla es nom del pdf a cercar. Els pdfs de la tupla han d'existir al directori on s'executa el programa.
+# POST: S'imprimeix cada linia que té una ocurrència de qualsevol dels elements
+#      (especialitats) de ll_esp (llista especialitats)-
+def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
+    textPDF = pdf_to_text(doc) 
+    if textPDF == "errorPdfAtext":
+        ll_judicis.append({"archivo": doc, "estado": "Parseo función pdf_to_text falló."})
+        print(f"\tError parseig: ${doc}")       
+    else:
+        ll_linies_PDF = textPDF.split("\n")
+        for i in range(len(ll_linies_PDF)):
+            print(ll_linies_PDF[i]) # BRUTAL FUNCIONA!!!!
+            
+
+        jsonTicket = {"to do" : "per a fer posar aqui la estructura mongo"}
+        nTicketsBenParsejats += 1
+        ll_judicis.append({"archivo": doc, "estado": "Parseo OK."})
+
+
+    return nTicketsBenParsejats, jsonTicket
+
+
+
+#PRE:  idUsuari_enToken (int) --> porta l'usuari que te tickets digitals creats en el sistema d'arxius.
+#POST: totTicketOk (booleà) --> Si tots els tickets de la carpeta d'usuari s'han parsejat i guardat b en BBDD
+#      llJudicis (llista de dicts) --> llista informativa de l'estat dels tickets [{"archivo": "ticket mercadona.pdf", "estado" : "parseo ok"}, [...] ] 
+def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
+    totTicketOK = True
+    nTicketsBenParsejats = 0
+    llJudicis = []
+    directoriOnLlegir = f"./tickets/{idUsuari_enToken}"
+    try:
+        llistTickets = os.listdir(directoriOnLlegir)
+        for nomArxiu in llistTickets:
+            path = os.path.join(directoriOnLlegir, nomArxiu) 
+            nTicketsBenParsejats, jsonTicket = fesScrapTicketMercadona(path, llJudicis, nTicketsBenParsejats) #llJudicis passada per refernecia
+            #aqui guarda a mongo db el jsonTicket
+            
+            totTicketOk = False  #aquo posa totTicketOK a false si nalgun ticket no es parseja b o be no es guarda b a mongo
+        return totTicketOK, llJudicis, nTicketsBenParsejats
+    
+    except FileNotFoundError:
+        print("Ruta no trobada! Aquest error no es donarà mai si s'activa aquest afunció des de crida a /api/parsea-y-guarda-pdfs-en-bbdd")
+    
+
+
+
+
+
+    # FI TESTEJA
+
+    return totTicketOK, llJudicis, nTicketsBenParsejats #mantenir noms de variables  #NOTA: si vols comensar afegir nTicketsBenGuardats (si s escau i posarho a tot arreu)
 
 
 if __name__ == "__main__":
@@ -145,13 +166,13 @@ if __name__ == "__main__":
     imprimeix_hora_espanyola()
 
     #LLISTA DE TUPLES (nom amb que guardaré el document, url d'on fem scrap del document)
-    llista_documents = [("tiket1.pdf","UBICACIO TICKET 1 EN ORDINADOR DEL USUARI"),
-                        ("tiket2.pdf", "UBICACIO TIKET 2 EN ORDINADOR DE L'USUARI")]
+    document = "20240124 Mercadona 5,48 €"
 
 
-    fesScrapDocuments(llista_documents)
-    esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
+    #fesScrapTicketMercadona(document)
+    #esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
     
+    parsejaTicketsIguardaEnMONGODB("27")
 
 
 
