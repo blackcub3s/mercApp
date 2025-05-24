@@ -22,7 +22,12 @@
 
 
 
-\usepackage{xcolor} % Para definir colores personalizados
+\usepackage{xcolor} % Para definir colores personalizados a continuacion:
+
+\definecolor{yellowfosforito}{RGB}{255,255,0}
+\definecolor{blauCian}{RGB}{0, 255, 255}
+\definecolor{taronjaBrillant}{RGB}{255, 140, 0}
+
 
 % Configuración del estilo para Git
 \lstset{
@@ -543,10 +548,22 @@
 				
 				Dentro de \textbf{src/main/java} tenemos también la ruta \textbf{miApp.app/seguretat} encontramos la clase \textit{EncriptaContrasenyes.java}, que utilizamos en el servicio de usuaris para hashear las contraseñas en la base de datos. Esto lo explicamos en detalle dentro de \ref{sec:implementacioHashContra}.
 				
+				Dentro de \textbf{src/main/java} tenemos también la ruta \textbf{miApp.app/tickets/}. Ahi dentro tenemos unas clases diseñadas para expansiones futuras que no han sido utilizadas por ahora: por ejemplo, dentro del package \textit{restclient} tenemos una clase habilitada que permite hacer llamadas como cliente (sí, el back-end de Java Spring Boot puede actuar como cliente hacia otro back-end mediante la librería RestClient y puede \textbf{hacer} peticiones HTTP hacia el back-end de fastAPI con lo que ahí configuramos\footnote{Ambos back-ends sí se comunicarán, pero lo haremos finalmente en sentido opuesto: desde el back-end de Python FastAPI en realidad haremos una petición HTTP hacia el back-end de Spring Boot para emitir tokens como \textbf{veremos luego.})}. 
 				
-				TO DO EXPLICAR 	\hspace{3em} usuari, repository, service, controller de 
+				
+				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/Usuaris} con varios subpackages. Ahí dentro merece la pena mencionar que tenemos todas las clases con las que se recibe y procesa datos del cliente para hacer la gestión de usuarios. Las que nos interesan son las siguientes:
+				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{UsuariControlador.java}, 
+				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/servei/UsuariServei.java}{UsuariServei.java}, 
+				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/repositori/UsuariRepositori.java}{UsuariRepositori.java}
+				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java}{Usuari.java}
+				\footnote{No nos interesa por ahora hablar mucho de UsuariAmpliat.java y de UsuariAmpliatRepositori.java porque se han creado como plantilla para la expansión de datos de usuarios si a futuro seguimos desarrollando esta aplicación.}. 
+				A continuación  vamos a mostrar, a modo de ejemplo, qué es lo que pasa con todas estas clases y cuál es su utilidad cuando hacemos la llamada a un endpoint del \textit{Controlador.java} (concretamente el endpoint \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103}{/api/login}), que veremos que es el endpoint que interviene en el inicio de sesión y que podemos visualizar en el enrutamiento front-end de la aplicación mostrado de forma exhaustiva en \ref{fig:diagramaMercaAppFront} para ver en contexto su utilidad en relación al front-end de la aplicación.
+				
+				 Bajo mi punto de vista, es más didáctico y sencillo de entender si al lector se le presenta la información desgranada de este modo. Antes pero mostramos una figura explicativa a nivel gráfico de lo que pasa 
+				
+				\textbf{TO DO}
 			
-				TO DO EXPLICAR 	\hspace{3em} classes per a fer la unio amb el backend de fast API mitjançant restClient.
+
 				
 				
 				
@@ -787,7 +804,8 @@ String accesJWT = accessToken.genera(
 		\end{figure}
 		\FloatBarrier
 		
-		\textbf{POTSER POSAR LES FUNCIONS DEL CONTROLADOR I DEL SERVICE QUE HO FAN ENLLAÇANT CODIS DE GITHUB.}
+		Por ejemplo podéis ver el endpoint -función de controlador- en GitHub pinchando en el link: \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L119-L123}{\textit{api/registra-usuari}}. Asimismo podéis hacer lo mismo para el endpoint \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103-L107}{\textit{api/login}}. Todo ello son detalles de líneas de código pertenecientes a la clase Spring Boot \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{ControladorUsuaris.java}
+	
 		
 		La parte de recepción del token en el front-end y de su manejo podéis encontrarla en el apartado \ref{sec:recibirAccesTokenENFRONTEND}
 
@@ -805,17 +823,16 @@ String accesJWT = accessToken.genera(
 		Después de crear las tres clases en Java de las que hemos hablado en el apartado \ref{sec:implementacionJWTjava} anterior y haber mandado el token de acceso al front mediante el body de las \textit{responses} a los endpoints \textit{api/registraUsuari} o \textit{api/login}, podemos empezar a 
 		implementar la protección de endpoints con JWT. 
 		
-		Asumamos que nos llega al back-end un token de acceso en una solicitud HTTP de un usuario que ya ha recibido su token y quiere ahora acceder al dashboard de visualización (a través de la heather ``Authorization''). 
+		Asumamos que nos llega al back-end un token de acceso en una solicitud HTTP de un usuario que ya ha recibido su token y quiere ahora borrar los datos de usuario de otro usuario, es decir, de otro con un idUusario distinto (a través de la heather ``Authorization''). El token sería válido, y este usuario fraudulento tendría el id de permisos igual que el otro usuario propietario de los datos; pero deberíamos, por razones obvias, proteger su acceso.
+	
 		
-	\textbf{	POSA EL CAS REAL QUAN L'HAGIS PROGRAMAT QUE AQUEST ENDPOINT ENCARA NO EXISTEIX}: La solicitud HTTP con el susodicho token se hace via GET a (\texttt{'usuaris/{id}/tiketsVERIFICARSIEXISTEIX'}) (ver subseccion \ref{sec:estructuraAplicacion}, en ControladorUsuari.java). 
-		
-		En javascript puro, desde el cliente, esta solicitud HTTP la pondríamos conseguir de la función fetch(), poniéndole uno de los pares clave valor con el inicio ``Bearer'' (por convenio) tal que así:
+		En javascript puro, desde el cliente, esta solicitud HTTP de método DELETE la pondríamos conseguir de la función fetch(), poniéndole uno de los pares clave valor con el inicio ``Bearer'' (por convenio) tal que así\footnote{Con postman pasamos el token desde la pestaña Authorization y en Auth Type le seleccionamos, en el desplegable, Bearer Token.}:
 		
 				
 \begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 
-fetch("'http://localhost:8080/usuaris/{id}/endpointTikets'", {
-	method: "GET",
+fetch("'http://localhost:8080/api/usuaris/{id}'", {
+	method: "DELETE",
 	headers: {
 		"Content-Type": "application/json",
 		"Authorization": "Bearer "+tokenJWT;
@@ -1287,27 +1304,38 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	Asimismo, el proceso de registro que utilizamos en mercApp es convenientemente una derivación de este mismo: si bien en NetFlix primeramente se redirige al usuario a unas cartas de pago, nosotros aquí le llevamos a una página para que nos dé acceso al gmail en el que Mercadona los tickets digitales al usuario (la página  \texttt{pas4\_ConcedirAccesGmail.html}); de nuevo análogamente a NetFlix, donde al usuario que ya ha pagado se le concede inmediatamente el acceso a las películas y series,  en nuestro caso se le dará acceso al usuario al tablón de visualización de análisis de datos de los tikets digitales  (\texttt{dashboard.html}), donde se visualizan el resultado de la minería y extracción de datos de esos tikets. 
 	
-	El proceso de enrutamiento de los usuarios desde que introducen el correo en el formulario de \texttt{pas1\_LandingSignUp.html} (\texttt{index.html}) hasta que acceden al \textit{dashboard} se encuentra recogido en el diagrama de la figura \ref{fig:diagramaMercaAppFront}, cuyas nomenclaturas explicamos en los siguientes \textit{bullet points}:
+	El proceso de enrutamiento de los usuarios desde que introducen el correo en el formulario de \texttt{pas1\_LandingSignUp.html} (\texttt{index.html}) hasta que acceden al \textit{dashboard} se encuentra recogido en el diagrama de la figura \ref{fig:diagramaMercaAppFront}. Para entenderla ver la pregunta siguiente:
 	\vspace{1em}
 	\hrule
-	
+	\textbf{¿Qué significan los distintos elementos visuales del diagrama de \ref{fig:diagramaMercaAppFront}?}
 	\begin{itemize}
 		\setlength{\itemsep}{-.3em}
 		
-		\item Decisiones del back-end de Spring Boot al llamar a APIs: \textbf{\textcolor{yellow!75!black}{\underline{rombos amarillos}}}. %75 per cent groc i 25 negre entenc
-		\item Las APIs que consume el front-end van entre corchetes ([]) y con color:
+		\item \textbf{\textcolor{taronjaBrillant}{\underline{rectángulos naranja}}}. $\rightarrow$ Representan las \underline{vistas} -archivos html- a las que redirige JavaScript mediante la llamada a $window.location.href$ a partir de los resultados de las llamadas a endpoint de APIs.
+		\item \textbf{\textcolor{yellowfosforito!90!black}{\underline{rombos amarillos}}} $\rightarrow$ Representación de \underline{decisiones} del back-end de \textbf{Spring Boot} hechas como respuesta a peticiones de front-end a sus endpoints.
+. %75 per cent groc fosforito i 25 negre entenc
+		\item \textbf{\textcolor{blauCian}{\underline{rombo azul cian}}} $\rightarrow$ Una \underline{decisión} del back-end de \textbf{FastAPI} en respuesta a petición front-end a un endpoint de su API. 
+		
+		\item\textbf{\textcolor{green!70!white}{\underline{rectángulos verdes}}} $\rightarrow$ Representan \underline{expedición de tokens} de acceso (JWT) desde el endpoint del que emanan y su enviado a la vista a la que apuntan \footnote{Consultad la estructura de los mismos en la figura \ref{fig:jwtioMostraPayload}.}.
+		
+		\item Los endpoints de API que consume el front-end para hacer el enrutamiento se muestran entre corchetes ([]) y con colores. Concretamente tenemos:
+		
 		\begin{itemize}
 			\setlength{\itemsep}{.0em}
-			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: \textit{end-point} que evalúa si el correo electrónico introducido pertenece a un usuario registrado y qué permisos tiene.
-			\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: \textit{end-point} que registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las \textit{claims} de su \textit{payload}\footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}.
-			\item \textbf{\textcolor{blue}{[\texttt{/api/login}]}}: \textit{end-point} que gestiona el proceso de autenticación y generación del \textit{JWT Access Token} con tres niveles de permisos posibles (0, 1 y 2).
+			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: \textit{end-point} de Spring Boot que evalúa si el correo electrónico introducido pertenece a un usuario registrado y qué permisos tiene.
+			\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: \textit{end-point} de Spring Boot que registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las \textit{claims} de su \textit{payload}\footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}.
+			\item \textbf{\textcolor{blue}{[\texttt{/api/login}]}}: \textit{end-point} de Spring Boot que gestiona el proceso de autenticación y generación del \textit{JWT Access Token} con tres niveles de permisos posibles (0, 1 y 2).
+			\item POSAR ENDPOINT FAST API [/api/parsea-y-guarda-pdfs-en-bbdd] \textbf{I POSARLO AL GRAFIC TIKZ TAMBE}
+			
 		\end{itemize}
 		
 		
 		
-		\item Las vistas -archivos html- a las que redirige JavaScript mediante la llamada a $window.location.href$ a partir de los resultados de las llamadas a las APIs:  \textbf{\textcolor{orange}{\underline{rectángulos naranja}}}.
+
 		
-		\item Expedición de tokens de acceso (JWT) desde el endpoint del que emanan y enviados al front-end se representan con un rectángulo \textbf{\textcolor{blue!40!white}{\underline{de fondo azul}}} y bordes redondeados \footnote{Consultad la estructura de los mismos en la figura \ref{fig:jwtioMostraPayload}.}.
+
+		
+
 		
 	\end{itemize}
 	
@@ -1318,7 +1346,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Diagrama de flujo del enrutamiento completo del sistema \textit{front-end} durante el proceso de registro, desde que el usuario introduce su correo en \texttt{pas1\_LandingSignUp.html} (\texttt{index.html}) hasta obtener acceso al \texttt{dashboard}.\\ -------------------- \textit{NOTA:} \textbf{Acceso a recursos $\iff$ permisos $\geq$ 1} --------------------}
+		\caption{Diagrama de flujo del enrutamiento completo del sistema \textit{front-end} durante el registro de un usuario, desde que este introduce su correo en \texttt{pas1\_LandingSignUp.html} (\texttt{index.html}) hasta obtener acceso al \texttt{dashboard}.\\ -------------------- \textit{NOTA:} \textbf{Acceso a recursos $\iff$ permisos $\geq$ 1} --------------------}
 		\includegraphics[width=1\textwidth]{img/diagramaMercAppFront.pdf}
 		
 		\label{fig:diagramaMercaAppFront} 
