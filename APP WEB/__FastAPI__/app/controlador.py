@@ -44,48 +44,9 @@ async def pujarPdfsTicketDigital(
     idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
     permetSolicitudsEntrantsNomesA([0,2], permisos_enToken)
     
-
-
     llJudicis = []
-    nRefusats = 0
-    for arxiu in arxius:
-
-        #AVALUA EL TIPUS MIME (BUSCO application/pdf)
-        if arxiu.content_type != "application/pdf": 
-            llJudicis.append({"archivo": arxiu.filename, "estado" : "No guardado! No es un PDF" })
-            nRefusats += 1 
-        else:
-            #Guardo arxiu dins el servidor de fastAPI.
-            #tipus bytes. await arxiu.read() funciona b per a pdfs petits (menys de 80 kb), pero compte perquè si posen arxiu gran 
-            #el servidor el voldrà llegir igualment i ho carregarà tot en memoria inclòs abans de comprovar tamany). Millorable.
-            arxiuBinari = await arxiu.read() 
-            tamanyFitxerKB = round(len(arxiuBinari) / 1024, 1) # com que és tipus bytes puc passar a KB
-            nomArxiu = os.path.basename(arxiu.filename)
-            
-            # --- SI EL TAMANY DE FITXER ES CORRECTE EL GUARDEM A LA CARPETA DEL SERVIDOR --
-            # (NOTEU que python admet la sintaxi matemàtica de l'estil A <= B <= C,
-            # que en en Python es pot escriure (A <= B) and (B <= C) i en altres llenguatges com
-            # Java o Javascript (A <= B) && (B <= C) 
-            if KB_MINIM_TICKET_DIGITAL <= tamanyFitxerKB <= KB_MAXIM_TICKET_DIGITAL:
-                #Comprovo si el nom de l'arxiu és el que m'espero en un ticket de Mercadona
-                if serveiValidacions.ticketValidat(nomArxiu):
-
-                    #creo directori tickets si no existeix i trec el path
-                    directoriOnGuardar = f"./tickets/{idUsuari_enToken}"
-                    os.makedirs(directoriOnGuardar, exist_ok=True)
-                    path = os.path.join(directoriOnGuardar, nomArxiu) 
-
-                    #creo l'arxiu en mode d'escriptura (w) amb la b de binari
-                    with open(path, "wb") as f: 
-                        f.write(arxiuBinari)
-
-                    llJudicis.append({"archivo": nomArxiu, "estado": "Guardado correctamente", "tamany" : tamanyFitxerKB})
-                else:
-                    nRefusats += 1 #si nom no és correcte conto que és ticket refusat
-                    llJudicis.append({"archivo": nomArxiu, "estado": "Archivo rechazado y no guardado (NOMBRE incorrecto)!", "tamany" : tamanyFitxerKB})
-            else:
-                nRefusats += 1 #si tamany no és correcte conto que és ticket refusat
-                llJudicis.append({"archivo": nomArxiu, "estado": "Archivo rechazado y no guardado (tamaño incorrecto!)", "tamany" : tamanyFitxerKB})
+    nRefusats = await guardaTicketsAsistemaDarxius(llJudicis, idUsuari_enToken, arxius) 
+    
     return {
                 "subidos" : len(llJudicis) - nRefusats, 
                 "rechazados" : nRefusats, 
@@ -128,8 +89,48 @@ async def pujarPdfsTicketDigital(payload_token: dict = Depends(verificar_token))
 
 
 
+async def guardaTicketsAsistemaDarxius(llJudicis, idUsuari_enToken, arxius):
+   
+    nRefusats = 0
+    for arxiu in arxius:
 
+        #AVALUA EL TIPUS MIME (BUSCO application/pdf)
+        if arxiu.content_type != "application/pdf": 
+            llJudicis.append({"archivo": arxiu.filename, "estado" : "No guardado! No es un PDF" })
+            nRefusats += 1 
+        else:
+            #Guardo arxiu dins el servidor de fastAPI.
+            #tipus bytes. await arxiu.read() funciona b per a pdfs petits (menys de 80 kb), pero compte perquè si posen arxiu gran 
+            #el servidor el voldrà llegir igualment i ho carregarà tot en memoria inclòs abans de comprovar tamany). Millorable.
+            arxiuBinari = await arxiu.read() 
+            tamanyFitxerKB = round(len(arxiuBinari) / 1024, 1) # com que és tipus bytes puc passar a KB
+            nomArxiu = os.path.basename(arxiu.filename)
+            
+            # --- SI EL TAMANY DE FITXER ES CORRECTE EL GUARDEM A LA CARPETA DEL SERVIDOR --
+            # (NOTEU que python admet la sintaxi matemàtica de l'estil A <= B <= C,
+            # que en en Python es pot escriure (A <= B) and (B <= C) i en altres llenguatges com
+            # Java o Javascript (A <= B) && (B <= C) 
+            if KB_MINIM_TICKET_DIGITAL <= tamanyFitxerKB <= KB_MAXIM_TICKET_DIGITAL:
+                #Comprovo si el nom de l'arxiu és el que m'espero en un ticket de Mercadona
+                if serveiValidacions.ticketValidat(nomArxiu):
 
+                    #creo directori tickets si no existeix i trec el path
+                    directoriOnGuardar = f"./tickets/{idUsuari_enToken}"
+                    os.makedirs(directoriOnGuardar, exist_ok=True)
+                    path = os.path.join(directoriOnGuardar, nomArxiu) 
+
+                    #creo l'arxiu en mode d'escriptura (w) amb la b de binari
+                    with open(path, "wb") as f: 
+                        f.write(arxiuBinari)
+
+                    llJudicis.append({"archivo": nomArxiu, "estado": "Guardado correctamente", "tamany" : tamanyFitxerKB})
+                else:
+                    nRefusats += 1 #si nom no és correcte conto que és ticket refusat
+                    llJudicis.append({"archivo": nomArxiu, "estado": "Archivo rechazado y no guardado (NOMBRE incorrecto)!", "tamany" : tamanyFitxerKB})
+            else:
+                nRefusats += 1 #si tamany no és correcte conto que és ticket refusat
+                llJudicis.append({"archivo": nomArxiu, "estado": "Archivo rechazado y no guardado (tamaño incorrecto!)", "tamany" : tamanyFitxerKB})
+    return nRefusats
 
 
 
