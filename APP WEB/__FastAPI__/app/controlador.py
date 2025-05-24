@@ -42,8 +42,8 @@ async def pujarPdfsTicketDigital(
     idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
     permetSolicitudsEntrantsNomesA([0,2], permisos_enToken)
     
-    llJudicis = [] #passem per referència la llista
-    nRefusats = await serveiTickets.guardaTicketsAsistemaDarxius(llJudicis, idUsuari_enToken, arxius)
+    llJudicis = [] #passem per referència la llista en la crida de la funció del servei (que s'emplenarà)
+    nRefusats = await serveiTickets.guardaTicketsAsistemaDarxius(llJudicis, idUsuari_enToken, arxius) #self explanatory
     
     return {
                 "subidos" : len(llJudicis) - nRefusats, 
