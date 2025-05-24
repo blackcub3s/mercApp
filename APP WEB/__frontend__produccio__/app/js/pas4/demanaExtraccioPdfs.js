@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
             console.log("existents en servidor: "+ data.existentes) //TREU MES DADES
-            posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.existentes)
+            posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.existentes) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
             
             //console.log(`Parseados correctamente: ${data.ticketsParseadosOK} || Fallados en parseo: ${data.ticketsParseadosFAIL} || Subidos a MongoDB: ${data.bbddOK}`);
         })

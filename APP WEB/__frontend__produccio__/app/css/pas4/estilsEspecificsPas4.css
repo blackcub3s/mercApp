@@ -103,7 +103,7 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 
 
 /*MANEIG DEL FEEDBACK PER AL PAS 3 
-(AFEGEIXO TERCER SECTION DINS EL SECTION DE PASD 3)*/
+(AFEGEIXO TERCER SECTION DINS EL SECTION DE PAS 3)*/
 #bannerMissatge_PAS3_PARSEIG {
     color: var(--colorTitolsPas4);
     grid-column: 2; /* Així el banner soritrà a la segona columna del grid, no a la primera.*/
@@ -142,4 +142,8 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 
     /*Añadimos línea separadora para la página responsive*/
     #tresPassos > section:first-child, #tresPassos > section:nth-child(2) {border-bottom: 1px dashed black;} 
+
+    /*indispensable fer que l'alerta del pas3 torni a la grid-column 1 en aplicar a la media queri, o sortirà el
+    grid d'una columna partit en dos!*/
+    #bannerMissatge_PAS3_PARSEIG {grid-column: 1}
 }
