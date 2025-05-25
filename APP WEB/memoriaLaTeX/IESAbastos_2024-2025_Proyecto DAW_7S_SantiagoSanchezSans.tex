@@ -1176,18 +1176,18 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	\textbf{NOTA:} \textit{las peticiones POST con JavaScript desde el front-end hacia los end points de subida de PDFs y de parseo de PDFs, que mostraremos en las próximas líneas del lado del servidor, ya se mencionaron como se activan mediante el front-end en la PARTE 2 y 3 del apartado \ref{sec:pas4googleAPIclient}, dedicado exclusivamente a JavaScript en el front-end.}
 	
-	A continuación mostramos los 5 pasos o partes, que deberán ejecutarse \textbf{secuencialmente} y \textbf{con éxito} para que un usuario durante el proceso de registro pueda adjuntar tickets y luego se parseen y guarden en la base de datos. Las partes 1, 2, 3 y 4 que mostraremos a continuación tienen correspondencia directa las letras \textit{f}, \textit{g}, \textit{h}, y finalmente, \textit{j} de la figura esquemática anterior \ref{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE}, que suponía el esquema de sistemas de la aplicación en la fase de registro del usuario:
+	A continuación mostramos los 4 pasos o partes, que deberán ejecutarse \textbf{secuencialmente} y \textbf{con éxito} para que un usuario durante el proceso de registro pueda adjuntar tickets y luego se parseen y guarden en la base de datos. Las partes 1, 2, 3 y 4 que mostraremos a continuación tienen correspondencia con las letras \textit{f}, \textit{g}, \textit{h}, y finalmente, \textit{j} de la figura esquemática anterior \ref{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE}, que suponía el esquema de sistemas de la aplicación en la fase de registro del usuario en el apartado preliminar de diseño:
 	
 	\begin{itemize}
 	\setlength{\itemsep}{-.3em}
 		\item \textbf{PARTE 1}: FastAPI recibe la POST \textbf{request} en el endpoint \href{https://github.com/blackcub3s/mercApp/blob/1394c4a58c59d41e1b64f1113007277676fe4cf8/APP%20WEB/__FastAPI__/app/controlador.py#L37}{/api/subir-tickets-pdf} con los tickets adjuntos desde el cliente y con el \textit{token de acceso} con permisos a 0 [\ref{sec:PARTE1_FASTAPI}]\footnote{0 es el caso de uso más frecuente, pero también podría ser 2 si fuese admin. Ese token lo expidió Spring Boot al acceder a pas4, pero ahora lo usa fastAPI para permitir acceso a su API.}.
-		\item \textbf{PARTE 2}: FastAPI recibe una solicitud POST hacia \href{https://github.com/blackcub3s/mercApp/blob/8f9e4de79e8f384a9da6e0c43222135d5d8e3bd2/APP%20WEB/__FastAPI__/app/controlador.py#L116}{/api/parsea-y-guarda-pdfs-en-bbdd} que consigue que el servidor parsee con un algoritmo de extracción todos los tickets subidos en \textit{PARTE 1} [\ref{sec:PARTE2_FASTAPI}].
+		\item \textbf{PARTE 2}: FastAPI recibe una solicitud POST en el endpoint \href{https://github.com/blackcub3s/mercApp/blob/8f9e4de79e8f384a9da6e0c43222135d5d8e3bd2/APP%20WEB/__FastAPI__/app/controlador.py#L116}{/api/parsea-y-guarda-pdfs-en-bbdd} que consigue que el servidor parsee con un algoritmo de extracción todos los tickets subidos en \textit{PARTE 1} [\ref{sec:PARTE2_FASTAPI}].
 		\item \textbf{PARTE 3}: FastAPI manda a MongoDB los datos de los tickets parseados [\ref{sec:PARTE3_FASTAPI}].
-		\item \textbf{PARTE 4}: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot, que actualiza permisos en bbdd mySQL, y manda de vuelta un nuevo token (con permisos a 1) [\ref{sec:PARTE4_FASTAPI}].
+		\item \textbf{PARTE 4}: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot, que actualiza permisos en bbdd mySQL (taula usuaris), y manda de vuelta un nuevo token (con permisos a 1) [\ref{sec:PARTE4_FASTAPI}].
 	\end{itemize}
 
 	
-	Recordatorio: después de la PARTE 4, al recibir en el front-end el nuevo token de acceso con permisos a 1, la página \texttt{pas4\_concedirAccesGmail.html} redirigirá automáticamente al dashboard sin que tengamos que hacer nada más (vuélvase a ver lógica de redirecciones en la figura \ref{fig:restringeixVistesPrivadesUSUARINOLOGUEJAT}).
+	NOTA: A modo de recordatorio, hay que decir que después de la PARTE 4, al recibir en el front-end el nuevo token de acceso con permisos a 1, la página \texttt{pas4\_concedirAccesGmail.html} redirigirá automáticamente al dashboard sin que tengamos que hacer nada más (vuélvase a ver lógica de redirecciones en la figura \ref{fig:restringeixVistesPrivadesUSUARINOLOGUEJAT}).
 	
 		
 		
@@ -1217,6 +1217,23 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\end{figure}
 		\FloatBarrier
 		
+		Por ejemplo, el parseo del ticket de la derecha de la figura anterior \ref{fig:primerIultimTiketMeuCorreu} se convertirá en formato JSON después del parseo. Para conseguirlo, se introduce a un diccionario\footnote{Un diccionario en Python es como un HashMap de Java o un Javascript Object: con una estructura de pares clave:valor.} de Python que luego se podrá guardar directamente en una colección de MongoDB con un formato estructurado como el que vemos en la figura \ref{fig:ticketJsonEstructuratMostra}\footnote{MongoDB no guarda JSON exactamente. Lo que hace es guardar objetos BSON (binary JSON) que son una representación binaria del JSON, pero que en esencia está optimizada para rendimiento en operaciones de consulta y escritura y, también, para que ocupe menos espacio que un JSON no binario (texto plano).}.
+		
+		
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{Formato en el que parsearemos cada ticket digital de Mercadona para poder guardarlo en MongoDB y habilitar consultas eficientes. $|$Dentro de cada producto hay una lista que indica respectivamente si el producto es granel (0 si no lo es, 1 si sí lo es). Entonces, el segundo elemento de la lista indica el precio unitario o el precio por kg (en función de si es granel o no lo es, respectivamente); el tercer elemento, indica el número de unidades compradas o el número de kg comprados (en función del primer parámetro).}
+			\includegraphics[width=1\linewidth]{img/ticketJsonEstructuratMostra}
+			\label{fig:ticketJsonEstructuratMostra}
+		\end{figure}
+		\FloatBarrier
+
+
+
+		
 		
 	
 		
@@ -1224,7 +1241,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\label{sec:PARTE3_FASTAPI}
 		
 		
-		Mientas dura la llamada POST al endpoint \href{https://github.com/blackcub3s/mercApp/blob/f5413ed8cf7ed88c5ed18299564b836d27c52bd4/APP%20WEB/__FastAPI__/app/controlador.py#L132-L152}{/api/parsea-y-guarda-pdfs-en-bbdd}, que iniciamos en la PARTE 2, va a acontecer el guadado de los datos extraídos en un formato para poder hacer búsquedas eficientes en una base de datos NOSql: MongoDB.
+		Mientas dura la llamada POST al endpoint \href{https://github.com/blackcub3s/mercApp/blob/f5413ed8cf7ed88c5ed18299564b836d27c52bd4/APP%20WEB/__FastAPI__/app/controlador.py#L132-L152}{/api/parsea-y-guarda-pdfs-en-bbdd}, que iniciamos en la PARTE 2, va a acontecer el guadado de los datos extraídos en el formato para poder hacer búsquedas eficientes en una base de datos NOSql: MongoDB, como vimos en la figura \ref{fig:ticketJsonEstructuratMostra}.
 		
 		Desde el algoritmo de extracción que ya hemos mencionado (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiTickets.py}{serveiTickets.py}) podemos ver que hacemos llamada a funciones que residen en la capa de persistencia de nuestro back-end de FastAPI \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/repositoriTickets.py}{repositoriTickets.py}, que es la responsable de guardar los datos a MongoDB.
 		
@@ -1242,7 +1259,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\subsubsection{PARTE 4: FastAPI manda el token de acceso (con permisos a 0) hacia Spring Boot, se actualiza permisos en bbdd mysql, y Spring Boot le manda de vuelta un nuevo token (con permisos a 1) a FastAPI}
 		\label{sec:PARTE4_FASTAPI}
 		
-		Desde FastAPI haremos una llamada (como si fuese un cliente) hacia Spring Boot. Si el token saliente de FastAPI se dictamina válido en Spring Boot, entonces este último framework actualizará la variable de permisos en la bbdd mySql cambiándolo de 0 a 1. Acto seguido, Springboot nos mandará de vuelta un nuevo token de acceso ``fresco'' con los permisos actualizados a 1. Al recibirlo en el cliente (\texttt{pas4\_concedirAccesGmail.html}) con JavaScript seremos dirigidos al dashboard en menos de un segundo).
+		Desde FastAPI, mientras todavía dura la solicitud HTTP a \textit{/api/parsea-y-guarda-pdfs-en-bbdd} que iniciamos en la PARTE 2, haremos ahora una llamada (como si fuese un cliente) hacia Spring Boot desde esta clase de servicio \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiClient.py}{serveiClient.py}. Si el token saliente de FastAPI se dictamina válido en Spring Boot, entonces este último framework actualizará la variable de permisos en la tabla Usuaris de la bbdd mySql cambiándolo de 0 a 1. Acto seguido, Spring Boot nos mandará de vuelta un nuevo token de acceso ``fresco'' con los permisos actualizados a 1. Al recibirlo en FastAPI se mandará la response al cliente (navegador) cerrando ya esa solicitud HTTP iniciada en la PARTE 2, que al recibirlo  (en \texttt{pas4\_concedirAccesGmail.html}) JavaScript dirigirá al dashboard en menos de un segundo y mostrará el dashboard de visualización.
 		
 		
 	
@@ -2448,7 +2465,30 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
+	\section{Bases de datos}
 	
+	\subsection{Base de datos mySQL}
+	
+	La base de datos mySQL es la que se conecta al framework Spring Boot. Es muy sencilla: tiene simplemente una tabla de usuarios y otra tabla de información ampliada de usuarios, que es hija, y mantiene una relación de dependencia con la primera. La tabla UsuariAmpliat no se ha utilizado para este proyecto, pero queda diseñada para futuras expansiones donde a determinados usuarios -no a todos- se les puedan pedir ampliaciones de datos como nombre y apellidos.
+	
+	En la figura podéis ver el esquema del workbench:
+	\FloatBarrier
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\linewidth]{img/esquemaWorkbench}
+		\caption{Esquema del workbench}
+		\label{fig:esquemaworkbench}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	\subsection{Base de datos mongoDB}
+	
+	Los datos de cada ticket se guardarán como un documento independiente de una colección, a la que denominaremos tickets. En mongoDB una colección es lo que en mySQL sería una tabla; y un documento BSON sería lo que en una tabla mySQL sería una fila.
+	
+	Con una sola colección nos basta para poder hacer las operaciones necesarias para resolver los problemas que entrañan los servicios del dashboard: filtrar por productos y por usuarios y calcular evolución de precios, hacer costos agregados por meses y por usuario, etc.
+	
+	Los archivos necesarios para la base de datos no están en ninguna parte porque es uana base de datos NoSQL sin esquema rígido, a diferencia de mySQL. Las operaciones de guardado y definiciones se encontrarán dentro de los archivos Python correspondientes (principalmente repositoriTickets.py).
 	
 	\chapter{Evaluación y Conclusiones Finales} %OBLIGAT
 	
