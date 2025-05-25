@@ -1,0 +1,1 @@
+print("Aqui pondremos las funciones que permiten mandar el token de acceso a Spring Boot y recibirlo. Lo que permitirá que Python actue como un cliente")
