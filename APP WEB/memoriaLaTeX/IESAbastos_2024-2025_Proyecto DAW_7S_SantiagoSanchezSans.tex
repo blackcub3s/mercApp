@@ -1656,9 +1656,52 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\subsection{Validación de datos (Formularios entrada)}
 	\label{sec:validacioDadesFRONT}
 	
-	\textit{NOTA: Los datos validados en el front-end siguen las mismas expresiones regulares y restricciones que las validaciones hechas en el back-end (ver sección \ref{sec:validacioDadesBACK}).}
+	\textit{NOTA: Los datos validados en el front-end siguen las mismas expresiones regulares y restricciones que las validaciones hechas en el back-end (ver sección \ref{sec:validacioDadesBACK}) y establecen redundancia completa.}
 	
-	\textbf{TO DO FER-HO}
+	Vamos a poner el mismo caso concreto que pusimos en la sección homóloga de validaciones en el back-end de Spring Boot mencionado en el párrafo de la nota anterior. Asumamos también que un usuario quiere loguearse, pero no usando \textit{Postman} y llamando directamente al back-end sino a través del formulario que hay en nuestro front-end para el inicio de sesión.
+	
+	Para ello entra en la página \texttt{pas2C\_login} e introduce sus datos en el formulario que esta contiene (sin más complicación podéis ver el aspecto de este formulario en la figura anterior \ref{fig:figPaginesQueExpedeixenJWT}: es el que está a la izquierda).
+	
+	Con las validaciones aplicadas en el front nos impedirá llegar a mandar la solicitud POST (con fetch) al servidor si los datos introducidos no cumplen unos mínimos. Esto obedece a dos ventajas evidentes: la primera, es que el usuario obtiene feedback inmediato, porque es el cliente -navegador- el que gestiona los errores y no el servidor; la segunda, es que evitamos sobrecargar el servidor con procesos que se pueden gestionar perfectamente con el front.
+	
+	En este caso estas validaciones deben ser \textbf{exactas} a las validaciones del back-end, y solamente son un complemento y no las sustituyen, como ya hemos dicho en el apartado homólogo dedicado al back-end: deben tener correspondiencia completa con las validaciones del back-end porque si no están bien hechas en el front-end podría darse el caso que un usuario intentase poner unos datos que luego el back-end no admitiese o viceversa; además, no las sustituyen porque justamente un usuario puede modificar fácilmente el front-end, quitar las protecciones del javascript (bastaría quitar con el \textit{inspector} del navegador las llamadas a funciones de validación en dos líneas del javascript (\href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/pas2C_login.html#L31-L32}{éstas}) y entonces hacer llamadas directas a la API del back-end de Spring-Boot con la función fetch ya disponible para el usuario (\href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/pas2C_login.html#L36C31-L36C63}{detalle líneas}). Entonces, el endpoint \textit{/api/login} al que llamamos con la función fetch estaría desprotegido. A continuacón mostramos como validacmos el correo y la contraseña en el front:
+	
+		\subsubsection{Validación del correo}
+	
+		Cuando el usuario se loguea, en la función \textit{correuApte(email)} del \href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/js/regexMail.js}{js/regexMail.js} es la que valida la entrada de datos con una expresión regular y tenemos un detalle en la figura \ref{fig:regexMail}. 
+		
+		Para hablar de lo que hace vale la pena mencionar las partes de un correo:
+		
+		partelocal@dominio.subdominio
+		
+		Con esa expresión regular se han permitido mayúsculas, minúsculas y ciertos caracteres como el +, el ampersand o el guión medio antes de la arroba (parte local). Después de la arroba se restringe de forma distinta el dominio y el subdominio: por ejemplo, el dominio no tiene restricción de longitud, pero el subdominio sí (debe tener más de 2 y menos de 7 caracteres).
+		
+		\FloatBarrier
+		\begin{figure}[H]
+			\centering
+			\caption[Detalle de validación del correo (js/regexMail.js)]{Mediante una sola expresión regular facilitada por IA hemos podido hacer una correspondencia completa con las validaciones del back-end.}
+			\includegraphics[width=1\linewidth]{img/regexMail}
+			\label{fig:regexMail}
+		\end{figure}
+		\FloatBarrier
+	
+		Asimismo, no en la página de login, pero sí en la página del formulario de registro usamos esta misma función \textit{correuApte(email)} combinada con los eventos ``focus'', ``input'' y ``blur'' (véase función \textit{esdevenimentsCorreu\_SIGN\_UP(event)} \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/inputCorreu.js}{/js/inputCorreu.js}) para poder conseguir los efectos de la figura en tiempo real al entrar, al introducir datos y al salir \ref{fig:logicaInputBlurSignup}
+		
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{Lógica aplicada con eventos ``input'', ``focus'' y ``blur'' para generar prevalidaciones que muestren en tiempo real errores en la introducción de del correo en el proceso de registro de index.html (pas1). De izquierda a derecha: estado natural (contorno gris), click encima del formulario sin datos (evento ``focus''), datos introducidos correctos (evento input, contorno a verde).}
+			\includegraphics[width=1\linewidth]{img/logicaInputBlurSignup}
+			\label{fig:logicaInputBlurSignup}
+		\end{figure}
+		\FloatBarrier
+		
+		
+		\subsubsection{Validación de la contraseña}
+		
+		\textbf{to do to do to do to do to do to do}
 	
 	\subsection{Diseño (UX/UI): páginas publicas}
 	\label{sec:disenyoPublicas}
