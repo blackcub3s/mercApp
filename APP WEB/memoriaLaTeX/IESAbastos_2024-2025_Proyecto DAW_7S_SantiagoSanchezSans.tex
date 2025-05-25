@@ -1289,7 +1289,9 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 
 	
-	Estas redirecciones no son fruto del azar. Se ha hecho un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix: replicándolo, desde cero, y adaptándolo a nuestro caso particular. Si Netflix utiliza ese esquema es porque tiene un impacto en la facilidad de captación de clientes y qué mejor que tratar de replicar los sistemas de los grandes \textit{players}.
+	Estas redirecciones no son fruto del azar. Se ha hecho un proceso de desarrollo inverso del proceso de registro de la plataforma NetFlix: replicándolo, desde cero, y adaptándolo a nuestro caso particular. Si Netflix utiliza ese esquema es porque tiene un impacto en la facilidad de captación de clientes y qué mejor que tratar de replicar los sistemas de los grandes \textit{players} (podéis ver anexo \ref{sec:annexNetflix} para más información).
+	
+	
 	
 	\setlength{\belowcaptionskip}{3pt}
 	\FloatBarrier
@@ -1323,12 +1325,14 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		
 		\begin{itemize}
 			\setlength{\itemsep}{.0em}
-			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: \textit{end-point} de Spring Boot que evalúa si el correo electrónico introducido pertenece a un usuario registrado y qué permisos tiene.
+			\item \textbf{\textcolor{red}{[\texttt{/api/avaluaUsuari}]}}: \textit{end-point} de Spring Boot que evalúa si el correo electrónico introducido pertenece a un usuario registrado y sus permisos.
 			\item \textbf{\textcolor{brown}{[\texttt{/api/registraUsuari}]}}: \textit{end-point} de Spring Boot que registra un nuevo usuario en el sistema y expide su AccessToken con permisos a 0 en las \textit{claims} de su \textit{payload}\footnote{El lector puede consultar la explicación sobre lo que son las claims y el payload de un JWT en el apartado \ref{sec:queComponeJWTbackend}.}.
 			\item \textbf{\textcolor{blue}{[\texttt{/api/login}]}}: \textit{end-point} de Spring Boot que gestiona el proceso de autenticación y generación del \textit{JWT Access Token} con tres niveles de permisos posibles (0, 1 y 2).
-			\item\textbf{\textcolor{purple}{[\texttt{/api/parsea-y-guarda-pdfs-en-bbdd}]}}: \textit{end-point} de FastAPI que traslada al front-end un token de acceso expedido por Spring Boot con permisos a 1.
+			\item\textbf{\textcolor{purple}{[\texttt{/api/parsea-y-guarda-pdfs-en-bbdd}]}}: \textit{end-point} de FastAPI que traslada al front-end AccessToken expedido por Spring B. con permisos a 1.
 		\end{itemize}
 		
+				
+		\item Finalmente debajo de los rectángulos naranja (vistas) hay un paréntesis del estilo (/dir1/dir2), sin color y pequeños. Estos paréntesis hacen referencia a las páginas o vistas de Netflix cuyo comportamiento replicamos -o hacemos corresponder en nuestra página- con vista o rectángulo naranja. Muy importante: véase anexo \ref{sec:annexNetflix}.
 		
 		
 
@@ -2346,7 +2350,12 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
-	
+	% Bibliografía (\chapter(6. Bibliograifa) como implicito)
+	\begingroup
+	\addcontentsline{toc}{chapter}{7. Bibliografía} 
+	\bibliographystyle{unsrt}  % Estilo de bibliografía no ordenats (Segons ordre aparicio en text)
+	\bibliography{referencias} % Nombre del archivo .bib  extensión
+	\endgroup
 	
 	
 	\chapter{ANEXO}
@@ -2661,15 +2670,7 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 	\end{figure}
 	\FloatBarrier
 		
-	% Bibliografía (\chapter(6. Bibliograifa) como implicito)
-	\addcontentsline{toc}{chapter}{7. Bibliografía} 
-	\bibliographystyle{unsrt}  % Estilo de bibliografía no ordenats (Segons ordre aparicio en text)
-	\bibliography{referencias} % Nombre del archivo .bib  extensión
-	
-	
-	
 
-	\endgroup
 	
 	
 	\section{Google Cloud: descargar tickets digitales mediante cloud}
@@ -2735,10 +2736,127 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 	\FloatBarrier
 		
 		
-		
 	
+	\section{Correspondencia entre páginas del sistema de registro de NetFlix y el sistema de registro de mercApp}
+	\label{sec:annexNetflix}
+
+	\textit{NOTA: Al terminar podéis regresar al apartado  \ref{sec:EnrutamientoDeVistas}, que es donde proviene el link que enlaza a este anexo.} 
+	
+	La siguiente tabla y las imágenes que vienen a continuación son un complemento al diagrama de enrutamiento de vistas de la aplicación mercApp (figura \ref{fig:diagramaMercaAppFront}). Este enrutamiento corresponde en su lógica de redirecciones, al menos parcialmente, con la lógica utilizada por NetFlix en su aplicación web. Así las cosas, la correspondencia de la que hablamos en el título no es solo en su forma o aspecto.
+	
+	%INICI NO TESTEIG
+	\FloatBarrier
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{llc}
+			\textbf{Vista mercApp} & \textbf{Vista en NetFlix} & \textbf{Comparación vistas} \\ 
+			
+			pas1\_Landing SignUp & / & ver \ref{fig:landingSignUpBis} \\
+			pas2A\_infoBenvinguda.html & /signup/registration & ver \ref{fig:infoBenvinguda} \\
+			pas3\_crearContrassenya & /signup/regform & ver \ref{fig:crearContrassenya} \\
+			pas2B\_introdueix contrassenya & /signup/password & ver  \ref{fig:introdueixContrassenya} \\
+			pas2C\_login & /login & ver \ref{fig:login} \\
+			pas4\_concedirAccesGmail & signup/planform & ver \ref{fig:concedirAccesGmail} \\
+			dashboard & App de streaming & ver \ref{fig:dashboard} \\
+		\end{tabular}
+		\vspace{10pt}
+		\caption{Correspondencia entre vistas del proyecto mercApp y rutas de navegación en NetFlix (estudio de algunas rutas se hizo en verano de 2024 y pueden haber cambiado, se recomienda ver las imágenes de comparación): es de la página de Netflix de la que se sacó la inspiración para hacer el enrutamiento de vistas del proyecto para captar usuarios fácilmente, como se puede ver en cada una de las figuras comparativas enlazadas en la tercera columna.}
+	\end{table}
+	\FloatBarrier
+
+
+	\FloatBarrier
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{ll}
+			\textbf{Ruta en Netflix} & \textbf{URL completa} \\
+			\hline
+			/ & https://www.netflix.com/ \\
+			/signup/registration & https://www.netflix.com/signup/registration \\
+			/signup/regform & https://www.netflix.com/signup/regform \\
+			/signup/grantAccess & https://www.netflix.com/signup/grantAccess \\
+			/signup/password & https://www.netflix.com/signup/password \\
+			/login & https://www.netflix.com/login \\
+		\end{tabular}
+		\vspace{10pt}
+		\caption{Correspondencia entre rutas relativas y URLs completas en Netflix. ¡CUIDADO! Las páginas no siempre son visualizables: hay que iniciar un proceso de registro en muchos casos y/o entrar en modo incógnito si no queremos cerrar sesión en Netflix, en caso que tengamos un perfil. De ahí las imágenes comparativas adjuntas más abajo.}
+	\end{table}
+	\FloatBarrier
+
+
+
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Vista de la landing page de mercApp (arriba) y de NetFlix (abajo)}
+		\includegraphics[width=1\linewidth]{img/landingSignUp}
+		\label{fig:landingSignUpBis}
+	\end{figure}
+	\FloatBarrier
+
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Pantalla de bienvenida al registro de mercApp 	\textbf{pas2A\_infoBenvinguda.html} (arriba) y página de NetFlix homóloga con la misma función, con ruta \textit{/signup/registration} (debajo)}
+		\includegraphics[width=1\linewidth]{img/infoBenvinguda}
+		\label{fig:infoBenvinguda}
+	\end{figure}
+	\FloatBarrier
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Formulario de creación de contraseña en mercApp \textbf{pas3\_crearContrassenya} (arriba) y página equivalente en NetFlix con ruta \textit{/signup/regform} (debajo)}
+		\includegraphics[width=1\linewidth]{img/crearContrassenya}
+		\label{fig:crearContrassenya}
+	\end{figure}
+	\FloatBarrier
 	
 
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Pantalla para introducir manualmente la contraseña y completar el registro del usuario en mercApp \textbf{pas2B\_introdueix contrassenya} (arriba) y página equivalente en NetFlix con ruta \textit{/signup/password} (debajo). En mercApp el correo se recupera del \textit{localStorage}; en NetFlix probablemente utilizan un mecanismo similar.}
+		\includegraphics[width=1\linewidth]{img/introdueixContrassenya}
+		\label{fig:introdueixContrassenya}
+	\end{figure}
+	\FloatBarrier
 	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Pantalla de inicio de sesión con correo electrónico y contraseña en mercApp \textbf{pas2C\_login} (arriba) y en NetFlix con ruta \textit{/login} (debajo)}
+
+		\includegraphics[width=1\linewidth]{img/login}
+		\label{fig:login}
+	\end{figure}
+	\FloatBarrier
+	
+	%JA FETA COMPTE
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Pantalla \textbf{pas4\_concedirAccesGmail} usada para conceder acceso a la cuenta de Google, descargar tickets y pedir su parseo (arriba) i página ``equivalente'' de NetFlix, que ellos utilizan para que el usuario haga pagos, con ruta \textit{signup/planform} (debajo). NOTA: En mercApp se llega aquí cuando el usuario tiene permisos = 0 en el token de acceso.}
+		\includegraphics[width=.9\linewidth]{img/concedirAccesGmail}
+		\label{fig:concedirAccesGmail}
+	\end{figure}
+	\FloatBarrier
+
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Vista simplificada del \textbf{dashboard} tras iniciar sesión después de haber proporcionado tickets y haberlos parseado a mongoDB y ganar permisos a 1 o 2 (arriba) y la vista simplificada equivalente de la página con plenos derechos de acceso que el usuario de NetFlix ve cuando ha pagado y se ha logueado (debajo)}
+		\includegraphics[width=1\linewidth]{img/dashboard}
+		\label{fig:dashboard}
+	\end{figure}
+	\FloatBarrier
+	%FI NO TESTEIG
 	
 \end{document}
