@@ -1668,32 +1668,53 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 		\subsubsection{Validación del correo}
 	
-		Cuando el usuario se loguea, en la función \textit{correuApte(email)} del \href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/js/regexMail.js}{js/regexMail.js} es la que valida la entrada de datos con una expresión regular y tenemos un detalle en la figura \ref{fig:regexMail}. 
+		Cuando el usuario se loguea, es la función \textit{correuApte(email)} del archivo \href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/js/regexMail.js}{js/regexMail.js} la que valida la entrada de datos con una expresión regular. Podéis ver ese mismo archivo en la figura \ref{fig:regexMail}. 
 		
-		Para hablar de lo que hace vale la pena mencionar las partes de un correo:
+		Para hablar de lo que hace esa expresión regular, vale la pena mencionar primero las de las que se compone un correo:
 		
+		\begin{lstlisting}[language=xml, basicstyle=\ttfamily\small]
 		partelocal@dominio.subdominio
+		\end{lstlisting}
 		
-		Con esa expresión regular se han permitido mayúsculas, minúsculas y ciertos caracteres como el +, el ampersand o el guión medio antes de la arroba (parte local). Después de la arroba se restringe de forma distinta el dominio y el subdominio: por ejemplo, el dominio no tiene restricción de longitud, pero el subdominio sí (debe tener más de 2 y menos de 7 caracteres).
+
+		
+		Con esa expresión regular se han permitido mayúsculas, minúsculas y ciertos caracteres como el +, el ampersand o el guión medio antes de la arroba (parte local). Después de la arroba de un correo introducido, se restringe de forma distinta el dominio y el subdominio: por ejemplo, el dominio no tiene restricción de longitud, pero el subdominio sí (debe tener más de 2 y menos de 7 caracteres). Nótese que esta misma expresión regular evita los caracteres peligrosos también (que igualmente protegería nuestro back-end): las ``'', los $<$ y $>$.
 		
 		\FloatBarrier
+		\setlength{\belowcaptionskip}{0pt}
 		\begin{figure}[H]
 			\centering
-			\caption[Detalle de validación del correo (js/regexMail.js)]{Mediante una sola expresión regular facilitada por IA hemos podido hacer una correspondencia completa con las validaciones del back-end.}
+			\caption[Detalle de validación del correo (js/regexMail.js)]{Mediante una sola expresión regular facilitada por un LLM hemos podido hacer una correspondencia completa con las validaciones del back-end.}
 			\includegraphics[width=1\linewidth]{img/regexMail}
 			\label{fig:regexMail}
 		\end{figure}
 		\FloatBarrier
 	
-		Asimismo, no en la página de login, pero sí en la página del formulario de registro usamos esta misma función \textit{correuApte(email)} combinada con los eventos ``focus'', ``input'' y ``blur'' (véase función \textit{esdevenimentsCorreu\_SIGN\_UP(event)} \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/inputCorreu.js}{/js/inputCorreu.js}) para poder conseguir los efectos de la figura en tiempo real al entrar, al introducir datos y al salir \ref{fig:logicaInputBlurSignup}
+	
+		Por ello, cuando un usuario ponga su correo en el formulario correspondiente de la vista de inicio de sesión en \texttt{pas2C\_login.html}, al \textit{darle a enviar} se va a activar en última instancia la función \textit{correuApte()} y saltará una alerta que impedirá que pueda mandar el correo si la expresión regular no se cumple. La alerta la llamaremos dentro del script embedido en el html de la propia página, y va a llamar a las funciones que generan banners de alerta que usaremos solamente en las páginas públicas (ubicadas en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/bannerAlertes.js}{js/bannerAlertes.js}) tal como podemos ver en la figura \ref{fig:activacioBannerAlertesLoginCorreu}.
+		
+		Asimismo, no en la página de login, pero sí en la página del formulario de registro (\texttt{index.html} o \texttt{pas1}) usamos esta misma función \textit{correuApte(email)} para generar información dinámica de los errores al usuario \textbf{antes} de que trate de enviar nada con el botón de registro. Esto lo hacemos mediante el uso de los eventos ``focus'', ``input'' y ``blur'' ampliamente vistos en la asignatura desarrollo web entorno Cliente de segundo de DAW (véase función \textit{esdevenimentsCorreu\_SIGN\_UP()} dentro del archivo de GitHub \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/inputCorreu.js}{/js/inputCorreu.js}) para poder ver cómo se han conseguido los efectos en el contorno del formulario de registro para el correo del \texttt{index.html} ver la figura \ref{fig:logicaInputBlurSignup}. En esta figura explicamos el impacto que estos 3 eventos de JavaScript ayudan a mostrar prevalidaciones al usuario de una forma intuitiva. Los colores del contorno y los mensajes van en línea a como definen el feedback los formularios de correo de Google y de Netflix.
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{Activación del banner de alertas en el formulario de inicio de sesión de la vista \texttt{pas2C\_login.html} ante un input de correo incorrecto después de clicar en inicia sesión. ¡En este caso no se manda nada al servidor!}
+			\includegraphics[width=.8\linewidth]{img/activacioBannerAlertesLoginCorreu}
+			\label{fig:activacioBannerAlertesLoginCorreu}
+		\end{figure}
+		\FloatBarrier
+		
+	
+	
 		
 		
 		\FloatBarrier
 		\setlength{\belowcaptionskip}{3pt}
 		\begin{figure}[H]
 			\centering
-			\caption{Lógica aplicada con eventos ``input'', ``focus'' y ``blur'' para generar prevalidaciones que muestren en tiempo real errores en la introducción de del correo en el proceso de registro de index.html (pas1). De izquierda a derecha: estado natural (contorno gris), click encima del formulario sin datos (evento ``focus''), datos introducidos correctos (evento input, contorno a verde).}
-			\includegraphics[width=1\linewidth]{img/logicaInputBlurSignup}
+			\caption{Prevalidaciones en tiempo real en \texttt{pas1\_Landing SignUp} o \texttt{index.html}. $|$ \textbf{SupIzq}: estado natural (contorno gris)$|$ \textbf{SupDer}: click encima del formulario sin datos (cambio ante evento ``focus'', contorno azul)$|$ \textbf{InfIzq}: datos introducidos incorrectos (cambio ante evento ``blur'') $|$ \textbf{InfDer}: contorno muestra éxito con un correo válido (evento input, contorno a verde).}
+			\includegraphics[width=.9\linewidth]{img/logicaInputBlurSignup}
 			\label{fig:logicaInputBlurSignup}
 		\end{figure}
 		\FloatBarrier
@@ -1701,7 +1722,44 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		
 		\subsubsection{Validación de la contraseña}
 		
-		\textbf{to do to do to do to do to do to do}
+		La validación de la contraseña tanto en la página general de inicio de sesión \textit{pas2C\_login.html} como en la página pensada para aquellos usuarios que ya se registraron en nuestro sistema pero todavía no llegaron a obtener acceso al dashboard  \textit{pas2B\_introduirContrasenya.html} siempre la hacemos \textbf{después} de que el usuario haga click en el botón de iniciar sesión: si la contraseña no cumple los mínimos no se mandará nada al servidor. Estas validaciones (o post-validaciones, a lo mejor, sería mejor término) las hacemos sin usar eventos que se activen antes del evento click (a excepción del uso de ``focus'' y ``blur'', pero no para validar, sino para cambiar el contorno a azul cuando se hace click en el formulario: \href{https://github.com/blackcub3s/mercApp/blob/dc4941c33c65fb9133f4aa8ca890059243bf080d/APP%20WEB/__frontend__produccio__/app/js/inputContra.js#L45-L83}{ver detalle} de líneas de código).
+		
+		Estos mínimos de los que hablamos permiten verificar que el usuario esté entrando una contraseña que luego las validaciones del back-end también admitan. Estos mínimos los hemos generado verificando expresiones regulares con la función \textit{regex.test(contraseña)} vista en desarrollo web entorno cliente, que nos devuelve un booleano que indica si la \textit{regex} hace \textit{match} con la contraseña pasada por parámetro. Así las cosas, tomando diversas funciones \textit{.test()} aplicadas al binomio ``contraseña introducida - expresión regular'', podemos hacer la intersección de todas ellas mediante la operación lógica AND, como podéis ver en la figura \ref{fig:contrasenyaValidacioExprRegulars}, testeando así si la contraseña introducida es válida o no. Podéis ver el archivo completo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/inputContra.js}{/js/inputContra.js}
+		
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{Subconjunto de código de \textit{js/inputContra.js} responsable de las validaciones de contraseña. Hemos querido apostar por obligar al usuario a generar una contraseña segura con mínimo una mayúscula, una minúscula, un número y sin espacios: forzando que no se puedan usar caracteres distintos a los grupos anteriores exceptuando el punto y la barra baja. También permitimos acentos y cedilla (ç).}
+			\includegraphics[width=.7\linewidth]{img/contrasenyaValidacioExprRegulars}
+			\label{fig:contrasenyaValidacioExprRegulars}
+		\end{figure}
+		\FloatBarrier
+		
+		
+		
+		
+		Un ejemplo de puesta en escena de las expresiones regulares de la figura anterior la podemos ver en la figura \ref{fig:activacioBannerAlertesLoginContrasenya} siguiente:
+	
+		
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{Hasta que la contraseña no reúne unos mínimos no se permite mandar nada desde el formulario de inicio de sesión hacia el servidor. Se muestra una relación de los archivos (scripts simplificados) y del recorrido de una contraseña erróneamente escogida e introducida en el formulario, que hacen posible mostrar el array de errores en pantalla vinculados con el formato incorrecto de la contraseña. Así el usuario tiene feedback y puede fácilmente ajustar la contraseña para que sea válida, dado que cada error emana de una expresión regular de las mostradas en la figura anterior. Nótese que seguimos sin hacer ninguna llamada al servidor.}
+			\includegraphics[width=1\linewidth]{img/activacioBannerAlertesLoginContrasenya}
+			\label{fig:activacioBannerAlertesLoginContrasenya}
+		\end{figure}
+		\FloatBarrier
+		
+		
+		
+		
+		
+		
+		
+		
 	
 	\subsection{Diseño (UX/UI): páginas publicas}
 	\label{sec:disenyoPublicas}
