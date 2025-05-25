@@ -75,7 +75,7 @@
 			
 			\vspace*{5cm} 
 
-			\LARGE{Creación de un dashboard para usuarios del ticket digital de Mercadona con visualización de gastos: evolución de precios en productos, gastos por área de producto y ventana temporal.}
+			\LARGE{Creación de un dashboard para usuarios del ticket digital de Mercadona con visualización gráfica de datos: evolución de precios por producto, gastos por categoría de alimentación y ventanas temporales de gastos.}
 			
 			\vfill
 			
@@ -119,7 +119,7 @@
 		
 		\begin{minipage}{0.8\textwidth}
 			\large
-			Quiero agradecer a mi padre y a mi madre por su apoyo incondicional en la realización de este grado superior a tiempo completo, que esperemos permita consumar un cambio profesional del ámbito de la Psicología a la informática.
+			Quiero agradecer a mi padre y a mi madre por su apoyo incondicional en la realización de este grado superior a tiempo completo.
 		\end{minipage}
 		
 		\vspace{4cm}
@@ -130,7 +130,7 @@
 		
 		\begin{minipage}{0.8\textwidth}
 			\large
-			La redacción íntegra de esta memoria se ha hecho a mano. No se ha utilizado inteligencia artificial para la redacción de ninguna frase, ni revisión gramatical ni ortográfica. Se insta al lector a considerarla el resultado del esfuerzo y trabajo constante a lo largo de los meses de marzo a mayo de 2025 (en paralelo con las prácticas a tiempo completo en Lãberit) y valorarla con su idiosincracia -incluyendo sus imperfecciones-.
+			La redacción íntegra de esta memoria se ha hecho a mano. No se ha utilizado inteligencia artificial para la redacción de ninguna frase, ni revisión gramatical ni ortográfica. Se invita al lector valorarla en su idiosincracia, con sus virtudes y defectos, y considerarla el resultado del esfuerzo y trabajo constante a lo largo de los meses de marzo a mayo de 2025 (en paralelo con la FCT a tiempo completo del grado superior). 
 		\end{minipage}
 		
 		\vspace*{4cm}
@@ -342,12 +342,12 @@
 		
 			- Back-end con Java (Spring Boot) para gestionar los usuarios: guardarlos en bbdd y hacer \underline{autenticación y autorización de usuarios} mediante token JWT: con este framework persistiremos datos en la BBDD mySQL.
 			
-			- El Back-end con Python (FastAPI) se usará para \underline{gestionar los tickets} y sus datos: \textit{en primer lugar}, parseará el contenido de los tickets en PDF mediante pyPDF; \textit{en segundo lugar}, guardará (y luego leerá) de MongoDB los datos extraídos por parseo de los tickets digitales, asegurando así búsquedas eficientes; \textit{en tercer lugar}, si queda tiempo antes de la presentación final, se usarán módulos de Python como sklearn, spacy y Numpy para procesar con lenguaje natural (NLP) cada producto y categorizarlo automáticamente en una de estas \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/categories.js}{12 categorías} de alimentación distintas (en lugar de hacer la clasificación manual); \textit{en cuarto lugar}, incluirá la posibilidad de autenticar y autorizar conexiones entrantes pero no de generar nuevos tokens de acceso.
+			- El Back-end con Python (FastAPI) se usará para \underline{gestionar los tickets} y sus datos: \textit{en primer lugar}, parseará el contenido de los tickets en PDF mediante pyPDF; \textit{en segundo lugar}, guardará (y luego leerá) de MongoDB los datos extraídos por parseo de los tickets digitales mediante la librería \textit{pymongo}, asegurando así búsquedas eficientes; \textit{en tercer lugar}, si queda tiempo antes de la presentación final, se usarán módulos de Python como sklearn, spacy y Numpy para procesar con lenguaje natural (NLP) cada producto y categorizarlo automáticamente en una de estas \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/categories.js}{12 categorías} de alimentación distintas (en lugar de hacer la clasificación manual); \textit{en cuarto lugar}, incluirá la posibilidad de autenticar y autorizar conexiones entrantes pero no de generar nuevos tokens de acceso.
 			
 		
 		\subsection{Cloud: Google API Client}
 		
-					-\textbf{Google API Client}, y más específicamente la Gmail API, permitirá a cada usuario descargarse en cuestión de uno o dos minutos hasta 500 tickets digitales de su gmail directamente a su ordenador mediante Oauth2. Esto lo haremos con un script en JavaScript.
+			\textbf{Google API Client}, y más específicamente la \textbf{Gmail API}, permitirá a cada usuario descargarse en cuestión de uno o dos minutos hasta 500 tickets digitales de su gmail directamente a su ordenador mediante Oauth2. Esto lo haremos con un script en JavaScript.
 			
 		\subsection{BBDD: MySQL y MongoDB}
 		
@@ -445,11 +445,9 @@
 				
 			\section{GitHub del proyecto}
 			
-				Para desarrollar este proyecto se ha trabajado con GitHub y git. Dado que no ha habido trabajo en equipo no se han utilizado pull requests a la rama main sino simplemente se ha seguido la estrategia de crear ramas de característica y, una vez son satisfactorias, hacer un merge en la rama main en local.
+				Para desarrollar este proyecto se ha trabajado con GitHub y git. Dado que no ha habido trabajo en equipo no se han utilizado pull requests a la rama main sino simplemente se ha seguido la estrategia de crear ramas de característica y, una vez satisfactorias, hacer un merge en la rama main en local.
 				
-				Un flujo de trabajo habitual es mediante ramas de característica (puede verse anexo \ref{sec:anexoFlujoGit}). También puede verse el GitHub del proyecto a continuación. Dentro del readme del proyecto encontraréis instrucciones para su descarga y clonado.
-				
-				Las instrucciones para correr los componentes del proyecto en sus respectivos entornos de desarrollo están en el apartado \ref{sec:entornosDesarrollo}. El despliegue de la aplicación mediante contenedores se encuentra explicado en \ref{sec:despliegue}.
+				Un flujo de trabajo habitual es mediante ramas de característica (puede verse anexo \ref{sec:anexoFlujoGit}). Las instrucciones para correr los componentes del proyecto en sus respectivos entornos de desarrollo están en el apartado \ref{sec:entornosDesarrollo}. El despliegue de la aplicación mediante contenedores se encuentra explicado en \ref{sec:despliegue}.
 			
 
 			
@@ -470,7 +468,7 @@
 				
 				Para el back-end de Python con FastAPI se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}\footnote{Se recomienda ejecutar desde la carpeta app haciendo el comando \textit{FastApi dev controlador.py}} .
 				
-				Para la base de datos mySQL se ha utilizado el editor mySQL workbench que corre en el puerto \textbf{3306}. Y para MongoDB \textbf{TO DO TO DO MONGO}
+				Para la base de datos mySQL se usó workbench y se expuso el puerto \textbf{3306}\footnote{Es la versión MySQL 8.4.4 la que expone el puerto}. Para MongoDB se usó MongoDB compass exponiendo en el \textbf{27017}\footnote{Es MongoDB Community Server la que expone el puerto.}.
 		
 	
 			\section{Despliegue}
@@ -507,6 +505,8 @@
 			\label{sec:parteSpringBoot}
 			
 				\subsection{Contenerización}
+				
+				El archivo DockerFile  \textit{se podrá}\footnote{En el momento de escribir esta memoria el Dockerfile para el microservicio de Java había que programarlo. Si todavía no está disponible en el link proporcionado el lector puede dirigirse a los apartados Contenerización de los demás microservicios: FastAPI y Nginx (front-end).} ver en esta altura del arbol de directorios (igual que con los demás proyectos): \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__}{link}. También los scripts en Bash para derivar contenedor desde la imagen del Dockerfile. Si el lector quiere profundizar en este tema el apartado donde explico la contenerización con más profundidad es el del microservicio de FastApi en \ref{sec:conteneritzacioPython}.
 			
 				\subsection{Estructura de la aplicación}
 				\label{sec:estructuraAplicacion}
@@ -556,16 +556,59 @@
 				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/Usuaris} con varios subpackages. Ahí dentro merece la pena mencionar que tenemos todas las clases con las que se recibe y procesa datos del cliente para hacer la gestión de usuarios. Las que nos interesan son las siguientes:
 				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{UsuariControlador.java}, 
 				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/servei/UsuariServei.java}{UsuariServei.java}, 
-				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/repositori/UsuariRepositori.java}{UsuariRepositori.java}
+				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/repositori/UsuariRepositori.java}{UsuariRepositori.java} y 
 				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java}{Usuari.java}
 				\footnote{No nos interesa por ahora hablar mucho de UsuariAmpliat.java y de UsuariAmpliatRepositori.java porque se han creado como plantilla para la expansión de datos de usuarios si a futuro seguimos desarrollando esta aplicación.}. 
-				A continuación  vamos a mostrar, a modo de ejemplo, qué es lo que pasa con todas estas clases y cuál es su utilidad cuando hacemos la llamada a un endpoint del \textit{Controlador.java} (concretamente el endpoint \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103}{/api/login}), que veremos que es el endpoint que interviene en el inicio de sesión y que podemos visualizar en el enrutamiento front-end de la aplicación mostrado de forma exhaustiva en \ref{fig:diagramaMercaAppFront} para ver en contexto su utilidad en relación al front-end de la aplicación.
+				A continuación  vamos a mostrar, a modo de ejemplo, qué es lo que pasa con todas estas clases y cuál es su utilidad cuando hacemos la llamada a un endpoint del \textit{UsuariControlador.java} (concretamente el endpoint \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103}{/api/login}), que veremos que es el endpoint que interviene en el inicio de sesión y que podemos visualizar en el enrutamiento front-end de la aplicación mostrado de forma exhaustiva en \ref{fig:diagramaMercaAppFront} para ver en contexto su utilidad en relación al front-end de la aplicación.
 				
-				 Bajo mi punto de vista, es más didáctico y sencillo de entender si al lector se le presenta la información desgranada de este modo. Antes pero mostramos una figura explicativa a nivel gráfico de lo que pasa 
+				 Antes, que nada mostramos una figura explicativa a nivel gráfico de lo que pasa en este proyecto Spring Boot y luego iremos desgranando cada componente (ver figura \ref{fig:diagramaInjeccioDependencies}).
 				
-				\textbf{TO DO}
-			
+				
+							
+				\FloatBarrier
+				\setlength{\belowcaptionskip}{3pt}
+				\begin{figure}[H]
+					\centering
+					\caption{Inyección de dependencias en nuestro proyecto Spring Boot bajo el modelo-vista-controlador (MVC) dentro del package Usuaris. Spring Boot añade otra capa más al modelo que ya conocíamos de desarrollo web entorno servidor: el repository (repositori). En el \textit{UsuariControlador.java} están los endpoints que tienen que ver con los usuarios. Estos endpoints dependen de la capa de servicio (UsuariServei.java), que implementa la lógica de negocio. La lógica de negocio depende de las operaciones en base de datos, que se implementan en el repositorio (UsuariRepositori.java). El ``model'' es una capa opcional que se implementa en Java que mapea cada atributo de la clase a una columna de una tabla de la base de datos.}
+					\includegraphics[width=1\linewidth]{img/diagramaInjeccioDependencies}
+					\label{fig:diagramaInjeccioDependencies}
+				\end{figure}
+				\FloatBarrier
+					
+				Empezamos con la explicación. Un usuario llama al endpoint de inicio de sesión (/api/login) facilitando un JSON de este estilo como podemos ver en el recuadro verde de la figura \ref{fig:apiloginspringboot}:
+				
+			\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
+	{
+	"correuElectronic" : "acces@gmail.com", 
+	"contrasenya" : "12345678Mm\_" 
+	}
+			\end{lstlisting}
 
+				
+				\FloatBarrier
+				\begin{figure}[H]
+					\centering
+					\caption{En rojo la respuesta de una llamada exitosa al controlador, resultante en un incio de sesión}
+					\includegraphics[width=1\linewidth]{img/apiLoginSpringBoot}
+
+					\label{fig:apiloginspringboot}
+				\end{figure}
+				\FloatBarrier
+
+				La respuesta que recibe el front-end o, en este caso postman, está marcado en la figura anterior en recuadro en rojo. Vamos a seguir a grosso modo las clases que se activan con esta llamada hasta que recibimos el recuadro en rojo.
+				
+				\FloatBarrier
+				\setlength{\belowcaptionskip}{3pt}
+				\begin{figure}[H]
+					\centering
+					\caption{Descripción de las llamadas principales en el inicio de sesión de un usuario al llamar a /api/login}
+					\includegraphics[width=1\linewidth]{img/esquemaArquitecturaSpringboot}
+					\label{fig:esquemaArquitecturaSpringboot}
+				\end{figure}
+				\FloatBarrier
+				
+				
+				
 				
 				
 				
@@ -1217,7 +1260,14 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\end{figure}
 		\FloatBarrier
 		
-		Por ejemplo, el parseo del ticket de la derecha de la figura anterior \ref{fig:primerIultimTiketMeuCorreu} se convertirá en formato JSON después del parseo. Para conseguirlo, se introduce a un diccionario\footnote{Un diccionario en Python es como un HashMap de Java o un Javascript Object: con una estructura de pares clave:valor.} de Python que luego se podrá guardar directamente en una colección de MongoDB con un formato estructurado como el que vemos en la figura \ref{fig:ticketJsonEstructuratMostra}\footnote{MongoDB no guarda JSON exactamente. Lo que hace es guardar objetos BSON (binary JSON) que son una representación binaria del JSON, pero que en esencia está optimizada para rendimiento en operaciones de consulta y escritura y, también, para que ocupe menos espacio que un JSON no binario (texto plano).}.
+		Por ejemplo, el parseo del ticket de la derecha de la figura anterior \ref{fig:primerIultimTiketMeuCorreu} se convertirá en formato JSON después del parseo. Para conseguirlo, se introduce a un diccionario\footnote{Un diccionario en Python es como un HashMap de Java o un Javascript Object: con una estructura de pares clave:valor.} de Python que luego se podrá guardar directamente en una colección de MongoDB con un formato estructurado compacto (figura \ref{fig:ticketJsonEstructuratMostra}) o ampliado si queremos más legibilidad (figura \ref{fig:ticketJsonEstructuratMostraAMBCLAUS})\footnote{MongoDB no guarda JSON exactamente. Lo que hace es guardar objetos BSON (binary JSON) que son una representación binaria del JSON, pero que en esencia está optimizada para rendimiento en operaciones de consulta y escritura y, también, para que ocupe menos espacio que un JSON no binario (texto plano).}.
+		
+		Hagamos lo que hagamos vamos a recorrer todas las lineas con la función \textit{fesScrapTicketMercadona()} del fichero \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/serveiTickets.py}{serveiTickets.py} y extraeremos los datos más importantes del ticket. Para hacerlo debemos tener en cuenta que el layout del ticket es distinto si tratamos de parsear un producto a granel o bien si es un producto que se vende a un precio unitario: los productos a granel, a diferencia de los que no lo son, ocupan dos líneas en el ticket porque añaden una línea más donde se añaden el precio por kg y el precio total. Además, otra diferencia, es que en la misma línea del nombre del producto no sale el precio o importe (porque sale en la segunda).
+		
+		Esto es una fuente de variabilidad que encontraremos en cada ticket y se tendrá que tener en cuenta al tratar el string del ticket. Dentro de la función \textit{fesScrapTicketMercadona()} vamos a tener en cuenta estos aspectos y los vamos a comentar en el código.
+		
+		Una parte amable del ticket es que ya incluye, en principio, una clave candidata a ser clave primaria. Si concatenamos la factura simplificada con OP (número de operación) deberíamos tener algo que nunca -salvo rarísimas excepciones- se repite.
+		
 		
 		
 		
@@ -1225,14 +1275,22 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\setlength{\belowcaptionskip}{3pt}
 		\begin{figure}[H]
 			\centering
-			\caption{Formato en el que parsearemos cada ticket digital de Mercadona para poder guardarlo en MongoDB y habilitar consultas eficientes. $|$Dentro de cada producto hay una lista que indica respectivamente si el producto es granel (0 si no lo es, 1 si sí lo es). Entonces, el segundo elemento de la lista indica el precio unitario o el precio por kg (en función de si es granel o no lo es, respectivamente); el tercer elemento, indica el número de unidades compradas o el número de kg comprados (en función del primer parámetro).}
-			\includegraphics[width=1\linewidth]{img/ticketJsonEstructuratMostra}
+			\caption{Formato en el que parsearemos cada ticket digital de Mercadona para poder guardarlo en MongoDB y habilitar consultas eficientes. $|$Dentro de cada producto hay una lista que indica respectivamente si el producto es granel (0 si no lo es, 1 si sí lo es). Entonces, el segundo elemento de la lista indica el precio unitario o el precio por kg (en función de si es granel o no lo es, respectivamente); el tercer elemento, indica el número de unidades compradas o el número de kg comprados (en función del primer parámetro); el cuarto elemento es la categoria.}
+			\includegraphics[width=.8\linewidth]{img/ticketJsonEstructuratMostra}
 			\label{fig:ticketJsonEstructuratMostra}
 		\end{figure}
 		\FloatBarrier
 
 
-
+		\FloatBarrier
+		\setlength{\belowcaptionskip}{3pt}
+		\begin{figure}[H]
+			\centering
+			\caption{Formato en el que parsearemos cada ticket digital de Mercadona para poder guardarlo en MongoDB y habilitar consultas eficientes formato con claves descriptivas por cada producto (items sin clasificar)}
+			\includegraphics[width=.75\linewidth]{img/ticketJsonEstructuratMostraAMBCLAUS}
+			\label{fig:ticketJsonEstructuratMostraAMBCLAUS}
+		\end{figure}
+		\FloatBarrier
 		
 		
 	
@@ -2184,11 +2242,6 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Como vemos en la figura \ref{fig:part3pas4engranatge} para mostrar el PASO 3 dedicado a procesar o parsear los tickets, si clicamos en el engranaje activaremos una llamada POST a un endpoint del back-end de fastAPI mediante el script \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/demanaExtraccioPdfs.js}{demanaExtraccioPdfs.js} que le dará la señal de empezar la extracción y guardar en MongoDB.
 	
-		
-	\subsection{Arquitectura (JavaScript): páginas públicas}
-	\label{sec:arquitecturaPaginesPubliques}
-	
-	\textbf{TO DO FER-HO TO DO FER-HO TO DO FER-HO TO DO FER-HO TO DO FER-HO TO DO FER-HO}
 	
 	
 	\subsection{Diseño de iconos}
