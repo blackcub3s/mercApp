@@ -37,6 +37,20 @@
     <script src="js/pas4/contaPdfsPujats.js"></script>
     <script src="js/pas4/demanaExtraccioPdfs.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const banner = document.getElementById("miniBannerPassos");
+                banner.style.opacity = "0";
+                setTimeout(() => {
+                    /*a diferencia de display none, visibility hidden no elimina 
+                    elbanner del layout i aixi no pujen la resta d'eement cap a amunt*/
+                    banner.style.visibility = "hidden"; 
+                }, 1500); // Espera lo mismo que la duración del fade (0.5s)
+                
+            }, 1000);
+        });
+    </script>
 
 </head>
 <body>
@@ -57,7 +71,11 @@
 
 
 
-
+    <section id = "miniBannerPassos">
+        <section>
+            <p id = "infoPassos"><b>ÚLTIMO</b> PASO</p>
+        </section>
+    </section>
     
     <section id = "tresPassos">
 

@@ -15,6 +15,16 @@ header {
     margin-bottom: 2em;
 }
 
+#miniBannerPassos {
+    display: grid; 
+    grid-template-columns: 1fr; 
+    place-items: center;
+    transition: opacity 1s ease-out; /*Fem una transició per a que desapargeui, de durada d'un segon*/
+    opacity: 1; /*la opacitat comença en 1 i acaba en 0 */
+}
+#infoPassos {font-size: 1.3em;} /*pasito pequeño de arriba*/
+
+
 /*Posiciono icono mercApp especific per al pas4*/
 header > img {
     position: absolute;

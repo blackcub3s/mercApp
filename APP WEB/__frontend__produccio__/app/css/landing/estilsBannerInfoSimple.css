@@ -4,22 +4,24 @@
 
         #infoSimplificadaProducte {
             text-align: center;
-            border: .05em dashed var(--grisMeu);
             padding: 1em;
             margin: 8em;
+            border-radius: .5em;
 
         }
 
-        #infoSimplificadaProducte h2 {
-            font-size: large;
-        }
-       
+        #infoSimplificadaProducte h2 {font-size: 1.3em;}
+        #infoSimplificadaProducte > div > h2 span {color: red;}
         #infoSimplificadaProducte img {
-            max-width: 10em; /* Maintain natural size */
-            width: 30%; /* Cap the maximum size at 30% */
-            
+            max-width: 12em; /* Mantenir tamany màxim */
+            width: 50%; /* tamany màxim a 30% */
         }
-        
+
+        #infoSimplificadaProducte div h2 {
+            max-width: 40em;
+            margin: 0 auto;
+        }
+
         /*MEDIA QUERY PR A LA VISTA INICIAL DE LA PAGINA (ASSGEURAR ES MANTE VISIBLE CORREU I BANNER)*/
 
 
