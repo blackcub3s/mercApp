@@ -1763,7 +1763,40 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\subsection{Diseño (UX/UI): páginas publicas}
 	\label{sec:disenyoPublicas}
-	\textbf{TO DO FER-HO: parlar disseny responsive}
+	
+	El diseño de las páginas públicas (es decir, los archivos html que no son ni el dashboard ni el pas4\_) también son responsive. Tienen por ahora un diseño minimalista para no distraer al usuario y facilitarle su registro. A continuación se puede ver como las distintas media queries afectan a dos de las páginas públicas:
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Arriba vemos la parte superior de index.html. Debajo la página de inicio de sesión. De izquierda a derecha: vista de escritorio, tablet y móvil gracias a media queries en el CSS.}
+		\includegraphics[width=1\linewidth]{img/mediaQueryIndexhtml}
+		\label{fig:mediaQueryIndexhtml}
+	\end{figure}
+	\FloatBarrier
+	
+	Las media queries de las páginas públicas se han separado en distintos archivos. Por ejemplo, la barra de navegación de \texttt{index.html}, \texttt{pas2A\_infoBenvinguda}, \texttt{pas2B\_introduirContrasenya} y \texttt{pas2C\_login} tienen sus estilos y su media query aplicadas todos en el archivo siguiente: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/barraNavegacioSimple.css}{css/barraNavegacioSimple.css}. Dado que no hemos utilizado un framework de javascript que nos permita desarrollar en componentes hemos visto pertinente tratar de modularizar en la medida de lo posible aquello que hemos desarrollado. Con lo cual todas estas páginas con una navbar incluyen este archivo en el \textit{head}.
+	
+	Nótese que los formularios para introducir correo y contraseña tiene el mismo aspecto tanto en \texttt{index.html} como en \texttt{pas2C\_login.html} y el botón de registro e inicio de sesión también son iguales. También hemos modularizado su CSS introduciéndolo en un mismo archivo, en la ruta: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/landing/inputText.css}{css/landing/inputText.css}
+	
+	Finalmente tenemos la footer del \texttt{index.html}: solo la hemos introducido por ahora en \texttt{pas4\_concedirAccesGmail.hml}(una de las páginas privadas), pero no en todas las demás páginas públicas: en algunas de estas últimas queremos solamente que los usuarios pongan contraseña o correo y no queremos distraer con detalles superfluos. De ahí que la barra de navegación de páginas públicas no tenga links en la navbar. Los links los encontramos una vez el usuario se registra. Sin embargo, a futuro se podría expandir la página del index.html para incluir una barra de navegación ligera con información de quienes somos y una footer en todas las páginas públicas.
+	
+	
+	\FloatBarrier
+	\setlength{\belowcaptionskip}{3pt}
+	\begin{figure}[H]
+		\centering
+		\caption{Creación de la footer en \texttt{index.html} y en \texttt{pas4\_concedirAccesGmail.hml} con diseño minimalista: link a linkedin y \textit{display: flex} para centrar verticalmente y horizontalmente el mensaje en el espacio ocupado por la \textit{footer}}
+		\includegraphics[width=1\linewidth]{img/footerIndexIpas4}
+		\label{fig:footerIndexIpas4}
+	\end{figure}
+	\FloatBarrier
+	
+	
+	
+	
+	
 	
 	\subsection{Diseño (UX/UI): páginas privadas}
 	\label{sec:disenyoResponsivePrivadas}
