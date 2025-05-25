@@ -2131,17 +2131,32 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\subsubsection{Arquitectura del dashboard}
 	\label{sec:paginadorJavascriptArquitectura}
 	
-	El \textbf{paginador customizado} que vimos en la figura \ref{fig:imatgeSwiperCustom} requiere JavaScript. El código que lo consigue orquestrar se encuentra en el archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/paginadorInflacio.js}{paginadorInflacio.js}.
 	
-	El \textbf{gráfico de inflación}, que también requiere JavaScript, tiene código en el archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/graficInflacio.js}{graficInflacio.js}.
+	\noindent \textbf{``Inflalyzer''}
+	\hrule
+	\vspace{.5em}
 	
-	\textbf{TO DO PARLAR DEL GRAFIC D'INFLACIO I DEL SEU JAVASCRIPT (continuacio inflalyzer)}
+	El \textbf{paginador customizado} que vimos en la figura \ref{fig:imatgeSwiperCustom} requiere JavaScript. El código que lo consigue orquestrar se encuentra en la ruta \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/paginadorInflacio.js}{/js/dashboard/paginadorInflacio.js}. 
 	
-	\textbf{TO DO PARLAR DEL DIAGRAMA DE SECTORS I DEL JS}
+	El \textbf{gráfico de inflación}, que también requiere JavaScript, cuando el proyecto esté terminado, tendrá su base de código dentro de \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/graficInflacio.js}{/js/dashboard/graficInflacio.js}\footnote{Este archivo va a depender del anterior, porque al movernos por el paginador los gráficos de inflación cambian de forma acorde al producto visualizado en un momento dado.}:
 	
-	\textbf{TO DO PARLAR DEL CATEGORIZER I DEL JS}
+	\noindent \textbf{``Intervalyzer'' \& ``Categoryzer''}
+	\hrule
+	\vspace{.5em}
 	
-	\textbf{TO DO PARLAR DEL INTERVALIZER I DEL JS}
+	El sistema de \textbf{gastos por ventana temporal}, es decir, para ver los gastos \textit{totales} de un usuario en distintas ventanas temporales (``\textit{intervalizer}'') estará en: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/gastoTotalFinestraTemporal.js}{/js/dashboard/gastoTotalFinestraTemporal.js}
+	
+	
+	El sistema para crear \textbf{diagrama de sectores} (``\textit{categorizer}''), que también se podrá vincular a las ventanas temporales que se muevan junto con el intervalizer, estará emplazado en:  \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/diagramaGastosPerCategoria.js}{/js/dashboard/diagramaGastosPerCategoria.js}
+	
+
+	
+	
+	\textit{NOTA:  ``categorizer'' también mostrará ventanas temporales, junto con el límite inferior y superior del ``intervalizer''; con lo cual ``categorizer'' e ``intervalizer'' dependen el uno del otro, de forma  análoga a como el paginador y el gráfico de inflación del apartado inmediatamente anterior se interrelacionan.}
+	
+	 
+	 \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard}{/js/dashboard/}.
+	
 	
 	
 	
