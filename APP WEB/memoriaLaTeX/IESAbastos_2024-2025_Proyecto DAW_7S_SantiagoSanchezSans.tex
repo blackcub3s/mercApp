@@ -216,7 +216,7 @@
 					
 		\begin{itemize}
 			\setlength{\itemsep}{-.5em}
-			\item \textbf{La evolución de precios} (inflación) a lo largo del tiempo en los productos habitualmente comprados en el mismo establecimiento\footnote{La evolución de precios se mostrará solamente para un mismo centro de Mercadona, dado que distintos centros pueden cambiar los nombres de los productos (por ejemplo, en Cataluña…).}.
+			\item \textbf{La evolución de precios} (inflación) a lo largo del tiempo en los productos habitualmente obtenidos en el mismo establecimiento\footnote{La evolución de precios se mostrará solamente para un mismo centro de Mercadona, dado que distintos centros pueden cambiar los nombres de los productos (por ejemplo, en Cataluña…).}.
 			\item \textbf{Evolución del gasto} total del usuario a lo largo del tiempo por períodos temporales.
 		\end{itemize}
 		
@@ -284,11 +284,11 @@
 		
 		En segundo lugar, el tiempo de formación inicial en estas prácticas ha entrañado un curso de Spring Boot excesivamente introductorio, y se estimó que la única forma de ganar conocimientos reales era desarrollar una aplicación de back-end completa y segura con el framework, desde cero. De este modo, el salto futuro a una posición más integrada en el equipo de prácticas debería ser más probable; y aprovechando el solapamiento existente en el desarrollo del sistema de gestión de usuarios de mercApp y los contenidos del curso de Spring Boot mandado desde Lãberit han permitido realizar parte de este back-end durante el primer mes de prácticas en la empresa.
 			
-		En tercer lugar, la elección de Java como lenguaje de back-end en lugar de PHP viene motivada porque otras empresas de la zona utilizan el framework Spring Boot como framework (Mercadona tech, una de ellas). No es de extrañar que esto pase, dado que es el lenguaje que Imma Cabanes nos enseñó en primer curso en Abastos y también el lenguaje que se enseña en primer curso a los estudiantes del grado de ingeniería informática de la Universitat Politécnica de Valencia. Ello implica que el ecosistema tecnológico valenciano se nutre de forma orgánica de desarrolladores Java salidos de la academia.
+		En tercer lugar, la elección de Java como lenguaje de back-end en lugar de PHP viene motivada porque otras empresas de la zona utilizan el framework Spring Boot (Mercadona tech, una de ellas). No es de extrañar que esto pase, dado que es el lenguaje que Imma Cabanes nos enseñó en primer curso en Abastos y también el lenguaje que se enseña en primer curso a los estudiantes del grado de ingeniería informática de la Universitat Politécnica de Valencia. Ello implica que el ecosistema tecnológico valenciano se nutre de forma orgánica de desarrolladores Java salidos de la academia.
 		
 		En cuarto lugar, apostar por Java como lenguaje de back-end es un caballo ganador en forma de crecimiento profesional al ser un lenguaje sólido y de largo recorrido no solo en Valencia sino en muchos países de Europa\footnote{Este fue uno de los motivos que me hizo contactar con Lãberit para hacer las prácticas: poder tocar back-end con Java y Spring Boot.}. No es un lenguaje que vaya por modas y ejercitarlo puede permitir iniciar una carrera enfocada en una tecnología que no se prevé que desfallezca en un futuro cercano.
 		
-		En quinto y último lugar, se escogió Python para la realización de la parte de extracción de tickets porque es el lenguaje de programación con el que aprendí algorismia por primera vez, hará justo ahora 10 años, y con el que en 2017 hice un trabajo final de máster con modelos predictivos usando la librería Sklearn\footnote{El lector puede ver el repo de github con el código y el trabajo final de máster \href{https://github.com/blackcub3s/MSc-FinalThesis}{aquí}.}. Por todo ello, y por su simplicidad, es mi lenguaje de scripting por elección con el que he parseado tickets en PDF en anteriores ocasiones. Además, hay una probable oportunidad laboral que requiere conocer el framework; con lo cual tiene sentido aprenderlo.
+		En quinto y último lugar, se escogió Python para la realización de la parte de extracción de tickets porque es el lenguaje de programación con el que aprendí algorismia por primera vez, hará justo ahora 10 años, y con el que en 2017 hice un trabajo final de máster con modelos predictivos usando la librería Sklearn\footnote{El lector puede ver el repo de GitHub con el código y el trabajo final de máster \href{https://github.com/blackcub3s/MSc-FinalThesis}{aquí}.}. Por todo ello, y por su simplicidad, es mi lenguaje de scripting por elección; por no mencionar que con este lenguaje ya he parseado PDFs en el pasado. Además, hay una probable oportunidad laboral que requiere conocer este framework; con lo cual hay otro motivo más, si cabe, para aprenderlo.
 		
 		
 		
@@ -312,7 +312,7 @@
 			
 			\textbf{REQUISITO B:} Mostrar {\textbf{gasto total en distintas ventanas temporales}} del usuario: períodos de 1, 3, 6 meses y un año; independientemente del centro de Mercadona en el que se compre (todos juntos).
 			
-			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 13 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carne, pescado, hogar e higiene personal, Pan y pastelería, pasta, arroz y legumbres, Snacks y dulces, Mascotas, sin clasificar\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva y de tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
+			\textbf{REQUISITO C:} Al lado de este mismo coste total mostrado en REQUISITO B, se incluirá un \textbf{\textit{diagrama de sectores}} desglosando \underline{porcentaje de dinero} gastado \underline{en 13 categorías}: verdura y hortalizas, frutas, huevos y lácteos, agua y bebidas, aceite y especias, carne, pescado, hogar e higiene personal, Pan y pastelería, pasta, arroz y legumbres, Snacks y dulces, Mascotas, sin clasificar\footnote{Para ello, dado que no tenemos categorizados todos los productos de Mercadona ni podríamos hacerlo por falta de una lista exhaustiva, si nos da tiempo, se usará un modelo predictivo con word embeddings (módulo Spacy) y cosine similarity (sklearn) para encontrar distancias pequeñas entre las descripciones de los tickets y las categorías, facilitando así la clasificación.}.
 			
 			
 			%REQUISIT D I E NO EREN A LA REDACCCIO DEL PROJECTE INICIAL CREC
@@ -324,7 +324,7 @@
 			
 			El correo electrónico y la contraseña de la cuenta de Gmail de alguien que sea usuario del ticket digital de Mercadona y tenga decenas de tickets digitales por analizar, con compras estables y productos recurrentes.
 			
-			Nota: En la demo se proporcionarán ya muchos tickets digitales (tickets míos, que cederé para mostrar la utilidad de la aplicación). No será necesario recurrir a la extracción de datos de otro usuario de ticket digital. Se mostrarán un mínimo de tickets digitales en un mismo centro de Mercadona para poder evidenciar la evolución de precios y gastos.
+			\textit{NOTA: En la demo se proporcionarán ya muchos tickets digitales (tickets míos, que cederé para mostrar la utilidad de la aplicación). No será necesario recurrir a la extracción de datos de otro usuario de ticket digital. Se mostrarán un mínimo de tickets digitales en un mismo centro de Mercadona para poder evidenciar la evolución de precios y gastos.}
 			
 		
 		\section{Stack tecnológico}
@@ -344,7 +344,7 @@
 		
 			- Back-end con Java (Spring Boot) para gestionar los usuarios: guardarlos en bbdd y hacer \underline{autenticación y autorización de usuarios} mediante token JWT: con este framework persistiremos datos en la BBDD mySQL.
 			
-			- El Back-end con Python (FastAPI) se usará para \underline{gestionar los tickets} y sus datos: \textit{en primer lugar}, parseará el contenido de los tickets en PDF mediante pyPDF; \textit{en segundo lugar}, guardará (y luego leerá) de MongoDB los datos extraídos por parseo de los tickets digitales mediante la librería \textit{pymongo}, asegurando así búsquedas eficientes; \textit{en tercer lugar}, si queda tiempo antes de la presentación final, se usarán módulos de Python como sklearn, spacy y Numpy para procesar con lenguaje natural (NLP) cada producto y categorizarlo automáticamente en una de estas \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/categories.js}{12 categorías} de alimentación distintas (en lugar de hacer la clasificación manual); \textit{en cuarto lugar}, incluirá la posibilidad de autenticar y autorizar conexiones entrantes pero no de generar nuevos tokens de acceso.
+			- El Back-end con Python (FastAPI) se usará para \underline{gestionar los tickets} y sus datos: \textit{en primer lugar}, parseará el contenido de los tickets en PDF mediante pyPDF; \textit{en segundo lugar}, guardará (y luego leerá) de MongoDB los datos extraídos por parseo de los tickets digitales mediante la librería \textit{pymongo}, asegurando así búsquedas eficientes; \textit{en tercer lugar}, si queda tiempo antes de la presentación final, se usarán módulos de Python como sklearn, spacy y Numpy para procesar con lenguaje natural (NLP) cada producto y categorizarlo automáticamente en una de estas \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/dashboard/categories.js}{12 categorías} de alimentación distintas (en lugar de hacer la clasificación manual); \textit{en cuarto lugar}, incluirá la capacidad de autenticar y autorizar conexiones entrantes pero no de generar nuevos tokens de acceso.
 			
 		
 		\subsection{Cloud: Google API Client}
@@ -358,7 +358,7 @@
 		
 		Sin embargo, los productos de Mercadona no los conocemos de antemano ni tenemos una lista exhaustiva de los mismos. Además, el número de productos que se pueden encontrar en un ticket varía en cada compra, por lo que no podemos usar una base de datos relacional tradicional como MySQL o PostgreSQL porque se trata de información no estructurada. En su lugar, usaremos MongoDB, una BBDD NoSQL que almacena datos en formato JSON y permite, además, búsquedas eficientes.
 		
-		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. Cuando inicie sesión y consulte sus datos de tickets, estos se descargarán de mongoDB y se almacenarán en el localStorage del cliente (navegador). En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor, hasta que expire el token de acceso del usuario: caso en el que, ahora sí, se borrarán los datos del localStorage. Esta es la implementación ideal; pero si hay falta de tiempo haremos extracción directa de la base de datos cada vez que el usuario actualice la página del dashboard (que no es lo ideal).
+		Para optimizar el backend, intentaremos que un usuario pueda consultar repetidamente sus compras sin sobrecargar el servidor. Cuando inicie sesión y consulte sus datos de tickets, estos se descargarán de mongoDB y se almacenarán en el localStorage del cliente (navegador). En consultas posteriores, los datos se obtendrán directamente de localStorage sin necesidad de hacer peticiones al servidor, hasta que expire el token de acceso del usuario: caso en el que, ahora sí, se borrarán los datos del localStorage. Esta es la implementación ideal; pero si hay falta de tiempo haremos extracción directa de la base de datos cada vez que el usuario actualice la página del dashboard (que, en mi opinión, no es lo ideal).
 		
 
 
@@ -366,11 +366,11 @@
 		
 		\section{Secuenciación de tareas}
 		
-		El desarrollo del proyecto ha empezado entorno el \textbf{7 de marzo de 2025} (el día después de la sesión informativa sobre proyectos). Desde ese día hasta el día \textbf{21 abril} se ha invertido tiempo en la parte del front-end para gestionar el registro e inicio de sesión (páginas públicas) del proyecto, en comunión y en paralelo con el sistema de autenticación, autorización y securización de las APIs vinculadas a la tabla Usuari en el back-end (el entramado más o menos complejo que mostramos en la figura \ref{fig:diagramaMercaAppFront} principalmente) y todo lo redactado de la parte de SpringBoot del proyecto (ver apartado \ref{sec:parteSpringBoot}).
+		El desarrollo del proyecto ha empezado entorno el \textbf{7 de marzo de 2025} (el día después de la sesión informativa sobre proyectos). Desde ese día hasta el día \textbf{21 abril} se ha invertido tiempo en la parte del front-end para gestionar el registro e inicio de sesión (páginas públicas) del proyecto, en comunión y en paralelo con el sistema de autenticación, autorización y securización de las APIs vinculadas a la tabla Usuari en el back-end (el entramado más o menos complejo que mostramos en la figura \ref{fig:diagramaMercaAppFront} principalmente) y gran parte del redactado de la parte de Spring Boot del proyecto (ver apartado \ref{sec:parteSpringBoot}).
 		
 		Durante el horario de las prácticas de Lãberit (iniciadas el 10 de marzo) hasta el viernes 11 de abril se ha diseñado el back-end en Java Spring Boot en paralelo a la realización del curso introductorio de Spring Boot mandado por la empresa (ver imagen \ref{fig:estrucutraAplicacioJAVARESOURCES}, recuadro en rojo, verde y azul).
 		
-		Fuera del horario de prácticas desde el \textbf{21 de abril} hasta el \textbf{24 de mayo} (día previo a la entrega de la memoria) se programarán las dos páginas privadas:
+		Fuera del horario de prácticas desde el \textbf{21 de abril} hasta el \textbf{24 de mayo} (día previo a la entrega de la memoria) se intentará terminar las dos páginas privadas:
 		
 		\begin{itemize}
 			\item \texttt{pas4\_ConcedirAccesGmail.html}: que da acceso a tickets digitales (donde se hará la integración con API de Google).
@@ -393,7 +393,7 @@
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercapp.png}
-			\caption{Diagrama de sistemas simplificado de la aplicación mercApp. Tenemos el back-end de Spring Boot, donde se mandan a guardar y leer tanto los usuarios (mySql) y gracias al cual se gestiona el enrutamiento de vistas públicas. Tenemos el back-end de fastAPI, que parsea los tickets digitales y los pasa a formato estructurado JSON que va a persistir a MongoDB. Google API Client permite extracción de tickets del Gmail del usuario a petición del navegador. El front-end con ``Vanilla'' JavaScript muestra las vistas al usuario en función del token de acceso que expide Spring Boot.}
+			\caption{Diagrama de sistemas simplificado de la aplicación mercApp. Tenemos el back-end de Spring Boot, donde se mandan a guardar y leer de mySQL los datos de los usuarios y gracias al cual se gestiona el enrutamiento de vistas públicas. Tenemos también el back-end de fastAPI, que parsea los tickets digitales y los pasa a formato estructurado JSON para persistirlos en MongoDB. También hacemos uso de Google API Client, que pertenece a \textit{Google Cloud}, y que permite la extracción de tickets del Gmail del usuario hacia su ordenador, a petición suya a través del navegador. El front-end con ``Vanilla'' JavaScript muestra las vistas al usuario en función del token de acceso que expide Spring Boot.}
 
 			
 			\label{fig:diagramaSistemesAplicacioMercapp} 
@@ -409,7 +409,7 @@
 				\begin{figure}[H]
 					\centering
 					\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIREGISTREbo.png}
-					\caption{Diagrama de sistemas simplificado con los caminos activados durante el registro de un usuario (no superusuario): desde que este introduce su correo electrónico y su contraseña por primera vez hasta que este tiene acceso al dashboard de visualización, siempre que haya éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash de la contraseña. c) Mandamos al front token de acceso con permisos = 0 y pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con la Gmail API de google API Client, con OAuth2, y automáticamente se pide la descarga de sus tickets digitales e) tickets digitales en PDF regresan al navegador y se descargan al ordenador del usuario. f) cuando el usuario lo quiera subirá a fastAPI los tickets del ordenador del usuario y los parseará a formato estructurado g) Los tickets con formato estructurado se guardan en MongoDB h) fastAPI pasa el token de acceso con permisos a 0 hacia Spring Boot y le pide uno con permisos a 1. i) Spring Boot guarda permisos a 1 a la BBDD mySQL j) Spring Boot regresa a fastAPI el token de acceso recién expedido con permisos a 1. k) FastAPI obtiene los datos de los tickets de usuario de MongoDB l) FastAPI manda el token de acceso con permisos = 1 y los datos extraidos de MongoDB (información de los tickets) de vuelta al frontend para que JavaScript muestre automáticamente el dashboard de visualización.}
+					\caption{Diagrama de sistemas simplificado con los caminos activados durante el registro de un usuario (no superusuario). Mostramos acontecimientos en orden desde que este introduce su correo electrónico y su contraseña por primera vez hasta que este tiene acceso al dashboard de visualización, siempre que haya éxito en todas las partes del proceso: a) Usuario pone correo y contraseña. b) guardamos correo y hash de la contraseña. c) Mandamos al front-end un token de acceso con permisos = 0 y le pedimos al usuario que nos conceda acceso a sus tickets digitales. d) usuario se autentica con la Gmail API de google API Client, con OAuth2, y automáticamente se pide la descarga de sus tickets digitales e) tickets digitales en PDF regresan al navegador y se descargan al ordenador del usuario. f) cuando el usuario lo quiera sube a fastAPI los tickets de su ordenador para que el servidor los parsee a formato estructurado g) Los tickets con formato estructurado se guardan en MongoDB h) FastAPI pasa el token de acceso con permisos = 0 hacia Spring Boot y le pide uno con permisos = 1. i) Spring Boot guarda permisos a 1 a la BBDD mySQL j) Spring Boot regresa a fastAPI el token de acceso recién expedido con permisos = 1. k) FastAPI obtiene los datos de los tickets de usuario de MongoDB l) FastAPI manda el token de acceso con permisos = 1 y los datos extraídos de MongoDB (información de los tickets) de vuelta al front-end para que JavaScript los muestre automáticamente en el dashboard de visualización.}
 					\label{fig:diagramaSistemesAplicacioMercappCAMIREGISTRE} 
 				\end{figure}
 				\FloatBarrier
@@ -424,7 +424,7 @@
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/diagramaSistemesAplicacioMercappCAMIINICISESSIO.png}
-			\caption{Diagrama de sistemas simplificado con los caminos activados durante el \textit{inicio de sesión} de un usuario (no superusuario) que ya fue registrado y facilitó sus tickets digitales para su extracción o minado -parseo- y persistencia: desde que este introduce su correo electrónico y su contraseña hasta que visualiza el dashboard, siempre que haya éxito en todas las partes del proceso: a) Usuario escribe y manda correo y contraseña. b) Obtenemos usuario y hash de la BBDD y en Spring Boot vemos que son coincidentes con los que escribió el usuario por el front-end. c) Mandamos al front-end el token de acceso con permisos a 1 y automáticamente el front redirigirá a \textit{dashboard}. d) Se pide a fastAPI la información de los tickets. e) Se toman los tickets de la bbdd mongoDB. f) se mandan de fastAPI al front-end (cliente, navegador) los datos de los tickets para ser visualizados.}
+			\caption{Diagrama de sistemas simplificado con los caminos activados durante el \textit{inicio de sesión} de un usuario (no superusuario) que ya fue registrado, ya facilitó sus tickets digitales para su extracción o minado -parseo- y estos ya fueron extraídos y persistidos en MongoDB. Mostramos acontecimientos en orden desde que este introduce su correo electrónico y su contraseña hasta que visualiza el dashboard, siempre que haya éxito en todas las partes del proceso: a) Usuario escribe y manda correo y contraseña. b) Obtenemos usuario y hash de la BBDD y en Spring Boot vemos que son coincidentes con los que escribió el usuario por el front-end. c) Mandamos al front-end el token de acceso con permisos a 1 y automáticamente el front redirigirá a \textit{dashboard}. d) Se pide a FastAPI la información de los tickets. e) Se toman los tickets de la bbdd mongoDB. f) Se mandan de fastAPI al front-end (cliente, navegador) los datos de los tickets para ser visualizados en el dashboard.}
 			\label{fig:diagramaSistemesAplicacioMercappCAMIINICISESSIO} 
 		\end{figure}
 		\FloatBarrier
@@ -447,9 +447,9 @@
 				
 			\section{GitHub del proyecto}
 			
-				Para desarrollar este proyecto se ha trabajado con GitHub y git. Dado que no ha habido trabajo en equipo no se han utilizado pull requests a la rama main sino simplemente se ha seguido la estrategia de crear ramas de característica y, una vez satisfactorias, hacer un merge en la rama main en local.
+				Para desarrollar este proyecto se ha trabajado con GitHub y git. Para su desarrollo se ha seguido la estrategia de crear ramas de característica (puede verse anexo \ref{sec:anexoFlujoGit} para ver el flujo de trabajo habitual) y, una vez satisfactoria, hacer un merge en la rama main en local. Los cambios de la rama main local se han ido subiendo al repo remoto en la rama main.
 				
-				Un flujo de trabajo habitual es mediante ramas de característica (puede verse anexo \ref{sec:anexoFlujoGit}). Las instrucciones para correr los componentes del proyecto en sus respectivos entornos de desarrollo están en el apartado \ref{sec:entornosDesarrollo}. El despliegue de la aplicación mediante contenedores se encuentra explicado en \ref{sec:despliegue}.
+				Las instrucciones para correr los componentes del proyecto en sus respectivos entornos de desarrollo están en el apartado \ref{sec:entornosDesarrollo}. Las instrucciones para hacer un despliegue de la aplicación mediante contenedores Docker se encuentran en el apartado \ref{sec:despliegue}.
 			
 
 			
@@ -464,20 +464,20 @@
 			\section{Entornos de desarrollo}
 			\label{sec:entornosDesarrollo}
 			
-				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto\textbf{ 8080}: se han utilizado extensiones necesarias para correr el proyecto. Por ejemplo, es necesario usar Lombok como extensión: sin ella el proyecto en IntelliJ fallará\footnote{¡Para correr el proyecto back-end con\textit{Spring Boot} abrir con intelliJ la carpeta app!}.
+				Para el back-end de Java con SpringBoot se ha utilizado el editor Java \texttt{IntelliJ Idea community edition} que expone el backend en el puerto \textbf{8080}\footnote{NOTA¡Para correr el proyecto back-end con\textit{Spring Boot} abrir con intelliJ la carpeta app!}: se han utilizado algunas extensiones del editor para correr el proyecto. Por ejemplo, es necesario la extensión para Lombok: sin ella IntelliJ no encontrará getters o setters y fallará.
 				
 				Para el front-end (archivos estáticos: HTML, CSS y JavaScript) se ha utilizado \texttt{VScode}, con la extensión live server para poder hacer llamadas al back-end directamente desde el puerto \textbf{5500}\footnote{¡El proyecto \textit{front end} con \textit{vanilla javascript} debe abrirse con vscode en la carpeta \textbf{app} y ejecutarlo en live server, si no \textbf{no} funcionará correctamente!}.
 				
-				Para el back-end de Python con FastAPI se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}\footnote{Se recomienda ejecutar desde la carpeta app haciendo el comando \textit{FastApi dev controlador.py}} .
+				Para el back-end de Python con FastAPI se ha utilizado el servidor embedido en el propio framework, expuesto en el puerto \textbf{8000}\footnote{Se recomienda ejecutarlo desde la carpeta \textit{/app} mediante \textit{fastApi dev controlador.py}} .
 				
-				Para la base de datos mySQL se usó workbench y se expuso el puerto \textbf{3306}\footnote{Es la versión MySQL 8.4.4 la que expone el puerto}. Para MongoDB se usó MongoDB compass exponiendo en el \textbf{27017}\footnote{Es MongoDB Community Server la que expone el puerto.}.
+				Para la base de datos mySQL se usó workbench y se expuso el puerto \textbf{3306}\footnote{Es la versión MySQL 8.4.4 la que expone el puerto}. Para MongoDB se usó MongoDB compass exponiendo en el \textbf{27017}\footnote{Es MongoDB Community Server el que expone el puerto.}.
 		
 	
 			\section{Despliegue}
 			\label{sec:despliegue}
 				Los componentes del apartado \ref{sec:entornosDesarrollo} de entornos  desarrollo se han \textit{dockerizado} de modo que cada uno de ellos sea un microservicio, a excepción (por ahora), de las bases de datos. Hemos sido cuidadosos de que los microservicios en Docker corran en los mismos puertos que los servidores embedidos con los que hemos hecho el desarrollo de la aplicación mercApp: por claridad y porque múltiples archivos dependen ya de ellos.
 				
-				Para crear la imagen de cada microservicio hemos creado un Dockerfile. Luego, para crear los contenedores y crear de nuevo las imágenes en caso que haya cambios en los archivos, para cada uno de estos microservicios, hay un script denominado \textit{creaImatge\_i\_arrancaContenidor.sh}\footnote{La explicación pormenorizada de sus comandos, para el caso de FastAPI por ejemplo, puede verse en el apartado \ref{sec:conteneritzacioPython}} que reunirá todos los subcomandos de docker necesarios para el ciclo de vida de la creación de imagen (build) y subsecuente instanciado de contenedor (create, start, stop, rm). Todo ello haciendo solamente desde la terminal de Linux o desde la terminal de git bash en Windows: 
+				Para crear la imagen de cada microservicio hemos creado un Dockerfile. Luego, para crear los contenedores y crear de nuevo las imágenes en caso que haya cambios en los archivos, para cada uno de estos microservicios, hay un script denominado \textit{creaImatge\_i\_arrancaContenidor.sh}\footnote{La explicación pormenorizada de sus comandos, para el caso de FastAPI por ejemplo, puede verse en el apartado \ref{sec:conteneritzacioPython}.} que reunirá todos los subcomandos de docker necesarios para el ciclo de vida de la creación de imagen (build) y subsecuente instanciado de contenedor (create, start, stop, rm). Todo ello haciendo solamente desde la terminal de Linux o desde la terminal de git bash en Windows: 
 				
 				\begin{lstlisting}[language=bash]
 	bash creaImatge_i_arrancaContenidor.sh
@@ -487,7 +487,7 @@
 				
 				
 				
-				Así, no tenemos que preocuparnos de parar el contenedor, borrarlo y luego crear la imagen (ver imagen \ref{fig:dockeritzacioAplicacioPlantilla})\footnote{ A futuro planteamos hacer el despliegue con un sistema de orquestración de contenedores como es Kubernetes, subiendo las imágenes a un registry; por ahora no lo haremos y quien quiera desplegarlo en su ordenador para probarlo puede hacerlo fácilmente creando las imágenes e instanciando los contenedores con los scripts en Bash en rojo. No se hará porque las barras bajas de los nombres de las carpetas probablemente darán problemas: la memoria tiene ya muchos links al GitHub que dependen que estas rutas estén bien y por ahora no se tocará.}.
+				Así, no tenemos que preocuparnos de parar un contenedor activo, borrarlo y luego crear de nuevo la imagen del que deriva (ver figura \ref{fig:dockeritzacioAplicacioPlantilla})\footnote{ A futuro planteamos hacer el despliegue con un sistema de orquestración de contenedores como es Kubernetes, subiendo las imágenes a un registry; por ahora no lo haremos y quien quiera desplegarlo en su ordenador para probarlo puede hacerlo fácilmente creando las imágenes e instanciando los contenedores con los scripts en Bash en rojo. No se hará porque las barras bajas de los nombres de las carpetas probablemente darán problemas: la memoria tiene ya muchos links al GitHub que dependen que estas rutas estén bien y por ahora no se tocará.}.
 				
 				
 				\FloatBarrier
@@ -508,18 +508,18 @@
 			
 				\subsection{Contenerización}
 				
-				El archivo DockerFile  \textit{se podrá}\footnote{En el momento de escribir esta memoria el Dockerfile para el microservicio de Java había que programarlo. Si todavía no está disponible en el link proporcionado el lector puede dirigirse a los apartados Contenerización de los demás microservicios: FastAPI y Nginx (front-end).} ver en esta altura del arbol de directorios (igual que con los demás proyectos): \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__}{link}. También los scripts en Bash para derivar contenedor desde la imagen del Dockerfile. Si el lector quiere profundizar en este tema el apartado donde se explica la contenerización con más profundidad es el apartado de contenerización de FastApi en la sección \ref{sec:conteneritzacioPython}.
+				El archivo Dockerfile y los scripts en Bash para la creación de imágenes y contenedores se encontrarán \footnote{En el momento de escribir esta memoria el Dockerfile para el microservicio de Java había que programarlo. Si todavía no está disponible en el link proporcionado el lector puede dirigirse a los apartados Contenerización de los demás microservicios: FastAPI y Nginx (front-end).} \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__}{aquí}. Estos archivos se ubican, igual que lo que pasa con los demás microservicios del proyecto mostrados en la figura \ref{fig:dockeritzacioAplicacioPlantilla}, un nivel por encima de la carpeta \textit{/app}. Si el lector quiere profundizar en el tema de generar imágenes y contenedores con bash puede ir directamente al apartado \ref{sec:conteneritzacioPython} donde se explica la contenerización mediante el caso particular del microservicio de FastAPI.
 			
 				\subsection{Estructura de la aplicación}
 				\label{sec:estructuraAplicacion}
 				
-				La parte de mercApp programada con Java (Spring Boot) se puede ver en el repositorio de GitHub del proyecto abriendo esta carpeta: \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__/app}{aquí} (recomendamos al lector que abra y corra el proyecto con IntelliJ abriendo la carpeta mencionada del GitHub, pero en local). Se podrá ver entonces \textit{tres} rutas importantes (que son las tienen todos los proyectos Spring Boot):
+				La parte de mercApp programada con Java (Spring Boot) se puede ver en el repositorio de GitHub del proyecto abriendo esta carpeta: \href{https://github.com/blackcub3s/mercApp/tree/main/APP%20WEB/__springboot__produccio__/app}{link}. Recomendamos al lector que abra y corra el proyecto con IntelliJ abriendo esta misma carpeta enlazada en GitHub, pero en local. Al hacerlo, el lector podrá ver entonces en el explorador de directorios de IntelliJ \textit{tres} rutas importantes, que son las que se encuentran por defecto en cualquier proyecto Spring Boot:
 				
 				\vspace{-.9em}
 				\begin{itemize}
 					\setlength{\itemsep}{-.5em}
 					\item \textbf{src/main/java} $\rightarrow$ En esta ruta encontramos los \textit{packages} y las clases del proyecto (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{red}{rojo}).
-					\item \textbf{src/main/resources} $\rightarrow$ Dentro de esta carpeta  nos encontramos con el archivo \texttt{application.properties}. trata de un archivo de configuración donde se define, por ejemplo, el conexionado con la base de datos (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{green}{verde}) y logback-spring.xml que, aunque no está definido por defecto en una aplicación Spring Boot, si lo añadimos lo que hace es que los logs del proyecto se guarden en \textit{logs/spring.log} en lugar de salir a terminal\footnote{La ruta se crea automáticamente}. Aquí aparece como un \textit{.txt} en lugar de un \textit{.xml} porque por ahora no queremos que se guarden los errores.
+					\item \textbf{src/main/resources} $\rightarrow$ Dentro de esta carpeta  nos encontramos con el archivo \texttt{application.properties}. Se trata de un archivo de configuración donde se define, por ejemplo, el conexionado con la base de datos (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES} recuadro en \textcolor{green}{verde}) o el archivo \textit{logback-spring.xml} que, aunque no está definido por defecto en una aplicación Spring Boot, si lo añadimos nos guarda los logs del proyecto en \textit{logs/spring.log} en lugar de salir impresos por la terminal\footnote{La ruta se crea automáticamente}. Aquí aparece como un \textit{.txt} en lugar de un \textit{.xml} porque por ahora no queremos que se guarden los errores.
 					\item \textbf{pom.xml} $\rightarrow$ Es un arhivo donde encontramos el árbol de dependencias de Maven\footnote{Maven es una herramienta de automatización para la construcción de proyectos Java. Gestiona todas las dependencias, que se descargan desde un repositorio central muy vivo donde hay millones de nuevos paquetes publicados anualmente (\href{https://mvnrepository.com/repos/central}{ver link}). Maven permite empaquetar el proyecto en un .jar o .war fácilmente, entre otras cosas.} (ver figura \ref{fig:estrucutraAplicacioJAVARESOURCES}, recuadro en \textcolor{blue}{azul}): cada vez que añadimos una dependencia estamos añadiendo nuevas funcionalidades a nuestro proyecto SpringBoot a través de una descarga automatizada del repositorio central de Maven.
 					
 					
@@ -552,18 +552,17 @@
 				
 				Dentro de \textbf{src/main/java} tenemos también la ruta \textbf{miApp.app/seguretat} encontramos la clase \textit{EncriptaContrasenyes.java}, que utilizamos en el servicio de usuaris para hashear las contraseñas en la base de datos. Esto lo explicamos en detalle dentro de \ref{sec:implementacioHashContra}.
 				
-				Dentro de \textbf{src/main/java} tenemos también la ruta \textbf{miApp.app/tickets/}. Ahi dentro tenemos unas clases diseñadas para expansiones futuras que no han sido utilizadas por ahora: por ejemplo, dentro del package \textit{restclient} tenemos una clase habilitada que permite hacer llamadas como cliente (sí, el back-end de Java Spring Boot puede actuar como cliente hacia otro back-end mediante la librería RestClient y puede \textbf{hacer} peticiones HTTP hacia el back-end de fastAPI con lo que ahí configuramos\footnote{Ambos back-ends sí se comunicarán, pero lo haremos finalmente en sentido opuesto: desde el back-end de Python FastAPI en realidad haremos una petición HTTP hacia el back-end de Spring Boot para emitir tokens como \textbf{veremos luego.})}. 
+				Dentro de \textbf{src/main/java} tenemos también la ruta \textbf{miApp.app/tickets/}. Ahí dentro tenemos unas clases diseñadas para expansiones futuras que no han sido utilizadas por ahora: por ejemplo, dentro del package \textit{restclient} tenemos una clase habilitada que permite hacer llamadas HTTP como cliente hacia el back-end de FastAPI\footnote{Ambos back-ends sí se comunicarán, pero la comunicación se establecerá finalmente en sentido opuesto: desde el back-end de Python FastAPI \textbf{hacia} el back-end de Spring Boot para que este último emita tokens, como ya explicaremos en la \textit{parte 4} del apartado \ref{sec:solicitudDeExtraccion} dedicado a FastAPI.} (sí, el back-end de Java Spring Boot puede actuar como cliente hacia otro back-end mediante la librería RestClient) . 
 				
 				
 				Dentro de \textbf{src/main/java} tenemos la ruta \textbf{miApp.app/Usuaris} con varios subpackages. Ahí dentro merece la pena mencionar que tenemos todas las clases con las que se recibe y procesa datos del cliente para hacer la gestión de usuarios. Las que nos interesan son las siguientes:
 				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{UsuariControlador.java}, 
 				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/servei/UsuariServei.java}{UsuariServei.java}, 
 				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/repositori/UsuariRepositori.java}{UsuariRepositori.java} y 
-				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java}{Usuari.java}
-				\footnote{No nos interesa por ahora hablar mucho de UsuariAmpliat.java y de UsuariAmpliatRepositori.java porque se han creado como plantilla para la expansión de datos de usuarios si a futuro seguimos desarrollando esta aplicación.}. 
-				A continuación  vamos a mostrar, a modo de ejemplo, qué es lo que pasa con todas estas clases y cuál es su utilidad cuando hacemos la llamada a un endpoint del \textit{UsuariControlador.java} (concretamente el endpoint \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103}{/api/login}), que veremos que es el endpoint que interviene en el inicio de sesión y que podemos visualizar en el enrutamiento front-end de la aplicación mostrado de forma exhaustiva en \ref{fig:diagramaMercaAppFront} para ver en contexto su utilidad en relación al front-end de la aplicación.
+				\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java}{Usuari.java}\footnote{No nos interesa por ahora hablar mucho de UsuariAmpliat.java y de UsuariAmpliatRepositori.java porque se han creado como plantilla para la expansión de datos de usuarios si a futuro seguimos desarrollando esta aplicación.}. 
+				A continuación  vamos a mostrar, a modo de ejemplo, cuál es la utilidad de todas esas clases cuando hacemos una llamada a un endpoint del \textit{UsuariControlador.java} (concretamente el endpoint \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103}{/api/login}, que veremos que es el endpoint que interviene en el inicio de sesión): más adelante veremos que este endpoint cobra un papel importante en el enrutamiento front-end de la aplicación (que mostraremos exhaustivamente en \ref{fig:diagramaMercaAppFront}) y que su utilidad es crucial para la redirección a una de las dos páginas privadas.
 				
-				 Antes que nada mostramos una figura explicativa a nivel gráfico de lo que pasa en este proyecto Spring Boot y, en teoria, en todos: luego iremos desgranando cada componente (ver figura \ref{fig:diagramaInjeccioDependencies}).
+				 Antes que nada, empero, mostramos una figura explicativa a nivel gráfico de lo que pasa en este proyecto Spring Boot y, en teoria, en todos: luego iremos desgranando cada componente (ver figura \ref{fig:diagramaInjeccioDependencies}). De esta figura empezamos destacando la labor del Controlador: en Spring Boot (y probablemente en otros frameworks de back-end), los \textit{endpoints} o puntos de entrada de solicitudes HTTP, van a ser definidos dentro de lo que llaman una clase ``controller'' o controlador. En este caso, la clase controlador que nos ocupa está en el archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{UsuariControlador.java}. 
 				
 				
 							
@@ -571,13 +570,13 @@
 				\setlength{\belowcaptionskip}{3pt}
 				\begin{figure}[H]
 					\centering
-					\caption{Inyección de dependencias en nuestro proyecto Spring Boot bajo el modelo-vista-controlador (MVC) dentro del package Usuaris. Spring Boot añade otra capa más al modelo que ya conocíamos de desarrollo web entorno servidor: el repository (repositori). En el \textit{UsuariControlador.java} están los endpoints que tienen que ver con los usuarios. Estos endpoints dependen de la capa de servicio (UsuariServei.java), que implementa la lógica de negocio. La lógica de negocio depende de las operaciones en base de datos, que se implementan en el repositorio (UsuariRepositori.java). El ``model'' es otra capa opcional que se implementa en Java que mapea cada atributo de una clase Java a una columna de una tabla de la base de datos.}
+					\caption{Inyección de dependencias en nuestro proyecto Spring Boot bajo el modelo-vista-controlador (MVC) dentro del package Usuaris. Spring Boot añade otra capa más al modelo que ya conocíamos de desarrollo web entorno servidor: el repository (repositori). En el \textit{UsuariControlador.java} están los endpoints que tienen que ver con los usuarios. Estos endpoints dependen de la capa de servicio (UsuariServei.java), que es la que implementa la lógica de negocio. La lógica de negocio depende, a su vez, de las operaciones en base de datos, que se implementan en el repositorio (UsuariRepositori.java). El ``model'' es otra capa opcional que se implementa en Java y cuya función es mapear cada atributo de una clase Java a una columna de una tabla de la base de datos}
 					\includegraphics[width=1\linewidth]{img/diagramaInjeccioDependencies}
 					\label{fig:diagramaInjeccioDependencies}
 				\end{figure}
 				\FloatBarrier
 					
-				Habiendo introducido a los archivos más importantes del proyecto, ahora, con un ejemplo, vamos a ver como esto archivos interaccionan entre sí cuando un usuario llama al endpoint de inicio de sesión (/api/login) con un cliente (navegador, Postman) y obtiene, como response, un JSON del estilo del contenido del recuadro verde de la figura \ref{fig:apiloginspringboot}:
+				Habiendo introducido a las clases más importantes del proyecto en la figura \ref{fig:diagramaInjeccioDependencies}, ahora, con un ejemplo, vamos a ver como estas clases interaccionan entre sí cuando un usuario llama al endpoint de inicio de sesión \textit{/api/login} con un cliente (navegador, Postman) y obtiene, como response, un JSON como el siguiente o como el que se muestra en el recuadro verde de la figura \ref{fig:apiloginspringboot}:
 				
 			\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 	{
@@ -590,33 +589,40 @@
 				\FloatBarrier
 				\begin{figure}[H]
 					\centering
-					\caption{En verde la petición POST al controlador \textit{/api/login} $|$ En rojo, la respuesta de la llamada exitosa a ese controlador, resultante en la obtención de un token de acceso.}
+					\caption{Captura de Postman: en verde la petición POST al controlador \textit{/api/login} $|$ En rojo, la respuesta de la llamada exitosa a ese controlador, resultante en la obtención de un token de acceso y otros datos.}
 					\includegraphics[width=1\linewidth]{img/apiLoginSpringBoot}
 
 					\label{fig:apiloginspringboot}
 				\end{figure}
 				\FloatBarrier
 
-				La petición que hace el front, pues, lleva el correo y la contraseña; y la respuesta que recibe el front-end o, en este caso postman, está marcada en la figura anterior en recuadro en rojo. El controlador /api/login (con la función login del controlador) pide obtener el body de una solicitud POST, y lo hace mediante las anotaciones @RequestBody y @PostMapping, respectivamente
+
+.
+
+
+				La petición que hace el front-end, pues, lleva el correo y la contraseña; y la respuesta que recibe este front-end o, en este caso Postman, está marcada en la figura anterior con el recuadro en rojo. Como veremos en la figura \ref{fig:esquemaArquitecturaSpringboot}, el controlador \textit{/api/login} está activado por una función denominada \textit{login} que pide obtener el body de una solicitud POST: la indicación de esperar el cuerpo o body de la solicitud se hace mediante la anotación \textit{@RequestBody} (que va a guardar el cuerpo dentro de la variable pasada por parámetro, en este caso \textit{dto}\footnote{En el apartado de validaciones hablaremos sobre los DTOs o Data Transfer Objects, y para qué sirven.}), mientras que \textit{@PostMapping} nos indica que el controlador solamente procesa solicitudes HTTP de tipo POST.
 				
-				Asimismo, el back-end de Spring Boot no va a permitir conexiones entrantes de un origen distinto; con lo cual si queremos exponer al front-end el endpoint /api/logen para que reciba el cuerpo de la solicitud que nos ocupa necesitaremos hacerlo con la anotación @CrossOrigin y pasarle la IP de la que esperamos conexión entrante; para que así el framework la permita. 
+				Asimismo, el back-end de Spring Boot no va a permitir conexiones entrantes de un origen distinto al que está corriendo; con lo cual si queremos permitir que el endpoint del back-end \textit{/api/login} sea expuesto al front-end (que corre en un puerto distinto) necesitaremos indicarle a Spring Boot de qué lugar va a estar este front-end haciendo la petición: esto lo hacemos con la anotación \textit{@CrossOrigin}, pasándole la IP y el puerto de la aplicación front-end (5500\footnote{Esto es, básicamente, el front-end de vscode o el puerto de Nginx que hemos configurado en el Dockerfile para el despliegue en contenedores como veremos luego en el apartado \ref{sec:conteneritzacioNginx} de contenerización.}.) para que el controlador habilite conexiones entrantes desde ese origen.
 				
-				Los distintos endpoints en Spring Boot (y probablemente en otros frameworks de back-end), como hemos ido viendo en la imagen \ref{fig:diagramaInjeccioDependencies}, van a ser definidos dentro de lo que llaman una clase ``controller'' o controlador. En este caso, la clase controlador que nos ocupa está en el archivo UsuariControlador.java, en donde tenemos especificado que -por seguridad- SOLO se permita el acceso cruzado desde la IP loopback y el puerto 5500 mediante la anotación @cross-origin (esto es, básicamente, el front-end de vscode o el puerto de Nginx que hemos configurado en el Dockerfile para el despliegue en contenedores como veremos luego en el apartado \ref{sec:conteneritzacioNginx} de contenerización).
+				
+				
+				
+				
 				
 				\FloatBarrier
 				\setlength{\belowcaptionskip}{3pt}
 				\begin{figure}[H]
 					\centering
-					\caption{Descripción de las llamadas principales en el inicio de sesión de un usuario al llamar a \textit{/api/login}. Se utilizan todas las clases mencionadas en este apartado.}
+					\caption{Descripción de alguna de las funciones activadas ante un inicio de sesión que empiece por un usuario lanzando una petición POST a \textit{/api/login}. Se utilizan todas capas del modelo: controlador, servicio, repositorio y modelo (clase Usuari).}
 					\includegraphics[width=1\linewidth]{img/esquemaArquitecturaSpringboot}
 					\label{fig:esquemaArquitecturaSpringboot}
 				\end{figure}
 				\FloatBarrier
 				
 				
-				Una de las partes fuertes de Spring Boot es que permite mapear objetos de la base de datos mySQL a objetos Java: esto se consigue en las clases del \textit{model}, aquellas que llevan la anotación @Entity. En nuestro clase tenemos la clase \textit{Usuari.java}, con la que podemos recoger en sus atributos una fila de la tabla Usuari de la base de datos mySQL. Esto es posible gracias a JPA (Java Persistence API), que define algo llamado ORM o \textit{Object Relational Mapping}. En teoría, si se utiliza bien no es necesario hacer consultas a la base de datos porque JPA ya lleva una interfaz de la que extendemos en el repositoriUsuari.java que nos da acceso a sus funciones con queries mySQL ya predefinidas por dentro. Es por esta razón que en UsuariRepositori.java se ha definido como una interfaz que tiene herencia de  JpaRepository, otra interfaz; pasándole la clave primaria de la tabla Usuaris y el objeto con el que queremos mapear a esa tabla (un objeto con la anotacion @Entity, de los que esté dentro del \textit{model}), en este caso, el objeto o clase Usuari.java: \href{https://github.com/blackcub3s/mercApp/blob/69c9dffc3a959f9b19b43eaf13236ba99250878e/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/repositori/UsuariRepositori.java#L21}{detalle}; en nuestro caso hemos usado funciones predefinidas como findById(), que permiten obtener a un usuario a partir de su clave primaria; pero, a pesar de ello, muchas de las consultas se han definido manualmente con a la anotación @query, como vemos en UsuariRepositori.java en la figura \ref{fig:esquemaArquitecturaSpringboot}, porque no siempre se ha encontrado una manera de usar las funciones de JPA correctamente.
+				Una de las partes fuertes de Spring Boot es que permite mapear objetos de la base de datos mySQL a objetos Java: esto se consigue en las clases del \textit{model}, aquellas que llevan la anotación @Entity. En nuestro caso tenemos la clase \textit{Usuari.java}, con la que podemos recoger en sus atributos una fila de la tabla Usuari de la base de datos mySQL. Esto es posible gracias a JPA (Java Persistence API), que define algo llamado ORM u \textit{Object Relational Mapping}. En teoría, si se utiliza bien el ORM ya no es necesario hacer consultas con lenguaje SQL a la base de datos porque JPA ya lleva una interfaz de la que extendemos en el UsuariRepositori.java que nos da acceso a funciones que por detrás ya implementan consultas SQL, dándonos la prerrogativa de no salir del lenguaje Java y no tener que adentrarnos en el terreno del SQL. Es por esta razón que en UsuariRepositori.java se ha definido una interfaz que hereda de  la interfaz JpaRepository. La definición de UsuariRepositori debe hacerse de forma muy específica y cuidadosa para que funcione: hay que pasarle primero el objeto con el que mapeamos la tabla mySQL (un objeto con la anotacion @Entity, de los que esté dentro del \textit{model}, en este caso Usuari y definido como en la figura \ref{fig:detallModelUsuariSBoot}) y, segundo, pasarle la clave primaria de la tabla Usuaris: \href{https://github.com/blackcub3s/mercApp/blob/69c9dffc3a959f9b19b43eaf13236ba99250878e/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/repositori/UsuariRepositori.java#L21}{ver línea de código}; en nuestro caso hemos usado funciones predefinidas como \textit{findById()}, que permiten obtener a un usuario a partir de su clave primaria desde la tabla mySQL mapeada; pero, a pesar de ello, muchas de las consultas se han definido manualmente con la anotación \textit{@Query}, como vemos en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/repositori/UsuariRepositori.java}{UsuariRepositori.java} en la figura \ref{fig:esquemaArquitecturaSpringboot}, porque no siempre se ha encontrado una manera de usar las funciones de JPA correctamente.
 				
-				A continuación, en la figura \ref{fig:detallModelUsuariSBoot} hemos puesto un detalle del aspecto que tiene la clase \textit{Usuari.java}, perteneciente al \textit{model} de la aplicación.
+				A continuación, en la figura \ref{fig:detallModelUsuariSBoot} explicamos la clase \textit{Usuari.java}, perteneciente al \textit{model} de la aplicación: es indispensable definirla así para el ORM.
 				
 				
 
@@ -625,14 +631,14 @@
 				\setlength{\belowcaptionskip}{3pt}
 				\begin{figure}[H]
 					\centering
-					\caption{Detalle de la correspondencia existente entre objeto java (@Entity) y entidad de base de datos (tabla usuari de mySql)}
+					\caption{Detalle de la correspondencia existente entre objeto Java (Usuari) y entidad de base de datos (tabla usuari, mySql). $||$  \textit{@Column} nos indica en el parámetro \textit{name} el nombre exacto que tiene la columna de la base de datos a la que mapea el atributo contiguo a la anotación. $|$ @Table mapea con ORM tabla usuari con clase Usuari. $|$ @Entity habilita las anotaciones anteriores.}
 					\includegraphics[width=1\linewidth]{img/detallModelUsuariSBoot}
 					\label{fig:detallModelUsuariSBoot}
 				\end{figure}
 				\FloatBarrier
 				
-				Para este proyecto solamente se utilizan tres endpoints de Spring Boot en las páginas públicas (como veremos en el diagrama \ref{fig:diagramaMercaAppFront}). Sin embargo, el proyecto tiene una API REST bastante completa. Durante la realización de las prácticas en la empresa donde he estado estos tres meses una 
-				API rest completa fue creada mientras se hacía un curso de Spring Boot; ésta se ha incluido también en el back-end de Spring boot aunque no se ha utilizado para el proyecto, todavía; pero podrá servir a futuro para expandir la aplicación, si se desea. Aquí un detalle de todos los controladores hechos y no utilizados, pensados para ser livianos, dejando toda la lógica de negocio en el service y devolviendo códigos HTTP informativos ante los errores: \href{https://github.com/blackcub3s/mercApp/blob/69c9dffc3a959f9b19b43eaf13236ba99250878e/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L150-L274}{link a gitHub.}
+				Para este proyecto solamente se utilizan tres endpoints de Spring Boot en las páginas públicas (como veremos en el diagrama \ref{fig:diagramaMercaAppFront}). Sin embargo, el proyecto tiene una API REST bastante completa. Durante la realización de las prácticas en la empresa donde he estado estos tres meses y en paralelo al curso, una
+				API rest completa fue creada; ésta se ha incluido también en el back-end de Spring boot aunque no se ha utilizado para el proyecto, todavía; pero podrá servir a futuro para expandir la aplicación, si se desea. Aquí un detalle de todos los controladores hechos y no utilizados, pensados para ser livianos, dejando toda la lógica de negocio en el Service y devolviendo códigos HTTP informativos ante los errores: \href{https://github.com/blackcub3s/mercApp/blob/69c9dffc3a959f9b19b43eaf13236ba99250878e/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L150-L274}{link a gitHub.}
 				
 				
 				
@@ -646,7 +652,7 @@
 				
 				Los proyectos java pueden correr en gradle o maven. En nuestro caso el proyecto se ha hecho con maven. En pom.xml (ver \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/resources/application.properties}{aquí}) se describen todas las dependecias que tiene nuestro proyecto, conjuntamente con la versión de las mismas. Si queremos instalar una nueva dependencia en el proyecto basta con añadirla en el pom.xml y dentro de intelliJ hacemos click derecho \textit{Maven} $\rightarrow$ \textit{syncProject}. Entonces IntelliJ nos descargará las dependencias nuevas desde maven central (que es donde están todos los repositorios de Java).
 				
-				Por ejemplo, para poder definir JWT o JSON Web Token hemos tenido que cargar esta dependencia específica en pom.xml (podeis ver más información en el apartado \ref{sec:implementacionJWTjava}). Por ejemplo, para definir Lombok\footnote{Es una dependencia muy usada en Spring Boot, que permite generar getters y setters para una clase, pero sin que estén escritos: así si se cambia el nombre de los atributos de una clase, los getters y setters cambian también de forma automática.} hay que definir la versión:
+				Por ejemplo, para poder definir JWT o JSON Web Token hemos tenido que cargar esta dependencia específica en pom.xml (podeis ver más información en el apartado \ref{sec:implementacionJWTjava}). Por ejemplo, para definir Lombok\footnote{Es una dependencia muy usada en Spring Boot, que permite generar getters y setters para una clase, pero sin que estén escritos: así si se cambia el nombre de los atributos de una clase, los getters y setters cambian también de forma automática.} hay que definir este xml y, sobretodo, incluir la versión que utiliza la dependencia, tal que así:
 				
 				
 			\begin{lstlisting}[language=XML, basicstyle=\ttfamily\small, keywordstyle=\color{red}]
@@ -684,16 +690,16 @@
 					\setlength{\itemsep}{.0em}
 				
 					\item 1. Tener dos tokens almacenados en el cliente: el ``access token'' que es el que permite autenticar y autorizar, del que hemos hablado hasta ahora; y otro token denominado ``refresh token'', que se utiliza
-					para obtener un nuevo token de acceso cuando el token de acceso actual expire, o para obtener tokens de acceso adicionales con un alcance idéntico o más limitado -es decir, duración más corta- \cite{stackoverflow_refreshTokenAvantatjaSeguretat}
+					para obtener un nuevo token de acceso cuando el token de acceso actual expire, o para obtener tokens de acceso adicionales con una duración igual o más corta \cite{stackoverflow_refreshTokenAvantatjaSeguretat}
 					
-					\item 2. Crear una black-list de tokens de acceso donde se añadirán los usuarios que hayan hecho ``log out'' ANTES de la expiración programada de su token de acceso: así si un token de acceso todavía no expirado sabemos que su usuario se ha deslogueado, en caso que sea robado, el servidor rechazará la petición no permitiendo acceso a recursos \cite{stackOverflow_blackList}).
+					\item 2. Crear una black-list de tokens de acceso donde se añadirán los usuarios que hayan hecho ``log out'' \textbf{antes} de la expiración programada de su token de acceso: así si un token de acceso todavía no expirado sabemos que su usuario se ha deslogueado, y en caso que sea robado el servidor podrá rechazar la petición no permitiendo acceso a recursos \cite{stackOverflow_blackList}) porque tendrá información de la voluntar de desloguearse por parte del usuario real.
  
 					
 				\end{itemize}
 
 				
 				
-				En este trabajo solo utilizaremos ``access tokens'' y ya está. Cuando un usuario se desloguee, lo que haremos simplemente será borrar el access token del local storage. Tampoco guardaremos los tokens en una cookie segura porque complica el desarrollo (de nuevo, otro punto a mejorar a futuro en este proyecto).
+				En este trabajo solo utilizaremos ``access tokens'' y ya está. Cuando un usuario se desloguee, lo que haremos simplemente será borrar el access token del \textit{local storage}. Tampoco guardaremos los tokens en una cookie segura porque complica el desarrollo (de nuevo, otro punto a mejorar a futuro en este proyecto).
 			
 				 
 				 \noindent En resumen, \texttt{las ventajas} que tiene JWT vs uso de sesiones (si asumiéramos que tanto el JWT como el SESSID se guardasen en una cookie segura, respectivamente) serían las siguientes:
@@ -706,11 +712,11 @@
 						\textbf{- Menos carga para el servidor}
 					\end{tabular}
 									 
-				   \noindent Y la \texttt{desventaja} más evidente que tiene JWT, es, en nuestra opinión, su complejidad\footnote{Se puede ver una tabla de diferencias más en profunidad, especialmente en materia de seguridad en el anexo \ref{sec:anexo_JWTvsSESSIONS})}, pues para tener un buen equilibrio entre facilidad de uso y seguridad es necesario almacenar los tokens en el cliente para conseguir que uno se renueve (el token de aceso y el de refresco, como comentamos):
+				   \noindent Y las \texttt{desventajas} más evidentes que tiene JWT, en nuestra opinión, son \footnote{Se puede ver una tabla de diferencias más en profunidad, especialmente en materia de seguridad en el anexo \ref{sec:anexo_JWTvsSESSIONS})}:
 				  
 				  \begin{tabular}{l}
 					 \textbf{- Caducidad de tokens irrevocable}\\
-					 \textbf{- Renovación de tokens de acceso con uno de refresco}
+					 \textbf{- Necesidad de manejar tokens de refresco + tokens de acceso}
 				  \end{tabular}
 				 
 
@@ -766,7 +772,7 @@
 		\end{itemize}
 		  
 		
-		En la clase \textbf{JwtUtil} hemos creado un método que obtiene las \textit{claims} (pares clave valor que contienen la carga útil de un JWT) y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que se cifren con esa contraseña-. De esta clase hemos heretado las otras dos: La subclase que nos genera el \textit{token de acceso}, \textbf{AccessToken}; y la que nos genera el \textit{token de refresco}, \textbf{RefreshToken}. A continuacion podéis, de estas tres, la más importante (la clase RefreshToken la hemos programado para usarla a futuro pero no se ha utilizado para la implementación del sistema de autenticación y autorización en este proyecto): 
+		En la clase \textbf{JwtUtil} hemos creado un método que obtiene las \textit{claims} (pares clave valor que contienen la carga útil de un JWT) y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que se cifren con esa contraseña-. De esta clase hemos heretado las otras dos: la subclase que nos genera el \textit{token de acceso}, \textbf{AccessToken}; y la que nos genera el \textit{token de refresco}, \textbf{RefreshToken}\footnote{La clase RefreshToken la hemos programado para usarla a futuro pero no se ha utilizado para la implementación del sistema de autenticación y autorización en este proyecto.}. A continuacion podéis, de estas tres, ver la más importante: 
 		
 		
 
@@ -800,7 +806,7 @@ public class AccessToken extends JwtUtil {
 		
 		
 		
-		Con la función \textbf{genera()} de la clase AccessToken arriba mostrada, y con los parámetros necesarios que serán necesarios para autorizar (idUsuari) y autenticar (permisos), podemos generar un token de acceso en ``accesJWT'' que es el que usamos en la aplicación para permitir acceder a los endpoints o no:
+		Con la función \textbf{genera()} de la clase AccessToken arriba mostrada, y con los parámetros necesarios para autorizar (idUsuari) y autenticar (permisos), podemos generar un token de acceso en ``accesJWT'' que es el usado en la aplicación para permitir acceder a los endpoints o no:
 		
 		
 		
@@ -816,7 +822,7 @@ String accesJWT = accessToken.genera(
 
 \end{lstlisting}
 		
-		Si vemos la figura \ref{fig:jwtioMostraPayload} que tenemos a continuación, veremos en la mitad izquierda un token de acceso generado por la función anterior. Fijémonos que internamente ese token está estructurado en las tres partes de la parte derecha de la imagen, siendo la payload la más importante:
+		Si vemos la figura \ref{fig:jwtioMostraPayload} que tenemos a continuación, veremos en la mitad izquierda un token de acceso generado por la función anterior. Fijémonos que internamente ese token está estructurado en las tres partes mostradas en la mitad derecha de la imagen, siendo la parte ``payload'' la más importante, porque contiene la carga útil que usaremos para autenticar y autorizar en mercApp:
 		
 	
 			\setlength{\belowcaptionskip}{3pt}
@@ -848,7 +854,7 @@ String accesJWT = accessToken.genera(
 		
 		
 		
-		Al generar las tres clases hemos utilizado herencia porque la clave privada es la misma para ambos tipos de token (tanto el de acceso como el de refresco), mientras que los métodos para generar cada uno de los dos tipos de token cambian. En StackOverflow existe un debate para ver si hay que tener una clave privada distinta para cada tipo de token, por si el lector está interesado \cite{stackoverflow_jwt_refresh_token_secret}. Después de ver la entrada en stackOverflow Se ha optado por compartir claves para ambos tipos.
+		Al generar las tres clases hemos utilizado herencia porque la clave privada es la misma para ambos tipos de token (tanto el de acceso como el de refresco), mientras que los métodos para generar cada uno de los dos tipos de token cambian. En StackOverflow existe un debate para ver si hay que tener una clave privada distinta para cada tipo de token, por si el lector está interesado \cite{stackoverflow_jwt_refresh_token_secret}. Después de ver la entrada en StackOverflow se ha optado por compartir claves para ambos tipos.
 		
 		
 		En la clase \textbf{JwtUtil} tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar y autorizar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link})\footnote{Se recomienda encarecidamente al lector optar por esta última opción}\footnote{Al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.}.
@@ -856,7 +862,7 @@ String accesJWT = accessToken.genera(
 		\subsubsection{Enviar por primera vez el Access Token hacia el front-end (registro)}
 		\label{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}
 		
-		Cuando el usuario consigue poner la contraseña correcta en la página de registro del front-end (\texttt{pas3C\_crearContrasenya.html}), esta contraseña se manda conjuntamente con el correo electrónico\footnote{el correo electrónico  lo teníamos guardado en el localStorage de la página de registro inicial.}  mediante una petición POST al controlador de endpoint \textit{api/registraUsuari} de nuestro back-end de springboot. Este controlador responde entonces mandando de vuelta al cliente \textbf{el token de acceso}, que se \textbf{guardará} en el localStorage del navegador del usuario.
+		Cuando el usuario consigue poner la contraseña correcta en la página de registro del front-end (\texttt{pas3C\_crearContrasenya.html}), esta contraseña se manda conjuntamente con el correo electrónico\footnote{el correo electrónico  lo teníamos guardado en el localStorage de la página de registro inicial.}  mediante una petición POST al controlador de endpoint \textit{api/registraUsuari} de nuestro back-end de Spring Boot. Este controlador responde entonces mandando de vuelta al cliente \textbf{el token de acceso}, que se \textbf{guardará} en el localStorage del navegador del usuario.
 		
 		
 		Así las cosas, podemos testear que esto funciona como es debido haciendo una solicitud POST con la aplicación Postman\cite{postman_api_platform} al endpoint \textit{api/registraUsuari} con un correo que no esté guardado en la tabla usuaris: por ejemplo, ``nuevoUsuario@gmail.com''; y con una contraseña válida para ser guardada de acuerdo con nuestro requisitos de seguridad\footnote{Mínimo 8 caracteres, una minúscula y una mayúscula y sin caracteres peligrosos.}: si todo va bien deberemos obtener la figura \ref{fig:detallPostmanRegistraUsuari}:
@@ -868,7 +874,7 @@ String accesJWT = accessToken.genera(
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/detallPostmanRegistraUsuari.png}
-			\caption{Creación de un nuevo usuario llamando con una solicitud POST al endpoint ``api/registraUsuari'' cuando las validaciones del objeto RegistreDTO del back-end lo permite. En naranja se muestra el body de la petición (lo que el cliente envía al servidor) y en verde el body de la respuesta (lo que el servidor devuelve al cliente).}
+			\caption{Creación de un nuevo usuario llamando con una solicitud POST al endpoint ``api/registraUsuari'' cuando las validaciones del objeto RegistreDTO del back-end lo permiten. En naranja se muestra el body de la petición (lo que el cliente envía al servidor) y en verde el body de la respuesta (lo que el servidor devuelve al cliente).}
 			
 			\label{fig:detallPostmanRegistraUsuari} 
 		\end{figure}
@@ -891,7 +897,7 @@ String accesJWT = accessToken.genera(
 		Por ejemplo podéis ver el endpoint -función de controlador- en GitHub pinchando en el link: \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L119-L123}{\textit{api/registra-usuari}}. Asimismo podéis hacer lo mismo para el endpoint \href{https://github.com/blackcub3s/mercApp/blob/78c9f573613d94a9d9de6ee046aa5d6f02f0f425/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103-L107}{\textit{api/login}}. Todo ello son detalles de líneas de código pertenecientes a la clase Spring Boot \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{ControladorUsuaris.java}
 	
 		
-		La parte de recepción del token en el front-end y de su manejo podéis encontrarla en el apartado \ref{sec:recibirAccesTokenENFRONTEND}
+		\textit{NOTA: La parte de recepción del token en el front-end y de su manejo podéis encontrarla en el apartado \ref{sec:recibirAccesTokenENFRONTEND}}
 
 		
 		
@@ -910,7 +916,7 @@ String accesJWT = accessToken.genera(
 		Asumamos que nos llega al back-end un token de acceso en una solicitud HTTP de un usuario que ya ha recibido su token y quiere ahora borrar los datos de usuario de otro usuario, es decir, de otro con un idUusario distinto (a través de la heather ``Authorization''). El token sería válido, y este usuario fraudulento tendría el id de permisos igual que el otro usuario propietario de los datos; pero deberíamos, por razones obvias, proteger su acceso.
 	
 		
-		En javascript puro, desde el cliente, esta solicitud HTTP de método DELETE la pondríamos conseguir de la función fetch(), poniéndole uno de los pares clave valor con el inicio ``Bearer'' (por convenio) tal que así\footnote{Con postman pasamos el token desde la pestaña Authorization y en Auth Type le seleccionamos, en el desplegable, Bearer Token.}:
+		En JavaScript puro, desde el cliente, esta solicitud HTTP de método DELETE la podríamos conseguir de la función \textit{fetch()}, poniéndole uno de los pares clave : valor con el inicio ``Bearer'' (por convenio) tal que así\footnote{Con postman pasamos el token desde la pestaña Authorization y en Auth Type le seleccionamos, en el desplegable, Bearer Token.}:
 		
 				
 \begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
