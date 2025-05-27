@@ -1438,7 +1438,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\subsection{Enrutamiento de vistas}
 	\label{sec:EnrutamientoDeVistas}
 	
-	Cuando un usuario introduzca su correo en el formulario de registro de la página principal de la web (\texttt{pas1\_LandingSignUp.html}, que renombraremos a \texttt{index.html}) va a ser redirigido con JavaScript a partir de las llamadas al back-end de Spring Boot: éste ultimo nos permitirá acceder al valor de la variable ``permisos'' de la tabla ``usuaris'' de mySql, siendo así redirigido a unas páginas u otras (el asunto de como se evita que ciertas páginas sean vistas por usuarios ya autorizados se cubre en otra sección: apartado \ref{sec:vistasPermisos}).
+	Cuando un usuario introduzca su correo en el formulario de registro de la página principal de la web (\texttt{pas1\_LandingSignUp.html}, que renombraremos a \texttt{index.html}) va a ser redirigido con JavaScript a partir de las llamadas al back-end de Spring Boot: éste ultimo nos permitirá acceder al valor de la variable ``permisos'' de la tabla ``usuaris'' de mySql, siendo así redirigido a unas páginas u otras (el asunto de como se evita que ciertas páginas sean vistas por usuarios ya autorizados se cubre en otras secciones: apartado \ref{sec:vistasPermisosPublic} y \ref{sec:vistasPermisosPrivat}).
 	
 	
 
@@ -1523,7 +1523,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	Como hemos visto antes Podemos considerar que cada archivo HTML y su CSS asociado es una ``vista'' de nuestra aplicación. Habrá vistas que \textbf{no nos interesará enseñar a ciertos usuarios}, porque o bien no serán relevantes para ellos o bien harán llamadas a APIs cuya información no podrá ser obtenida para ellos.
 	
-	Si bien Spring Boot permite servir los archivos estáticos\footnote{HTML, CSS y JS son archivos estáticos.}  de dentro del mismo back-end de Spring Boot y utilizar un sistema de plantillas (Thymeleaf) que permite impedir visualizaciones de vistas a usuarios no autorizados, esto realmente no es, para nada, lo ideal. Lo ideal es definir un front-end y un back-end separados partiendo de principios de \textit{separación de responsabilidades} o \textit{SoC}\footnote{Separation of concerns}, y así lo hemos hecho en este proyecto\footnote{Si tenemos ambas partes desacopladas podremos hacer modificaciones independientes en ambas. Por ejemplo, podremos cargar los archivos front-end en una CDN o un Proxy o tenerlos cacheados en un servidor que los sirva mucho más rápido, como Nginx. Es más, lo óptimo sería generar los archivos del front-end mediante un sistema de desarrollo por componentes (como Angular, React o Vue) para facilitar el desarrollo cuando la aplicación crezca y utilizar una paradigma \textit{SPA} (\textit{Single Page Application}). Sin embargo, en este caso, por el tiempo disponible y el tamaño de la aplicación se ha optado por hacerlo con HTML, CSS y JS puros.}. Las ventajas son grandes y tienen implicaciones en términos de mantenimiento, escalabilidad y reutilización tanto del front-end como del back-end (ver ventajas justificadas en anexo \ref{sec:SoCVENTATJES}).
+	Si bien Spring Boot permite servir los archivos estáticos\footnote{HTML, CSS y JS son archivos estáticos.}  de dentro del mismo back-end y utilizar un sistema de plantillas (Thymeleaf) que permite impedir visualizaciones de vistas a usuarios no autorizados, esto realmente no es, para nada, lo ideal. Lo ideal es definir un front-end y un back-end separados partiendo de principios de \textit{separación de responsabilidades} o \textit{SoC}\footnote{Separation of concerns}, y así lo hemos hecho en este proyecto\footnote{Si tenemos ambas partes desacopladas podremos hacer modificaciones independientes en ambas. Por ejemplo, podremos cargar los archivos front-end en una CDN o un Proxy o tenerlos cacheados en un servidor que los sirva mucho más rápido, como Nginx. Es más, lo óptimo sería generar los archivos del front-end mediante un sistema de desarrollo por componentes (como Angular, React o Vue) para facilitar el desarrollo cuando la aplicación crezca y utilizar una paradigma \textit{SPA} (\textit{Single Page Application}). Sin embargo, en este caso, por el tiempo disponible y el tamaño de la aplicación se ha optado por hacerlo con HTML, CSS y JS puros.}. Las ventajas son grandes y tienen implicaciones en términos de mantenimiento, escalabilidad y reutilización tanto del front-end como del back-end (ver ventajas justificadas en anexo \ref{sec:SoCVENTATJES}).
 	
 
 	
@@ -1534,9 +1534,10 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	
 	Por ejemplo, del mismo modo que los endpoints de nuestra API del back-end en Spring Boot o del back-end de FastAPI están protegidos por token y no devuelven datos cuando el JWT de acceso que tengamos en el front-end haya caducado, sea inexistente, o sea inválido (porque haya sido manipulado o no tenga en el \textit{payload} el ``idUsuari'' que permita el acceso a un cierto recurso), también pasará que ciertas páginas del front-end no podrán obtener la información deseada si llaman a un end-point para el que no tienen autorización: en este caso ello tendrá implicaciones para las vistas, y deberemos modificar su DOM para la ocasión mostrando un mensaje de error, instando al usuario a iniciar sesión y/o bien redirigir al usuario a la página correcta, por ejemplo. Nosotros hemos optado por este último enfoque.
 	
-	Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript para redirigir a los usuarios.
+	Con tal de conseguirlo, deberemos manejar la lógica en cada caso particular desde el front-end usando JavaScript. Tengo entendido que en frameworks como Angular esto se puede hacer de forma muy sencilla, solo definiéndolo en una ocasión. Aquí cada página particular requerirá una programación específica con JavaScript para redirigir automáticamente a los usuarios, con 3 casos de uso identificados: de \ref{sec:privatsNologuejats} hasta \ref{sec:vistasPermisosPrivat}:
 	
 	\subsubsection{Protegiendo vistas ``privadas'' ante usuarios no ``logueados'': cuando el token ha expirado}
+	\label{sec:privatsNologuejats}
 	
 	Existen dos páginas de nuestra web que, cuando expire el token de acceso que se requiere para acceder a los recursos back-end que hay detrás de ellas (o este no exista), no deberán ser visualizables:
 	
@@ -1547,9 +1548,9 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\item \texttt{dashboard.html}
 	\end{itemize}
 	
-	Como se desprende del diagrama de flujo del enrutamiento del proceso de registro que vimos en la figura \ref{fig:diagramaMercaAppFront}, esas dos páginas son aquellas páginas de nuestro proyecto a las que redirigimos los usuarios justo después de generar tokens de acceso; por ende, su visionado requiere cierto grado de autenticación y autorización. De ahí que consideremos no permitir visualizarlas si el grado de permisos requerido no se llegase a satisfacer.
+	Como se desprende del diagrama de flujo del enrutamiento del proceso de registro que vimos en la figura \ref{fig:diagramaMercaAppFront}, esas dos páginas son aquellas páginas de nuestro proyecto a las que redirigimos los usuarios \underline{justo después de generar tokens de acceso}; por ende, su visionado requiere cierto grado de autenticación y autorización. De ahí que consideremos no permitir visualizarlas si el grado de permisos requerido no se llegase a satisfacer.
 	
-	La primera página (\texttt{dashboard.html}), requiere tener un token con permisos a 0; la segunda (\texttt{pas4\_concedirAccesGmail.html}) un token con permisos superior o igual a 1. En otras palabras: ambas requieren tener algún tipo de autenticación de usuario que se materialice en un token de acceso con una variable de permisos (i.e a esto nos referimos con usuarios ``logueados'' en el título), como veremos en el siguiente apartado; pero está claro que para visualizar cualquiera de estas dos páginas o vistas, la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) se albergue un token de acceso que \underline{no esté expirado} y que sea \underline{descifrable}\footnote{Ojo, descrifrable no significa validable. Validable es lo que hacemos en el back-end con el secret, y no se muestra jamás en el cliente.}.
+	La primera página (\texttt{dashboard.html}), requiere tener un token con permisos a 0; la segunda (\texttt{pas4\_concedirAccesGmail.html}) un token con permisos superior o igual a 1. En otras palabras: ambas requieren tener algún tipo de autenticación de usuario que se materialice en un token de acceso con una variable de permisos (i.e a esto nos referimos con usuarios ``logueados'' en el título), como veremos en el siguiente apartado; pero está claro que para visualizar cualquiera de estas dos páginas o vistas, la condición \textit{sine qua non} comuna es que dentro de \textit{localStorage.getItem(``AccessToken''}) se albergue un token de acceso que \underline{no esté expirado} y que sea \underline{descifrable}\footnote{Ojo, descrifrable no significa validable. Validable es lo que hacemos en el back-end con el secret, que no se pasa jamás al cliente.}.
 	
 	Si está expirado, cuando hagamos la diferencia entre el valor ``exp'' del payload\footnote{Segundos en que el token expira o expiró, desde la epoch.} y la función \textit{Date.now()/1000}\footnote{Segundos actuales del navegador, desde la epoch.} saldrá un número negativo. En caso contrario, positivo. 
 	
@@ -1565,7 +1566,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 
 
 	
-	En el primero tenemos la función para extraer el payload de un token. Y en el segundo está la lógica que acabamos de explicar en los párrafos anteriores (ver figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT}):
+	En el primero tenemos la función para extraer el payload de un token. Y en el segundo está la lógica que acabamos de explicar (ver figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT}):
 	
 	
 	\setlength{\belowcaptionskip}{3pt}
@@ -1580,7 +1581,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 	\FloatBarrier
 	
 	\subsubsection{Protegiendo vistas ``públicas'' para usuarios ``logueados'': cuando el token no ha expirado}
-	\label{sec:vistasPermisos}
+	\label{sec:vistasPermisosPublic}
 	
 
 	
@@ -1596,8 +1597,8 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 			\textbf{\texttt{permisos}} & \textbf{Significado} \\
 			\hline
 			0 & No hay acceso a tickets digitales (pero ya tenemos email y contraseña) \\
-			1 & Acceso a tickets como usuario (USER) \\
-			2 & Acceso a tickets como administrador (ADMIN) \\
+			1 & Hay acceso a tickets [guardados en MongoDB] como usuario  (USER) \\
+			2 & Hay acceso a tickets [guardados en MongoDB] como admin (ADMIN) \\
 			\hline
 		\end{tabular}
 		\label{table:permisos}
@@ -1655,11 +1656,11 @@ El segundo script, \texttt{restringeixVistesPubliques\_USUARI\_loguejat.js} es u
 
 	
 \subsubsection{Protegiendo vistas ``privadas'' ante usuarios ``logueados'': cuando el token no ha expirado.}
-\label{sec:vistasPermisos}
+\label{sec:vistasPermisosPrivat}
 
-Análogamente al apartado anterior, tenemos que tomar en consideración las páginas que requieren permisos de acceso. Estas páginas \textit{ya están} protegidas del visionado de usuarios no logueados (usarios que no tengan token expedido): estos no las podrán ver nunca, porque hicimos el script de la figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT} para redirigilos a la landing page en caso que por error accedan a ellas.
+Análogamente al apartado anterior, tenemos que tomar en consideración las páginas que requieren permisos de acceso. Estas páginas \textit{ya están} protegidas del visionado de usuarios no logueados (usarios que no tengan token expedido): estos no las podrán ver nunca, porque hicimos el script de la figura \ref{fig:restringeixVistesPrivades_USUARI_NO_LOGUEJAT} para redirigirlos a la landing page en caso que por error accedan a ellas.
 
-Sin embargo, nos queda algo por hacer: hay que conseguir \textbf{evitar} que un usuario con permisos 1 o 2 en el payload de su token (es decir, que ya ha concedido acceso a tickets digitales) pueda pedir de nuevo acceso a esos tikets; algo completamente innecesario porque ya los ha facilitado a mercApp previamente en \texttt{pas4\_concedirAccesGmail}; o, su opuesto: tenemos que evitar que un usuario con permisos 0 (e.g., ha puesto correo y contraseña y se ha registrado, pero no ha dado acceso a tickets digitales todavía) pueda tratar de visualizar el \texttt{dashboard} a la espera de obtener una información de unos tickets que él todavía no ha proporcionado.
+Sin embargo, nos queda algo por hacer: hay que conseguir \textbf{evitar} que un usuario con permisos 1 o 2 en el payload de su token (es decir, que ya le hemos extraido y persistido los datos de los tickets) pueda pedir de nuevo volver a proporcionarnos tickets; algo completamente innecesario porque ya los ha facilitado a mercApp previamente en \texttt{pas4\_concedirAccesGmail}; o, su opuesto: tenemos que evitar que un usuario con permisos a 0 (e.g., ha puesto correo y contraseña y se ha registrado, puede que incluso haya subido los tickets al sistema de archivos del servidor, pero \textbf{no ha pedido persistir} esos tickets a formato estructurado) pueda tratar de visualizar el \texttt{dashboard} a la espera de obtener una información de unos tickets que todavía no está accesible en nuestro sistema\footnote{Sí puede darse el caso que él haya subido los tickets -o parte de los tickets- al sistema de archivos del servidor, pero si todavía no ha dado su consentimiento para su extracción el sistema seguirá considerándolo un usuario ``invitado'' (con permisos a 0) y no un usuario con permisos a 1 (user). El token con permisos a 1 se expide solo cuando el usuario manda los tikets a mongoDB, persistidos; no cuando los manda al sistema de archivos del servidor.}
 
 La solución a lo anterior es hacer que en función de los permisos existentes en el token inhabilitemos una vista de las ``privadas'' para el usuario, \textit{mediante} la redirección automática del usuario a la página que sí debe visualizar \textit{antes} de que cargue el DOM de la pagina vetada, tal que así:
 	
@@ -1679,7 +1680,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\FloatBarrier
 
 	
-	Es decir, en la tabla anterior mostramos que si un usuario con permiso 0 (no ha concedido acceso a tickets digitales) quiere acceder a la página \texttt{dashboard.html} para visualizar la explotación de datos de los tickets, no podrá verla porque le redirigiremos automáticamente a la página donde podrá proporcionar acceso a tickets digitales: \texttt{pas4\_concedirAccesGmail.html}. Y viceversa: Si entra en \textit{pas4} teniendo permisos 1 o 2, será redirigido al \textit{dashboard}. 
+	Es decir, en la tabla anterior mostramos que si un usuario con permiso 0 (no se ha persistido todavía, para él, información de tickets en MongoDB) quiere acceder a la página \texttt{dashboard.html} para visualizar la explotación de datos de los tickets, no podrá verla porque le redirigiremos automáticamente a la página donde podrá proporcionar acceso a datos de tickets digitales: \texttt{pas4\_concedirAccesGmail.html}. Y viceversa: Si entra en \textit{pas4} teniendo permisos 1 o 2, será redirigido al \textit{dashboard}. 
 	
 	Lo que acabamos de mencionar en la última tabla y en el párrafo anterior lo programamos en el siguiente script (cuyo prerequisito será decodificaJWT como en las anteriores ocasiones) y que podemos ver en la imagen \ref{fig:restringeixVistesPrivadesUSUARINOLOGUEJAT}:
 	
@@ -1733,7 +1734,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	Cuando un usuario del que ya tenemos su correo electrónico en BBDD intenta ``loguearse'' en mercApp\footnote{Sea que ya estuvo registrado -permisos 0-, dio acceso a sus tickets digitales -permisos 1- o es superusuario -permisos 2-.}, el token de acceso lo recibe por primera vez en el cliente cuando este haga una llamada fetch() hacia el endpoint del back-end ``\textit{/api/login}''. Esta llamada se hace desde \texttt{pas2C\_login.html} o desde \texttt{pas2B\_introdueix contrassenya.html}, de idéntica forma.
 	
 	
-	Por ejemplo, explicaremos solamente el caso de \textit{pas2Clogin.html}. En este archivo la recepción del token se hará en el JavaScript embedido cuando, por un lado, obtengamos el código 200 (OK) del servidor; pero también, cuando se cumpla que el usuario y contraseña introducidos por el usuario son correctos. Si y solo si se cumplen ambas condiciones, el cliente entonces recibirá el token de acceso en el body de la respuesta a su solicitud, que será una como la que sigue, de la que podremos extraer el ``AccessToken'' y guardarlo inmediatamente en el LocalStorage del navegador: \footnote{Esto lo hacemos para luego poder mandarlo de vuelta al servidor en la subsecuentes solicitudes que requieran autenticación y autorización.} Para más información sobre el código JavaScript del front-end que lo permite véase figuras y \ref{fig:FetchCodisResponseFRONT} y \ref{fig:figuraLoginFetch}):
+	Por ejemplo, explicaremos solamente el caso de \textit{pas2Clogin.html}. En este archivo la recepción del token se hará en el JavaScript embedido cuando, por un lado, obtengamos el código 200 (OK) del servidor; pero también, cuando se cumpla que el usuario y contraseña introducidos por el usuario son correctos. Si y solo si se cumplen ambas condiciones, el cliente entonces recibirá el token de acceso en el body de la respuesta a su solicitud, que será una como la que sigue, de la que podremos extraer el ``AccessToken'' y guardarlo inmediatamente en el \textit{localStorage} del navegador: \footnote{Esto lo hacemos para luego poder mandarlo de vuelta al servidor en la subsecuentes solicitudes que requieran autenticación y autorización.} Para más información sobre el código JavaScript del front-end que lo permite véase figuras y \ref{fig:FetchCodisResponseFRONT} y \ref{fig:figuraLoginFetch}):
 	
 \begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 	{
@@ -1755,7 +1756,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Fragmento de codigo en \texttt{pas2C\_login.html} dentro del codigo javascript para manejar codigos de error. Cuando el back-end de Spring Boot devuelve el código 200 significará que podremos extraer los datos del body de la respuesta. 400 se devolvería si hubiera problemas validación de campos en el back-end,  algo que no debería producirse nunca con el front-end que se ha programado.}
+		\caption{Fragmento de codigo en \texttt{pas2C\_login.html} dentro del código JavaScript para manejar códigos de error. Cuando el back-end de Spring Boot devuelve el código 200 significará que podremos extraer los datos del body de la respuesta. 400 se devolvería si hubiera problemas validación de campos en el back-end, algo que no debería producirse nunca con el front-end que se ha programado.}
 		\includegraphics[width=1\textwidth]{img/FetchCodisResponseFRONT.png}
 		
 		\label{fig:FetchCodisResponseFRONT} 
@@ -1766,7 +1767,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Fragmento de codigo en pas2C\_login.html dentro del codigo javascript para obtener el token de acceso (detalle en rojo).}
+		\caption{Fragmento de código JavaScript en \texttt{pas2C\_login.html} que guarda en localStorage el token de acceso (detalle en rojo), recién obtenido del servidor.}
 		\includegraphics[width=1\textwidth]{img/jwtFetchLoginFront.png}
 		
 		\label{fig:figuraLoginFetch} 
@@ -1775,7 +1776,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
-	Ahora bien, si el usuario nunca se ha registrado en nuestra aplicación\footnote{Es decir, no tenemos su correo electrónico en BBDD.}, cuando lo haga, lo hará por el proceso de registro y no por el proceso de inicio de sesión. Una vez introduzca su contraseña en \texttt{pas3\_crearContrasenya.html} y se tome el correo electrónico insertado por el usuario en páginas previas y guardado en el localStorage, se hará una llamada POST con fetch() al endpoint ``api/registraUsuari'' pasando esos datos por el body: si y solo si el usuario NO existía, se creará un nuevo registro en la tabla Usuaris y ahi se devolverá un JSON con el token de acceso para el nuevo usuario creado, ahora de permisos 0. Este JSON tendrá el siguiente aspecto (el token será mucho más largo):
+	Ahora bien, si el usuario nunca se ha registrado en nuestra aplicación\footnote{Es decir, no tenemos su correo electrónico en BBDD.}, cuando lo haga, lo hará por el proceso de registro y no por el proceso de inicio de sesión. Una vez introduzca su contraseña en \texttt{pas3\_crearContrasenya.html} y se tome el correo electrónico insertado por el usuario en páginas previas y guardado en el localStorage, se hará una llamada POST con fetch() al endpoint ``\textit{api/registraUsuari}'' pasando esos datos por el body: si y solo si el usuario NO existía, se creará un nuevo registro en la tabla Usuaris y ahí se devolverá un JSON con el token de acceso para el nuevo usuario creado, ahora de permisos 0. Este JSON tendrá el siguiente aspecto (el token será mucho más largo):
 	
 	
 	
@@ -1812,19 +1813,19 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\textit{NOTA: Los datos validados en el front-end siguen las mismas expresiones regulares y restricciones que las validaciones hechas en el back-end (ver sección \ref{sec:validacioDadesBACK}) y establecen redundancia completa.}
 	
-	Vamos a poner el mismo caso concreto que pusimos en la sección homóloga de validaciones en el back-end de Spring Boot mencionado en el párrafo de la nota anterior. Asumamos también que un usuario quiere loguearse, pero no usando \textit{Postman} y llamando directamente al back-end sino a través del formulario que hay en nuestro front-end para el inicio de sesión.
+	Vamos a poner el mismo caso concreto que pusimos en la sección homóloga de validaciones en el back-end de Spring Boot mencionado en el párrafo de la nota anterior. Asumamos también que un usuario quiere loguearse, pero no usando \textit{Postman} y llamando directamente al back-end sin una interfaz, sino a través del formulario que hay en nuestro front-end para el inicio de sesión.
 	
 	Para ello entra en la página \texttt{pas2C\_login} e introduce sus datos en el formulario que esta contiene (sin más complicación podéis ver el aspecto de este formulario en la figura anterior \ref{fig:figPaginesQueExpedeixenJWT}: es el que está a la izquierda).
 	
-	Con las validaciones aplicadas en el front nos impedirá llegar a mandar la solicitud POST (con fetch) al servidor si los datos introducidos no cumplen unos mínimos. Esto obedece a dos ventajas evidentes: la primera, es que el usuario obtiene feedback inmediato, porque es el cliente -navegador- el que gestiona los errores y no el servidor; la segunda, es que evitamos sobrecargar el servidor con procesos que se pueden gestionar perfectamente con el front.
+	Con las validaciones aplicadas en el front se le impedirá a ese usuario mandar la solicitud POST (con fetch) al servidor si los datos que ha introducido no cumplen unos mínimos. Esto obedece a dos ventajas evidentes: la primera, es que el usuario obtiene feedback inmediato, porque es el cliente -navegador- el que gestiona los errores y no el servidor; la segunda, es que evitamos sobrecargar el servidor con procesos que se pueden gestionar perfectamente con el front.
 	
-	En este caso estas validaciones deben ser \textbf{exactas} a las validaciones del back-end, y solamente son un complemento y no las sustituyen, como ya hemos dicho en el apartado homólogo dedicado al back-end: deben tener correspondiencia completa con las validaciones del back-end porque si no están bien hechas en el front-end podría darse el caso que un usuario intentase poner unos datos que luego el back-end no admitiese o viceversa; además, no las sustituyen porque justamente un usuario puede modificar fácilmente el front-end, quitar las protecciones del javascript (bastaría quitar con el \textit{inspector} del navegador las llamadas a funciones de validación en dos líneas del javascript (\href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/pas2C_login.html#L31-L32}{éstas}) y entonces hacer llamadas directas a la API del back-end de Spring-Boot con la función fetch ya disponible para el usuario (\href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/pas2C_login.html#L36C31-L36C63}{detalle líneas}). Entonces, el endpoint \textit{/api/login} al que llamamos con la función fetch estaría desprotegido. A continuacón mostramos como validacmos el correo y la contraseña en el front:
+	En este caso estas validaciones deben ser \textbf{exactas} a las validaciones del back-end, y solamente son un complemento y no las sustituyen, como ya hemos dicho en el apartado homólogo dedicado al back-end: deben tener correspondiencia completa con las validaciones del back-end porque si no están bien hechas en el front-end podría darse el caso que un usuario intentase poner unos datos que luego el back-end no admitiese o viceversa; además, no las sustituyen porque justamente un usuario puede modificar fácilmente el front-end, quitar las protecciones del javascript (bastaría quitar con el \textit{inspector} del navegador las llamadas a funciones de validación en dos líneas del javascript (\href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/pas2C_login.html#L31-L32}{éstas}) y entonces hacer llamadas directas a la API del back-end de Spring-Boot con la función fetch ya disponible para el usuario (\href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/pas2C_login.html#L36C31-L36C63}{detalle líneas}). Entonces, el endpoint \textit{/api/login} al que llamamos con la función fetch estaría desprotegido. A continuacón mostramos como validamos el correo y la contraseña en el front:
 	
 		\subsubsection{Validación del correo}
 	
 		Cuando el usuario se loguea, es la función \textit{correuApte(email)} del archivo \href{https://github.com/blackcub3s/mercApp/blob/d848aa27c1e460dc54bb665e9091d83e4b614531/APP%20WEB/__frontend__produccio__/app/js/regexMail.js}{js/regexMail.js} la que valida la entrada de datos con una expresión regular. Podéis ver ese mismo archivo en la figura \ref{fig:regexMail}. 
 		
-		Para hablar de lo que hace esa expresión regular, vale la pena mencionar primero las de las que se compone un correo:
+		Para hablar de lo que hace esa expresión regular, vale la pena mencionar primero las partes de las que se compone un correo electrónico:
 		
 		\begin{lstlisting}[language=xml, basicstyle=\ttfamily\small]
 		partelocal@dominio.subdominio
@@ -1847,13 +1848,13 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 		Por ello, cuando un usuario ponga su correo en el formulario correspondiente de la vista de inicio de sesión en \texttt{pas2C\_login.html}, al \textit{darle a enviar} se va a activar en última instancia la función \textit{correuApte()} y saltará una alerta que impedirá que pueda mandar el correo si la expresión regular no se cumple. La alerta la llamaremos dentro del script embedido en el html de la propia página, y va a llamar a las funciones que generan banners de alerta que usaremos solamente en las páginas públicas (ubicadas en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/bannerAlertes.js}{js/bannerAlertes.js}) tal como podemos ver en la figura \ref{fig:activacioBannerAlertesLoginCorreu}.
 		
-		Asimismo, no en la página de login, pero sí en la página del formulario de registro (\texttt{index.html} o \texttt{pas1}) usamos esta misma función \textit{correuApte(email)} para generar información dinámica de los errores al usuario \textbf{antes} de que trate de enviar nada con el botón de registro. Esto lo hacemos mediante el uso de los eventos ``focus'', ``input'' y ``blur'' ampliamente vistos en la asignatura desarrollo web entorno Cliente de segundo de DAW (véase función \textit{esdevenimentsCorreu\_SIGN\_UP()} dentro del archivo de GitHub \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/inputCorreu.js}{/js/inputCorreu.js}) para poder ver cómo se han conseguido los efectos en el contorno del formulario de registro para el correo del \texttt{index.html} ver la figura \ref{fig:logicaInputBlurSignup}. En esta figura explicamos el impacto que estos 3 eventos de JavaScript ayudan a mostrar prevalidaciones al usuario de una forma intuitiva. Los colores del contorno y los mensajes van en línea a como definen el feedback los formularios de correo de Google y de Netflix.
+		Asimismo, no en la página de login, pero sí en la página del formulario de registro (\texttt{index.html} o \texttt{pas1}) usamos esta misma función \textit{correuApte(email)} para generar información dinámica de los errores al usuario \textbf{antes} de que trate de enviar nada con el botón de registro. Esto lo hacemos mediante el uso de los eventos ``focus'', ``input'' y ``blur'' ampliamente vistos en la asignatura desarrollo web entorno Cliente de segundo de DAW (véase función \href{https://github.com/blackcub3s/mercApp/blob/07d597e69f7590cdb2dfeea512a8b45bbc9194b3/APP%20WEB/__frontend__produccio__/app/js/inputCorreu.js#L101-L149}{\textit{esdevenimentsCorreu\_SIGN\_UP()}} dentro del archivo de GitHub \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/inputCorreu.js}{/js/inputCorreu.js}) para poder ver cómo se han conseguido los efectos en el contorno del formulario de registro para el correo del \texttt{index.html}. Esto también es visible en la figura \ref{fig:logicaInputBlurSignup}, en donde explicamos el impacto que estos 3 eventos de JavaScript tienen: principalmente, que ayudan a mostrar prevalidaciones al usuario de una forma intuitiva. Los colores del contorno y los mensajes van en línea con la forma en que Google y Netflix definen feedback a los usuarios en sus formularios.
 		
 		\FloatBarrier
 		\setlength{\belowcaptionskip}{3pt}
 		\begin{figure}[H]
 			\centering
-			\caption{Activación del banner de alertas en el formulario de inicio de sesión de la vista \texttt{pas2C\_login.html} ante un input de correo incorrecto después de clicar en inicia sesión. ¡En este caso no se manda nada al servidor!}
+			\caption{Activación del banner de alertas en el formulario de inicio de sesión de la vista \texttt{pas2C\_login.html} ante un input de correo incorrecto después de clicar en ``iniciar sesión''. ¡En este caso no se manda nada al servidor!}
 			\includegraphics[width=.8\linewidth]{img/activacioBannerAlertesLoginCorreu}
 			\label{fig:activacioBannerAlertesLoginCorreu}
 		\end{figure}
@@ -1876,9 +1877,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		
 		\subsubsection{Validación de la contraseña}
 		
-		La validación de la contraseña tanto en la página general de inicio de sesión \textit{pas2C\_login.html} como en la página pensada para aquellos usuarios que ya se registraron en nuestro sistema pero todavía no llegaron a obtener acceso al dashboard  \textit{pas2B\_introduirContrasenya.html} siempre la hacemos \textbf{después} de que el usuario haga click en el botón de iniciar sesión: si la contraseña no cumple los mínimos no se mandará nada al servidor. Estas validaciones (o post-validaciones, a lo mejor, sería mejor término) las hacemos sin usar eventos que se activen antes del evento click (a excepción del uso de ``focus'' y ``blur'', pero no para validar, sino para cambiar el contorno a azul cuando se hace click en el formulario: \href{https://github.com/blackcub3s/mercApp/blob/dc4941c33c65fb9133f4aa8ca890059243bf080d/APP%20WEB/__frontend__produccio__/app/js/inputContra.js#L45-L83}{ver detalle} de líneas de código).
+		La validación de la contraseña tanto en la página general de inicio de sesión \texttt{pas2C\_login.html} como en la página pensada para aquellos usuarios que ya se registraron en nuestro sistema pero todavía no llegaron a obtener acceso al dashboard  \texttt{pas2B\_introduirContrasenya.html} siempre la hacemos \textbf{después} de que el usuario haga click en el botón de iniciar sesión: si la contraseña no cumple los mínimos no se mandará nada al servidor. Estas validaciones (o post-validaciones, a lo mejor, sería mejor término) las hacemos sin usar eventos que se activen antes del evento click (a excepción del uso de ``focus'' y ``blur'', pero no para validar, sino para cambiar el contorno a azul cuando se hace click en el formulario: \href{https://github.com/blackcub3s/mercApp/blob/dc4941c33c65fb9133f4aa8ca890059243bf080d/APP%20WEB/__frontend__produccio__/app/js/inputContra.js#L45-L83}{ver detalle} de líneas de código).
 		
-		Estos mínimos de los que hablamos permiten verificar que el usuario esté entrando una contraseña que luego las validaciones del back-end también admitan. Estos mínimos los hemos generado verificando expresiones regulares con la función \textit{regex.test(contraseña)} vista en desarrollo web entorno cliente, que nos devuelve un booleano que indica si la \textit{regex} hace \textit{match} con la contraseña pasada por parámetro. Así las cosas, tomando diversas funciones \textit{.test()} aplicadas al binomio ``contraseña introducida - expresión regular'', podemos hacer la intersección de todas ellas mediante la operación lógica AND, como podéis ver en la figura \ref{fig:contrasenyaValidacioExprRegulars}, testeando así si la contraseña introducida es válida o no. Podéis ver el archivo completo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/inputContra.js}{/js/inputContra.js}
+		Estos mínimos de los que hablamos permiten verificar que el usuario esté entrando una contraseña que luego las validaciones del back-end también admitan. Estas validaciones las hemos generado verificando expresiones regulares con la función \textit{regex.test(contraseña)} vista también en desarrollo web entorno cliente, que nos devuelve un booleano que indica si la \textit{regex} hace \textit{match} con la contraseña pasada por parámetro. Así las cosas, tomando diversas funciones \textit{.test()} aplicadas al binomio ``contraseña introducida - expresión regular'', podemos hacer la intersección de todas ellas mediante la operación lógica AND, como podéis ver en la figura \ref{fig:contrasenyaValidacioExprRegulars}, testeando así si la contraseña introducida es válida o no. Podéis ver también en GitHub el archivo completo del que extraemos el fragmento de la figura:  \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/inputContra.js}{/js/inputContra.js}
 		
 		
 		\FloatBarrier
@@ -1918,7 +1919,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\subsection{Diseño (UX/UI): páginas publicas}
 	\label{sec:disenyoPublicas}
 	
-	El diseño de las páginas públicas (es decir, los archivos html que no son ni el dashboard ni el pas4\_) también son responsive. Tienen por ahora un diseño minimalista para no distraer al usuario y facilitarle su registro. A continuación se puede ver como las distintas media queries afectan a dos de las páginas públicas:
+	El diseño de las páginas públicas (es decir, los archivos html que no son ni el dashboard ni el pas4\_) también son responsive. Tienen por ahora un diseño minimalista para no distraer al usuario y facilitarle su registro. A continuación se puede ver cómo las distintas \textit{media queries} afectan a dos de las páginas públicas:
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
@@ -1932,9 +1933,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Las media queries de las páginas públicas se han separado en distintos archivos. Por ejemplo, la barra de navegación de \texttt{index.html}, \texttt{pas2A\_infoBenvinguda}, \texttt{pas2B\_introduirContrasenya} y \texttt{pas2C\_login} tienen sus estilos y su media query aplicadas todos en el archivo siguiente: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/barraNavegacioSimple.css}{css/barraNavegacioSimple.css}. Dado que no hemos utilizado un framework de javascript que nos permita desarrollar en componentes hemos visto pertinente tratar de modularizar en la medida de lo posible aquello que hemos desarrollado. Con lo cual todas estas páginas con una navbar incluyen este archivo en el \textit{head}.
 	
-	Nótese que los formularios para introducir correo y contraseña tiene el mismo aspecto tanto en \texttt{index.html} como en \texttt{pas2C\_login.html} y el botón de registro e inicio de sesión también son iguales. También hemos modularizado su CSS introduciéndolo en un mismo archivo, en la ruta: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/landing/inputText.css}{css/landing/inputText.css}
+	Nótese que los formularios para introducir correo y contraseña tienen el mismo aspecto tanto en \texttt{index.html} como en \texttt{pas2C\_login.html} y el botón de registro e inicio de sesión también son iguales. También hemos modularizado su CSS introduciéndolo en un mismo archivo, en la ruta: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/landing/inputText.css}{css/landing/inputText.css}
 	
-	Finalmente tenemos la footer del \texttt{index.html}: solo la hemos introducido por ahora en \texttt{pas4\_concedirAccesGmail.hml}(una de las páginas privadas), pero no en todas las demás páginas públicas: en algunas de estas últimas queremos solamente que los usuarios pongan contraseña o correo y no queremos distraer con detalles superfluos. De ahí que la barra de navegación de páginas públicas no tenga links en la navbar. Los links los encontramos una vez el usuario se registra. Sin embargo, a futuro se podría expandir la página del index.html para incluir una barra de navegación ligera con información de quienes somos y una footer en todas las páginas públicas.
+	Finalmente tenemos la footer del \texttt{index.html}: solo la hemos introducido por ahora en \texttt{pas4\_concedirAccesGmail.hml}(una de las páginas privadas), pero no en todas las demás páginas públicas: en algunas de estas últimas queremos solamente que los usuarios pongan contraseña o correo y no queremos distraer con detalles superfluos. De ahí que la barra de navegación de páginas públicas no tenga links en la navbar. Los links los encontramos una vez el usuario gana acceso al \texttt{dashboard}. Sin embargo, a futuro se podría expandir la página del index.html para incluir una barra de navegación ligera con información de quienes somos y una footer en todas las páginas públicas.
 	
 	
 	\FloatBarrier
@@ -1978,9 +1979,9 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Esta sección incorpora el botón de cierre de sesión (que elimina el token de acceso, en realidad, como ya se ha visto en la sección \ref{sec:tancarSessioBotoExplicacio}) y la barra de navegación que conseguirá redirigir a ubicaciones distintas en función de si se es usuario (permisos=1) o superusuario (permisos=2). También muestra links a páginas que nos permiten ver los tickets del usuario (si los tiene descargados), sus datos en una tabla y una página para contactar con nosotros (ver figuras \ref{fig:barranavegaciodashboardpermisos1}, \ref{fig:barranavegaciodashboardpermisos1dropdown} y \ref{fig:detalleNavbarDesplegadaCodi}).
+	Esta sección incorpora el botón de cierre de sesión (que elimina el token de acceso, en realidad, como ya se ha visto en la sección \ref{sec:tancarSessioBotoExplicacio}) y la barra de navegación que conseguirá redirigir a ubicaciones distintas en función de si se es usuario (permisos=1) o superusuario\footnote{También lo llamamos ADMIN.} (permisos=2). También muestra links a páginas que nos permiten ver los tickets del usuario (si los tiene descargados), sus datos en una tabla y una página para contactar con nosotros (ver figuras \ref{fig:barranavegaciodashboardpermisos1}, \ref{fig:barranavegaciodashboardpermisos1dropdown} y \ref{fig:detalleNavbarDesplegadaCodi}).
 	
-	Además se ha utilizado un sistema (figura \ref{fig:linkAhover})para conseguir que al hacer hover en cada link cambie su color a gris y aparezca una línea por debajo con una transición suave (automatizando las propiedades\textit{border-bottom} y \textit{color}) . Se ha tenido especial cuidado en que el añadir la línea debajo NO desplace el resto de la página hacia abajo. Para evitarlo todos los links tienen en realidad una línea por debajo del mismo color del fondo, que solo cambia de color al pasar por encima. Hay muchas líneas de código para conseguirlo y redirigimos al lector al github para verlas (nótese el uso de selectores descendientes, por norma: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/dashboard/navFooter.css}{link a navFooter.css})
+	Además se ha utilizado un sistema (figura \ref{fig:linkAhover})para conseguir que al hacer hover en cada link cambie su color a gris y aparezca una línea por debajo con una transición suave (automatizando las propiedades \textit{border-bottom} y \textit{color}). Se ha tenido especial cuidado en que el añadir la línea debajo NO desplace el resto de la página hacia abajo. Para evitarlo todos los links tienen en realidad una línea por debajo del mismo color del fondo, que solo cambia de color al pasar por encima. Hay muchas líneas de código para conseguirlo y redirigimos al lector al GitHub para verlas (nótese el uso de selectores descendientes, por norma: \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/dashboard/navFooter.css}{link a navFooter.css})
 	
 	\FloatBarrier
 	\setlength{\abovecaptionskip}{3pt}
@@ -2060,14 +2061,14 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Esta sección contiene tres ``cards'' que resumen los servicios que ofrece el resto del dashboard (inflación por producto, gastos por categoría y gastos por ventana temporal): también incorporan los datos más relevantes de los tikets de cada usuario, que se extraen también de la BBDD (ver detalle figura \ref{fig:s2caracteristiquesmercapp}). El lector puede consultar el fichero \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css}{estils.css} todos los selectores css descendientes que empiezan por el id con el que encabezamos el section de esa parte (id \textit{PRIV\_caracteristicasDashboard}).
+	Esta sección contiene tres ``cards'' que resumen los servicios que ofrece el resto del dashboard (inflación por producto, gastos por categoría y gastos por ventana temporal): también incorporan los datos más relevantes de los tickets de cada usuario, que se extraen también de la BBDD (ver detalle figura \ref{fig:s2caracteristiquesmercapp}). El lector puede consultar en el fichero \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css}{estils.css} todos los selectores css descendientes que empiezan por el id con el que encabezamos el section de esa parte (id \textit{PRIV\_caracteristicasDashboard}).
 
 	
 	De estas cards hay tres aspectos a destacar: En \textit{primer lugar}, se ha vigilado en que sigan exactamente la proporción áurea. Al crearlas se ha definido la propiedad CSS \textit{aspect-ratio} (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L80}{ver en GitHub} para que la relación de aspecto ancho-alto de cada una de ellas sea exactamente de 1 a 1.618 \cite{wikiPropAurea}. De este modo, creamos un rectángulo agradable a la vista para poder presentar los primeros datos del resumen de los tickets al usuario. \textit{En segundo lugar}, en cada una de las cards se ha usado un gradiente lineal vertical mediante la propiedad CSS \textit{background} (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L85}{ver línea}) que hemos utilizado también para cambiar dinámicamente ambos colores del gradiente al hacer hover (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L126}{ver línea}). En esos casos, además el hover altera también el \textit{box-shadow} definido en esta \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L84}{línea} y lo modifica a otro valor (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L125}{en esta}). El resultado de esta programación es el que se puede ver en la figura \ref{fig:cardCaracteristicaAbansDespres}. También se han definido automatizaciones de la propiedad \textit{transform} para las imágenes de dentro de las cards, para hacer que aumenten de tamaño al posarnos con el ratón por encima (\href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/css/dashboard/estils.css#L106-L108}{detalle líneas}).
 	
-	Finalmente, merece la pena mencionar que mediante wow.js se ha conseguido crear las animaciones de animate.css (como las que se usaron en la sección 0, ver captura previa \ref{fig:detalleNavbarDesplegadaCodi}) de modo que en lugar de que aparezcan con un temporizador desde la carga de la página como nos permite la librería animate.css, sino que aparezcan con un temporizador desde que hacemos scroll a la sección que las incluye.
+	Finalmente, merece la pena mencionar que mediante \textit{wow.js} se ha conseguido crear las animaciones de \textit{animate.css} (como las que se usaron en la sección 0, ver captura previa \ref{fig:detalleNavbarDesplegadaCodi}) de modo que en lugar de que aparezcan con un temporizador desde la carga de la página, que aparezcan con un temporizador desde que hacemos scroll a la sección que las incluye.
 	
-	Así las cosas, las propiedades que nos define animate.css en este caso no las hemos escrito en el CSS sino que lo hemos hecho en el propio HTML de acuerdo con el requerimiento de la librería \textit{wow.js}. De este modo al hacer scroll a la sección, la card de la izquierda aparecerá por la izquierda (fadeInLeft,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L130}{link}), la del medido de abajo (fadeInUp,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L153}{link}) y la de la derecha de esa misma dirección (fadeInRight,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L173}{link}). Una ves hecho esto se ajustó la duración y el \textit{delay} de cada propiedad mediante atributos en esas mismas líneas del HTML.
+	Así las cosas, las propiedades que nos define \textit{animate.css} en este caso no las hemos escrito en el CSS sino que lo hemos hecho en el propio HTML de acuerdo con el requerimiento de la librería \textit{wow.js}. De este modo al hacer scroll a la sección, la card de la izquierda aparecerá por la izquierda (fadeInLeft,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L130}{link}), la del medio vendrá de de abajo (fadeInUp,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L153}{link}) y la de la derecha de esa misma dirección (fadeInRight,  \href{https://github.com/blackcub3s/mercApp/blob/663360ea63eafd38c1fa052e7a994e22d7f0a5f6/APP%20WEB/__frontend__produccio__/app/dashboard.html#L173}{link}). Una vez hecho esto se ajustó la duración y el \textit{delay} de cada propiedad mediante atributos en esas mismas líneas del HTML.
 	
 	
 	\FloatBarrier
@@ -2093,14 +2094,14 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\noindent \textbf{SECCIÓN 3 (S3): ``inflalyzer'' (sin swiper: ¡esta vez hecho a mano!) }
 	\hrule
 	\vspace{.5em}
-	En la página original de la que hemos derivado parte del dashboard (\href{https://blackcub3s.github.io/proyectoDesarrolloInterfaces/FrontEnd.html}{link}) utilizamos la librería swiper para cambiar entre imágenes de una galería mediante clicks en unos paginadores (si no podéis ver la web, podéis ver detalle en figura \ref{fig:swiperFront} del anexo). Tratar de reutilizarlo para nuestro caso fue imposible: ahora no tenemos solo imágenes a ir variando con los paginadores, sino que tenemos una tabla entera a poner dentro de esos paginadores. Swiper esto no lo podía manejar.
+	En la página original de la que hemos derivado parte del dashboard (\href{https://blackcub3s.github.io/proyectoDesarrolloInterfaces/FrontEnd.html}{link}) utilizamos la librería \textit{Swiper} para cambiar entre imágenes de una galería mediante clicks en unos paginadores (si no podéis ver la web, podéis ver detalle en figura \ref{fig:swiperFront} del anexo). Tratar de reutilizarlo para nuestro caso fue imposible: ahora no tenemos solo imágenes a ir variando con los paginadores, sino que tenemos una tabla entera a poner dentro de esos paginadores. Swiper esto no lo podía manejar.
 	
 	Así las cosas hubo que crear un swiper manualmente para poder albergar una tabla dentro del paginador (ver figura \ref{fig:imatgeSwiperCustom}). Este ``swiper'' artesanal, se creó tomando los mismos iconos de swiper, eliminado el canal alpha del fondo, cambiando su color de azul a rojo y definiendo eventos de click a las imágenes que conforman esas flechitas.
 	
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Detalle de la parte superior del intervalizer: obsérvese el paginador creado manualmente}
+		\caption{Detalle de la parte superior del intervalizer: obsérvese el paginador creado programáticamente.}
 		\includegraphics[width=1\linewidth]{img/imatgeSwiperCustom.png}
 		\label{fig:imatgeSwiperCustom}
 	\end{figure}
@@ -2136,23 +2137,23 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\subsubsection{Diseño del ``pas4\_concedirAccesGmail.html''}
 	\label{sec:dissenyHtmlCSSpas4}
 	
-	El diseño del pas4 no entraña mucha más dificultad que el diseño del dashboard. Se ha seguido un procedimiento parecido para la generación de iconos que en el dashboard (los iconos generados se hicieron con IA y se extrajo el canal alpha con gimp más alguna edición extra en caso de ser necesaria: podéis verlos en la carpeta de \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/iconosPas4}{edición de iconos}).
+	El diseño del \textit{pas4\_concedirAccesGmail.html} no entraña mucha más dificultad que el diseño del \texttt{dashboard}. Se ha seguido un procedimiento parecido para la generación de iconos: los iconos generados se hicieron con IA y se eliminó el fondo con Gimp, requiriendo alguna edición extra en caso de ser necesaria: podéis verlos en la carpeta de \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/iconosPas4}{edición de iconos}).
 	
-	El icono para cerrar sesión es el mismo que en el dashboard y se han eliminado todos los links de la navBar. Luego se ha definido para la versión desktop un grid con dos columnas, alternando imágenes y texto, tal que así:
+	El diseño del botón CSS para cerrar sesión es el mismo que en el \texttt{dashboard}. En cambio, se han eliminado todos los links de la navBar. Luego se ha definido para la versión desktop un grid con dos columnas, alternando imágenes y texto, tal que así:
 	
 	\FloatBarrier
 	\begin{figure}[H]
 		\centering
-		\caption{Vista del grid de dos columnas del \texttt{pas4\_concedirAccesGmail.html} en la versión desktop. En los círculos en rojo saldrán mensajes informativos que mostrarán mensajes al usuario sobre el número de tickets subidos (Paso 2, rojo) y el éxito o no de la extracción de datos (Paso 3, verde)}
+		\caption{Vista del grid de dos columnas del \texttt{pas4\_concedirAccesGmail.html} en la versión desktop. En los círculos a color saldrán mensajes informativos que mostrarán mensajes al usuario sobre el número de tickets subidos (Paso 2, rojo) y el éxito o no de la extracción de datos (Paso 3, verde)}
 		\includegraphics[width=.95\linewidth]{img/pas4Grid2cols}
 
 		\label{fig:pas4grid2cols}
 	\end{figure}
 	\FloatBarrier
 	
-	Un aspecto diferencial con el \textbf{dashboard} es que el diseño responsive ha implicado generar una media query en la que le pedíamos en los selectores descendientes que invirtieran el orden en el que aparecían el contenedor de las imágenes en relación al contenedor del texto (h1 y h2): nótese que en el HTML el icono descarga de tickets y el icono del engranaje aparecen después del contenedor del texto porque queremos hacer que aparezcan a la derecha: así alternan los iconos y el texto en la vista de escritorio en un grid de dos columnas. 
+	Un aspecto diferencial con el \texttt{dashboard} es que el diseño responsive ha implicado generar una media query en la que le pedíamos en los selectores descendientes que invirtieran el orden en el que aparecían el contenedor de las imágenes en relación al contenedor del texto (h1 y h2): nótese que en el HTML el icono descarga de tickets y el icono del engranaje aparecen después del contenedor del texto porque queremos hacer que aparezcan a la derecha: así alternan los iconos y el texto en la vista de escritorio en un grid de dos columnas. 
 	
-	Sin embargo, este diseño de la versión de escritorio tiene un inconveniente: que al ponerlo en vertical en un grid de una sola columna para la versión mobile tanto el icono de ``descarga tickets'' como el de ``relájese'' aparezcan en orden inverso (debajo del texto y no encima). La solución a esta problemática está en hacer que la primera fila del grid en esos casos, que es el texto, ocupe la segunda posición en la columna vertical mediante la propiedad \textit{grid-row: 2} como podemos ver en la imagen \ref{fig:pas4grid1col} (mismo código en contexto, marcado línea a línea \href{https://github.com/blackcub3s/mercApp/blob/75141ebaa42e677993ba88e1dfe73d417ef6386c/APP%20WEB/__frontend__produccio__/app/css/pas4/estilsEspecificsPas4.css#L57-L65}{aquí}). En esta misma imagen también podemos ver la adición de una línea separadora en la versión mobile.
+	Sin embargo, este diseño de la versión de escritorio tiene un inconveniente: que al ponerlo en vertical en un grid de una sola columna para la versión mobile tanto el icono de ``descarga tickets'' como el del ``engranaje'' aparezcan en orden inverso (debajo del texto y no encima). La solución a esta problemática está en hacer que la primera fila del grid en esos casos, que es el texto, ocupe la segunda posición en la columna vertical mediante la propiedad \textit{grid-row: 2} como podemos ver en la imagen \ref{fig:pas4grid1col} (mismo código en contexto, marcado línea a línea \href{https://github.com/blackcub3s/mercApp/blob/75141ebaa42e677993ba88e1dfe73d417ef6386c/APP%20WEB/__frontend__produccio__/app/css/pas4/estilsEspecificsPas4.css#L57-L65}{aquí}). En esta misma imagen también podemos ver la adición de una línea separadora en la versión mobile.
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
@@ -2178,7 +2179,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Finalmente lo que sí es una diferencia en relación al dashboard es que se ha automatizado la propiedad dropshadow utilizando JavaScript en lugar de hacerlo mediante CSS. La idea era crear una sombra que fuese reactiva al ratón, automatizada cuya dirección sea opuesta a la desviación que hay entre el centro del icono y el punto donde está el ratón (en caso que se emplace por encima de este icono).
 	
-	Esto se ha hecho posible gracias a  \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/dropShadowReactiu.js}{este script}. No fue programado a mano, sino que se generó simplemente con el prompt que aparece em la izquierda de la figura \ref{fig:promptScriptDropShadow}. Después del código que proporcionó el prompt, se ajustaron los valores de blur del dropshadow, la división que afecta al módulo del vector opuesto al vector que va del centro del icono hasta el ratón para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después de los elementos del DOM. El propio script se consigue con los eventos \textit{mousemove} y \textit{mouseleave}:
+	Esto se ha hecho posible gracias a  \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/js/pas4/dropShadowReactiu.js}{este script}. No fue programado a mano, sino que se generó simplemente con el prompt que aparece en la izquierda de la figura \ref{fig:promptScriptDropShadow}. Después del código que proporcionó el prompt, se ajustaron los valores de \textit{blur} del \textit{dropshadow}, la división que afecta al módulo del vector opuesto al vector que va del centro del icono hasta el ratón para evitar generar una sombra demasiado grande y se añadió un event listener de tipo ``DOMContentLoaded'' para que cargue después de los elementos del DOM. El propio script se consigue con los eventos \textit{mousemove} y \textit{mouseleave}:
 	
 	\begin{figure}[H]
 		\centering
@@ -2239,7 +2240,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Para hacer esta parte es importante mencionar que tenemos que configurar la consola de Google Cloud (\href{https://console.cloud.google.com/}{https://console.cloud.google.com/}). En última instancia tenemos que obtener el \textbf{Client ID} que identifique nuestra web en relación a Google Cloud. Todos estos pasos se indican en una sección a parte que recomendamos al lector que lea, porque ha supuesto varios días de trabajo: la sección \ref{sec:desarrolloCloudGoogleApi}.
 	
-	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}), siempre que tengan un Gmail con tickets digitales de Mercadona enviados por el supermercado y guardados en el inbox de su correo, puedan descargárse los tickets mencionados a la carpeta de descargas de su ordenador mediante \textbf{un solo click}: el click que ellos mismos harán al icono mostrado en la figura \ref{fig:pujarticketspas4}. Este click activará script de JavaScript que le mostrará al usuario una ventana de google que le propondrá autenticarse con Oauth2 y cedernos control de descarga de sus tickets; sin más pasos, los tickets digitales empezarán a descargarse en su ordenador: dándole control de ver de antemano todas sus compras.
+	Una vez obtenido este id, se permitá que los usuarios de nuestro sitio web (en el \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__frontend__produccio__/app/pas4_concedirAccesGmail.html}{\texttt{pas4\_concedirAccesGmail.html}}), siempre que tengan un Gmail con tickets digitales de Mercadona enviados por el supermercado y guardados en el inbox de su correo, puedan descargarse los tickets mencionados a la carpeta de descargas de su ordenador mediante \textbf{un solo click}: el click que ellos mismos harán al icono mostrado en la figura \ref{fig:pujarticketspas4}. Este click activará script de JavaScript que le mostrará al usuario una ventana de Google que le propondrá autenticarse con \textit{Oauth2} y cedernos control de consulta a su Gmail, para así descargar sus tickets; sin más pasos intermerdios, los tickets digitales empezarán a descargarse en su ordenador: dándole de antemano el control de todas sus compras.
 	
 	
 	\begin{figure}[H]
@@ -2258,7 +2259,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	La extracción de tickets \underline{no se puede} hacer \textit{en local} con JavaScript porque las políticas de seguridad de Google le dicen al navegador que impida las llamadas a su API (se activa algo llamado la ``Content-Security-Policy''): esto pasa porque, entendemos, al no tener HTTPS -porque nuestro proyecto corre en local- el origen no es seguro. Debe hacerse, por lo tanto, desde un script en remoto, en un dominio autorizado en internet, con protocolo HTTPS y autorizado manualmente desde la configuración de la consola de Google (que ya hemos hecho). Para ello se ha creado este repositorio para hacer descargas de tickets \href{https://github.com/blackcub3s/mercAppAuxPas4/}{mercAppAuxPas4}.
 	
-	De este repo, el único archivo que usaremos para que podamos alimentar nuestro archivo \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este: \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccioBoto.js}{scriptExtraccioBoto.js}. Para poder correr el script usaremos su ruta en GitHub Pages (no la ruta del repositorio GitHub, sino la ruta que tiene el archivo cuando se carga en la página de GitHub Pages que hace el deploy de este mismo repositorio). Esto lo haremos haciendo uso de la URL del repositorio, pero sin el grupo ``blob/main'' en ella. Luego, lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente para la ocasión.}:
+	De este repo, el único archivo que usaremos para que podamos alimentar nuestro archivo \texttt{pas4\_concedirAccesGmail} corriendo en localhost será este: \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccioBoto.js}{scriptExtraccioBoto.js}. Para poder correr el script usaremos su ruta en GitHub Pages (no la ruta del repositorio GitHub, sino la ruta que tiene el archivo cuando se carga en la página de GitHub Pages que hace el \textit{deploy} de este mismo repositorio). Esto lo haremos haciendo uso de la URL del repositorio, pero sin el grupo ``blob/main'' en ella. Luego, lo cargaremos en \texttt{pas4\_concedirAccesGmail.html} como si fuera servido de una CDN externa\footnote{Solo que la CDN la hemos creado expresamente para la ocasión.}:
 	
 	\begin{lstlisting}[language=java, basicstyle=\ttfamily\small]
 <script src="https://blackcub3s.github.io/
@@ -2294,7 +2295,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\begin{figure}[H]
 		\centering
-		\caption{Anidamos la imagen en la etiqueta \textit{label} con valor en atributo \textit{for} compartido con id de la imagen. Así conseguimos que la imagen del Paso 2, al ser clicada, tenga comportamiento de botón input: abrir menú contextual y adjuntar tickets en PDF. Mediante CSS ocultamos el botón que genera el input: ya no es útil.}
+		\caption{Anidamos la imagen en la etiqueta \textit{label} con valor en atributo \textit{for} compartido con etiqueta \textit{input}. Así conseguimos que la imagen del Paso 2, al ser clicada, tenga comportamiento de botón \textit{input}: abrir menú contextual y adjuntar tickets en PDF. Mediante CSS ocultamos el botón que genera el input: ya no es útil.}
 		\includegraphics[width=1\linewidth]{img/pujarTicketsAuxiliarLabelHTML}
 
 		\label{fig:pujarTicketsAuxiliarLabelHTML}
@@ -2310,7 +2311,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\begin{figure}[H]
 		\centering
-		\caption{Llamada al endpoint \textit{/api/parsea-y-guarda-pdfs-en-bbdd} de FastAPI mediante el click en el icono de engranaje (flecha): con ello conseguimos mandar al servidor una solicitud POST para que, para un usuario determinado -proporcionado token-, parsee los PDFs existentes en la carpeta \textit{tickets/idUsuario} del sistema de archivos del servidor donde esté el back-end de FastAPI: si los PDFs tienen el contenido esperado en su interior ese parseo se persistirá en la base de datos MongoDB y automáticamente se redirigirá al usuario a dashboard.html}
+		\caption{Llamada al endpoint \textit{/api/parsea-y-guarda-pdfs-en-bbdd} de FastAPI mediante el click en el icono de engranaje (flecha): con ello conseguimos mandar al servidor una solicitud POST para que, para un usuario determinado -proporcionado token-, parsee los PDFs existentes en la carpeta \textit{tickets/idUsuario} del sistema de archivos del servidor donde esté el back-end de FastAPI: si los PDFs tienen el contenido esperado en su interior ese parseo se persistirá en la base de datos MongoDB y automáticamente se redirigirá al usuario a \texttt{dashboard.html}}
 		\includegraphics[width=1\linewidth]{img/part3pas4engranatge}
 
 		\label{fig:part3pas4engranatge}
@@ -2324,7 +2325,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\subsubsection{Áreas de producto}
 	
-	Los iconos de las 8 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa y se han editado posteriormente con Gimp para eliminar el fondo y generar transparencia en el mismo (ver \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/categoriesProductes}{carpeta GitHub}).
+	Los iconos de las 12 áreas en las que hemos decidido clasificar los productos de Mercadona (véase apartado \ref{sec:requisitosAplicacion}, requisito C) se han generado mediante inteligencia artificial generativa y se han editado posteriormente con Gimp para eliminar el fondo y generar transparencia en el mismo (ver \href{https://github.com/blackcub3s/mercApp/tree/main/creacioIconos/categoriesProductes}{carpeta GitHub}).
 	
 	
 	En la figura \ref{fig:eliminocanalalpha}, podemos ver la creación de uno de los iconos con chatGPT y la eliminación posterior del fondo con GIMP. 
@@ -2340,7 +2341,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 \setlength{\belowcaptionskip}{3pt}
 \begin{figure}[H]
 	\centering
-	\caption{Se ha pedido a chat gpt la creación del icono de verduras y hortalizas. Chat gpt no elimina el canal alpha del fondo automáticamente, así que hemos tenido que tomar la imagen saliente (A), pasarla por Gimp y exportarla  sin el fondo (B). Para hacerlo dentro de gimp seleccionamos el color blanco con la herramienta de selección (varita mágica) y seguimos la ruta \textit{capa} $\rightarrow$ \textit{transparencia} $\rightarrow$ \textit{color a alpha}.}
+	\caption{Se ha pedido a chatGPT la creación del icono de verduras y hortalizas. ChatGPT no elimina el canal alpha del fondo automáticamente, así que hemos tenido que tomar la imagen saliente (A), pasarla por Gimp y exportarla sin el fondo (B). Para hacerlo dentro de Gimp seleccionamos el color blanco con la herramienta de selección (varita mágica) y seguimos la ruta \textit{capa} $\rightarrow$ \textit{transparencia} $\rightarrow$ \textit{color a alpha}.}
 	\includegraphics[width=1\linewidth]{img/eliminoCanalAlpha}
 
 
@@ -2378,14 +2379,14 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	\subsubsection{Icono mercApp pequeño}
 	\label{sec:iconoMercappPetitMEMORIAPPAL}
-	Este icono también se ha pedido a la IA y se ha editado posteriormente, mostrando el icono grande para que lo usase. Se puede ver en el anexo \ref{sec:edicionMercAppIconoPequenyo} el proceso completo que también involucra edición en gimp . Pero el proceso resumido viene a ser el de la figura: \ref{fig:mercappResumit}.
+	Este icono también se ha pedido a la IA y se ha editado posteriormente, mostrando el icono grande para que lo usase. Se puede ver en el anexo \ref{sec:edicionMercAppIconoPequenyo} el proceso completo que también involucra edición en Gimp; Pero el proceso resumido viene a ser el de la figura \ref{fig:mercappResumit}.
 		
 		
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{El prompt pasado a ChatGPT para obtener una versión reducida del icono de nuestra APP. Incluso con con typos en el prompt la IA entiende perfectamente lo que necesitamos. Último paso completado con Gimp.}
+		\caption{El prompt pasado a ChatGPT para obtener una versión reducida del icono de nuestra APP. Incluso con typos en el \textit{prompt} la IA entiende perfectamente lo que necesitamos. Último paso completado con Gimp.}
 		\includegraphics[width=1\linewidth]{img/mercappResumit}
 		\label{fig:mercappResumit}
 	\end{figure}
@@ -2396,13 +2397,13 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\section{Desarrollo Cloud: configuración google API client}
 	\label{sec:desarrolloCloudGoogleApi}
 	
-	\noindent \textit{\textbf{NOTA:} Se puede regresar a sección \ref{sec:pas4googleAPIclient} una vez comprendido este apartado, en acso que el lector no la haya leido todavía.}
+	\noindent \textit{\textbf{NOTA:} Se puede regresar a sección \ref{sec:pas4googleAPIclient} una vez comprendido este apartado, en caso que el lector no la haya leído todavía.}
 	
 	Para conseguir que la extracción de tickets funcione en el \textbf{pas4} (sección \ref{sec:pas4googleAPIclient}) es indispensable hacer múltiples configuraciones en la página de desarrolladores de google denominada \href{https://console.cloud.google.com/}{https://console.cloud.google.com/}. 
 	
-	Estas configuraciones son necesarias por varios motivos: el \textit{primero}, es que tenemos que  obtener el (\textbf{Client ID}) para que se identifique nuestra web en relación a Google Cloud; el \textit{segundo}, es configurar los ``\textit{scopes}'' que le dicen a Google qué tratamos de conseguir del Gmail de los usuarios que se autoricen ante google mediante su mecanismo de autenticación denominado Oauth2 (aquí el Scope es solo para lectura de gmails -gmail.readonly-); el \textit{tercero}, definir un listado de usuarios que permitirán usar nuestra aplicación (durante la fase de desarrollo); y el \textit{último}, pero no por ello menos importante, la lista de direcciones IP desde las que Google deberá permitirnos hacer llamadas a su API.
+	Estas configuraciones son necesarias por varios motivos: el \textit{primero}, es que tenemos que  obtener el (\textbf{Client ID}) para que se identifique nuestra web en relación a Google Cloud; el \textit{segundo}, es configurar los ``\textit{scopes}'' que le dicen a Google qué tratamos de conseguir del Gmail de los usuarios que se autoricen ante Google mediante su mecanismo de autenticación denominado Oauth2 (aquí el Scope es solo para lectura de Gmail -gmail.readonly-); el \textit{tercero}, definir un listado de usuarios que permitirán usar nuestra aplicación (durante la fase de desarrollo); y el \textit{último}, pero no por ello menos importante, la lista de direcciones IP desde las que Google deberá permitirnos hacer llamadas a su API.
 	
-	A continuación explicamos todos los pasos de forma pormenorizada para conseguir aplicar de forma satisfactoria las configuraciones que nos permitirán que un usuario pueda autenticarse con OAuth2 ante google y descargar tikets digitales de su correo gmail personal:
+	A continuación explicamos todos los pasos de forma pormenorizada para conseguir aplicar de forma satisfactoria las configuraciones que nos permitirán que un usuario pueda autenticarse con OAuth2 ante Google y descargar tickets digitales de su correo Gmail personal:
 	
 	
 	\noindent \textbf{PASO 1: Crear un nuevo proyecto en la consola}
@@ -2410,7 +2411,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Para crear  el nuevo proyecto una vez dentro de la vista general de la consola clicamos encima de MyFirstProject e introducimos sau nombre: lo llamaremos ``descarregaTicketsGmail''(ver figura \ref{fig:googleCloudA}):
+	Para crear  el nuevo proyecto una vez dentro de la vista general de la consola clicamos encima de \textit{MyFirstProject} e introducimos su nombre: lo llamaremos ``descarregaTicketsGmail''(ver figura \ref{fig:googleCloudA}):
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
@@ -2439,7 +2440,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Para habilitar la API de gmail, que nos permitirá \textbf{ver y manejar datos del inbox de un correo electrónico} (que es la que usaremos para descargar los tickets adjuntos en PDF), debemos entrar en nuestro proyecto recién creado y seguir los menús ``\textit{APIs y servicios}'' $\rightarrow$ \textit{Biblioteca}. Ahí, buscar ``\textit{gmail API}'' y habilitarla (figura \ref{fig:googleCloudC}).
+	Para habilitar la API de Gmail, que nos permitirá \textbf{ver y manejar datos del inbox de un correo electrónico} (que es la que usaremos para descargar los tickets adjuntos en PDF), debemos entrar en nuestro proyecto recién creado y seguir los menús ``\textit{APIs y servicios}'' $\rightarrow$ \textit{Biblioteca}. Ahí, buscar ``\textit{gmail API}'' y habilitarla (figura \ref{fig:googleCloudC}).
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
@@ -2475,7 +2476,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Al pinchar en el círculo verde de la imagen \ref{fig:googleCloudD} obtenemos una ventana de configuración\footnote{Podemos llegar a esa ventana de configuración -es decir al contenido de la figura \ref{fig:googleCloudE}- del mismo modo si optamos por seguir una ruta por menús: \textit{Apis y servicios} (buscador) $\rightarrow$ \textit{credenciales} $\rightarrow$ \textit{+ crear credenciales} $\rightarrow$ \textit{ID de cliente Oauth}.} que nos permite modificar aquello para lo que sirve el \textit{ClientID}\footnote{El clientID identifica la aplicación que corre en el cloud que estamos creando (descarregaTicketsGmail). Sin él un usuario no podría llegar a hacer una llamada autenticándose con su cuenta de google hacia nuestro cloud.} como podemos ver en la imagen \ref{fig:googleCloudE}. A través de esta configuración tenemos que decirle a Google de qué dominios y de qué puertos puede recibir llamadas para autenticarse.
+	Al pinchar en el círculo verde de la imagen \ref{fig:googleCloudD} obtenemos una ventana de configuración\footnote{Podemos llegar a esa ventana de configuración -es decir al contenido de la figura \ref{fig:googleCloudE}- del mismo modo si optamos por seguir una ruta por menús: \textit{Apis y servicios} (buscador) $\rightarrow$ \textit{credenciales} $\rightarrow$ \textit{+ crear credenciales} $\rightarrow$ \textit{ID de cliente Oauth}.} que nos permite modificar aquello para lo que sirve el \textit{ClientID}\footnote{El clientID identifica la aplicación que corre en el cloud que estamos creando (descarregaTicketsGmail). Sin él un usuario no podría llegar a hacer una llamada autenticándose con su cuenta de Google hacia nuestro cloud.} como podemos ver en la imagen \ref{fig:googleCloudE}. A través de esta configuración tenemos que decirle a Google de qué dominios y de qué puertos puede recibir llamadas para autenticarse.
 	
 	
 	\FloatBarrier
@@ -2490,7 +2491,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
-	Después de la configuración hecha en la imagen \ref{fig:googleCloudE} esta será la vista que tendremos si entramos en el buscador, en las \textbf{credenciales} y vemos los ID de clientes OAuth2.0:
+	Después de la configuración hecha en la imagen \ref{fig:googleCloudE} ésta será la vista que tendremos si entramos en el buscador, buscamos \textbf{credenciales} y luego vemos los IDs de clientes OAuth2.0:
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
@@ -2509,7 +2510,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Google no deja que cualquier usuario pueda autenticarse con el client ID. Para ello o bien hacemos lo del paso 6 (que luego veremos que es solo para producción, porque requiere una aplicación ya hecha y justificar a Google su uso mediante una muestra que ellos -dicen- que van a evaluar) o bien \textbf{Guardamos una lista de usuarios autorizados a autorizarse} -valga la redundancia- para que así puedan leer su gmail y descargar sus tickets automáticamente. Esto lo haremos así: Yo añadiré el correo electrónico gmail donde Mercadona me manda a mi los tiquets digitales (ver figura \ref{fig:googleCloudB}) y con eso la autenticación será posible, por ahora, solo para este correo.
+	Google no deja que cualquier usuario pueda autenticarse con el \textbf{clientID}. Para ello o bien hacemos lo que veremos en el PASO 6 (que veremos que es solo para producción, porque requiere una aplicación ya hecha y justificar a Google su uso mediante una muestra que ellos -dicen- que van a evaluar) o bien \underline{guardamos} una lista de \underline{usuarios autorizados a autorizarse} -valga la redundancia- para que así puedan leer su Gmail y descargar sus tickets automáticamente. Esto lo haremos así: yo añadiré el correo electrónico Gmail donde Mercadona me manda a mi los tickets digitales (ver figura \ref{fig:googleCloudB}) y con eso la autenticación será posible, por ahora, solo para este correo.
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
@@ -2521,7 +2522,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	A continuación podemos ver en la figura \ref{fig:googleCloudI} qué pasa cuando tratamos de acceder a autenticarnos en google:
+	A continuación podemos ver en la figura \ref{fig:googleCloudI} qué pasa cuando tratamos de acceder a la autenticación a través de Google:
 	
 	
 	
@@ -2530,7 +2531,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{\textbf{IZQUIERDA}: tratamos de loguearnos con un usuario que no esta entre los usuarios de prueba. \textbf{DERECHA}: intentamos acceder con el correo que sí está entre los usuarios de prueba y google nos informa que estamos queriendo consultar los mensajes de correo electrónico y su configuración.}
+		\caption{\textbf{IZQUIERDA}: tratamos de loguearnos con un usuario que no está entre los usuarios de prueba. \textbf{DERECHA}: intentamos acceder con el correo que sí está entre los usuarios de prueba y Google nos informa que estamos queriendo consultar los mensajes de correo electrónico y su configuración.}
 		\includegraphics[width=1\linewidth]{img/googleCloudI}
 		\label{fig:googleCloudI}
 	\end{figure}
@@ -2539,13 +2540,13 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	
 	
-	\noindent \textbf{PASO 6: Validar la aplicación descargaTicketsGmail para que cualquier usuario externo pueda usarla (solo en producción y DESPUÉS de autorización expresa de Google).}
+	\noindent \textbf{PASO 6: Validar la aplicación descargaTicketsGmail para que cualquier usuario externo pueda usarla.}
 	\vspace{.1em}
 	\hrule
 	\vspace{.5em}
 	
 	
-	Importante mencionar que para que cada usuario pueda acceder a su gmail programáticamente tendremos que habilitar un scope de permisos específico que se de denomina \textit{gmail.httponly} y deberemos verificar aplicación en el cloud. Si no lo hiciéramos, tal y como está la configuración de ``usuarios externos'' , por ahora, solo podríamos conseguir que un usuario usase nuestra aplicación cloud de descarga de pdfs del correo mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si también estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud.
+	Importante mencionar que para que cada usuario pueda acceder a su Gmail programáticamente tendremos que habilitar un \textit{scope} de permisos específico que se de denomina \textit{gmail.readonly} y deberemos verificar aplicación en el cloud. Si no lo hiciéramos, tal y como está la configuración de ``usuarios externos'', por ahora, solo podríamos conseguir que un usuario usase nuestra aplicación cloud de descarga de pdfs del correo mediante el \textbf{Client ID} (que estará en el pas4 del navegador) si también estuviese añadido manualmente a una \textit{lista de verificación} de nuestro cloud.
 	
 	Esto lo que haría sería que no nos permitiría escalar la aplicación web\footnote{Si os fijáis en la figura \ref{fig:googleCloudD} donde pone Usuarios externos, tenemos una letra pequeña debajo donde se deja claro que por defecto el servicio cloud que acabamos de configurar solo admite usuarios que estén en esa lista.}. Para solucionarlo tenemos que añadir el scope necesario como vemos en la figura \ref{fig:googleCloudG}:
 	
@@ -2559,7 +2560,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	Después de darle a actualizar en la imagen \ref{fig:googleCloudG} tenemos que guardar esta configuración. Para ello seguimos los pasos de la imagen \ref{fig:googleCloudH}:
+	Después de darle a actualizar en la imagen \ref{fig:googleCloudG} tenemos que guardar esta configuración. Para ello seguimos los pasos de la imagen \ref{fig:googleCloudH}; en caso contrario estaremos acotados al listado de usuarios -correos- que proporcionemos. 
 	
 	
 	\FloatBarrier
@@ -2572,7 +2573,11 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\end{figure}
 	\FloatBarrier
 	
-	Y el último caso es validar. Que google tiene que dar el vistobueno. Sin embargo asumo que esto no va a pasar, al menos no en plazo, con lo cual, directamente solo podremos usar los correos (por ahora solo uno) en el listado de usuarios permitidos mostrado en el PASO 5, para descargar los tickets digitales.
+	Y el último caso es \textit{validar}. Si Google no nos da el visto bueno no podremos escalar la aplicación para que usuarios no informados en la lista de Gmails permitidos la usen a través de nuestro ClientID.
+	
+	Sin embargo, damos por asumido que esto no va a pasar, al menos no en plazo para la entrega de este proyecto, con lo cual directamente solo podremos usar para descargar los tickets digitales los correos que estén informados en el listado de usuarios permitidos mostrado en el PASO 5: por ahora solo uno, el mío.
+	
+
 	
 	
 	\noindent \textbf{PASO 7 (Opcional): definir un logo para la aplicación}
@@ -2580,7 +2585,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	\hrule
 	\vspace{.5em}
 	
-	Para que al iniciar la autenticación con google salga un icono que lo vincule con nuestra aplicación, no solamente el nombre de mercApp, podemos subir un icono como vemos en la figura \ref{fig:mercAppLogo}. Como podemos ver en esta entrada de Stackoverflow \cite{stackoverflow_oauth_consent_logo}, este logo va a aparecer solamente para aplicaciones verificadas por google (en el momento de escribir estas líneas la nuestra no lo está y por ello seguirá apareciendo un link a la ubicación de la aplicación y nuestro mail de desarrollador).
+	Para que al iniciar la autenticación con Google salga un icono que lo vincule con nuestra aplicación, no solamente el nombre de mercApp, podemos subir un icono como vemos en la figura \ref{fig:mercAppLogo}. Como podemos ver en esta entrada de Stackoverflow \cite{stackoverflow_oauth_consent_logo}, este logo va a aparecer solamente para aplicaciones verificadas por Google (en el momento de escribir estas líneas la nuestra no lo está y por ello seguirá apareciendo un link a la ubicación de la aplicación y nuestro mail de desarrollador).
 	
 	\FloatBarrier
 	\setlength{\belowcaptionskip}{3pt}
@@ -2617,7 +2622,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 	
 	Con una sola colección nos basta para poder hacer las operaciones necesarias para resolver los problemas que entrañan los servicios del dashboard: filtrar por productos y por usuarios y calcular evolución de precios, hacer costos agregados por meses y por usuario, etc.
 	
-	Los archivos necesarios para la base de datos no están en ninguna parte porque es una base de datos NoSQL sin esquema rígido, a diferencia de mySQL. Las operaciones de guardado y definiciones se encontrarán dentro de los archivos Python correspondientes (principalmente repositoriTickets.py).
+	Los archivos necesarios para la base de datos no están en ninguna parte porque es una base de datos NoSQL sin esquema rígido, a diferencia de mySQL. Las operaciones de guardado y definiciones se encontrarán dentro de los archivos Python correspondientes (principalmente \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__FastAPI__/app/repositoriTickets.py}{repositoriTickets.py}).
 	
 	\chapter{Evaluación y Conclusiones Finales} %OBLIGAT
 	
@@ -2627,23 +2632,23 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		\setlength{\itemsep}{.0em}
 		\item Definir dos back-ends distintos desde cero: uno orientado a los usuarios y el otro orientado a los tickets digitales.
 		\item Aprender un nuevo sistema de base de datos NoSQL, como es MongoDB.
-		\item Programar el front-end de la aplicacióm con vanilla JavaScript gestionando programáticamente la  visibilidad de sus vistas a partir de los tokens de acceso emitidos desde el back-end.
-		\item Entender como funciona un JWT de acceso y cómo generarlo programando clases customizadas en Java, desde cero.
-		\item Definir desde cero el CSS de todas las páginas o vistas y aprender a utilizar mediaQueries sin confiar del uso de frameworks de CSS como Tailwind o Bootstrap
+		\item Programar el front-end de la aplicación con ``vanilla'' JavaScript gestionando programáticamente la  visibilidad de sus vistas a partir de los tokens de acceso emitidos desde el back-end.
+		\item Entender cómo funciona un JWT de acceso y de qué forma generarlo programando clases customizadas en Java, desde cero.
+		\item Definir desde cero el CSS de todas las páginas o vistas y aprender a utilizar \textit{media queries} sin confiar en el uso de frameworks de CSS como Tailwind o Bootstrap.
 		\item Aprender a conectar componentes del back-end: aprender a hacer solicitudes de fastAPI hacia Spring Boot (con librería de Python httpx), y de Spring Boot hacia fastAPI (con librería de Java Rest Client).
-		\item Definir una base de datos relacional sencilla en mySQL
-		\item Entender como funciona el mapeo de objetos Java a entidades de base de datos relacional mediante JPA (Java Persistence API).
+		\item Definir una base de datos relacional sencilla en mySQL.
+		\item Entender cómo funciona el mapeo de objetos Java a entidades de base de datos relacional mediante JPA (Java Persistence API).
 		\item Utilizar las librerías Chart.js (gráficos), animate.css (animaciones prediseñadas en CSS) y wow.js (complemento para animate.css).
-		\item Contenerizar los componentes del back-end y el front-end en un servidor de alto rendimiento Nginx, automatizando la creación de imagenes y arranque de contenedores con scripts en bash.
-		\item Recordar hacer resúmenes de datos, paginadores, gráficos en JavaScript a partir de la información extraida de los Endpoints de FastAPI con solicitudes GET, desde el dashboard.
-		\item aprender a configurar la consola de google y hacer uso de un servicio de Google Cloud como es la Gmail API de Gooogle Api Client mediante un script desplegado en github pages para evitar problemas con la CSP (Content Security Policy)
-		\item Aprender a configurar los servicios back-end para que permitan orígenes cruzados sin que den problemas de la CORS policy: es decir, que no se impidan llamadas desde el front-end hacia el back-end porque ambos corran en distintos puertos.
+		\item Contenerizar los componentes del back-end y el front-end, automatizando la creación de imágenes y arranque de contenedores con scripts en bash.
+		\item Hacer resúmenes de datos, paginadores, gráficos en JavaScript a partir de la información extraída de los Endpoints de FastAPI con solicitudes GET, desde el dashboard.
+		\item Aprender a configurar la consola de google y hacer uso de un servicio de Google Cloud como es la Gmail API de Google Api Client mediante un script desplegado en GitHub \textit{pages} para evitar problemas con la CSP (\textit{``Content Security Policy''})
+		\item Aprender a configurar los servicios back-end para que permitan orígenes cruzados sin que den problemas de la \textit{CORS policy}: es decir, que no se impidan llamadas desde el front-end hacia el back-end porque ambos corran en distintos puertos.
 		\item Diferenciar entre autorización y autenticación y aprender a configurar en Java el correcto uso de ambos ``mecanismos'' para securizar correctamente los endpoints de un controlador.
 	\end{itemize}
 	
 	Por todo ello he de decir que ha sido una experiencia enriquecedora, aunque intensa por el poco tiempo disponible juntamente en paralelo a la realización de las prácticas.
 	
-	Como conclusión para futuros proyectos existen aspectos de mejora como los patrones de diseño segidos en fast-API y el front-end que no obedecen realmente a buenas prácticas sino a intuición sobre qué funciona y qué no. El proyecto Spring Boot sí ha sido correctamente organizado gracias a que la empresa de prácticas me dio un curso de Spring Boot y tuve una mentoría mediante la cual un compañero me decía qué aspectos pulir de la API rest que iba haciendo.
+	Como conclusión para futuros proyectos existen aspectos de mejora como los patrones de diseño seguidos en fast-API y el front-end que no obedecen realmente a buenas prácticas sino a intuición sobre qué funciona y qué no (se ha intentado, eso sí, en la medida de lo posible seguir el principio de separación de responsabilidades). El proyecto Spring Boot sí ha sido correctamente organizado gracias a que la empresa de prácticas me dió un curso de Spring Boot y tuve una mentoría mediante la cual un compañero me decía qué aspectos pulir de la API REST que iba haciendo.
 	
 	Otro aspecto a mejorar sería el aprender a implementar Refresh Tokens y aprender sistema de desarrollo web front por componentes: Angular, Vue o React. Por ahora, sin embargo, el uso de vanilla javascript, html y CSS no ha sido sino una forma genial de reforzar los contenidos aprendidos en el grado superior durante estos dos últimos años que seguro serán una buena base para el futuro.
 	
@@ -2923,7 +2928,7 @@ public class ConfiguracioSeguretat {
 		\subsection{Controlador con restricciones aplicadas}
 		\label{sec:detallSeguretatControlador}
 		
-		La restricción aplicada es @PreAuthorize. Solamente usuarios que tengan rol administardor o bien usuarios que contengan el id == principal (el propio id del usuario autenticado) podrán cambiar la contraseña:
+		La restricción aplicada es \textit{@PreAuthorize}. Solamente usuarios que tengan rol administrador (ADMI) o bien usuarios que contengan el id == principal (el propio id del usuario autenticado) podrán cambiar la contraseña:
 		
 \begin{lstlisting}[language=java,  basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 
@@ -3004,7 +3009,7 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 	\setlength{\belowcaptionskip}{3pt}
 	\begin{figure}[H]
 		\centering
-		\caption{Proceso completo de creación del icono pequeño de mercApp. El proceso involucra IA generativa y pequeñas ediciones en gimp para retirar canal alpha, pintar el fondo de la delta y añadir una parte redonda con fondo blanco para que se vea en la barra de navegación negra. Existe un icono con la delta blanca para barra de navegación negra que aquí no mostramos.}
+		\caption{Proceso completo de creación del icono pequeño de mercApp. El proceso involucra IA generativa y pequeñas ediciones en Gimp para retirar canal alpha, pintar el fondo de la delta y añadir una parte redonda con fondo blanco para que se vea en la barra de navegación negra. Existe un icono con la delta blanca para barra de navegación negra que aquí no mostramos.}
 		\includegraphics[width=1\linewidth]{img/edicionMercAppIconoPequenyo.png}
 		\label{fig:edicionMercAppIconoPequenyo}
 	\end{figure}
@@ -3019,7 +3024,7 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 		NOTA: clica aquí \ref{sec:pas4googleAPIclient} para regresar al texto que referenció este anexo.\\
 		
 	
-		Los pasos a seguir para obtener el ClientID necesario para habilitar usuarios a la descarga de tickets digitales es acceder a \href{https://cloud.google.com}{https://cloud.google.com/} e introducir la información de pago (si ya tenemos pagos periódicos a Google por, por ejemplo, compra de almacenamiento a google drive no habrá que añadirlos). Fijémonos en lo que está disponible: 300 dólares de créditos gratuito durante tres meses. Como vemos en la figura \ref{fig:googlecloud1}.
+		Los pasos a seguir para obtener el ClientID necesario para habilitar usuarios a la descarga de tickets digitales es acceder a \href{https://cloud.google.com}{https://cloud.google.com/} e introducir la información de pago (si ya tenemos pagos periódicos a Google por, por ejemplo, compra de almacenamiento a Google Drive no habrá que añadirlos). Fijémonos en lo que está disponible: 300 dólares de créditos gratuito durante tres meses. Como vemos en la figura \ref{fig:googlecloud1}.
 		
 		\FloatBarrier
 		\begin{figure}[H]
@@ -3042,7 +3047,7 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 		\end{figure}
 		\FloatBarrier
 		
-	\textbf{Cloud run requiere contenerizar una aplicación y subirla al cloud. Sin embargo, aunque podría funcionar para nuestro caso particular, nada gana el hacerlo desde el front end como finalmente se ha hecho.}
+	\textit{Cloud run} requiere contenerizar una aplicación y subirla al cloud. Sin embargo, aunque podría funcionar para nuestro caso particular, nada gana el hacerlo desde el front-end en términos de costes, como finalmente se ha hecho.
 		
 	\section{Google cloud: cálculo de unidades de cuota}
 	\label{sec:googleQuotas}
@@ -3051,7 +3056,7 @@ public ResponseEntity<HashMap<String, String>> actualitzaContrasenya(
 	
 	
 	
-	En la siguiente página de  developers.google \cite{gmail_api_quota} (\href{https://developers.google.com/workspace/gmail/api/reference/quota?hl=es-419}{link}) podemos ver que cada una de las funciones que usamos en el script \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccioBoto.js}{scriptExtraccioBoto.js} usado para extraer los tickets de los correos electrónicos del Gmail de un usuario consumen ciertas unidades de quota de la API de Google. Nosotros usamos \textbf{messages.attachments.get}, \textbf{users.messages.list} y \textbf{messages.attachments.get}, que tienen un uso de quotas por cada llamada cada uno de 5 unidades. Por ello, cada ticket descargado para un usuario nos va a consumir un total de 15 unidades. Si ese mismo usuario se descarga 500 tickets digitales adjuntos de los correos en un segundo -asumiendo que la API fuese del orden de 100 veces más rápida de lo que lo es en realidad- supondrán 7500 unidades de cuota gastadas de golpe: esto ya sería suficiente para este proyecto. Si el usuario, sin embargo, decide volver a autenticarse  otra vez y quiere descargar de nuevo los tickets va a gastar las 15 000 unidades y va a excederse de la cuota si lo intenta por tercera vez, dándonos\textit{userRateLimitExceeded}: Esto sí sería un aspecto que en una versión más definitiva deberíamos pulir (se puede añadir batch processing, para descargar por lotes si queremos aumentar el límite de tickets digitales descargables); pero para la versión que nos ocupa no vamos a hacerlo porque asumimos que dar capacidad de análisis a los últimos 500  tickets digitales de correo es más que suficiente. Asimismo, el límite de frecuencia global por proyecto son 1 200 000 unidades de cuota por minuto, lo cual nos daría la posibilidad de tener hasta 160 usuarios concurrentes en un minuto ,suponiendo que cada uno de ellos hiciese como máximo una descarga de 500  tickets \footnote{1 200 000 \textit{(uc/min)} / 7500 \textit{(uc/usuario)} = 160 \textit{\textit{usuarios/min}}} sin dar \textit{rateLimitExceeded}. En la figura \ref{fig:quotesGoogleDevelopers} siguiente podéis ver los límites de la página de desarrolladores de google que enlazamos antes y en la figura \ref{fig:quotesGoogleDevelopersUSADES}
+	En la siguiente página de  developers.google \cite{gmail_api_quota} (\href{https://developers.google.com/workspace/gmail/api/reference/quota?hl=es-419}{link}) podemos ver que cada una de las funciones que usamos en el script \href{https://github.com/blackcub3s/mercAppAuxPas4/blob/main/js/scriptExtraccioBoto.js}{scriptExtraccioBoto.js} usado para extraer los tickets de los correos electrónicos del Gmail de un usuario consumen ciertas unidades de cuota de la API de Google. Nosotros usamos \textbf{messages.attachments.get}, \textbf{users.messages.list} y \textbf{messages.attachments.get}, que tienen un uso de 5 unidades de cuota por cada llamada, cada uno. Por ello, cada ticket descargado para un usuario nos va a consumir un total de 15 unidades. Si ese mismo usuario se descarga 500 tickets digitales adjuntos de los correos en un segundo -asumiendo que la API fuese del orden de 100 veces más rápida de lo que lo es en realidad- supondrán 7500 unidades de cuota gastadas de golpe: esto ya sería suficiente para este proyecto. Si el usuario, sin embargo, decide volver a autenticarse  otra vez y quiere descargar de nuevo los tickets va a gastar las 15 000 unidades y va a excederse de la cuota si lo intenta por tercera vez, dándonos \textit{userRateLimitExceeded}: Esto sí sería un aspecto que en una versión más definitiva deberíamos pulir (se puede añadir \textit{batch processing}, para descargar por lotes si queremos aumentar el límite de tickets digitales descargables); pero para la versión que nos ocupa no vamos a hacerlo porque asumimos que dar capacidad de análisis a los últimos 500  tickets digitales de correo es más que suficiente. Asimismo, el límite de frecuencia global por proyecto son 1 200 000 unidades de cuota por minuto, lo cual nos daría la posibilidad de tener hasta 160 usuarios concurrentes en un minuto, suponiendo que cada uno de ellos hiciese como máximo una descarga de 500  tickets \footnote{1 200 000 \textit{(uc/min)} / 7500 \textit{(uc/usuario)} = 160 \textit{\textit{usuarios/min}}} sin dar \textit{rateLimitExceeded}. En la figura \ref{fig:quotesGoogleDevelopers} siguiente podéis ver los límites de la página de desarrolladores de Google que enlazamos antes y en la figura \ref{fig:quotesGoogleDevelopersUSADES} los gastos de cuotas por llamada a cada función usada.
 	
 	
 	\FloatBarrier
