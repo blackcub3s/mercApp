@@ -748,7 +748,7 @@
 				
 				\subsubsection{Implementación de JWT en java SpringBoot}
 				\label{sec:implementacionJWTjava}
-				Para poder implementarlo añadimos la dependencia \textbf{jjwt} en \texttt{pom.xml} que es la que nos permite definirlo.
+				Para poder implementarlo añadimos la dependencia \textbf{jjwt} en \texttt{pom.xml}:
 				
 				
 				\begin{lstlisting}[language=XML, basicstyle=\ttfamily\small, keywordstyle=\color{red}]
@@ -762,17 +762,17 @@
 				\end{lstlisting}
 				
 				
-		En el proyecto se han creado tres clases dentro de sus respectivos archivos en la ruta \texttt{src/main/java/} \texttt{miApp.app/seguretat/jwt} denominadas:
+		Usando en el proyecto esta dependencia se han creado tres clases dentro de sus respectivos archivos en la ruta \texttt{src/main/java/} \texttt{miApp.app/seguretat/jwt} denominadas:
 		
 		\begin{itemize}
 			\setlength{\itemsep}{-.4em}
-			\item \textbf{JwtUtil}
-			\item \textbf{AccessToken}
-			\item \textbf{RefreshToken}
+			\item \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt/JwtUtil.java}{\textbf{JwtUtil}}
+			\item \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt/AccessToken.java}{\textbf{AccessToken}}
+			\item \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt/RefreshToken.java}{\textbf{RefreshToken}}
 		\end{itemize}
 		  
 		
-		En la clase \textbf{JwtUtil} hemos creado un método que obtiene las \textit{claims} (pares clave valor que contienen la carga útil de un JWT) y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que se cifren con esa contraseña-. De esta clase hemos heretado las otras dos: la subclase que nos genera el \textit{token de acceso}, \textbf{AccessToken}; y la que nos genera el \textit{token de refresco}, \textbf{RefreshToken}\footnote{La clase RefreshToken la hemos programado para usarla a futuro pero no se ha utilizado para la implementación del sistema de autenticación y autorización en este proyecto.}. A continuacion podéis, de estas tres, ver la más importante: 
+		En la clase \textbf{JwtUtil} hemos creado un método que obtiene las \textit{claims} (pares clave valor que contienen la carga útil de un JWT) y en el constructor hemos creado la definición de una clave privada con la que derivar todas las instancias que hagamos de esa clase -es decir, todos los tokens que se cifren con esa contraseña-. De esta clase hemos heretado las otras dos: la subclase que nos genera el \textit{token de acceso}, \textbf{AccessToken}; y la que nos genera el \textit{token de refresco}, \textbf{RefreshToken}\footnote{La clase RefreshToken la hemos programado para usarla a futuro pero no se ha utilizado para la implementación del sistema de autenticación y autorización en este proyecto.}. A continuación podéis, de estas tres, ver la más importante: 
 		
 		
 
@@ -799,6 +799,7 @@ public class AccessToken extends JwtUtil {
 	 .setExpiration(new Date(System.currentTimeMillis() + (tExpM*60*1000)))
 	 .signWith(SignatureAlgorithm.HS256, clauSecreta.getBytes())
 	 .compact();
+  }
 }
 
 
@@ -857,7 +858,7 @@ String accesJWT = accessToken.genera(
 		Al generar las tres clases hemos utilizado herencia porque la clave privada es la misma para ambos tipos de token (tanto el de acceso como el de refresco), mientras que los métodos para generar cada uno de los dos tipos de token cambian. En StackOverflow existe un debate para ver si hay que tener una clave privada distinta para cada tipo de token, por si el lector está interesado \cite{stackoverflow_jwt_refresh_token_secret}. Después de ver la entrada en StackOverflow se ha optado por compartir claves para ambos tipos.
 		
 		
-		En la clase \textbf{JwtUtil} tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar y autorizar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT} o en el GitHub del proyecto (\href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link})\footnote{Se recomienda encarecidamente al lector optar por esta última opción}\footnote{Al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.}.
+		En la clase \textbf{JwtUtil} tenemos una función denominada \texttt{getClaims()} que es la que utilizaremos en el Service de nuestra aplicación para poder autenticar y autorizar usuarios. Las tres clases pueden ser consultadas en el anexo \ref{sec:anexoCreacionYverificacionJWT}, en la carpeta del GitHub del proyecto (ver \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/jwt}{link} o hipervínculos al principio del subapartado.)\footnote{Se recomienda encarecidamente al lector optar por esta última opción, dado que al poner las tres clases en anexo se omitieron las funciones main donde se testeaban las funciones de creación de tokens con control de excepciones, comentarios e imports por falta de espacio en el DIN A4.} 
 		
 		\subsubsection{Enviar por primera vez el Access Token hacia el front-end (registro)}
 		\label{sec:enviarPorPrimeraVezAccesTokenDESDEBACKEND}
@@ -874,7 +875,7 @@ String accesJWT = accessToken.genera(
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/detallPostmanRegistraUsuari.png}
-			\caption{Creación de un nuevo usuario llamando con una solicitud POST al endpoint ``api/registraUsuari'' cuando las validaciones del objeto RegistreDTO del back-end lo permiten. En naranja se muestra el body de la petición (lo que el cliente envía al servidor) y en verde el body de la respuesta (lo que el servidor devuelve al cliente).}
+			\caption{Creación de un nuevo usuario llamando con una solicitud POST al endpoint ``api/registraUsuari'' cuando las validaciones del objeto RegistreDTO del back-end lo permiten. En naranja se muestra el body de la petición (lo que el cliente envía al servidor) y en verde el body de la respuesta (lo que el servidor devuelve al cliente). \textit{NOTA: El código de estado no se muestra pero: es 200 OK.}}
 			
 			\label{fig:detallPostmanRegistraUsuari} 
 		\end{figure}
@@ -888,7 +889,7 @@ String accesJWT = accessToken.genera(
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=1\textwidth]{img/detallPostmanLogin.png}
-			\caption{Iniciando sesión con un usuario ya existente mediante ``api/login'' mandando los datos de ``correuElectronic'' y ``contrasenya'' que leerá y validará el LoginDTO del back-end. En naranja es el body de la petición y en verde el body de la respuesta.}
+			\caption{Iniciando sesión con un usuario ya existente mediante ``\textit{api/login}'' mandando los datos de ``correuElectronic'' y ``contrasenya'' que leerá y validará el LoginDTO del back-end. En naranja es el body de la petición y en verde el body de la respuesta.}
 			
 			\label{fig:detallPostmanLogin} 
 		\end{figure}
@@ -911,12 +912,12 @@ String accesJWT = accessToken.genera(
 		\label{sec:classesSecuritzacioClaimsIfirma}
 		
 		Después de crear las tres clases en Java de las que hemos hablado en el apartado \ref{sec:implementacionJWTjava} anterior y haber mandado el token de acceso al front mediante el body de las \textit{responses} a los endpoints \textit{api/registraUsuari} o \textit{api/login}, podemos empezar a 
-		implementar la protección de endpoints con JWT. 
+		implementar la protección o securización de endpoints con JWT. 
 		
-		Asumamos que nos llega al back-end un token de acceso en una solicitud HTTP de un usuario que ya ha recibido su token y quiere ahora borrar los datos de usuario de otro usuario, es decir, de otro con un idUusario distinto (a través de la heather ``Authorization''). El token sería válido, y este usuario fraudulento tendría el id de permisos igual que el otro usuario propietario de los datos; pero deberíamos, por razones obvias, proteger su acceso.
+		Asumamos que nos llega al back-end un token de acceso en una solicitud HTTP de un usuario que ya ha recibido su token y quiere ahora \underline{borrar los datos} de usuario de \textbf{otro} usuario, es decir, de alguien con un idUsuari distinto. Esto lo puede intentar variando la URI del endpoint DELETE (el token llega al servidor través de la heather ``Authorization'' y dentro contiene el idUsuari real del usuario, pero el usuario pone en el URI de la solicitud \textbf{otro} idUsuari que no es suyo, tal que así: \textit{/api/usuaris/{idQueNoEsSuyo}}). El token en este caso seguiría siendo válido, y dado que este usuario malicioso tendría dentro de las claims del token el mismo valor en la variable permisos que el usuario real propietario de los datos al que quiere borrárselos, podría hacer llamadas al endpoint y borrar sus datos: en Spring Boot esto hay que evitarlo mediante configuración manual, sino los endpoints de otros usuarios no estarán protegidos! En las próximas líneas veremos cómo se soluciona.
 	
 		
-		En JavaScript puro, desde el cliente, esta solicitud HTTP de método DELETE la podríamos conseguir de la función \textit{fetch()}, poniéndole uno de los pares clave : valor con el inicio ``Bearer'' (por convenio) tal que así\footnote{Con postman pasamos el token desde la pestaña Authorization y en Auth Type le seleccionamos, en el desplegable, Bearer Token.}:
+		En JavaScript puro, desde el cliente, esta solicitud HTTP de método DELETE la podríamos conseguir con la función \textit{fetch()}, poniendo el heather ``Authorization'' a ``Bearer '' (por convenio con espacio después de ``Bearer'') seguido del token\footnote{Con postman pasamos el token desde la pestaña Authorization y en Auth Type le seleccionamos, en el desplegable, Bearer Token.}:
 		
 				
 \begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
@@ -931,16 +932,16 @@ fetch("'http://localhost:8080/api/usuaris/{id}'", {
 }
 \end{lstlisting}
 		
-		 Queremos conseguir que ese endpoint permita en cada solicitud \textbf{Autenticarlo}, es decir, determinar que dice ser quien es mediante el hecho de encontrar en el token verificado su \textcolor{red}{idUsuari} correspondiente (y acceder a la información de sus tickets); y a su vez \textbf{Autorizarlo}, es decir, dar acceso a ese usuario a los recursos a los que se le permita acceso mediante la variable \textcolor{orange}{permisos} correspondiente.
+		 Queremos conseguir que ese endpoint permita en cada solicitud \textbf{autenticarlo}, es decir, determinar que dice ser quien es mediante el hecho de encontrar en el token verificado su \textcolor{red}{idUsuari} correspondiente (y acceder a la información de sus tickets); y a su vez \textbf{autorizarlo}, es decir, dar acceso a ese usuario a los recursos a los que se le permita acceso mediante la variable \textcolor{orange}{permisos} correspondiente.
 		
-		 Estos dos pasos irán en función del valor de la variable que haya emanado de la base de datos al conceder el token mediante \textcolor{red}{idUsuari} para el caso de la \textbf{Autenticación} -ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L30}{linea github}-, y de la variable \textcolor{orange}{permisos} del model de la @Entity class Usuari - ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L42}{linea github}- para el caso de la \textbf{autorización}). Para ello hay \textbf{tres} pasos que debemos implementar dentro del back-end de SpringBoot:
+		 Estos dos pasos irán en función del valor que haya emanado para cada variable de interés de la tabla usuaris de mySQL y que haya llenado las claims del token: el token incluirá \textcolor{red}{idUsuari} para el caso de la \textbf{autenticación} -ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L30}{linea github}-, y también  \textcolor{orange}{permisos} para el caso de la \textbf{autorización}, siendo estas variables obtenidas de la BBDD a través del model de la @Entity class Usuari - ver \href{https://github.com/blackcub3s/mercApp/blob/b01cec515bb9af27a1faa24258abb4313ef275cd/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/model/Usuari.java#L42}{linea github}- ). Para ello hay \textbf{tres} pasos que debemos implementar dentro del back-end de SpringBoot:
 		
 		
 		
 		
 		\begin{itemize} 
 			\setlength{\itemsep}{-1.5em}
-			\item \textbf{PASO 1:} Extraer la información del usuario autenticado desde \textit{el payload} del token JWT entrante. Para ello crearemos un \textbf{Filtro de Autenticacion} dentro de \texttt{FiltreAutenticacio.java}\\
+			\item \textbf{PASO 1:} Extraer la información del usuario autenticado desde \textit{el payload} del token JWT entrante. Para ello crearemos un \textbf{Filtro de Autenticación} dentro de \texttt{FiltreAutenticacio.java}\\
 			\item \textbf{PASO 2:} Configurar el contexto de seguridad para que Spring Security reconozca los permisos, dentro de  \texttt{ConfiguracioSeguretat.java}. \\ 	
 			\item \textbf{PASO 3:} Aplicar restricciones con \textbf{@PreAuthorize} en cada \textit{endpoint} que queramos proteger en el controlador, dentro \texttt{UsuariControlador.java}
 		\end{itemize}
@@ -952,9 +953,9 @@ fetch("'http://localhost:8080/api/usuaris/{id}'", {
 		
 		Esta parte del código está llena de boilerplate. La clase \textit{FiltreAuntenticacioJwt.java} extiende de OncePerRequestFilter \cite{oncePerRequestFilter}, que como dice el propio nombre de la clase implementa un filtro que se desarrollará una y solo una vez por cada petición al servidor.
 		
-		Lo que hay que hacer aquí es implementar el método \textit{doFilterInternal()} donde colocamos la lógica específica del filtro. Se puede consultar este archivo en github del proyecto \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java}{FiltreAuntenticacioJwt.java}
+		Lo que hay que hacer aquí es implementar el método \textit{doFilterInternal()} donde colocamos la lógica específica del filtro. Se puede consultar este archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java}{FiltreAuntenticacioJwt.java} en el GitHub del proyecto.
 		
-		Lo primero que hay que tener en cuenta al diseñar esta clase es que tenemos que hacer una inyección de dependencias: debemos incluir la clase que hemos diseñado AccessToken para implementar el token de acceso. Lo haremos simplemente incluyéndola en el constructor como un parámetro.
+		Lo primero que debemos tener en cuenta al diseñar la clase \textbf{FiltreAutenticacioJwt.java} es que tenemos que hacer una inyección de dependencias para que funcione: es decir, debemos incluir la clase AccessToken que hemos diseñado para implementar el token de acceso: Lo haremos simplemente incluyéndola en el constructor como un parámetro (\href{https://github.com/blackcub3s/mercApp/blob/7632267dad299fa738fa9c45b0beae6c2f278cda/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L25-L28}{detalle}).
 		
 		Lo segundo que hay que considerar es la extracción del payload del token (donde tenemos la información que nos permitirá autorizar y autenticar). Para encontrar el token se hace de la \textbf{cabecera} ``Authorization'' de la solicitud HTTP entrante del front-end. La clave es ``Authorization'' y el valor asociado es, por convenio, un String ``Bearer '' concatenado al token de interés; algo así:
 		
@@ -969,14 +970,20 @@ fetch("'http://localhost:8080/api/usuaris/{id}'", {
 		
 
 		 
-		  La programación necesaria para conseguir lo mencionado en el párrafo anterior queda recogida en este rango de lineas de GitHub (\href{https://github.com/blackcub3s/mercApp/blob/89efcf854d8bbab2addde3f7e817eb97f7737b95/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L33-L43}{ver rango}). 
-		  
-		  Luego una vez tenemos el token dentro de Spring Boot tratamos de sacar las Claims del Payload, es decir, la carga útil del token (\href{https://github.com/blackcub3s/mercApp/blob/89efcf854d8bbab2addde3f7e817eb97f7737b95/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L50-L54}{ver rango}). Y con ello ya podemos asignar tres roles a partir de la variable permisos del payload: 0, 1 o 2. 
-		  
-		  0 en la variable permisos de la tabla usuaris de mysql se asigna cuando un usuario ya se ha registrado dando correo y contraseña, pero no ha dado acceso a tickets digitales todavía; 1 en la variable permisos se da cuando el usuario en cuestión ya tiene acceso a la consulta del dashboard de la aplicación (ya se ha registrado y, \textit{además}, concedido acceso a tickets digitales); y 2 se da cuando el usuario en cuestión es superusuario y tiene acceso a consultar todos los recursos de la aplicación, tickets de los demás usuarios, etc. (\href{https://github.com/blackcub3s/mercApp/blob/89efcf854d8bbab2addde3f7e817eb97f7737b95/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L56-L66}{ver rango}). En definitiva, lo que estamos mencionando (por si el lector se imprimió la memoria y no tiene acceso directo al link de GitHub) las líneas relevantes del código que permiten esa asignación son estas:
+		  La programación necesaria para conseguir lo mencionado en el párrafo anterior queda recogida en este rango de lineas de GitHub (\href{https://github.com/blackcub3s/mercApp/blob/89efcf854d8bbab2addde3f7e817eb97f7737b95/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L33-L43}{ver rango}). Luego una vez tenemos el token dentro de Spring Boot tratamos de sacar las Claims del Payload, es decir, la carga útil del token (\href{https://github.com/blackcub3s/mercApp/blob/89efcf854d8bbab2addde3f7e817eb97f7737b95/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L50-L54}{ver rango}). Y con ello ya podemos asignar tres roles a partir de la variable \textcolor{orange}{permisos} del payload: 0, 1 o 2. Hay que dejar claro que: 
 		  
 		  
+		  \begin{itemize} 
+			  \setlength{\itemsep}{-1pt}
+			  \item \textbf{0} $\rightarrow$ se asigna en la variable \textcolor{orange}{permisos} cuando un usuario ya se ha registrado dando correo y contraseña, pero \underline{no ha dado acceso a tickets digitales todavía}.
+			  
+			  \item \textbf{1}   $\rightarrow$ se asigna en \textcolor{orange}{permisos} cuando usuario ya se ha registrado y conseguido que el servidor haya \underline{guardado tickets en formato estructurado en mongoDB} (eso le habilitará a poder ver el dashboard de la aplicación).
+			  
+			  \item \textbf{2}   $\rightarrow$ se asigna en \textcolor{orange}{permisos} cuando el usuario tiene acceso a consultar todos los recursos de la aplicación, tickets de los demás usuarios, etc. (\href{https://github.com/blackcub3s/mercApp/blob/89efcf854d8bbab2addde3f7e817eb97f7737b95/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L56-L66}{ver rango}):
 		  
+		  \end{itemize}
+		  
+		  Todo ello es posible gracias a las líneas de código que permiten esta asignación:
 		  \begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 		  
 	Claims claims = accessToken.getClaims(token);
@@ -1000,7 +1007,7 @@ fetch("'http://localhost:8080/api/usuaris/{id}'", {
 		  Importante es mencionar que en el fragmento de código anterior, al llamar al método $getClaims(token)$  se lanzará una excepción de tipo \textit{ExpiredJwtException} en caso que el token haya expirado, que recogeremos en el primer bloque Catch; y si el token está manipulado y no es válido, entonces se lanzará otra excepción que se recogerá en el segundo bloque Catch. Todo ello se informará como una response al cliente (\href{https://github.com/blackcub3s/mercApp/blob/89efcf854d8bbab2addde3f7e817eb97f7737b95/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/FiltreAutenticacioJwt.java#L96-L115}{ver rango de líneas de código}).
 		  
 		  
-		  Y finalmente hay que crear un objeto de tipo \textit{UsernamePasswordAuthenticationToken} ya definido dentro de SpringBoot. Su constructor permitirá tres parámetros: 
+		  Y finalmente hay que crear un objeto de tipo \textit{UsernamePasswordAuthenticationToken} ya definido dentro de Spring Boot. Su constructor permitirá tres parámetros: 
 		 
 		 	\begin{itemize}
 		 	\setlength{\itemsep}{-.5em}
@@ -1026,7 +1033,7 @@ new UsernamePasswordAuthenticationToken(
 
 
  \end{lstlisting}
-Este objeto \textit{authentication} que acabamos de crear entonces tenemos que guardarlo DENTRO del SecurityContextHolder:
+Este objeto \textit{authentication} que acabamos de crear entonces tenemos que guardarlo \textbf{dentro} del \textit{SecurityContextHolder}:
 
 		 
  \begin{lstlisting}[language=Java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
@@ -1043,7 +1050,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		\hrule
 		\vspace{1em}
 		
-		Sin esta clase, al añadir la dependencia de seguridad ``spring-boot-starter-security'' en \texttt{pom.xml} cualquier llamada a cualquier API va a devolver un código de error 401. Esto pasa porque al añadir la dependencia de seguridad mencionada nos encontramos con que se precisan ciertas configuraciones. La tres cosas que hay que hacer en la clase \textit{ConfiguracioSeguretat.java} para llevar a término las mencionadas configuraciones son:
+		Sin esta clase, al añadir la dependencia de seguridad ``spring-boot-starter-security'' en \texttt{pom.xml} cualquier llamada a cualquier API va a devolver un código de error 401. Esto pasa porque al añadir la dependencia de seguridad mencionada nos encontramos con que se precisan ciertas configuraciones. Las tres cosas que hay que hacer en la clase \textit{ConfiguracioSeguretat.java} para llevar a término las mencionadas configuraciones son:
 		
 		
 		\begin{itemize}
@@ -1054,7 +1061,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		 
 		\item \textbf{2. Especificar que jwtAuthenticationFilter va ANTES del filtro} estándar de Spring para autenticación por usuario/contraseña (\href{https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/ConfiguracioSeguretat.java#L41}{ver línea de código})\footnote{JWT no funciona directamente con Spring Security: su implementación con Spring Security no es directa porque hay que añadir otra dependencia en \textit{pom.xml}, la dependencia``io.jsonwebtoken''. De ahí que debamos decirle a Spring Boot que la utilice no de la forma estandar que tiene spring security.}. 
 		
-		\item 3. \textbf{Definir endpoints a restringir con \textit{requestMatchers}}: por ejemplo, hay un endpoint que permite cambiar la contraseña de un usuario (una solicitud PATCH). Ese endpoint queda marcado  \href{https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/ConfiguracioSeguretat.java#L34}{en esta línea de ConfiguracioSeguretat.java} y nos define que solo usuario administrador ($permisos = 2$) y usuario de rol ``USER'' ($permisos = 1$) pueden hacer llamadas a él y conseguir cambiar su contraseña:
+		\item 3. \textbf{Definir endpoints a restringir con \textit{requestMatchers}}: por ejemplo, hay un endpoint que permite cambiar la contraseña de un usuario (una solicitud PATCH). Ese endpoint queda marcado  \href{https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/ConfiguracioSeguretat.java#L34}{en esta línea de ConfiguracioSeguretat.java} y nos define que solo usuario de rol ``ADMIN'' ($permisos = 2$) y usuario de rol ``USER'' ($permisos = 1$) pueden hacer llamadas a él y conseguir cambiar su contraseña:
 		
 \begin{lstlisting}[language=java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 .requestMatchers("/api/*/contrasenya").hasAnyRole("USER", "ADMIN")
@@ -1070,11 +1077,11 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		\hrule
 		\vspace{1em}
 		
-		En el endpoint que acabamos de mencionar, todo el trabajo de autenticación y autorización no está hecho todavía. Ahora mismo cualquier usuario con roles ``USER'' (permisos = 1) puede cambiar la contraseña de cualquier usuario. Si este usuario (al que llamaremos X) desea cambiar la contraseña del usuario con idUsuari = 31, por ejemplo, solo deberá mandar una solicitud PATCH dirigida a \textit{``/api/31/contrasenya''} incluyendo el token de acceso de X (sí, aunque su idUsuari sea distinto) con Postman.
+		En el endpoint que acabamos de mencionar, todo el trabajo de autenticación y autorización que nos proponíamos \textit{no está terminado}. Ahora mismo cualquier usuario con roles ``USER'' (permisos = 1) \textit{todavía} puede cambiar la contraseña de cualquier otro usuario. Si este usuario (al que llamaremos X) desea cambiar la contraseña del usuario con idUsuari = 31, por ejemplo, solo deberá mandar una solicitud PATCH dirigida a \textit{``/api/31/contrasenya''} incluyendo el token de acceso de X (sí, aunque su idUsuari sea distinto) con Postman.
 		
 		¿Esto sería inadmisible, verdad? ¡Si uno fuese el usuario de idUsuari 31 no le haría mucha gracia que otro usuario pudiera cambiar su contraseña! ¡No parece un buen diseño de seguridad!
 		
-		Para evitarlo no nos queda otra que afinar a nivel de controlador con una anotación denominada @PreAuthorize donde le permitimos a ese controlador en específico afinar quien puede acceder a él. Con esta anotación, pasándole los parámetros adecuados, conseguiremos restringir, si no se es ADMIN, que un solo usuario con un solo idUsuari sea el que pueda cambiar la contraseña (concretamente, este usuari será el del \textit{principal}\footnote{El principal era el idUsuari que pasamos al crear el objeto \textit{UsernamePasswordAuthentitacionToken} dentro del paso1 en \texttt{FiltreAutenticacio.java}.}, el id propio).  El uso de la anotación @PreAuthorize solamente se habilita por parte del framework si en la clase anterior del paso dos añadimos la anotación @EnableMethodSecurity encima del encabezado de la clase \textit{ConfiguracioSeguretat.java} (\href{https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/ConfiguracioSeguretat.java#L16}{link a línea}). Una vez añadida la anotación @EnableMethodSecurity ya podemos ir a \href{		https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L263}{UsuariControlador.java} y añadir la anotación @PreAuthorize encima de la función correspondiente del endpoint en cuestión \href{https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L263}{(ver en contexto)}, tal que así:
+		Para evitarlo no nos queda otra que afinar a nivel de controlador con una anotación denominada \textit{@PreAuthorize} mediante la cual indicamos a ese endpoint de controlador en específico de quién permitir solicitudes. Con esta anotación, pasándole los parámetros adecuados, conseguiremos restringir que \textit{solo}\footnote{A menos que se sea ADMIN, en cuyo caso no importará el idUsuari del ADMIN (\textcolor{orange}{permisos} = 2) y libremente podrá cambiar cualquier contraseña.} un \textcolor{red}{idUsuari} pueda acceder a él (este usuari será el del \textit{principal}\footnote{El principal era el idUsuari que pasamos al crear el objeto \textit{UsernamePasswordAuthentitacionToken} dentro del paso1 en \texttt{FiltreAutenticacio.java}.}, el id propio).  El uso de la anotación \textit{@PreAuthorize} solamente se habilita por parte del framework si en la clase anterior del paso dos añadimos la anotación \textit{@EnableMethodSecurity} encima del encabezado de la clase \textit{ConfiguracioSeguretat.java} (\href{https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/seguretat/ConfiguracioSeguretat.java#L16}{link a línea}). Una vez añadida la anotación \textit{@EnableMethodSecurity} ya podemos ir a \href{		https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L263}{UsuariControlador.java} y añadir la anotación \textit{@PreAuthorize} encima de la función correspondiente del endpoint en cuestión \href{https://github.com/blackcub3s/mercApp/blob/db26ff53664be55223c793cf9b52ade87688be45/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L263}{(ver en contexto)}, tal que así:
 		
 \begin{lstlisting}[language=java, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
 	@PreAuthorize("hasRole('ADMIN') or #id == principal")
@@ -1095,9 +1102,9 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			
 			Los endpoints del back-end a los que apuntamos con llamadas fetch desde los campos de formulario de correo electrónico y contraseña desde el HTML deben protegerse también en el back-end, no solamente en el front.
 			
-			El motivo de ello es porque no podemos permitir que entren unos datos no validados (nulos, con caracteres peligrosos, etc) a través de \textbf{llamadas directas a la API}. Hay que tener mucho cuidado con esto! 
+			El motivo de ello es porque no podemos permitir que entren unos datos no validados (nulos, con caracteres peligrosos, etc.) a través de \textbf{llamadas directas a la API}. Hay que tener mucho cuidado con esto! 
 			
-			La parte donde definimos la validación de datos de los endpoints de entrada de los datos de usuario está en utils\footnote{podéis ver la imagen completa de la estructura del proyecto SpringBoot si queréis, de nuevo, en \ref{fig:estrucutraAplicacioJAVARESOURCES}} pero se produce parte de validación a través de \textit{Usuaris} $\rightarrow$ \textit{dto}. Una primera aproximación o esquema a entender como se interelacionan estos dos tipos de clases está en la figura \ref{fig:validacioBackArxius}.
+			La parte donde definimos la validación de datos de los endpoints de entrada de los datos de usuario está en utils\footnote{podéis ver la imagen completa de la estructura del proyecto SpringBoot si queréis, de nuevo, en \ref{fig:estrucutraAplicacioJAVARESOURCES}} pero se produce parte de validación a través de \textit{Usuaris} $\rightarrow$ \textit{dto}. Una primera aproximación o esquema a entender cómo se relacionan entre ellos estos dos tipos de clases está en la figura \ref{fig:validacioBackArxius}.
 			
 			
 			
@@ -2627,6 +2634,7 @@ La solución a lo anterior es hacer que en función de los permisos existentes e
 		\item Recordar hacer resúmenes de datos, paginadores, gráficos en JavaScript a partir de la información extraida de los Endpoints de FastAPI con solicitudes GET, desde el dashboard.
 		\item aprender a configurar la consola de google y hacer uso de un servicio de Google Cloud como es la Gmail API de Gooogle Api Client mediante un script desplegado en github pages para evitar problemas con la CSP (Content Security Policy)
 		\item Aprender a configurar los servicios back-end para que permitan orígenes cruzados sin que den problemas de la CORS policy: es decir, que no se impidan llamadas desde el front-end hacia el back-end porque ambos corran en distintos puertos.
+		\item Diferenciar entre autorización y autenticación y aprender a configurar en Java el correcto uso de ambos ``mecanismos'' para securizar correctamente los endpoints de un controlador.
 	\end{itemize}
 	
 	Por todo ello he de decir que ha sido una experiencia enriquecedora, aunque intensa por el poco tiempo disponible juntamente en paralelo a la realización de las prácticas.
