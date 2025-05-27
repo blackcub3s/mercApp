@@ -106,7 +106,7 @@
 	
 	%nodes de comentari nota al "peu" (node referenciat -explicacio ampliada-)
 	\node (asterisc1Arribada)[aspecteAsterisc, right of = pas1, yshift=1cm, xshift=2cm]{$i:$};
-	\node (asterisc1Explicacio)[aspecteExplicacioAsterisc, right of = asterisc1Arribada, yshift=-.5cm, xshift=.5cm]{Si $correu \in usuari \rightarrow \exists $ usuari};
+	\node (asterisc1Explicacio)[aspecteExplicacioAsterisc, right of = asterisc1Arribada, yshift=-.5cm, xshift=.6cm]{Si $correu \in usuari \rightarrow \exists $ usuari (Us.)};
 	\node (asterisc1ExplicacioComplement)[aspecteUltraPetit, below of = asterisc1Explicacio, yshift=1.7cm, xshift=.05cm]{(mySQL)};
 	
 	
@@ -114,11 +114,11 @@
 	\node (asterisc2Explicacio)[aspecteExplicacioAsterisc, right of = asterisc2Arribada, yshift=-2.2cm, xshift=1.4cm] {
 		\begin{tabular}{l}
 			Si permisos == 0:\\
-				\hspace{1.9em} No acceso a tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow \emptyset$ ]} $:$ \textbf{  NO Acc. APIs privadas}\\
+				\hspace{1.9em} No acceso (no acc.) a tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow \emptyset$ ]} $:$ \textbf{  NO Acc. APIs privadas}\\
 			Si permisos $==$ 1:\\
-				\hspace{1.9em} Hay acc. a sus tickets digitales\\\hspace{2em}\textit{[rol $\rightarrow$ USER]} $:$ \textbf{ Acc. APIs privadas Us.}\\
+				\hspace{1.9em} Acc. a datos extraidos de tickets digitales.\\\hspace{2em}\textit{[rol $\rightarrow$ USER]} $:$ \textbf{ Acc. APIs priv. Us.}\\
 			Si permisos $==$ 2:\\
-				\hspace{1.9em} Hay acc. a todo ticket digital\\\hspace{2em}\textit{[rol $\rightarrow$ ADMIN]} $:$ \textbf{Acc. $\forall$ APIs}\\\\
+				\hspace{1.9em} Acc. a todos los datos de tickets digitales.\\\hspace{2em}\textit{[rol $\rightarrow$ ADMIN]} $:$ \textbf{Acc. $\forall$ APIs}\\\\
 			 			
 				
 		\end{tabular}
