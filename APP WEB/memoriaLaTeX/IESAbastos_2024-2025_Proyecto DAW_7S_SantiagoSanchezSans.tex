@@ -1121,18 +1121,18 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			
 			Vamos a hablar en términos concretos. Pongamos por caso que queremos validar los datos de entrada que llegan a través del endpoint que recibe la llamada POST del front-end para el inicio de sesión, es decir, el endpoint ``\href{https://github.com/blackcub3s/mercApp/blob/4ddc34194763af7a246ffabb14146ad9b4b2c5db/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java#L103}{api/login}'' del archivo \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/Usuaris/controlador/UsuariControlador.java}{ControladorUsuari.java} de Spring Boot. 
 			
-			Debemos entender que en este caso, cuando se haga una llamada exitosa a ese controlador, tendremos un \textit{body} del estilo siguiente:
+			Debemos entender que en este caso, cuando se haga una llamada exitosa a ese controlador, tendremos un \textit{body} de la petición del estilo siguiente:
 			
 				
 			\begin{lstlisting}[language=xml, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{magenta}]
-{"correuElectronic" : "acces@gmail.com", "contrasenya" : "12345678Mm\_" }
+{"correuElectronic" : "acces@gmail.com", "contrasenya" : "12345678Mm\_"}
 			\end{lstlisting}
 			
 	
 			
 
 			
-			Según los términos esperados las clases utilizadas y activadas para validar estos datos de entrada serán las de la figura \ref{fig:validacioBackArxiusDetallLoginVA}:
+			Según los datos entrantes esperados, las clases utilizadas y activadas para validar estos datos de entrada serán las de la figura \ref{fig:validacioBackArxiusDetallLoginVA}:
 			
 			
 			
@@ -1147,7 +1147,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 			\FloatBarrier
 			
 			
-			 Asimismo, en la figura  \ref{fig:validacioBackArxiusDetallLoginVB} podréis ver exactamente qué es lo que está pasando para la llamada a este endpoint. Podréis ver en esencia como existe una clase LoginDTO\footnote{Los data transfer objects o DTOs son simplemente clases Java que mediante sus atributos definen los nombres exactos que tienen que tener las claves entrantes del body de las solicitudes POST y, además, aplican restricciones a los valores que éstas llevan asociadas según unas anotaciones definidas encima, que asimismo llaman a otras anotaciones de las clases de anotación, si y solo si, añadimos la anotación \textbf{@Valid} antes del parámetro dto del UsuariControlador.} que permite hacer la validación de datos cuando un usuario inicia sesión, a través de anotaciones personalizadas (@CorreuElectronic y @contrasenya) que a su vez llaman a otras anotaciones propias del framework springboot (@pattern, para aplicar expresiones regulares; @NotBlank para evitar que el campo esté vacío, etc):
+			 Asimismo, en la figura  \ref{fig:validacioBackArxiusDetallLoginVB} podréis ver exactamente qué es lo que está pasando para la llamada a este endpoint. Podréis ver en esencia como existe una clase LoginDTO\footnote{Los data transfer objects o DTOs son simplemente clases Java que mediante sus atributos definen los nombres exactos que tienen que tener las claves entrantes del body de las solicitudes POST y, además, aplican restricciones a los valores que éstas llevan asociadas según unas anotaciones definidas encima, que asimismo llaman a otras anotaciones de las clases de anotación, si y solo si, añadimos la anotación \textbf{@Valid} antes del parámetro dto del UsuariControlador.} que permite hacer la validación de datos cuando un usuario inicia sesión, a través de anotaciones personalizadas (\textit{@CorreuElectronic} y \textit{@contrasenya}) que a su vez llaman a otras anotaciones propias del framework springboot (\textit{@pattern}, para aplicar expresiones regulares; \textit{@NotBlank} para evitar que el campo esté vacío, etc.):
 			
 			
 			
@@ -1167,7 +1167,7 @@ Este objeto \textit{authentication} que acabamos de crear entonces tenemos que g
 		
 			Podría parecer complejo hacer lo que hemos hecho en la figura \ref{fig:validacioBackArxiusDetallLoginVB}, pero una vez guardarmos campos en la base de datos a través de múltiples endpoints que requieren modificaciones parciales de esos campos hacerlo así tiene utilidad y es una buena práctica en Java.
 			
-			Todos los endpoints de la clase UsuariControlador.java están protegidos con validaciones para evitar que entren caracteres problemáticos, como podéis ver en las expresiones regulares definidas en ValidacionsUsuari.java.
+			Todos los endpoints de la clase UsuariControlador.java están protegidos con validaciones para evitar que entren caracteres problemáticos, como podéis ver en las expresiones regulares definidas en \href{https://github.com/blackcub3s/mercApp/blob/main/APP%20WEB/__springboot__produccio__/app/src/main/java/miApp/app/utils/validacio/ValidacionsUsuari.java}{ValidacionsUsuari.java}
 
 			\subsection{Hasheado de contraseñas}
 			\label{sec:implementacioHashContra}
