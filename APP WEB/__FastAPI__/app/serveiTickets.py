@@ -106,39 +106,61 @@ def pdf_to_text(file_path):
         return "errorPdfAtext"
 
 
-# PRE: doc es el document (PATH O NOM?)
-#      tupla es nom del pdf a cercar. Els pdfs de la tupla han d'existir al directori on s'executa el programa.
-# POST: S'imprimeix cada linia que té una ocurrència de qualsevol dels elements
-#      (especialitats) de ll_esp (llista especialitats)-
+# PRE: -doc:                  es string amb el path al nom del ticket en pdf que vull processar 
+#                             estil --> ./tickets/{idUsuari_enToken}/{nom arxiu}
+#      -ll_judicis:           lista buida o amb els judicis d'anteriors iteracions de tickets parsejats
+#      -nTicketsBenParsejats: variable d'entrada amb del nombre actual de nombre de
+#                             tickets parsejats anteriorment abans que el ticket actual
+# POST: 
+#      -nTicketsBenParsejats: mateixa variable que l'entrada + 1 si s'ha parsejat correctament 
+#                             el ticket de l'iteració actual. O variable inalterada, altrament.
+#      -jsonTicket:           el ticket amb PDF parsejat a format JSON llest per guardar a MongoDB si ha corregut bé.
+#                             en cas contrari, si s'arriba a llençar una excepcií, tornarà un diccionari {} BUIT!!!
+#      
 def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
     textPDF = pdf_to_text(doc) 
     if textPDF == "errorPdfAtext":
-        ll_judicis.append({"archivo": doc, "estado": "Parseo función pdf_to_text falló."})    
+        ll_judicis.append({"archivo": doc, "estado": "Parseo del ticket con pdf_to_text() falló."})
+        return {}    
     else:
-        nTicketsBenParsejats += 1
+        
+        # POSAR INICI TRY --- AQUI EXTRAUREM LES DADES
 
         #Elimino salts de linia 
         ll_linies_PDF = textPDF.split("\n")
         for i in range(len(ll_linies_PDF)):
-            print(ll_linies_PDF[i]) # BRUTAL FUNCIONA!!!!
+            print(ll_linies_PDF[i]) # BRUTAL FUNCIONA IMPRIMEIX CADA LINIA!!!!
             
 
-        jsonTicket = {"to do" : "per a fer posar aqui la estructura mongo"}
-        
-        ll_judicis.append({"archivo": doc, "estado": "Parseo OK."})
+        jsonTicket = {"to do" : "per a fer posar aqui la estructura mongo en un try except"}
+    
 
+
+        ll_judicis.append({"archivo": doc, "estado": "Parseo OK."})
+        nTicketsBenParsejats += 1 #sumo un tiket ben parsejat!
+        # POSAR FI TRY
+
+        # POSAR EXCEPT --> RETORNAR AQUI UN DICCIONARI BUIT quan hi hagi EXCEPT, MOLT IMPORTANT!
 
     return nTicketsBenParsejats, jsonTicket
 
 
 
-#PRE:  idUsuari_enToken (int) --> porta l'usuari que te tickets digitals creats en el sistema d'arxius.
-#POST: totTicketOk (booleà) --> Si tots els tickets de la carpeta d'usuari s'han parsejat i guardat b en BBDD
-#      llJudicis (llista de dicts) --> llista informativa de l'estat dels tickets [{"archivo": "ticket mercadona.pdf", "estado" : "parseo ok"}, [...] ] 
+#PRE: - idUsuari_enToken (int) -> id d'usuari que té JA tickets digitals en PDF creats dins 
+#                                 el sistema d'arxius en ruta tickets/{idUsuari_enToken}
+#POST: - totTicketOk (booleà) --> Si tots els tickets de la carpeta d'usuari s'han parsejat i guardat b en BBDD
+#      - llJudicis (llista) ----> llista informativa de diccionaris ambde l'estat dels tickets 
+#                                 [{"archivo": "ticket mercadona.pdf", "estado" : "parseo ok"}, [...] ] 
+#      - totTicketOK -----------> si coincideix el nre de tickets trobats en el sistema d'arxius 
+#                                 en ruta tickets/{idUsuari_enToken} amb nTicketsBenParsejats i amb nTicketsPersistits 
+#                                 és que tots els tickets s'han analitzat bé.
+#      - nTicketsBenParsejats --> nombre de tickets correctament extrets (nombre de vegades en que la 
+#                                 funcio fesScrapTicketMercadona() ha corregut correctament)
+#      - nTicketsPersistits ----> nombre de tickets que s'han guardat (nombre de vegades que funcio de 
+#                               repositori persisteixTicket_a_MONGODB() s'executa correctament)
 def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
-    totTicketOK = True
     nTicketsBenParsejats = 0
-    nTicketsBenGuardats = 0
+    nTicketsPersistits = 0
     llJudicis = []
     directoriOnLlegir = f"./tickets/{idUsuari_enToken}"
     try:
@@ -146,20 +168,24 @@ def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
         
         for nomArxiu in llistTickets:
             path = os.path.join(directoriOnLlegir, nomArxiu) 
-            nTicketsBenParsejats, jsonTicket = fesScrapTicketMercadona(path, llJudicis, nTicketsBenParsejats) #llJudicis passada per refernecia
+
+            # -- TO DO interiors de les dues funcions --
             
-            # TO DO --> aqui guarda a mongo db el jsonTicket
-            nTicketsBenGuardats = repositoriTickets.persisteixTicket_a_MONGODB(nTicketsBenGuardats)
 
+            #PRIMER EXTREC TICKET (A) && DESPRÉS EL PERSISTEIXO (B) --> INFORMO D'ERRORS DURANT TOT EL PROCÉS 
+            # NOTA: funció fesScrapTicketMercadona s'hauria d'haver anomenat 
+            # fesParseigTicketMercadona. No canviem el nom per consistència amb la memòria.
+            nTicketsBenParsejats, jsonTicket = fesScrapTicketMercadona(path, llJudicis, nTicketsBenParsejats) #(A) llJudicis passada per referència
+            nTicketsPersistits = repositoriTickets.persisteixTicket_a_MONGODB(nTicketsPersistits, jsonTicket) #(B)
+            
 
+            # -- FI TO DO interiors de les dues funcions --
 
-
-            # FI TO DO --> 
         # tot s'ha processat b si el nombre de tickets dins el sistema d arxius de l'usuari en el servidor
-        # coincideix amb el nombre de tickets correctament parsejats i tambe amb el de guardats. Aleshores tot el que 
+        # coincideix amb el nombre de tickets correctament parsejats i tambe amb el de persistits. Aleshores tot el que 
         # ha enviat l'usuari dins el servidor en el PASO 2 s'ha aconsegit processar i persistir íntegrament en el PASO 3
-        totTicketOK = len(llistTickets) == nTicketsBenParsejats == nTicketsBenGuardats 
-        return totTicketOK, llJudicis, nTicketsBenParsejats, nTicketsBenGuardats
+        totTicketOK = len(llistTickets) == nTicketsBenParsejats == nTicketsPersistits 
+        return totTicketOK, llJudicis, nTicketsBenParsejats, nTicketsPersistits
     
     except FileNotFoundError:
         print("Ruta no trobada! Aquest error no es donarà mai si s'activa aquest afunció des de crida a /api/parsea-y-guarda-pdfs-en-bbdd")

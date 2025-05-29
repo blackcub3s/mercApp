@@ -29,15 +29,15 @@ function posaMissatgesAusuari_PASO2_contaTicketsSistemaArxiusServidor(ticketsExi
 
 
 
-function posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(ticketsExistents) {
+function posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(nTicketsExistents) {
     const bannerMissatgesPas3_Parseig = document.getElementById("bannerMissatge_PAS3_PARSEIG");
 
-    if (ticketsExistents == 0) {
+    if (nTicketsExistents == 0) {
         bannerMissatgesPas3_Parseig.innerHTML = `<ul>
                                                     <li>¡No subiste tickets! ¡Vuelve al paso 2 y <b>adjúntalos</b>!</li>
                                                 </ul>
                                                 `
-    } else if (ticketsExistents == 1) {
+    } else if (nTicketsExistents == 1) {
         bannerMissatgesPas3_Parseig.innerHTML = `<ul>
                                                     <li>Vuelve al <b>Paso 2</b>: añade más tickets</li>
                                                     <li>Consejo: Trata de añadir decenas de ellos en momentos temporales distintos!</li>
@@ -49,26 +49,27 @@ function posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(ticketsExist
 
 }
 
-//PRE: processatsCorrectaent (boolea): sera false si com a minim un ticket no s'ha parsejat correctament. 
-//     existents (int): nre de tickets existents en carpeta d'usuari en el servidor (lo mateix que lo del pas2). 
-//      ticketsBenParsejatsIpersistits (int): nre total de tickets que s'han parsejat i guardat amb èxit en la bbbdd.
+//PRE: totsParsejatsIguardatsBe (boolea): sera false si com a minim un ticket no s'ha parsejat correctament. 
+//     nTicketsExistents (int): nre de tickets existents en carpeta d'usuari en el servidor (lo mateix que lo del pas2). 
+//     nTicketsBenParsejats (int): nre total de tickets que s'han parsejat correctament, sense errors.
+//     nTicketsPersistits (int): nre total de ticlets guardats a la base de dades (seran com a maxim igual al nombre de tickets parsejats correctament)
 //POST: la notificació
-function posaMissatgesAusuari_PASO3_estatProcessament(processatsCorrectament, existents, ticketsBenParsejatsIpersistits) {
+function posaMissatgesAusuari_PASO3_estatProcessament(totsParsejatsIguardatsBe, nTicketsExistents, nTicketsBenParsejats, nTicketsPersistits) {
     const bannerMissatgesPas3_Parseig = document.getElementById("bannerMissatge_PAS3_PARSEIG");
 
-    if(!processatsCorrectament) {
+    if(!totsParsejatsIguardatsBe) {
         bannerMissatgesPas3_Parseig.innerHTML = `<ul>
-                                                    <li>existentes: ${existents} | fallados: ${existents - ticketsBenParsejatsIpersistits}</li>
-                                                    <li>Parseados: ${ticketsBenParsejatsIpersistits}</li>
+                                                    <li><b>${nTicketsPersistits}</b> extraídos de <b>${nTicketsExistents}</b> tickets facilitados!</li>
+                                                    <li>(<span style="color: red"><b>${Math.round(100*nTicketsPersistits/nTicketsExistents)}</b>%</span> de éxito)</li>
                                                 </ul>
                                                 `        
     } else {
         bannerMissatgesPas3_Parseig.innerHTML = `<ul>
-                                                    <li>Todos los Tickets parseados con éxito!</li>
+                                                    <li>Todos los Tickets parseados y guardados con éxito!</li>
                                                 </ul>
                                                 `         
     }
-    aux_treuBorde("bannerMissatge_PAS3_PARSEIG");
+    aux_treuBorde("bannerMissatge_PAS3_PARSEIG"); 
     
     
 }

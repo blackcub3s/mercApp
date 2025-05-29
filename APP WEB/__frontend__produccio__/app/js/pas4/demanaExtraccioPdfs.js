@@ -24,19 +24,22 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             return response.json();
         })
-        .then(data => {                               //enter                                       //boolea                                                //nTickets persistits a mongo
-            console.log("existents en servidor: "+ data.existentes + "processatsCorrectament: " + data.processatsCorrectament + "nTicketsBenGuardats: " + data.nTicketsBenGuardats + "ticketsBenParsejatsIpersistits: " + data.ticketsBenParsejatsIpersistits) 
-            if (data.existentes <= 2)
-                posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.existentes) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
+        .then(data => {                                                                                                                         //nTickets persistits a mongo
+            console.log("nTicketsExistents: "+ data.nTicketsExistents); //enter 
+            console.log("totsParsejatsIguardatsBe: " + data.totsParsejatsIguardatsBe); //booleà
+            console.log("nTicketsBenParsejats: "+data.nTicketsBenParsejats);   //enter
+            console.log("nTicketsPersistits: "+data.nTicketsPersistits); //enter 
+            //console.log("llJudicis: "+llJudicis); //array amb un judici per cada ticket.
+            if (data.nTicketsExistents <= 2)
+                posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.nTicketsExistents) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
             else {
-
-                if (data.processatsCorrectament) {
-                    const missatge = "";
+                if (data.totsParsejatsIguardatsBe) {
+                    alert("to DO");
+                    //
                     //xupare aqui token a 1 i posar-lo a local storage
-                } else {
-                    const missatge = `parsejats: ${data.processatsCorrectament} | fallats: 69`;
+                    //
                 }
-                posaMissatgesAusuari_PASO3_estatProcessament(data.processatsCorrectament, data.existentes, data.ticketsBenParsejatsIpersistits);
+                posaMissatgesAusuari_PASO3_estatProcessament(data.totsParsejatsIguardatsBe, data.nTicketsExistents, data.nTicketsBenParsejats, data.nTicketsPersistits);
             }
 
             //console.log(`Parseados correctamente: ${data.ticketsParseadosOK} || Fallados en parseo: ${data.ticketsParseadosFAIL} || Subidos a MongoDB: ${data.bbddOK}`);
