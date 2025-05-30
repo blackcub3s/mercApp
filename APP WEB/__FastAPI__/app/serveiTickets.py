@@ -128,9 +128,16 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
 
         #Elimino salts de linia 
         ll_linies_PDF = textPDF.split("\n")
-        for i in range(len(ll_linies_PDF)):
-            print(ll_linies_PDF[i]) # BRUTAL FUNCIONA IMPRIMEIX CADA LINIA!!!!
-            
+
+        #AQUESTA ÉS LA SORTIDA RAW DEL TICKET! DES DE LA QUE HEM FET EL PARSEIG
+        #for i in range(len(ll_linies_PDF)):
+        #    print(ll_linies_PDF[i])   
+        
+        carrer = ll_linies_PDF[1]
+        CP_ciutat = ll_linies_PDF[2]
+        direccioSuper = carrer + " " + CP_ciutat
+        print(direccioSuper)
+
 
         jsonTicket = {"to do" : "per a fer posar aqui la estructura mongo en un try except"}
     
