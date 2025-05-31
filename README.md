@@ -49,7 +49,7 @@ También se permite el despliegue de cada componente o microservicio del apartad
 
 
 
-[mySQL:](/APP%20WEB/___BBDD___/estructuraTaules/pirApp.sql) con mySQL hemos podido guardar los datos de los usuarios: correo, hash de contraseña y variable permisos principalmente. La base de datos contiene dos tablas de usuarios -a la que por ahora, y en este proyecto, solo tocaremos una (la tabla "usuari")-.
+**mySQL**: con mySQL hemos podido guardar los datos de los usuarios: correo, hash de contraseña y variable permisos principalmente. La base de datos contiene dos tablas de usuarios -a la que por ahora, y en este proyecto, solo tocaremos una (la tabla "usuari"): véase el DDL [aquí](/APP%20WEB/___BBDD___/estructuraTaules/mercApp.sql).
 
 **mongoDB**: Donde persistimos los tickets, en una collection.
 
