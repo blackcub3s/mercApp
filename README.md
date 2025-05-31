@@ -39,9 +39,10 @@ Esta aplicación permite hacer un análisis de tickets digitales del correo para
 Se puede hacer el despliegue en local mediante los servidores embedidos en los editores de código correspondientes (véase apartado 3.2 de la [memoria](/APP%20WEB/memoriaLaTeX/IESAbastos_2024-2025_Proyecto%20DAW_7S_SantiagoSanchezSans.pdf) en PDF).
 
 ## 3.2 Mediante contenedores Docker
-También se permite el despliegue de cada componente o microservicio del apartado anterior en un contenedor Docker. Para ello, para cada subdirectorio de cada microservicio en la carpeta [APP WEB](/APP%20WEB) del repositorio (más información en apartado 3.3 despliegue de la [memoria](/APP%20WEB/memoriaLaTeX/IESAbastos_2024-2025_Proyecto%20DAW_7S_SantiagoSanchezSans.pdf)) se ha proporcionado un Dockerfile y un script en bash para crear imagen y contenedor, como vemos en la figura: 
+También se permite el despliegue de cada componente o microservicio del apartado anterior en un contenedor Docker. Para ello, para cada subdirectorio de cada microservicio en la carpeta [APP WEB](/APP%20WEB) del repositorio (más información en apartado "3.3 despliegue" de la [memoria](/APP%20WEB/memoriaLaTeX/IESAbastos_2024-2025_Proyecto%20DAW_7S_SantiagoSanchezSans.pdf)) se ha proporcionado un Dockerfile y un script en bash para crear imagen y contenedor, como vemos en la figura: 
 
 ![imatge](/APP%20WEB/memoriaLaTeX/img/dockeritzacioAplicacioPlantilla.png)
+
 
 
 
@@ -49,18 +50,19 @@ También se permite el despliegue de cada componente o microservicio del apartad
 
 
 
-**mySQL**: con mySQL hemos podido guardar los datos de los usuarios: correo, hash de contraseña y variable permisos principalmente. La base de datos contiene dos tablas de usuarios -a la que por ahora, y en este proyecto, solo tocaremos una (la tabla "usuari"): véase el DDL [aquí](/APP%20WEB/___BBDD___/estructuraTaules/mercApp.sql).
+- **mySQL**: con mySQL hemos podido guardar los datos de los usuarios: correo, hash de contraseña y variable permisos principalmente. La base de datos contiene dos tablas de usuarios -a la que por ahora, y en este proyecto, solo tocaremos una (la tabla "usuari"): véase el DDL [aquí](/APP%20WEB/___BBDD___/estructuraTaules/mercApp.sql). 
 
-**mongoDB**: Donde persistimos los tickets, en una collection.
+- **mongoDB**: Donde persistimos los tickets, en una collection.
 
+>⚠️ **NOTA**: a mySQL solo se persisten y leen datos desde Spring Boot. Mientras que a MongoDB la conexión es únicamente mediante fastAPI.
 
 
 
 # 5. Aspectos destacables
 
-Se manejó el enrutamiento de la aplicación mediante redirecciones en función del valor de la aplicación. Este enrutamiento se ha inspirado, mediante un proceso de desarrollo inverso, del que utiliza la aplicación web de NetFlix ante usuarios.
+Se manejó el enrutamiento de la aplicación mediante redirecciones en función del valor de la aplicación. Este enrutamiento se ha inspirado, mediante un proceso de desarrollo inverso, del que utiliza la aplicación web de NetFlix ante usuarios. 
 
-Explicación completa del diagrama puede encontrarse en el apartado 3.6.3. Enrutamiento de vistas de la [memoria](/APP%20WEB/memoriaLaTeX/IESAbastos_2024-2025_Proyecto%20DAW_7S_SantiagoSanchezSans.pdf).
+Explicación completa del diagrama y lo que significa cada caja, paréntesis, rombo y color puede encontrarse en el apartado 3.6.3. Enrutamiento de vistas de la [memoria](/APP%20WEB/memoriaLaTeX/IESAbastos_2024-2025_Proyecto%20DAW_7S_SantiagoSanchezSans.pdf).
 
 ![diagrama](/img/diagramaMercAppFrontADAPTAT.jpg)
 
