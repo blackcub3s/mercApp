@@ -116,7 +116,7 @@ def pdf_to_text(file_path):
 #                             el ticket de l'iteració actual. O variable inalterada, altrament.
 #      -jsonTicket:           el ticket amb PDF parsejat a format JSON llest per guardar a MongoDB si ha corregut bé.
 #                             en cas contrari, si s'arriba a llençar una excepcií, tornarà un diccionari {} BUIT!!!
-#      
+#      format de jsonTicket serà de l'estil:
 def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
     textPDF = pdf_to_text(doc) 
     if textPDF == "errorPdfAtext":
@@ -132,15 +132,33 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
         #AQUESTA ÉS LA SORTIDA RAW DEL TICKET! DES DE LA QUE HEM FET EL PARSEIG
         #for i in range(len(ll_linies_PDF)):
         #    print(ll_linies_PDF[i])   
-        
-        carrer = ll_linies_PDF[1]
-        CP_ciutat = ll_linies_PDF[2]
+
+        # 2A I 3A LINIES DEL TICKET SON CARRER I CODI POSTAL
+        carrer, CP_ciutat = ll_linies_PDF[1], ll_linies_PDF[2]
         direccioSuper = carrer + " " + CP_ciutat
         print(direccioSuper)
 
 
-        jsonTicket = {"to do" : "per a fer posar aqui la estructura mongo en un try except"}
+        
+        """
+        diccProductes = {}
+        for producte in liniesProductes:
+            diccProductes["BRONCHALES 6L"] = {
+                "esGranel": 0,
+                "preu": 1.28,
+                "quantitat": 1,
+                "categoria": 2
+            } 
     
+        jsonTicket = {
+            "_id": "2424-022-580814_OP3844401",
+            "idUsuari": 10,
+            "productesAdquirits": diccProductes,
+            "totalTicket": 8.89,
+            "direccioSuper": direccioSuper,  #exemple --> "C/ VALENCIA, 46006 VALENCIA"
+            "data": "2025-05-07"
+        }
+        """
 
 
         ll_judicis.append({"archivo": doc, "estado": "Parseo OK."})
@@ -148,7 +166,7 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
         # POSAR FI TRY
 
         # POSAR EXCEPT --> RETORNAR AQUI UN DICCIONARI BUIT quan hi hagi EXCEPT, MOLT IMPORTANT!
-
+    jsonTicket = {}
     return nTicketsBenParsejats, jsonTicket
 
 
