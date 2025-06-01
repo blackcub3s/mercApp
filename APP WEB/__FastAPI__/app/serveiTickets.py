@@ -92,6 +92,12 @@ def esborra_pdfs(ll, carregatPdfs):
         for pdf in ll:
             os.remove(pdf)
 
+#PRE: string de forma "dd/mm/aaaa"
+#POST: string de forma "AAAA-MM-DD", en la ISO 8601
+def dataEspanyola_a_ISO8601(dataEspanyola):
+    dia, mes, any = dataEspanyola.split("/")
+    return f"{any}-{mes}-{dia}"
+
 #FUNCIO FETA PER XAT GPT
 def pdf_to_text(file_path):
     try:
@@ -111,20 +117,21 @@ def pdf_to_text(file_path):
 #      -ll_judicis:           lista buida o amb els judicis d'anteriors iteracions de tickets parsejats (errors o exits)
 #      -nTicketsBenParsejats: variable d'entrada amb del nombre actual de nombre de
 #                             tickets parsejats anteriorment abans que el ticket actual
+#      -idUsuariEnToken:      l'identificador de l'usuari al que pertany el ticket.
 # POST: 
 #      -nTicketsBenParsejats: mateixa variable que l'entrada + 1 si s'ha parsejat correctament 
 #                             el ticket de l'iteració actual. O variable inalterada, altrament.
 #      -jsonTicket:           el ticket amb PDF parsejat a format JSON llest per guardar a MongoDB si ha corregut bé.
 #                             en cas contrari, si s'arriba a llençar una excepcií, tornarà un diccionari {} BUIT!!!
 #      format de jsonTicket serà de l'estil:
-def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
+def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enToken):
     textPDF = pdf_to_text(doc) 
     if textPDF == "errorPdfAtext":
         ll_judicis.append({"archivo": doc, "estado": "Parseo del ticket con pdf_to_text() falló."})
         return {}    
     else:
         
-        # AQUESTES LINIES COMENTADES FOREN LA PRIMERA APROXIMACIÓ DEL PROBLEMA
+        # PRIMERA APROXIMACIÓ DEL PROBLEMA. PODEU DESCOMENTAR-LES PER VEURE TOT EL QUE SURT DEL TICKET PER DAMUN DE "TOTAL (€)"
         """
         ll_linies_PDF = textPDF.split("TOTAL (€)")
         for i in range(len(ll_linies_PDF)):
@@ -149,10 +156,28 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
             carrer, CP_ciutat = ll_liniesTicket[1], ll_liniesTicket[2]
             direccioSuper = carrer + " " + CP_ciutat
             
+            # 4A I 5A LINES DEL TICKET --> ens permeten crear la clau primaria de cada ticket combinant NRE factura amb OP
+            dataOperacio = ll_liniesTicket[4] #string ------> "30/04/2025 21:14  OP: 4083409"
+            liniaFactura = ll_liniesTicket[5]   #string ------> "FACTURA SIMPLIFICADA: 2423-026-567893"
+            dataHora, nreOP = dataOperacio.split("OP:") # COMPTE --> A tickets de 2023 surt "OP:" i tickets 2024 i 2025 "OP: "
+            data, hora = dataHora.split() #dataHORA.split() --> ['30/04/2025', '21:14']  #LA HORA NO ES NECESSARIA PERÒ ENS LA GUARDEM :D
+            data_ISO8601 = dataEspanyola_a_ISO8601(data) #faig conversió següent:  "30/04/2025" --> "2025-04-30"
+
+
+
+
+            
+            nreFactura = liniaFactura.split("FACTURA SIMPLIFICADA:")[1].strip()     # 2423-026-567893
+            nreOP = nreOP.strip()                                                   # 4083409
+            clauPrimaria = nreFactura + "_OP" + nreOP                               # 2423-026-567893_OP4083409
+
+
             #SEGONA APROXIMACIÓ AL PROBLEMA
+            """
             for i in range(len(ll_liniesTicket)):
                 print(ll_liniesTicket[i])
             print("\n")
+            """
             # FI SEGONA APROXIMACIÓ AL PROBLEMA
             diccProductes = {}
             """
@@ -165,17 +190,18 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
                 } 
             """
             jsonTicket = {
-                "_id": "2424-022-580814_OP3844401",  # exemple --> "2424-022-580814_OP3844401" concatenant el amb numero d'operacio
-                "idUsuari": 10,                      # exemple --> 10
-                "productesAdquirits": diccProductes, # exemple --> un diccionari de rpoductes, on cada item es un diccionari de l'estil que es veu a abans.
+                "_id": clauPrimaria,  # exemple --> #2423-026-567893_OP4083409 concatenant el amb numero d'operacio
+                "idUsuari": idUsuari_enToken,        # exemple --> 10
+                "productesAdquirits": diccProductes, # exemple --> UN DICCIONARI DE DICCIONARIS DE PRODUCTES, RELLENAT EN EL FOR ANTERIOR.
                 "totalTicket": preuTotalTicket,
                 "direccioSuper": direccioSuper,      #exemple --> "C/ VALENCIA, 46006 VALENCIA"
-                "data": "2089-12-07"                 #exemple
+                "data": data_ISO8601,                #exemple --> "YYYY-MM-DD" es la ISO 8601 (aixi chart.js ho llegeix directe)
+                "hora" : hora                        #exemple --> "21:03"
             }
             
 
             #print(jsonTicket) 
-            #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
+            print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
 
 
 
@@ -185,12 +211,13 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
             ll_judicis.append({
                 "archivo": doc, "estado": f"Error 'IndexError: {str(e)}' encontrado durante el parseo: | Pista: Probablemente no se encontró el grupo Total(€) en el lugar correcto en este ticket."
             })
-        """
-        except ValueError as e:
+        """ # DES COMENTAR QUAN ACABIS!
+        except ValueError as e:  #un split que no es pot fer, per exemple!
             ll_judicis.append({
-                "archivo": doc, "estado": f"Error 'ValueError: {str(e)}' encontrado durante el parseo: | Pista: ??."
+                "archivo": doc, "estado": f"Error 'ValueError: {str(e)}' encontrado durante el parseo."
             })    
-        """        
+        """
+            
             
         
         
@@ -231,7 +258,7 @@ def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
             #PRIMER EXTREC TICKET (A) && DESPRÉS EL PERSISTEIXO (B) --> INFORMO D'ERRORS DURANT TOT EL PROCÉS 
             # NOTA: funció fesScrapTicketMercadona s'hauria d'haver anomenat 
             # fesParseigTicketMercadona. No canviem el nom per consistència amb la memòria.
-            nTicketsBenParsejats, jsonTicket = fesScrapTicketMercadona(path, llJudicis, nTicketsBenParsejats) #(A) llJudicis passada per referència
+            nTicketsBenParsejats, jsonTicket = fesScrapTicketMercadona(path, llJudicis, nTicketsBenParsejats, idUsuari_enToken) #(A) llJudicis passada per referència
             nTicketsPersistits = repositoriTickets.persisteixTicket_a_MONGODB(nTicketsPersistits, jsonTicket) #(B)
             
 
@@ -254,14 +281,19 @@ if __name__ == "__main__":
     #MOSTRO L'HORA EN QUE S'HA EXECUTAT L'SCRIPT
     imprimeix_hora_espanyola()
 
-    #LLISTA DE TUPLES (nom amb que guardaré el document, url d'on fem scrap del document)
-    document = "20250430 Mercadona 33,36 €"
 
 
-    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0)
+    #PRENC EL TICKET MES CONFLICTIU DE MERCADONA (AL MENYS QUE HAGI TROBAT I EXECUTO EL PARSEJADOR)
+    document = "20250430 Mercadona 33,36 €" #EL TICKET ULTRA CONFLICTIU.
+    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 69)
+   
+    #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
+    #parsejaTicketsIguardaEnMONGODB(3)
+
+
+
+    #A FUTUR, ESBORAR PDFS (NO USAT)
     #esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
-    
-    #parsejaTicketsIguardaEnMONGODB("20250507 Mercadona 7,05 €")
 
 
 
