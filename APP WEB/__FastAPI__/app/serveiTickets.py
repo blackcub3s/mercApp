@@ -6,10 +6,10 @@ import PyPDF2
 import pytz
 from serveiValidacions import ticketValidat
 import repositoriTickets
-        
+import json
         
 #PRE: - llJudicis: una llista buida (passada per referència)
-#     - idUusari_enToken: un int que conté l'idUsuari obtingut del payload del token entrant.
+#     - idUsuari_enToken: un int que conté l'idUsuari obtingut del payload del token entrant.
 #     - arxius: una llista (list) que conté dades de tipus UploadFile
 #POST: 
 #     - llJudicis: passa per referència i s'emplena d'una llista de diccionaris (rollo JSON) que 
@@ -106,9 +106,9 @@ def pdf_to_text(file_path):
         return "errorPdfAtext"
 
 
-# PRE: -doc:                  es string amb el path al nom del ticket en pdf que vull processar 
-#                             estil --> ./tickets/{idUsuari_enToken}/{nom arxiu}
-#      -ll_judicis:           lista buida o amb els judicis d'anteriors iteracions de tickets parsejats
+# PRE: -doc:                  es un string amb el path al nom del ticket en pdf que vull processar 
+#                             aspecte com aquest --> ./tickets/{idUsuari_enToken}/{nom arxiu}
+#      -ll_judicis:           lista buida o amb els judicis d'anteriors iteracions de tickets parsejats (errors o exits)
 #      -nTicketsBenParsejats: variable d'entrada amb del nombre actual de nombre de
 #                             tickets parsejats anteriorment abans que el ticket actual
 # POST: 
@@ -124,45 +124,76 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats):
         return {}    
     else:
         
+        # AQUESTES LINIES COMENTADES FOREN LA PRIMERA APROXIMACIÓ DEL PROBLEMA
+        """
+        ll_linies_PDF = textPDF.split("TOTAL (€)")
+        for i in range(len(ll_linies_PDF)):
+            print(ll_linies_PDF[i])
+        """
         # POSAR INICI TRY --- AQUI EXTRAUREM LES DADES
-
-        #Elimino salts de linia 
-        ll_linies_PDF = textPDF.split("\n")
-
-        #AQUESTA ÉS LA SORTIDA RAW DEL TICKET! DES DE LA QUE HEM FET EL PARSEIG
-        #for i in range(len(ll_linies_PDF)):
-        #    print(ll_linies_PDF[i])   
-
-        # 2A I 3A LINIES DEL TICKET SON CARRER I CODI POSTAL
-        carrer, CP_ciutat = ll_linies_PDF[1], ll_linies_PDF[2]
-        direccioSuper = carrer + " " + CP_ciutat
-        print(direccioSuper)
-
-
+        # LES LÍNIES COMENTADES SÓN LA PRIMERA APROXIMACIÓ AL PROBLEMA D'EXTRACCIÓ
+        try:
+            
+            # SEPAREM el ticket en DUES MEITATS (superior i inferior). Això ho fem gràcies
+            # a un DELIMITADOR que sempre trobem just a SOTA del llistat de productes del ticket.
+            separacioTicketPerTOTAL = textPDF.split("TOTAL (€)") 
         
-        """
-        diccProductes = {}
-        for producte in liniesProductes:
-            diccProductes["BRONCHALES 6L"] = {
-                "esGranel": 0,
-                "preu": 1.28,
-                "quantitat": 1,
-                "categoria": 2
-            } 
-    
-        jsonTicket = {
-            "_id": "2424-022-580814_OP3844401",
-            "idUsuari": 10,
-            "productesAdquirits": diccProductes,
-            "totalTicket": 8.89,
-            "direccioSuper": direccioSuper,  #exemple --> "C/ VALENCIA, 46006 VALENCIA"
-            "data": "2025-05-07"
-        }
-        """
+            # La meitat superior del ticket (separacioTicketPerTOTAL[0]) la guardem tota, trocejada 
+            # per salts de línia en una llista (ll_liniesTicket). De la meitat inferior (separacioTicketPerTOTAL[1])
+            # només n'extraurem l'import total de la factura -ticket- mitjançant "slicing" i el guardarem en('preuTotalTicket') 
+            # canviant , per . i passant a float.
+            ll_liniesTicket = separacioTicketPerTOTAL[0].split("\n")
+            preuTotalTicket = float(separacioTicketPerTOTAL[1][:separacioTicketPerTOTAL[1].index("\n")].strip().replace(",","."))
+
+            # 2A I 3A LINIES DEL TICKET BÀSICAMENT SÓN CARRER I CODI POSTAL
+            carrer, CP_ciutat = ll_liniesTicket[1], ll_liniesTicket[2]
+            direccioSuper = carrer + " " + CP_ciutat
+            
+            #SEGONA APROXIMACIÓ AL PROBLEMA
+            for i in range(len(ll_liniesTicket)):
+                print(ll_liniesTicket[i])
+            print("\n")
+            # FI SEGONA APROXIMACIÓ AL PROBLEMA
+            diccProductes = {}
+            """
+            for producte in liniesProductes:
+                diccProductes["BRONCHALES 6L"] = {
+                    "esGranel": 999,  # exemple --> 0 (no granel) o 1 (sí és granel)
+                    "preu": 1.28,     # exemple --> Si no granel indica €/unitat. Si sí granel, indica €/kg --> 1.28, 0.76...
+                    "quantitat": 1,   # exemple --> 1, 2, 3... n (unitats comprades)
+                    "categoria": 2    # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
+                } 
+            """
+            jsonTicket = {
+                "_id": "2424-022-580814_OP3844401",  # exemple --> "2424-022-580814_OP3844401" concatenant el amb numero d'operacio
+                "idUsuari": 10,                      # exemple --> 10
+                "productesAdquirits": diccProductes, # exemple --> un diccionari de rpoductes, on cada item es un diccionari de l'estil que es veu a abans.
+                "totalTicket": preuTotalTicket,
+                "direccioSuper": direccioSuper,      #exemple --> "C/ VALENCIA, 46006 VALENCIA"
+                "data": "2089-12-07"                 #exemple
+            }
+            
+
+            #print(jsonTicket) 
+            #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
 
 
-        ll_judicis.append({"archivo": doc, "estado": "Parseo OK."})
-        nTicketsBenParsejats += 1 #sumo un tiket ben parsejat!
+
+
+            nTicketsBenParsejats += 1 #sumo un tiket ben parsejat!
+        except IndexError as e:
+            ll_judicis.append({
+                "archivo": doc, "estado": f"Error 'IndexError: {str(e)}' encontrado durante el parseo: | Pista: Probablemente no se encontró el grupo Total(€) en el lugar correcto en este ticket."
+            })
+        """
+        except ValueError as e:
+            ll_judicis.append({
+                "archivo": doc, "estado": f"Error 'ValueError: {str(e)}' encontrado durante el parseo: | Pista: ??."
+            })    
+        """        
+            
+        
+        
         # POSAR FI TRY
 
         # POSAR EXCEPT --> RETORNAR AQUI UN DICCIONARI BUIT quan hi hagi EXCEPT, MOLT IMPORTANT!
