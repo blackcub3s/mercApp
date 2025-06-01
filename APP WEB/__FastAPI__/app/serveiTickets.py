@@ -255,13 +255,13 @@ if __name__ == "__main__":
     imprimeix_hora_espanyola()
 
     #LLISTA DE TUPLES (nom amb que guardaré el document, url d'on fem scrap del document)
-    document = "20240124 Mercadona 5,48 €"
+    document = "20250430 Mercadona 33,36 €"
 
 
-    #fesScrapTicketMercadona(document)
+    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0)
     #esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
     
-    parsejaTicketsIguardaEnMONGODB("27")
+    #parsejaTicketsIguardaEnMONGODB("20250507 Mercadona 7,05 €")
 
 
 

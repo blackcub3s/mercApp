@@ -3,6 +3,10 @@
 % Tema de la presentación
 \usetheme{Berlin} % Puedes cambiarlo a: Warsaw, Berlin, AnnArbor, etc.
 \usepackage{graphicx}
+\usepackage{multicol}
+
+
+
 
 % Información del título
 \title[Creación de un dashboard para usuarios del ticket digital de Mercadona]{Creación de un dashboard para usuarios del ticket digital de Mercadona con visualización gráfica de datos: evolución de precios por producto, gastos por categoría de alimentación y ventanas temporales de gastos}
@@ -12,28 +16,47 @@
 
 \begin{document}
 
-\AtBeginSection[]{
-	\begin{frame}
-		\frametitle{Contenidos}
-		\tableofcontents[currentsection]
-	\end{frame}
-}
 
 
-
-	
 	% Portada
 	\begin{frame}
 		\titlepage
 	\end{frame}
 	
-	% Índice
+	% Índice UNA COLUMNA
 	\begin{frame}
 		\frametitle{Contenido}
 		\tableofcontents
 	\end{frame}
 	
+	% Índice DOS COLUMNAS
+	%\begin{frame}
+	%	\frametitle{Contenido}
+	%	\begin{multicols}{2}
+		%		\tableofcontents
+		%	\end{multicols}
+	%\end{frame}
+
 	
+	
+	% INDICE CON DIFUMINADOS A CADA SECCION
+	\AtBeginSection[]{
+		\begin{frame}
+			\frametitle{Contenidos}
+			\tableofcontents[currentsection]
+		\end{frame}
+	}
+	
+	% INDICE CON DIFUMINADOS A CADA SECCION (2 COLS)
+	%\AtBeginSection[]{
+		%	\begin{frame}
+			%		\frametitle{Contenidos}
+			%		\begin{multicols}{2}
+				%			\tableofcontents[currentsection]
+				%		\end{multicols}
+			%	\end{frame}
+		%}
+
 	
 	
 	
@@ -42,35 +65,29 @@
 	% Sección 1: Introducción
 	\section{Introducción}
 	
-		%LA DIAPO QUE EXPLICA EL QUE HI HA LA INTRO
-		\begin{frame}
-			\frametitle{\textbf{Introducción}: contenidos}
+
+\begin{frame}
+	\frametitle{1. Introducción}
+	\begin{itemize}
+		\item \textbf{Identificación de necesidades}:
+		\begin{itemize}
+			\item Usuario del ticket digital $\rightarrow$ no tiene informes de sus datos.
+		\end{itemize}
+		
+		\item \textbf{Objetivos}:
+		\begin{itemize}
+			\item Proporcionar al usuario del ticket digital una herramienta que muestre en gráficos visuales:
 			\begin{itemize}
-				\item 1. Identificación de necesidades
-				\item 2. Objetivos 
-			\end{itemize}
-		\end{frame}
-		
-		
-			\begin{frame}
-				\frametitle{1. Identificación de necesidades}
-				\begin{itemize}
-					\item Usuario del ticket digital $\rightarrow$ no tiene informes de sus datos 
-				\end{itemize}
-			\end{frame}
-			
-			
-			
-			\begin{frame}
-				\frametitle{2. Objetivos}
-				Proporcionar al
-				usuario del ticket digital una herramienta que muestre en gráficos visuales:
-				\begin{itemize}
-				\item \textbf{La evolución de precios} (inflación) a lo largo del tiempo en los productos habitualmente obtenidos en el mismo establecimiento\footnote{La evolución de precios se mostrará solamente para un mismo centro de Mercadona, dado que distintos centros pueden cambiar los nombres de los productos (por ejemplo, en Cataluña…).}.
+				\item \textbf{Evolución de precios} (inflación) a lo largo del tiempo en los productos habitualmente obtenidos en el mismo establecimiento\footnote{La evolución de precios se mostrará solamente para un mismo centro de Mercadona, dado que distintos centros pueden cambiar los nombres de los productos (por ejemplo, en Cataluña…)}.
 				\item \textbf{Evolución del gasto} total del usuario a lo largo del tiempo por períodos temporales.
-				\end{itemize}
-			\end{frame}
-	
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+			
+			
+
 	
 	
 	
@@ -80,26 +97,12 @@
 	\section{Diseño}
 	
 	
-		%LA DIAPO QUE EXPLICA EL QUE HI HAAL DISENY
-		\begin{frame}
-			\frametitle{\textbf{Diseño}: contenidos}
-			\begin{itemize}
-				\item 1. Diagrama de sistemas
-				\item 2. Diagrama de sistemas: registro. 
-				\item 3. Diagrama de sistemas: inicio de sesión.
-				\item 4. Requisitos de la aplicación
-				\begin{itemize}
-					\item 4.1 Requisitos de los usuarios
-					\item 4.2 Requisitos funcionales
-				\end{itemize}
-			\end{itemize}
-		\end{frame}
 		
-		
+			\subsection{Diagramas de sistemas}
 		
 			% DIAPO DIAGRAMA DE SISTEMES GENERAL
 			\begin{frame}
-				\frametitle{1. Diagrama de sistemas}
+				
 				 
 		
 				\begin{figure}
@@ -114,7 +117,7 @@
 			
 			% DIAPO DIAGRAMA SISTEMES: REGISTRE (SIMPLIFICAT)
 			\begin{frame}
-				\frametitle{2. Diagrama de sistemas: registro}
+				\frametitle{registro}
 				
 				\begin{figure}
 					\centering
@@ -128,7 +131,7 @@
 			
 			% DIAPO DIAGRAMA SISTEMES: REGISTRE (INICI SESSIÓ)
 			\begin{frame}
-				\frametitle{3. Diagrama de sistemas: inicio de sesión}
+				\frametitle{inicio de sesión}
 				
 				\begin{figure}
 					\centering
@@ -143,10 +146,10 @@
 			
 
 			
-			
-						% DIAPO REQUISITS
+			\subsection{Requisitos}
+			% DIAPO REQUISITS
 			\begin{frame}
-				\frametitle{4.1 Requisitos de los usuarios}
+				\frametitle{Requisitos de los usuarios}
 				
 			
 				Que los usuarios tengan una cuenta de gmail con tickets digitales de Mercadona dentro e, idealmente, tenga decenas de tickets digitales: idealmente con compras estables y productos de adquisición recurrentes.
@@ -164,7 +167,7 @@
 	
 			% DIAPO REQUISITS funcionals
 			\begin{frame}
-				\frametitle{4.2 Requisitos funcionales}
+				\frametitle{Requisitos funcionales}
 				
 				
 				\textbf{REQUISITO A:} Mostrar\textbf{ \textit{evolución de los precios}} de los productos unitarios adquiridos \underline{con más frecuencia} (visualizable en un gráfico donde en X tendremos el tiempo y en Y el precio en euros).
@@ -180,7 +183,7 @@
 						
 			% DIAPO REQUISITS funcionals continuaco
 			\begin{frame}
-				\frametitle{4.2 Requisitos funcionales (cont.)}
+				\frametitle{Requisitos funcionales (cont.)}
 				
 			
 				
@@ -196,7 +199,7 @@
 								
 					% DIAPO REQUISITS funcionals RESUM
 			\begin{frame}
-				\frametitle{4.2 Requisitos funcionales (RESUMEN)}
+				\frametitle{Requisitos funcionales (RESUMEN)}
 				
 				
 				De los requisitos al diseño (anticipo de lo que será el dashboard):
@@ -226,26 +229,13 @@
 	
 		
 	%LA DIAPO QUE EXPLICA EL QUE HI HAAL DISENY
+
+	
+	
+	
+	\subsection{Entornos de desarrollo}
 	\begin{frame}
-		\frametitle{\textbf{Desarrollo}: contenidos}
-		\begin{itemize}
-			\item 1. Entornos de desarrollo
-			\item 2. Despliegue
-			\item 3. TO DO
-			\item 4. TO DO
-			\begin{itemize}
-				\item 4.1 TO DO
-				\item 4.2 TO DO
-			\end{itemize}
-		\end{itemize}
-	\end{frame}
-	
-	
-	
-	
-	
-	\begin{frame}
-		\frametitle{1. Entornos de desarrollo}
+		\frametitle{Entornos de desarrollo}
 					
 		\begin{table}[h!]
 			\centering
@@ -268,9 +258,9 @@
 	
 	
 
-	
+	\subsection{Despliegue}
 	\begin{frame}
-		\frametitle{2. Despliegue}
+		\frametitle{Despliegue}
 		Se ha automatizado la creación de imágenes e instanciado de contenedores para cada microservicio. PUERTOS: ¡idem!
 		
 		\begin{figure}
@@ -282,7 +272,7 @@
 	
 	
 	\begin{frame}
-		\frametitle{2. Despliegue (cont.)}
+		\frametitle{Despliegue (cont.)}
 		
 		
 		\begin{table}[h!]
@@ -330,26 +320,133 @@
 	
 	
 	
+	\subsection{Spring Boot: gestión usuarios}
 	
-	\subsection{parseo tickets}
+	
 	
 	\begin{frame}
-		\begin{figure}
-			\centering
-			\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioA.png}
-			\label{fig:ticketExtraccioA}
-		\end{figure}
+		\frametitle{Spring boot aqui}
 	\end{frame}
 	
+	
+	%continuar spring boot aqui
+	
+	
+	
+	
+	
+	
+	
+	\subsection{FastAPI: parseo de tickets}
+	
+	
+
+
+		\begin{frame}
+		\frametitle{Posar fastapi aqui}
+		
+		
+		\end{frame}
+
+
+		\begin{frame}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioA.png}
+				\label{fig:ticketExtraccioA}
+			\end{figure}
+		\end{frame}
+		
 	
 		
-	\begin{frame}
-		\begin{figure}
-			\centering
-			\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioB.png}
-			\label{fig:ticketExtraccioB}
-		\end{figure}
-	\end{frame}
+		\begin{frame}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioB.png}
+				\label{fig:ticketExtraccioB}
+			\end{figure}
+		\end{frame}
+		
+		\begin{frame}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioC.png}
+				\label{fig:ticketExtraccioC}
+			\end{figure}
+		\end{frame}
+		
+		\begin{frame}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioD.png}
+				\label{fig:ticketExtraccioD}
+			\end{figure}
+		\end{frame}
+		
+		\begin{frame}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioE.png}
+				\label{fig:ticketExtraccioE}
+			\end{figure}
+		\end{frame}
+		
+		\begin{frame}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioF.png}
+				\label{fig:ticketExtraccioF}
+			\end{figure}
+		\end{frame}
+		
+	
+	
+	
+		% CONTINUAR FAST API AQUI
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		\subsection{Front-end: Vanilla JS}
+		
+		\begin{frame}
+			\frametitle{POSAR FRONTEND AQUI}
+			
+			
+		\end{frame}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -370,4 +467,13 @@
 		¿Preguntas?
 	\end{frame}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+
 \end{document}
