@@ -8,3 +8,6 @@
 *.log
 *.bg
 *.blg
+
+*.nav
+*.snm
