@@ -283,7 +283,7 @@ if __name__ == "__main__":
 
     #PRENC EL TICKET MES CONFLICTIU DE MERCADONA (AL MENYS QUE HAGI TROBAT I EXECUTO EL PARSEJADOR)
     document = "20250430 Mercadona 33,36 €" #EL TICKET ULTRA CONFLICTIU.
-    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 69)
+    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
    
     #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
     #parsejaTicketsIguardaEnMONGODB(3)
