@@ -156,17 +156,15 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             carrer, CP_ciutat = ll_liniesTicket[1], ll_liniesTicket[2]
             direccioSuper = carrer + " " + CP_ciutat
             
-            # 4A I 5A LINES DEL TICKET --> ens permeten crear la clau primaria de cada ticket combinant NRE factura amb OP
-            dataOperacio = ll_liniesTicket[4] #string ------> "30/04/2025 21:14  OP: 4083409"
+            # 4A I 5A LINES DEL TICKET --> ens permeten crear la clau primaria de cada ticket 
+            #       combinant NRE factura amb OP. De la 4a extraiem data i hora també
+            dataOperacio = ll_liniesTicket[4]   #string ------> "30/04/2025 21:14  OP: 4083409"
             liniaFactura = ll_liniesTicket[5]   #string ------> "FACTURA SIMPLIFICADA: 2423-026-567893"
-            dataHora, nreOP = dataOperacio.split("OP:") # COMPTE --> A tickets de 2023 surt "OP:" i tickets 2024 i 2025 "OP: "
+            dataHora, nreOP = dataOperacio.split("OP:") # COMPTE --> A tickets de 2023 surt "OP:" i tickets de 2024 i 2025 "OP: " (amb un espai a la dreta)
             data, hora = dataHora.split() #dataHORA.split() --> ['30/04/2025', '21:14']  #LA HORA NO ES NECESSARIA PERÒ ENS LA GUARDEM :D
             data_ISO8601 = dataEspanyola_a_ISO8601(data) #faig conversió següent:  "30/04/2025" --> "2025-04-30"
 
-
-
-
-            
+            # CREEM UNA CLAU PRIMÀRIA PER TICKET QUE NO S'HAURIA DE REPETIR MAI
             nreFactura = liniaFactura.split("FACTURA SIMPLIFICADA:")[1].strip()     # 2423-026-567893
             nreOP = nreOP.strip()                                                   # 4083409
             clauPrimaria = nreFactura + "_OP" + nreOP                               # 2423-026-567893_OP4083409
