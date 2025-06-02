@@ -149,7 +149,7 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             # per salts de línia en una llista (ll_liniesTicket). De la meitat inferior (separacioTicketPerTOTAL[1])
             # només n'extraurem l'import total de la factura -ticket- mitjançant "slicing" i el guardarem en('preuTotalTicket') 
             # canviant , per . i passant a float.
-            ll_liniesTicket = separacioTicketPerTOTAL[0].split("\n")
+            ll_liniesTicket = separacioTicketPerTOTAL[0].split("\n")[:-1] #trec una linia buida vestigial al final
             preuTotalTicket = float(separacioTicketPerTOTAL[1][:separacioTicketPerTOTAL[1].index("\n")].strip().replace(",","."))
 
             # 2A I 3A LINIES DEL TICKET BÀSICAMENT SÓN CARRER I CODI POSTAL
@@ -169,14 +169,25 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             nreOP = nreOP.strip()                                                   # 4083409
             clauPrimaria = nreFactura + "_OP" + nreOP                               # 2423-026-567893_OP4083409
 
+            
+            
+            capsalTaulaProductes = ll_liniesTicket[6] #"Descripción P. Unit Importe"  o bé  "Descripció P. Unit Import"
+            if not "Descripció" in capsalTaulaProductes:
+                raise ValueError("No se encontró la cabezera Descripció o Descripción en la séptima línea del ticket")
+            
+            taulaProductes = ll_liniesTicket[7:] # des de la línia 7 fins a l'últim producte
+            
+            #SEGONA APROXIMACIÓ AL PROBLEMA IMPRIMIM NOMÉS PRODUCTES DE CADA TICKET (AMB LA DATA PER IDENTIFICAR-LO)
+            print(data)
 
-            #SEGONA APROXIMACIÓ AL PROBLEMA
-            """
-            for i in range(len(ll_liniesTicket)):
-                print(ll_liniesTicket[i])
+            i = 0
+            while i < len(taulaProductes):  
+                print(taulaProductes[i])
+                i = i + 1
             print("\n")
-            """
             # FI SEGONA APROXIMACIÓ AL PROBLEMA
+            
+            
             diccProductes = {}
             """
             for producte in liniesProductes:
@@ -199,7 +210,7 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             
 
             #print(jsonTicket) 
-            print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
+            #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
 
 
 
@@ -209,7 +220,8 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             ll_judicis.append({
                 "archivo": doc, "estado": f"Error 'IndexError: {str(e)}' encontrado durante el parseo: | Pista: Probablemente no se encontró el grupo Total(€) en el lugar correcto en este ticket."
             })
-        """ # DES COMENTAR QUAN ACABIS!
+        # DES COMENTAR QUAN ACABIS!
+        """
         except ValueError as e:  #un split que no es pot fer, per exemple!
             ll_judicis.append({
                 "archivo": doc, "estado": f"Error 'ValueError: {str(e)}' encontrado durante el parseo."
