@@ -1327,7 +1327,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\setlength{\belowcaptionskip}{3pt}
 		\begin{figure}[H]
 			\centering
-			\caption{Formato en el que parsearemos cada ticket digital de Mercadona para poder guardarlo en MongoDB y habilitar consultas eficientes. $|$Dentro de cada producto hay una lista que indica respectivamente si el producto es granel (0 si no lo es, 1 si sí lo es). Entonces, el segundo elemento de la lista indica el precio unitario o el precio por kg (en función de si es granel o no lo es, respectivamente); el tercer elemento, indica el número de unidades compradas o el número de kg comprados (en función del primer parámetro); el cuarto elemento es la categoria.}
+			\caption{Formato en el que parsearemos cada ticket digital de Mercadona para poder guardarlo en MongoDB y habilitar consultas eficientes. $|$Dentro de cada producto hay una lista que indica respectivamente si el producto es granel (0 si no lo es, 1 si sí lo es). Entonces, el segundo elemento de la lista indica el precio unitario o el precio por kg (en función de si es granel o no lo es, respectivamente); el tercer elemento, indica el número de unidades compradas o el número de kg comprados (en función del primer parámetro); el cuarto elemento es la categoría.}
 			\includegraphics[width=.8\linewidth]{img/ticketJsonEstructuratMostra}
 			\label{fig:ticketJsonEstructuratMostra}
 		\end{figure}
@@ -1338,7 +1338,7 @@ docker create -p 8000:8000 --name contFastApi back-end-fastapi
 		\setlength{\belowcaptionskip}{3pt}
 		\begin{figure}[H]
 			\centering
-			\caption{Formato en el que parsearemos cada ticket digital de Mercadona para poder guardarlo en MongoDB y habilitar consultas eficientes formato con claves descriptivas por cada producto (items sin clasificar)}
+			\caption{Formato en el que parsearemos cada ticket digital de Mercadona para poder guardarlo en MongoDB y habilitar consultas eficientes formato con claves descriptivas por cada producto (items sin clasificar). \textit{``esGranel''}: booleano autoexplicativo $|$ \textit{``preuUnitari'':} €/unidad. (si no granel) o €/kg (si granel) $|$ \textit{``quantitat''}: número unidades (si no granel) o número de kg (si granel) $|$ \textit{``categoria'':} de 0 a 13, véase diccionario clasificatorio.}
 			\includegraphics[width=.75\linewidth]{img/ticketJsonEstructuratMostraAMBCLAUS}
 			\label{fig:ticketJsonEstructuratMostraAMBCLAUS}
 		\end{figure}

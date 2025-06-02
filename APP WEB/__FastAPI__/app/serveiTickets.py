@@ -112,6 +112,16 @@ def pdf_to_text(file_path):
         return "errorPdfAtext"
 
 
+import re
+
+#PRE: un string
+#POST: true si i nomes si fa matx amb format d,dd (2,44 o 4,06).
+def esUnPreu(s):
+    return bool(re.fullmatch(r'\d,\d{2}', s))
+
+
+
+
 # PRE: -doc:                  es un string amb el path al nom del ticket en pdf que vull processar 
 #                             aspecte com aquest --> ./tickets/{idUsuari_enToken}/{nom arxiu}
 #      -ll_judicis:           lista buida o amb els judicis d'anteriors iteracions de tickets parsejats (errors o exits)
@@ -178,26 +188,43 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             taulaProductes = ll_liniesTicket[7:] # des de la línia 7 fins a l'últim producte
             
             #SEGONA APROXIMACIÓ AL PROBLEMA IMPRIMIM NOMÉS PRODUCTES DE CADA TICKET (AMB LA DATA PER IDENTIFICAR-LO)
-            print(data)
-
-            i = 0
-            while i < len(taulaProductes):  
+            """
+            print(data) 
+            for i in range(len(taulaProductes)):
                 print(taulaProductes[i])
+            print("\n")
+            """
+
+            print("\n"+data)
+            i = 0
+            diccProductes = {}
+            while i < len(taulaProductes):
+                liniaP = taulaProductes[i] #liniaProducte (una de les linies de la taula de productes que pots visualitzar descomentant les linies anteriors)
+                if esUnPreu(liniaP[-4:]):#Si els últims quatre caràcters de la linia son un preu (d,dd), aleshoes NO ES GRANEL.
+                    esGranel = False 
+                else:
+                    esGranel = True
+                    nomProducte = liniaP[1:].strip() #si és un producte granel, SEMPRE té una sola unitat. De l'estil "1PEBROT FREGIR" o "1CALABACIN BLANCO"
+                    
+                    i += 1 #vaig a la següent línia on hi ha dades del producte a granel
+                    ll_Granel = taulaProductes[i].split() # 0,184 kg 2,39 €/kg 0,44 --> ['0,184', 'kg', '2,39', '€/kg', '0,44']
+                    quantitat, preuUnitari, importProducte  = float(ll_Granel[0].replace(",",".")), float(ll_Granel[2].replace(",",".")), float(ll_Granel[4].replace(",","."))
+                    
+                    diccProductes[nomProducte] = {
+                        "esGranel": esGranel,           # exemple --> 0 (no granel) o 1 (sí és granel)
+                        "preuUnitari": preuUnitari,     # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
+                        "quantitat": quantitat,         # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
+                        "categoria": 13                 # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
+                    } 
+                    
+
+                #print(taulaProductes[i]) #DESCOMENTAR PER VEURE ELS PRODUCTES SENSE PARSEIG
+
+
                 i = i + 1
             print("\n")
-            # FI SEGONA APROXIMACIÓ AL PROBLEMA
             
-            
-            diccProductes = {}
-            """
-            for producte in liniesProductes:
-                diccProductes["BRONCHALES 6L"] = {
-                    "esGranel": 999,  # exemple --> 0 (no granel) o 1 (sí és granel)
-                    "preu": 1.28,     # exemple --> Si no granel indica €/unitat. Si sí granel, indica €/kg --> 1.28, 0.76...
-                    "quantitat": 1,   # exemple --> 1, 2, 3... n (unitats comprades)
-                    "categoria": 2    # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
-                } 
-            """
+        
             jsonTicket = {
                 "_id": clauPrimaria,  # exemple --> #2423-026-567893_OP4083409 concatenant el amb numero d'operacio
                 "idUsuari": idUsuari_enToken,        # exemple --> 10
@@ -210,7 +237,7 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             
 
             #print(jsonTicket) 
-            #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
+            print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
 
 
 
@@ -218,15 +245,15 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             nTicketsBenParsejats += 1 #sumo un tiket ben parsejat!
         except IndexError as e:
             ll_judicis.append({
-                "archivo": doc, "estado": f"Error 'IndexError: {str(e)}' encontrado durante el parseo: | Pista: Probablemente no se encontró el grupo Total(€) en el lugar correcto en este ticket."
+                "archivo": doc, "estado": f"Error 'IndexError: {str(e)}' encontrado durante el parseo.."
             })
         # DES COMENTAR QUAN ACABIS!
-        """
+        
         except ValueError as e:  #un split que no es pot fer, per exemple!
             ll_judicis.append({
                 "archivo": doc, "estado": f"Error 'ValueError: {str(e)}' encontrado durante el parseo."
             })    
-        """
+        
             
             
         
@@ -295,6 +322,9 @@ if __name__ == "__main__":
 
     #PRENC EL TICKET MES CONFLICTIU DE MERCADONA (AL MENYS QUE HAGI TROBAT I EXECUTO EL PARSEJADOR)
     document = "20250430 Mercadona 33,36 €" #EL TICKET ULTRA CONFLICTIU.
+    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
+
+    document = "20250107 Mercadona 7,35 €" #EL TICKET ULTRA CONFLICTIU.
     fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
    
     #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
