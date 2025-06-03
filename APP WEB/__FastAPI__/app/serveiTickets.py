@@ -247,8 +247,8 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
             }
             
 
-            #print(jsonTicket) 
-            #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
+            #print(jsonTicket)
+            print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
 
 
 
