@@ -81,5 +81,42 @@ function aux_treuBorde(idBanner) {
     if (liTicketsExistents) {
         liTicketsExistents.style.borderTop = '0px dashed var(--colorTitolsPas4)';
     }
+}
+
+function aux_treuBorde_llistatTickets_fallits(idBanner) {
+    const liTicketsExistents = document.querySelector(`#${idBanner} > ul > li:first-child`);
+    if (liTicketsExistents) {
+        liTicketsExistents.style.borderTop = '0px dashed var(--colorTitolsPas4)';
+    }
+}
+
+
+
+
+//PRE: arrTitolsTickets contindrà strings amb noms dels tickets que ha n fallat. Com a minim en tindrà 1.
+//POST: el ticket o tickets mostrats a l'usuari a dins el section de id bannerMissatge_PAS3_PARSEIG_ERRORS.
+function mostraTitolsTicketsPDF_queHanFallat_en_PAS3(arrTitolsTickets) {
+    const bannerMissatgesPas3_Parseig = document.getElementById("bannerMissatge_PAS3_PARSEIG_ERRORS");
+    bannerMissatgesPas3_Parseig.innerHTML = "";
+
+        
     
+
+    const p = document.createElement("p");
+    p.innerHTML = "<b>Estos tickets no pudieron ser extraídos. No se analizarán.</b>";
+    const titolInformatiuP = document.createElement("li");
+    titolInformatiuP.appendChild(p);
+    
+    const UL = document.createElement("ul");
+    UL.appendChild(titolInformatiuP);
+    for (let i = 0; i < arrTitolsTickets.length; ++i) {
+        const liTicketFallit = document.createElement("li");
+        liTicketFallit.innerHTML = arrTitolsTickets[i];
+        UL.appendChild(liTicketFallit);
+    }
+
+    bannerMissatgesPas3_Parseig.appendChild(UL); //el llistat de tickets fallats
+    
+    aux_treuBorde_llistatTickets_fallits("bannerMissatge_PAS3_PARSEIG_ERRORS"); 
+
 }

@@ -112,9 +112,9 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
 
 
 
-/*MANEIG DEL FEEDBACK PER AL PAS 3 
+/*INICI MANEIG DEL FEEDBACK PER AL PAS 3 
 (AFEGEIXO TERCER SECTION DINS EL SECTION DE PAS 3)*/
-#bannerMissatge_PAS3_PARSEIG {
+#bannerMissatge_PAS3_PARSEIG, #bannerMissatge_PAS3_PARSEIG_ERRORS {
     color: var(--colorTitolsPas4);
     grid-column: 2; /* Així el banner soritrà a la segona columna del grid, no a la primera.*/
 }
@@ -130,10 +130,32 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
     margin-bottom: 2em;
 }
 
+
+
 #bannerMissatge_PAS3_PARSEIG > ul li:last-child {
     border-top: 2px dashed var(--colorTitolsPas4);
     background-color: var(--fiGradient);
 }
+
+
+
+#bannerMissatge_PAS3_PARSEIG_ERRORS ul {
+    text-align: center;
+    border: 2px solid var(--colorTitolsPas4);
+    border-radius: .2em;
+    font-size: 1.2em;
+    list-style: none;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+#bannerMissatge_PAS3_PARSEIG_ERRORS > ul li:first-child {
+    border-top: 2px dashed var(--colorTitolsPas4);
+    background-color: var(--fiGradient);
+}
+
+/*FI MANEIG DEL FEEDBACK PER AL PAS 3 
+(AFEGEIXO TERCER SECTION DINS EL SECTION DE PAS 3)*/
 
 
 
@@ -156,4 +178,5 @@ h2 {font-size: 1.3em;} /*Subtítulo (explicación de cada paso)*/
     /*indispensable fer que l'alerta del pas3 torni a la grid-column 1 en aplicar a la media queri, o sortirà el
     grid d'una columna partit en dos!*/
     #bannerMissatge_PAS3_PARSEIG {grid-column: 1}
+    #bannerMissatge_PAS3_PARSEIG_ERRORS {grid-column: 1} /*per al banner dels errors*/
 }

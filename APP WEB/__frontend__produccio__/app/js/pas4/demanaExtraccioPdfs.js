@@ -38,13 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     llArxiusConflictius.push(arxiuConflictiu)
                 }
                 console.log(llArxiusConflictius);
-                alert(llArxiusConflictius);
+                mostraTitolsTicketsPDF_queHanFallat_en_PAS3(llArxiusConflictius);
             } else {
                 console.log("sense errors");
             }
 
 
-            alert("paro");
+
             if (data.nTicketsExistents <= 2)
                 posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.nTicketsExistents) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
             else {
