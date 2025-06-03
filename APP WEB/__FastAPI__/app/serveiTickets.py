@@ -369,9 +369,8 @@ def moureTicketsConflictiusPerRevisarlos(llErrors,idUsuari_enToken):
         nomTicket = os.path.basename(error["archivo"])
         pathArxiu_CarpetaUsuari = f"./tickets/{idUsuari_enToken}/{nomTicket}" #ubicacio actual (dins carpeta de l'usuari que s'ha trobat l'error)
         pathArxiu_carpetaLogsNostra = f"./logTicketsConflictius/{str(idUsuari_enToken)+"__"+nomTicket}"  #ubicacio de la copia per a nosaltres (FUTURA)
-        print(pathArxiu_CarpetaUsuari, pathArxiu_carpetaLogsNostra)
         
-        # Crear la carpeta de destí si no existeix
+        # Si no existeix, es crea la carpeta de destí
         os.makedirs("./logTicketsConflictius", exist_ok=True)
         try:
             shutil.copy2(pathArxiu_CarpetaUsuari, pathArxiu_carpetaLogsNostra) #copiem l'arxiu
