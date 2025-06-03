@@ -29,7 +29,22 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("totsParsejatsIguardatsBe: " + data.totsParsejatsIguardatsBe); //booleà
             console.log("nTicketsBenParsejats: "+data.nTicketsBenParsejats);   //enter
             console.log("nTicketsPersistits: "+data.nTicketsPersistits); //enter 
-            //console.log("llJudicis: "+llJudicis); //array amb un judici per cada ticket.
+            
+            //SI HI HA ERRORS ELS IMPRIMIM (AIXI SABREM ELS TICKETS CONGLICTIUS QUE NO S'HAN POGUT GUARDAR I PERSISTIR PER BORRAR-LOS)
+            if (data.llErrors.length > 0) {
+                llArxiusConflictius = [];
+                for (let i = 0; i < data.llErrors.length; ++i) {
+                    arxiuConflictiu = data.llErrors[i].archivo.split("\\")[1];
+                    llArxiusConflictius.push(arxiuConflictiu)
+                }
+                console.log(llArxiusConflictius);
+                alert(llArxiusConflictius);
+            } else {
+                console.log("sense errors");
+            }
+
+
+            alert("paro");
             if (data.nTicketsExistents <= 2)
                 posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.nTicketsExistents) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
             else {

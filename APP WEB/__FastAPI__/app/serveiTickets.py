@@ -124,7 +124,7 @@ def esUnPreu(s):
 
 # PRE: -doc:                  es un string amb el path al nom del ticket en pdf que vull processar 
 #                             aspecte com aquest --> ./tickets/{idUsuari_enToken}/{nom arxiu}
-#      -ll_judicis:           lista buida o amb els judicis d'anteriors iteracions de tickets parsejats (errors o exits)
+#      -llErrors:             lista buida, si no hi ha errors; o amb els judicis d'anteriors iteracions de tickets parsejats (amb errors)
 #      -nTicketsBenParsejats: variable d'entrada amb del nombre actual de nombre de
 #                             tickets parsejats anteriorment abans que el ticket actual
 #      -idUsuariEnToken:      l'identificador de l'usuari al que pertany el ticket.
@@ -134,10 +134,10 @@ def esUnPreu(s):
 #      -jsonTicket:           el ticket amb PDF parsejat a format JSON llest per guardar a MongoDB si ha corregut bé.
 #                             en cas contrari, si s'arriba a llençar una excepcií, tornarà un diccionari {} BUIT!!!
 #      format de jsonTicket serà de l'estil:
-def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enToken):
+def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToken):
     textPDF = pdf_to_text(doc) 
     if textPDF == "errorPdfAtext":
-        ll_judicis.append({"archivo": doc, "estado": "Parseo del ticket con pdf_to_text() falló."})
+        llErrors.append({"archivo": doc, "estado": "Parseo del ticket con pdf_to_text() falló."})
         return {}    
     else:
         
@@ -247,32 +247,25 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
             
 
             #print(jsonTicket) 
-            print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
+            #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
 
 
 
 
             nTicketsBenParsejats += 1 #sumo un tiket ben parsejat!
         except ValueError as e:  #un split que no es pot fer, per exemple!
-            ll_judicis.append({
+            llErrors.append({
                 "archivo": doc, "estado": f"Error 'ValueError: {str(e)}' encontrado durante el parseo."
             })    
-        """
+            jsonTicket = {}
         except IndexError as e:
-            ll_judicis.append({
+            llErrors.append({
                 "archivo": doc, "estado": f"Error 'IndexError: {str(e)}' encontrado durante el parseo.."
             })
-        """
+            jsonTicket = {}
        
         
-            
-            
-        
-        
-        # POSAR FI TRY
-
-        # POSAR EXCEPT --> RETORNAR AQUI UN DICCIONARI BUIT quan hi hagi EXCEPT, MOLT IMPORTANT!
-    jsonTicket = {}
+    #jsonTicket sempre sera un diccionari buit SI HI HA HAGUT ALGUN ERROR RECOLLIT EN EXCEPCIO O L'ERROR INICIAL DE NO LLEGIR PDF
     return nTicketsBenParsejats, jsonTicket
 
 
@@ -280,7 +273,7 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
 #PRE: - idUsuari_enToken (int) -> id d'usuari que té JA tickets digitals en PDF creats dins 
 #                                 el sistema d'arxius en ruta tickets/{idUsuari_enToken}
 #POST: - totTicketOk (booleà) --> Si tots els tickets de la carpeta d'usuari s'han parsejat i guardat b en BBDD
-#      - llJudicis (llista) ----> llista informativa de diccionaris ambde l'estat dels tickets 
+#      - llErrors (llista) ----> llista informativa de diccionaris ambde l'estat dels tickets que han fallat
 #                                 [{"archivo": "ticket mercadona.pdf", "estado" : "parseo ok"}, [...] ] 
 #      - totTicketOK -----------> si coincideix el nre de tickets trobats en el sistema d'arxius 
 #                                 en ruta tickets/{idUsuari_enToken} amb nTicketsBenParsejats i amb nTicketsPersistits 
@@ -292,7 +285,7 @@ def fesScrapTicketMercadona(doc, ll_judicis, nTicketsBenParsejats, idUsuari_enTo
 def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
     nTicketsBenParsejats = 0
     nTicketsPersistits = 0
-    llJudicis = []
+    llErrors = []
     directoriOnLlegir = f"./tickets/{idUsuari_enToken}"
     try:
         llistTickets = os.listdir(directoriOnLlegir)
@@ -306,8 +299,8 @@ def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
             #PRIMER EXTREC TICKET (A) && DESPRÉS EL PERSISTEIXO (B) --> INFORMO D'ERRORS DURANT TOT EL PROCÉS 
             # NOTA: funció fesScrapTicketMercadona s'hauria d'haver anomenat 
             # fesParseigTicketMercadona. No canviem el nom per consistència amb la memòria.
-            nTicketsBenParsejats, jsonTicket = fesScrapTicketMercadona(path, llJudicis, nTicketsBenParsejats, idUsuari_enToken) #(A) llJudicis passada per referència
-            nTicketsPersistits = repositoriTickets.persisteixTicket_a_MONGODB(nTicketsPersistits, jsonTicket) #(B)
+            nTicketsBenParsejats, jsonTicket = fesScrapTicketMercadona(path, llErrors, nTicketsBenParsejats, idUsuari_enToken) #(A) llErrors passada per referència
+            nTicketsPersistits = repositoriTickets.persisteixTicket_a_MONGODB(nTicketsPersistits, jsonTicket) #(B) no es persistirà si jsonTicket no és buit {} (voldria dir no s'ha parsejat b)
             
 
             # -- FI TO DO interiors de les dues funcions --
@@ -316,7 +309,7 @@ def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
         # coincideix amb el nombre de tickets correctament parsejats i tambe amb el de persistits. Aleshores tot el que 
         # ha enviat l'usuari dins el servidor en el PASO 2 s'ha aconsegit processar i persistir íntegrament en el PASO 3
         totTicketOK = len(llistTickets) == nTicketsBenParsejats == nTicketsPersistits 
-        return totTicketOK, llJudicis, nTicketsBenParsejats, nTicketsPersistits
+        return totTicketOK, llErrors, nTicketsBenParsejats, nTicketsPersistits
     
     except FileNotFoundError:
         print("Ruta no trobada! Aquest error no es donarà mai si s'activa aquest afunció des de crida a /api/parsea-y-guarda-pdfs-en-bbdd")
@@ -339,14 +332,15 @@ if __name__ == "__main__":
     #fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
 
     document = "20241218 Mercadona 29,42 €" #EL TICKET ULTRA CONFLICTIU.
-    print("---- EL DEL PARKING ----")
+    print("---- EL DEL PARKING (solucionat)----")
     fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
 
 
-    document = "20241218 Mercadona 29,42 €" #EL TICKET DE LA DORADA (3 LINIES PER UN PRODUCTE A GRANEL)
-    print("---- UN DE LA DORADA ----")
+    document = "20240625 Mercadona 19,24 €" #EL TICKET DE LA DORADA (3 LINIES PER UN PRODUCTE A GRANEL)
+    print("---- UN DE LA DORADA (si hi ha error no sortira res) ----")
     fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
-   
+
+
     #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
     #parsejaTicketsIguardaEnMONGODB(3)
 
