@@ -208,16 +208,60 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                 if "PÀRQUING" in liniaP or "PARKING" in liniaP or "APARCAMIENTO" in liniaP:
                     i = i + 1
                 elif esUnPreu(liniaP[-4:]):#Si els últims quatre caràcters de la linia son un preu (d,dd), aleshoes NO ES GRANEL.
+                    #CAS PRODUCTES QUE NO SON A GRANEL AQUÍ
                     esGranel = False 
+
                     #TO DO -- Seguir aqui fent prints linia a linia i comentatn JSON DUMPS PER ARA
-                    print(liniaP)
-                    print("  ",liniaP.split())
+                    #print(liniaP)
+                    
+                    #la liniaP després de l'split    _______________________________________________
+                    #és de   [2 tipus]  | -----------|-------------SPLIT DE LA LINIA ---------------|
+                    #                   | (MULTIPLE) | ['212', 'OUS', 'GRANS', 'L', '2,28', '4,56']-|     compra de dos o més productes
+                    #                   | (UNIC)     | ['1TOMÀQ.', 'PERA', 'TERRINA', '2,20'] ------|     compra d'un sol producte
+                    #                     ----------------------------------------------------------|
+                    #ll_liniaP es una llista de línia que inclou SEMPRE un producte que NO és a granel.
+                    ll_liniaP = liniaP.split() 
+                                                    
+                    #print("   ", ll_liniaP)
+                    
+                    importProducte = float(ll_liniaP[-1].replace(",",".")) #import de producte sempre s'obte de l'últim element de la llista
+                    
+                    #miro si es tracta del cas (MULTIPLE) -compra de 2 o més productes o compra (UNICA) -una sola unitat de producte-
+                    casCompra_MULTIPLE = esUnPreu(ll_liniaP[-2][-4:]) #
+                    if casCompra_MULTIPLE:
+                        #print("        ES MULTIPLE")
+                        preuUnitari = float(ll_liniaP[-2].replace(",","."))
+                        quantitat = round(importProducte/preuUnitari) #redondeig a enter mes proxim (per si tinguessim problemes de precissió amb coma flotant)
+                        
+                        nomProducte = "666"
 
+                    else:
+                        #print("        UNIC")
+                        quantitat = 1
+                        preuUnitari = importProducte
+                        nomProducte =  " ".join(ll_liniaP[:-1])[1:]   #elimino últim element de la llista (import) ajunto els restants i trec el 1 vestigial del principi
+                        
+                    
+                    
+                    
 
+                    
+                    diccProductes[nomProducte] = {
+                        "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
+                        "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
+                        "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
+                        "categoria": 13,             # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
+                        "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
+                    } 
+                    
+                    #print("        ",diccProductes)
+                    
                     #FI TO DO
 
                 else:
+                    #CAS PRODUCTES QUE SÍ SON A GRANEL AQUÍ!
                     esGranel = True
+
                     nomProducte = liniaP[1:].strip() #si és un producte granel, SEMPRE té una sola unitat. De l'estil "1PEBROT FREGIR" o "1CALABACIN BLANCO"
                     #print("prodGranel--> "+nomProducte)
                     i += 1 #vaig a la següent línia on hi ha dades del producte a granel
@@ -255,7 +299,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
             
 
             #print(jsonTicket)
-            #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
+            print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
 
 
 
