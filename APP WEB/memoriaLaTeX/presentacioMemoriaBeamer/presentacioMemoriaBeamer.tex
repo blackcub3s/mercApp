@@ -473,7 +473,25 @@
 		% CONTINUAR FAST API AQUI
 	
 	
+		\begin{frame}	
+			\frametitle{1a Detección productos envasados}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioN1}
+				\caption{Procedimiento: primera aproximación a la detección de productos que no son a granel mediante su importe.}
+				\label{fig:ticketextraccionN1}
+			\end{figure}
+		\end{frame}
 	
+		\begin{frame}	
+			\begin{figure}
+				\frametitle{1a Detección productos a granel}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioN2}
+				\caption{Procedimiento: primera aproximación a la detección de productos a granel a partir de la falta de importe en su primera línea.}
+				\label{fig:ticketextraccionN2}
+			\end{figure}
+		\end{frame}
 	
 	
 	
@@ -482,7 +500,7 @@
 			\begin{figure}
 				\centering
 				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioN}
-				\caption{\textcolor{red}{producto conflictivo}: número de unidades queda mezclado con el inicio de la descripción o nombre de un producto imposibilitando segmentar ambos datos mediante espacio (\textit{split()})}
+				\caption{\textcolor{red}{producto conflictivo envasado}: número de unidades queda mezclado con el inicio de la descripción o nombre de un producto imposibilitando segmentar ambos datos mediante espacio (\textit{split()})}
 				\label{fig:ticketextraccionN}
 			\end{figure}
 		\end{frame}
@@ -503,7 +521,7 @@
 		\begin{figure}
 			\centering
 			\includegraphics[width=.75\linewidth]{imgEspecifiques/ticketExtraccioP}
-			\caption{\textcolor{red}{producto conflictivo}: Sale un parking que podemos confundir por un producto.}
+			\caption{\textcolor{red}{producto conflictivo}: Sale un parking que podemos confundir por un producto envasado (primera línea) y uno a granel (2a línea) que no tendría la línea que lo suele seguir con los datos a extraer.}
 			\label{fig:ticketextraccionP}
 		\end{figure}
 	\end{frame}
@@ -513,7 +531,7 @@
 		\begin{figure}
 			\centering
 			\includegraphics[width=.75\linewidth]{imgEspecifiques/ticketExtraccioQ}
-			\caption{\textcolor{green}{Solución al conflicto}: Saltamos la línea que conteiene "PARKING" y la siguiente}
+			\caption{\textcolor{green}{Solución al conflicto}: Saltamos la línea que contiene "PARKING" y la siguiente}
 			\label{fig:ticketextraccionQ}
 		\end{figure}
 	\end{frame}
@@ -523,7 +541,7 @@
 		\begin{figure}
 			\centering
 			\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioR}
-			\caption{\textcolor{red}{producto conflictivo}: Sale Pescado sin un numero de unidades a la izquierda (como en otros productos a granel) y ocupando dos líneas: precios en la tercera cuando siempre sale en la segunda.}
+			\caption{\textcolor{red}{producto conflictivo a granel}: El producto ocupa tres líneas en vez de dos. El conflicto viene por partida doble: se añade una línea por encima con la categoria y esta primera línea -y la segunda- NO tiene un número ``1'' de unidades como en el resto de productos a granel. }
 			\label{fig:ticketextraccioR}
 		\end{figure}
 	\end{frame}
