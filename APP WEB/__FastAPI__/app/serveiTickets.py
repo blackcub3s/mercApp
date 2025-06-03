@@ -211,19 +211,13 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                     #CAS PRODUCTES QUE NO SON A GRANEL AQUÍ
                     esGranel = False 
 
-                    #TO DO -- Seguir aqui fent prints linia a linia i comentatn JSON DUMPS PER ARA
-                    #print(liniaP)
-                    
                     #la liniaP després de l'split    _______________________________________________
                     #és de   [2 tipus]  | -----------|-------------SPLIT DE LA LINIA ---------------|
                     #                   | (MULTIPLE) | ['212', 'OUS', 'GRANS', 'L', '2,28', '4,56']-|     compra de dos o més productes
                     #                   | (UNIC)     | ['1TOMÀQ.', 'PERA', 'TERRINA', '2,20'] ------|     compra d'un sol producte
                     #                     ----------------------------------------------------------|
                     #ll_liniaP es una llista de línia que inclou SEMPRE un producte que NO és a granel.
-                    ll_liniaP = liniaP.split() 
-                                                    
-                    #print("   ", ll_liniaP)
-                    
+                    ll_liniaP = liniaP.split()
                     importProducte = float(ll_liniaP[-1].replace(",",".")) #import de producte sempre s'obte de l'últim element de la llista
                     
                     #miro si es tracta del cas (MULTIPLE) -compra de 2 o més productes o compra (UNICA) -una sola unitat de producte-
@@ -233,7 +227,9 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                         preuUnitari = float(ll_liniaP[-2].replace(",","."))
                         quantitat = round(importProducte/preuUnitari) #redondeig a enter mes proxim (per si tinguessim problemes de precissió amb coma flotant)
                         
+                        #TO DO
                         nomProducte = "666"
+                        #FI TO DO
 
                     else:
                         #print("        UNIC")
@@ -241,9 +237,6 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                         preuUnitari = importProducte
                         nomProducte =  " ".join(ll_liniaP[:-1])[1:]   #elimino últim element de la llista (import) ajunto els restants i trec el 1 vestigial del principi
                         
-                    
-                    
-                    
 
                     
                     diccProductes[nomProducte] = {
