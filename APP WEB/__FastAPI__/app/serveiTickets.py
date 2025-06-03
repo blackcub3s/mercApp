@@ -228,7 +228,8 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                         quantitat = round(importProducte/preuUnitari) #redondeig a enter mes proxim (per si tinguessim problemes de precissió amb coma flotant)
                         
                         #TO DO
-                        nomProducte = "666"
+                        nreDigits_PerLesquerra_Aesborrar = len(str(quantitat))
+                        nomProducte = " ".join(ll_liniaP[:-2])[nreDigits_PerLesquerra_Aesborrar:]
                         #FI TO DO
 
                     else:
