@@ -474,7 +474,7 @@
 	
 	
 		\begin{frame}	
-			\frametitle{1a Detección productos envasados}
+			\frametitle{1a Detección productos envasados (No granel)}
 			\begin{figure}
 				\centering
 				\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioN1}
@@ -482,6 +482,8 @@
 				\label{fig:ticketextraccionN1}
 			\end{figure}
 		\end{frame}
+		
+
 	
 		\begin{frame}	
 			\begin{figure}
@@ -493,7 +495,23 @@
 			\end{figure}
 		\end{frame}
 	
-	
+		\begin{frame}
+			\frametitle{1a Detección productos envasados (continuación)}
+			
+			
+			$\forall$ producto envasado $\exists$ ``d,dd'' \underline{al final de línea} (importe).
+			
+			\begin{itemize}
+				\item Si se compra $\rightarrow$ \textbf{una unidad}, \textit{entonces}:
+				\begin{itemize}
+					\item \textbf{No} Existe patrón ``d,dd'' a su izquierda (columna P.Unit)?
+				\end{itemize}
+				\item Si se compran $\rightarrow$ \textbf{2 o más} unidades, \textit{entonces}:
+				\begin{itemize}
+					\item \textbf{Sí} Existe patrón ``d,dd'' a su izquierda (columna P.Unit)?
+				\end{itemize}
+			\end{itemize}
+		\end{frame}
 	
 	
 		\begin{frame}	

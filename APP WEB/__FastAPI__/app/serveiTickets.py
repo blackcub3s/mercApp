@@ -211,6 +211,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                     esGranel = False 
                     #TO DO -- Seguir aqui fent prints linia a linia i comentatn JSON DUMPS PER ARA
                     print(liniaP)
+                    print("  ",liniaP.split())
 
 
                     #FI TO DO
