@@ -341,6 +341,11 @@ if __name__ == "__main__":
     document = "20241218 Mercadona 29,42 €" #EL TICKET ULTRA CONFLICTIU.
     print("---- EL DEL PARKING ----")
     fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
+
+
+    document = "20241218 Mercadona 29,42 €" #EL TICKET DE LA DORADA (3 LINIES PER UN PRODUCTE A GRANEL)
+    print("---- UN DE LA DORADA ----")
+    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
    
     #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
     #parsejaTicketsIguardaEnMONGODB(3)
