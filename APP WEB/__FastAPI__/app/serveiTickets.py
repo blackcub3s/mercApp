@@ -226,11 +226,9 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                         #print("        ES MULTIPLE")
                         preuUnitari = float(ll_liniaP[-2].replace(",","."))
                         quantitat = round(importProducte/preuUnitari) #redondeig a enter mes proxim (per si tinguessim problemes de precissió amb coma flotant)
-                        
-                        #TO DO
                         nreDigits_PerLesquerra_Aesborrar = len(str(quantitat))
-                        nomProducte = " ".join(ll_liniaP[:-2])[nreDigits_PerLesquerra_Aesborrar:]
-                        #FI TO DO
+                        nomProducte = " ".join(ll_liniaP[:-2])[nreDigits_PerLesquerra_Aesborrar:] #treieme els digits vestigials a partir del calcul de la longitud de nombre d'unitats
+                        
 
                     else:
                         #print("        UNIC")
