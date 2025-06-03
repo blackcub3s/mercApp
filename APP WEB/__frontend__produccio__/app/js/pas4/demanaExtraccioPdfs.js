@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.llErrors.length > 0) {
                 llArxiusConflictius = [];
                 for (let i = 0; i < data.llErrors.length; ++i) {
-                    arxiuConflictiu = data.llErrors[i].archivo.split("\\")[1];
+                    arxiuConflictiu = data.llErrors[i].archivo.split(/[/\\]/).pop(); //VERSIO ANTIGA PROBABLEMENT NO PORTABLE ENTRE SOs --> arxiuConflictiu = data.llErrors[i].archivo.split("\\")[1];
                     llArxiusConflictius.push(arxiuConflictiu)
                 }
                 console.log(llArxiusConflictius);

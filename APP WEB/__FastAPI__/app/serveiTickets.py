@@ -7,6 +7,7 @@ import pytz
 from serveiValidacions import ticketValidat
 import repositoriTickets
 import json
+import shutil
         
 #PRE: - llJudicis: una llista buida (passada per referència)
 #     - idUsuari_enToken: un int que conté l'idUsuari obtingut del payload del token entrant.
@@ -211,14 +212,14 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                 else:
                     esGranel = True
                     nomProducte = liniaP[1:].strip() #si és un producte granel, SEMPRE té una sola unitat. De l'estil "1PEBROT FREGIR" o "1CALABACIN BLANCO"
-                    print("prodGranel--> "+nomProducte)
+                    #print("prodGranel--> "+nomProducte)
                     i += 1 #vaig a la següent línia on hi ha dades del producte a granel
                     ll_Granel = taulaProductes[i].split() # 0,184 kg 2,39 €/kg 0,44 --> ['0,184', 'kg', '2,39', '€/kg', '0,44']
     
                     quantitat, preuUnitari, importProducte  = float(ll_Granel[0].replace(",",".")), float(ll_Granel[2].replace(",",".")), float(ll_Granel[4].replace(",","."))
                   
                        
-                    print("     "+str(ll_Granel))
+                    #print("     "+str(ll_Granel))
                     diccProductes[nomProducte] = {
                         "esGranel": esGranel,        # exemple --> 0 (no granel) o 1 (sí és granel)
                         "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
@@ -309,13 +310,32 @@ def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
         # coincideix amb el nombre de tickets correctament parsejats i tambe amb el de persistits. Aleshores tot el que 
         # ha enviat l'usuari dins el servidor en el PASO 2 s'ha aconsegit processar i persistir íntegrament en el PASO 3
         totTicketOK = len(llistTickets) == nTicketsBenParsejats == nTicketsPersistits 
+        moureTicketsConflictiusPerRevisarlos(llErrors, idUsuari_enToken)
         return totTicketOK, llErrors, nTicketsBenParsejats, nTicketsPersistits
     
     except FileNotFoundError:
         print("Ruta no trobada! Aquest error no es donarà mai si s'activa aquest afunció des de crida a /api/parsea-y-guarda-pdfs-en-bbdd")
     
 
-    
+#PRE: una llista d'error que conté els tickets que han fallat i un id d'usuari.
+#POST: els tickets es guarden DINS una carpeta al sistema d'arxius
+#      del servidor perquè puguem revisar-los i millorar el codi un cop ja en producció.
+#      la carpeta es /ticketsQueDonenError/{idUsuari_enToken__nomArxiu}
+def moureTicketsConflictiusPerRevisarlos(llErrors,idUsuari_enToken):
+    for error in llErrors:
+        nomTicket = os.path.basename(error["archivo"])
+        pathArxiu_CarpetaUsuari = f"./tickets/{idUsuari_enToken}/{nomTicket}" #ubicacio actual (dins carpeta de l'usuari que s'ha trobat l'error)
+        pathArxiu_carpetaLogsNostra = f"./logTicketsConflictius/{str(idUsuari_enToken)+"__"+nomTicket}"  #ubicacio de la copia per a nosaltres (FUTURA)
+        print(pathArxiu_CarpetaUsuari, pathArxiu_carpetaLogsNostra)
+        
+        # Crear la carpeta de destí si no existeix
+        os.makedirs("./logTicketsConflictius", exist_ok=True)
+        try:
+            shutil.copy2(pathArxiu_CarpetaUsuari, pathArxiu_carpetaLogsNostra) #copiem l'arxiu
+        except Exception as e:
+            print(f"Error copiant {nomTicket}: {e}")
+
+        
 
 
 if __name__ == "__main__":
