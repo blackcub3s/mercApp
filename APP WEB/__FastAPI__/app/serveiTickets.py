@@ -196,7 +196,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
             print("\n")
             """
             #FI SEGONA APROXIMACIÓ AL PROBLEMA
-            print("\n"+data)
+            print("-------------\n"+data+"\n------------")
             i = 0
             diccProductes = {}
             while i < len(taulaProductes):
@@ -209,6 +209,12 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                     i = i + 1
                 elif esUnPreu(liniaP[-4:]):#Si els últims quatre caràcters de la linia son un preu (d,dd), aleshoes NO ES GRANEL.
                     esGranel = False 
+                    #TO DO -- Seguir aqui fent prints linia a linia i comentatn JSON DUMPS PER ARA
+                    print(liniaP)
+
+
+                    #FI TO DO
+
                 else:
                     esGranel = True
                     nomProducte = liniaP[1:].strip() #si és un producte granel, SEMPRE té una sola unitat. De l'estil "1PEBROT FREGIR" o "1CALABACIN BLANCO"
@@ -248,7 +254,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
             
 
             #print(jsonTicket)
-            print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
+            #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
 
 
 
@@ -348,8 +354,7 @@ if __name__ == "__main__":
     document = "20250430 Mercadona 33,36 €" #EL TICKET ULTRA CONFLICTIU.
     #fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
 
-    document = "20250107 Mercadona 7,35 €" #EL TICKET ULTRA CONFLICTIU.
-    #fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
+
 
     document = "20241218 Mercadona 29,42 €" #EL TICKET ULTRA CONFLICTIU.
     print("---- EL DEL PARKING (solucionat)----")
@@ -357,9 +362,13 @@ if __name__ == "__main__":
 
 
     document = "20240625 Mercadona 19,24 €" #EL TICKET DE LA DORADA (3 LINIES PER UN PRODUCTE A GRANEL)
-    print("---- UN DE LA DORADA (si hi ha error no sortira res) ----")
-    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
+    #print("---- UN DE LA DORADA (si hi ha error no sortira res) ----")
+    #fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
 
+    document = "20250107 Mercadona 7,35 €" #EL TICKET ULTRA CONFLICTIU.
+    print("---- EL DE 2 OUS DE 12 UNITATS ----")
+    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
+    
 
     #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
     #parsejaTicketsIguardaEnMONGODB(3)
