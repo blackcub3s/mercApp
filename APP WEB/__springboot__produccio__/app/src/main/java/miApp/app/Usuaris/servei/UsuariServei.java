@@ -328,9 +328,14 @@ public class UsuariServei {
         return mapJSONlike;
     }
 
-
+    //PRE: existeix un idUsuari en la base de dades amb permisos a 0.
+    //POST: canviem permisos idUsuari a 1 en bbdd + retorno JWT fresc (amb permisos 1)
     public String obtenirTokenPermisosPerAdashboard(int idUsuari) {
-        return "el token aqui";
+        Optional<Usuari> usuariOptional = repoUsuari.findById(idUsuari);
+        Usuari u = usuariOptional.get();
+        u.setPermisos((byte) 1);
+        repoUsuari.save(u);
+        return this.generaTokenAccesPerUsuariParticular(u.getCorreuElectronic());
     }
 
 

@@ -112,7 +112,7 @@
 				\begin{frame}
 					\frametitle{Requisitos de los usuarios}
 					
-					Que los usuarios tengan una cuenta de gmail con tickets digitales de Mercadona dentro e, idealmente, tenga decenas de tickets digitales: idealmente con compras estables y productos de adquisición recurrentes.
+					Que los usuarios tengan una cuenta de gmail con tickets digitales de Mercadona dentro e, idealmente, tenga decenas de tickets digitales: idealmente con compras estables y productos de adquisición recurrentes. El requisito indispensable es tener un mínimo de dos tickets digitales distintos.
 		
 				\end{frame}
 				
@@ -335,14 +335,36 @@
 	
 	
 	\begin{frame}
-		\frametitle{Spring boot aqui}
+		
+		
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\linewidth]{imgEspecifiques/springBootLogoPART}
+			
+			\label{fig:springbootlogopart}
+		\end{figure}
+		
 	\end{frame}
 	
 	
-	%continuar spring boot aqui
+	\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\linewidth]{imgEspecifiques/diaposolicitudTokenAccesFastAPI.png}
+			\label{fig:diaposolicitudTokenAccesFastAPI}
+			\caption{Función de servicio en Spring Boot para expedir un acceso con el id de usuario proporcionado por FastAPI (solicitud cliente cuando FastAPI ya tiene tickets persistidos). \textbf{Nótese que en 3 líneas de código tenemos la persistencia en mySQL hecha. ¿Función save?}.}
+		\end{figure}
+	\end{frame}
+		
 	
-	
-	
+		\begin{frame}
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\linewidth]{imgEspecifiques/JPAexplicacioSaveRepoUsuari.png}
+			\label{fig:JPAexplicacioSaveRepoUsuari}
+			\caption{Con JpaRepository tenemos funciones para persistir en base de datos sin tener que definir consultas (la función save de la diapositiva anterior). Al hacer nuestra interface para operaciones de persistencia solamente debememos extender de JpaRepository e indicar la clase con la que hacemos el ORM y su clave primaria}
+		\end{figure}
+	\end{frame}
 	
 	
 	
@@ -353,9 +375,13 @@
 
 
 		\begin{frame}
-		\frametitle{Posar fastapi aqui}
-		
-		
+				
+			\begin{figure}
+				\centering
+				\includegraphics[width=1\linewidth]{imgEspecifiques/fastAPIiPythonLogos}
+				\label{fig:fastapiipythonlogos}
+			\end{figure}
+			
 		\end{frame}
 
 

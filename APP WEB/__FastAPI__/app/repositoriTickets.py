@@ -8,6 +8,7 @@
 #                                   B) Ha fallat la persistència a mongoDB per algun altre motiu.
 #
 #                            - valdrà nTicketsPersistits + 1: si aconseguim guardar el ticket a mongoDB.
+#                            - El ticket si tot va bé es persistirà a mongoDB.
 def persisteixTicket_a_MONGODB(nTicketsPersistits, jsonTicket):
     if jsonTicket == {}:
         return nTicketsPersistits #retorno sense incrementar.
