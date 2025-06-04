@@ -24,10 +24,40 @@
 # conexiones entrantes del Host y puerto de FastAPI.
 # ------------------------------------------------------------------------------------------------------------------
 
+
+
+
+import httpx
+
+BASE_URL = "http://localhost:8080"
+
+
 #FUNCIO QUE OBTE EL NOU TOKEN AMB PERMISOS A 1 DE SPRING BOOT PERSONALOTZAT PER A L'idUsuari_enToken entrant
-def obtenirTokenSpringBoot(idUsuari_enToken):
-    tokenPermisosA1 = f"token per a dashboard de permisos a 1 i per idUsuari: {idUsuari_enToken}"
-    return tokenPermisosA1
+async def obtenirTokenSpringBoot(idUsuari_enToken: int) -> str:
+    payload = {"idUsuari": idUsuari_enToken}
+
+    async with httpx.AsyncClient(base_url=BASE_URL) as client:
+        try:
+            response = await client.post("/api/obtenerTokenPermisosDashboard", json=payload)
+            response.raise_for_status()
+            JSON_token = response.json() #tindria {"nouToken": "asdkjqwoiehqowdha"}
+            return JSON_token["nouToken"] #retorna nomes el token
+        except httpx.HTTPStatusError as e:
+            print(f"Error HTTP: {e.response.status_code} - {e.response.text}")
+            raise
+        except httpx.RequestError as e:
+            print(f"Error de conexión: {e}")
+            raise
+
+
+
+
+
+
+
+
+
+
 
 #PRE: - nTicketPersistits:  nombre de tickets que s'han persistit a mongo db
 #     - idUsuari_enToken:   es l'id de l'usuari que te els permisos en token.
@@ -36,11 +66,15 @@ def obtenirTokenSpringBoot(idUsuari_enToken):
 #     - nouTokenAccesPermisosA1: si nTicketPersistits >= 2 retorna nou token d'accés expedit des 
 #               de spring boot i amb permisos a 1 (que permetra al frontend accedir al dashboard).
 #                                si nTicketsPersistits < 2 retorna un string buit
-def expedeixTokenPerAdashboard_SI_SESCAU(nTicketsPersistits, idUsuari_enToken, permisos_enToken):
+async def expedeixTokenPerAdashboard_SI_SESCAU(nTicketsPersistits, idUsuari_enToken, permisos_enToken):
     if permisos_enToken == 0:
         if nTicketsPersistits < 2:
             nouTokenAccesPermisosA1 = "" #si hi ha menys de dos tickets no té cap sentit fer cap resum, no permetem que accedeixi a dashboard
         else:
-            nouTokenAccesPermisosA1 = obtenirTokenSpringBoot(idUsuari_enToken)
+            nouTokenAccesPermisosA1 = await obtenirTokenSpringBoot(idUsuari_enToken)
 
     return nouTokenAccesPermisosA1
+
+
+
+

@@ -37,7 +37,7 @@ VALUES ('noacces@gmail.com', "123","whitecub3s",0);*/
 SELECT * FROM usuari;
 SELECT * FROM usuari_ampliat;
 
-UPDATE usuari
-SET permisos = 1
-WHERE correu_electronic = "santiago.sanchez.sans.44@gmail.com";
+-- UPDATE usuari
+-- SET permisos = 1
+-- WHERE correu_electronic = "santiago.sanchez.sans.44@gmail.com";
 

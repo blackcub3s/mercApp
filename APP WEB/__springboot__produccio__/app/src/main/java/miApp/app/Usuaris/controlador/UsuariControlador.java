@@ -144,7 +144,7 @@ public class UsuariControlador {
 
     //PRE: un hashmap estil ---> {"idUsuari" : 3}                [provinent de FastApi, sense token entrant]
     //POST: un hashmap estil --> {"nouToken" : "lksdqwoiqweih"}  [que tindrà permisos a 1 i l'idUsuari dins]
-    @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO NOMÉS A FASTAPI FER SOLICITUDS ENTRANTS I SENSE TOKEN
+    @CrossOrigin(origins = "http://127.0.0.1:8000") // PERMETO NOMÉS A FASTAPI FER SOLICITUDS ENTRANTS I SENSE TOKEN
     @PostMapping("/obtenerTokenPermisosDashboard")
     public ResponseEntity<HashMap<String, String>> creaToken(@RequestBody HashMap<String, Integer> mapIdUsuari) {
         Integer idUsuari = mapIdUsuari.get("idUsuari");

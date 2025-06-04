@@ -58,15 +58,18 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 if (data.totsParsejatsIguardatsBe) {
                     setTimeout(() => {
-                        //TO DO   <-----------------------------------
-                        alert("POSA EL TOKEN CASI DIRECTE A LOCAL STORAGE AQUI (SET TIME OUT DE NOMES UN SEGON): NO CAL FER ESPERAR A L'USUARI")
+                        console.log("No cal fer esperar a l'usuari gairebé. Simplement serà redirigit perquè no hi ha errors.");
+                        localStorage.setItem("AccessToken", data.nouTokenAccesPermisosA1);
+                        redirigeix_a_dashboard_o_pas4(); // Forço reavaluació immediata: en cas contrari no redirigiria a la pàgina fins fer F5
                     }, 1500); 
 
                    
                 } else {
                     setTimeout(() => {
-                        //TO DO    <-----------------------------------
-                        alert("FES UN SET TIME OUT DE UNS 5 SEGONS PERQUE L'USUARI PUGUI VEURE ELS TIKETS QUE HAN FALLAT I ALESHORES POSA EL TOKEN AL LOCAL STORAGE")
+                        console.log("Fem esperar una mica més perquè l'usuari pugui veure els tickets que han fallat");
+                        localStorage.setItem("AccessToken", data.nouTokenAccesPermisosA1);
+                        redirigeix_a_dashboard_o_pas4(); // Forço reavaluació immediata: en cas contrari no redirigiria a la pàgina fins fer F5
+                        //FUTUR: potser afegir un conte endarrera en el DOM
                     }, 5000); 
                     
                 }
