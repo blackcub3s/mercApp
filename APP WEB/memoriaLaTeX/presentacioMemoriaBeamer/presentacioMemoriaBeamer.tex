@@ -473,6 +473,21 @@
 		% CONTINUAR FAST API AQUI
 	
 	
+	\begin{frame}	
+		\frametitle{Delimitamos la tabla de productos (gracias a la cabecera)}
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\linewidth]{imgEspecifiques/ticketExtraccioN0}
+			\caption{Este proceso depende de encontrar la cabecera en la línea siete (funciona para catalán y castellano). Lanzamos excepcion si falla.}
+			\label{fig:ticketextraccionN0}
+		\end{figure}
+	\end{frame}
+	
+	
+	
+	
+	
+	
 		\begin{frame}	
 			\frametitle{1a Detección productos envasados (No granel)}
 			\begin{figure}
@@ -581,6 +596,18 @@
 			\includegraphics[width=1\linewidth]{imgEspecifiques/mostraErrorsPas4_i_maneig}
 			\caption{Así mostraremos los tickets cuyo parseo ha fallado al usuario y los guardaremos a parte concatenando el id de usuario y el ticket}
 			\label{fig:mostraerrorspas4imaneig}
+		\end{figure}
+		
+	\end{frame}
+	
+	
+	\begin{frame}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\linewidth]{imgEspecifiques/ticketFinal}
+			\caption{Ticket parseado correctamente a su formato JSON (persistible)}
+			\label{fig:ticketFinal}
 		\end{figure}
 		
 	\end{frame}

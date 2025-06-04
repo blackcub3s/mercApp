@@ -182,7 +182,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
 
             
             
-            capsalTaulaProductes = ll_liniesTicket[6] #"Descripción P. Unit Importe"  o bé  "Descripció P. Unit Import"
+            capsalTaulaProductes = ll_liniesTicket[6] #"Descripción P. Unit Importe"  o bé  "Descripció P. Unit Import" els dos FARAN MATCH :)
             if not "Descripció" in capsalTaulaProductes:
                 raise ValueError("No se encontró la cabezera Descripció o Descripción en la séptima línea del ticket")
             
@@ -406,9 +406,16 @@ if __name__ == "__main__":
     fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
     
 
+    document = "20250507 Mercadona 7,05 €"
+    print("---- EL DE LA DEMO DE LA MEMORIA ----")
+    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)    
+    
+    
     #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
     #parsejaTicketsIguardaEnMONGODB(3)
-
+    document = "20250207 Mercadona 23,01 €"
+    print("---- EL DE LA DEMO DEL BEAMER ----")
+    fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)   
 
 
     #A FUTUR, ESBORAR PDFS (NO USAT)
