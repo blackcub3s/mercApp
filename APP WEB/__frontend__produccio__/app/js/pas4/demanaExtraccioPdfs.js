@@ -29,7 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("totsParsejatsIguardatsBe: " + data.totsParsejatsIguardatsBe); //booleà
             console.log("nTicketsBenParsejats: "+data.nTicketsBenParsejats);   //enter
             console.log("nTicketsPersistits: "+data.nTicketsPersistits); //enter 
-            
+            console.log("nouTokenAccesPermisosA1"+data.nouTokenAccesPermisosA1); //string AMB EL TOKEN (BORRAR QUEST CONSOOLE LOG)
+
             //SI HI HA ERRORS ELS IMPRIMIM (AIXI SABREM ELS TICKETS CONGLICTIUS QUE NO S'HAN POGUT GUARDAR I PERSISTIR PER BORRAR-LOS)
             if (data.llErrors.length > 0) {
                 llArxiusConflictius = [];
@@ -44,20 +45,34 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-
-            if (data.nTicketsExistents <= 2)
+            //SI HI HA MENYS DE DOS TICKETS AL SISTEMA D'ARXIUS NO ANALITZEM RES! NO TINDRIA SENTIT. EN CAS CONTRARI SÍ HO FEM I MOSTREM L'ESTAT DEL PROCESSAMENT
+            if (data.nTicketsExistents < 2)
                 posaMissatgesAusuari_PASO3_estadoCreacionExtraccionTickets(data.nTicketsExistents) //funció pertanyent en arxiu en ruta js/pas4/alertesPas4.js
             else {
-                if (data.totsParsejatsIguardatsBe) {
-                    alert("to DO");
-                    //
-                    //xupare aqui token a 1 i posar-lo a local storage
-                    //
-                }
                 posaMissatgesAusuari_PASO3_estatProcessament(data.totsParsejatsIguardatsBe, data.nTicketsExistents, data.nTicketsBenParsejats, data.nTicketsPersistits);
             }
 
-            //console.log(`Parseados correctamente: ${data.ticketsParseadosOK} || Fallados en parseo: ${data.ticketsParseadosFAIL} || Subidos a MongoDB: ${data.bbddOK}`);
+            //MANEJEM LA LÒGICA DE REDIRECCIÓ AL DASHBOARD UN COP REBEM LA RESPONSE: POT SRE QUE S'HAGI DE REDIRIGIR O NO
+            if (data.nouTokenAccesPermisosA1 == "") {
+                alert("NO EXISTEIX NOU TOKEN PERMISSO A U EXPEDIT ENCARA");
+            } else {
+                if (data.totsParsejatsIguardatsBe) {
+                    setTimeout(() => {
+                        //TO DO   <-----------------------------------
+                        alert("POSA EL TOKEN CASI DIRECTE A LOCAL STORAGE AQUI (SET TIME OUT DE NOMES UN SEGON): NO CAL FER ESPERAR A L'USUARI")
+                    }, 1500); 
+
+                   
+                } else {
+                    setTimeout(() => {
+                        //TO DO    <-----------------------------------
+                        alert("FES UN SET TIME OUT DE UNS 5 SEGONS PERQUE L'USUARI PUGUI VEURE ELS TIKETS QUE HAN FALLAT I ALESHORES POSA EL TOKEN AL LOCAL STORAGE")
+                    }, 5000); 
+                    
+                }
+            }
+            
+
         })
         .catch(error => {
             console.error('Error en paso3:', error);

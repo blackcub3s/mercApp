@@ -5,7 +5,7 @@ import os
 from jwtUtil import verificar_token, permetSolicitudsEntrantsNomesA
 import serveiTickets
 import serveiValidacions
-
+import serveiClient
 
 
 app = FastAPI()
@@ -81,12 +81,17 @@ async def pujarPdfsTicketDigital(payload_token: dict = Depends(verificar_token))
     permetSolicitudsEntrantsNomesA([0,2], permisos_enToken)
     
     totTicketOK, llErrors, nTicketsBenParsejats, nTicketsPersistits = serveiTickets.parsejaTicketsIguardaEnMONGODB(idUsuari_enToken) #hauria de se asincrono? 
+    #nTicketsPersistits = 2  # per a fer tests, borra
+    #totTicketOK = False     # per afer tests, borra
+    nouTokenAccesPermisosA1 = serveiClient.expedeixTokenPerAdashboard_SI_SESCAU(nTicketsPersistits, idUsuari_enToken, permisos_enToken)
+
     return {
         "nTicketsExistents" : serveiValidacions.mostraTicketsExistentsDinsCarpetaUsuari(idUsuari_enToken), #enter
         "totsParsejatsIguardatsBe" : totTicketOK,       #booleà
         "nTicketsBenParsejats" : nTicketsBenParsejats,  #enter
         "nTicketsPersistits" : nTicketsPersistits,      #enter
-        "llErrors" : llErrors                         #llista de dicccionaris
+        "nouTokenAccesPermisosA1" : nouTokenAccesPermisosA1,
+        "llErrors" : llErrors                           #llista de dicccionaris
         }
 
 
