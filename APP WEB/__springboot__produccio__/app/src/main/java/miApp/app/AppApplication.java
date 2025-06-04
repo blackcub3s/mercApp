@@ -25,26 +25,26 @@ public class AppApplication {
 													"the protein kingdom",
 													(byte) 2); //ES ADMIN
 
-		boolean afegitDos = usuariServei.afegirUsuari("acces@gmail.com",
+		/*boolean afegitDos = usuariServei.afegirUsuari("acces@gmail.com",
 													"12345678Mm_",
 												"blackcub3s",
-													(byte) 1); //ES USER
-
+													(byte) 1); //ES USER*/
+		/*
 		boolean afegitTres = usuariServei.afegirUsuari("noacces@gmail.com",
 				  									   "12345678Mm_",
 				                                 "pinkcub3s",
 				                                       (byte) 0); //JA TENIM MAIL I CONTRA GUARDATS, PERO NO TE RECURSOS
-
+		*/
 
 		//OBTINC LA BEAN DE LES DUES CLASSES QUE FALTEN PER FER AQUEST TEST (EL USUARI AMPLIAT SERVEI I L'USUARI REPOSITORI)
 		UsuariAmpliatServei usuariAmpliatServei = context.getBean(UsuariAmpliatServei.class);
 		UsuariRepositori usuariRepositori = context.getBean(UsuariRepositori.class); //obtens la bean del context per pillar classe usuariServei
 
 		Usuari u = usuariServei.trobaUsuariPerEmail("superacces@gmail.com");
-		Usuari usuariBis = usuariRepositori.findById(2).get(); //acces@gmail.com
+		//Usuari usuariBis = usuariRepositori.findById(2).get(); //acces@gmail.com
 
 		usuariAmpliatServei.afegirNomIcognoms(u, "Santi", "Sánchez", "Sans");
-		usuariAmpliatServei.afegirNomIcognoms(usuariBis, "Emma", "Palausabulla", "Balluback");
+		//usuariAmpliatServei.afegirNomIcognoms(usuariBis, "Emma", "Palausabulla", "Balluback");
 
 
 
