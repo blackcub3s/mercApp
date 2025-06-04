@@ -58,16 +58,30 @@ function posaMissatgesAusuari_PASO3_estatProcessament(totsParsejatsIguardatsBe, 
     const bannerMissatgesPas3_Parseig = document.getElementById("bannerMissatge_PAS3_PARSEIG");
 
     if(!totsParsejatsIguardatsBe) {
-        bannerMissatgesPas3_Parseig.innerHTML = `<ul>
-                                                    <li><b>${nTicketsPersistits}</b> extraídos de <b>${nTicketsExistents}</b> tickets facilitados!</li>
-                                                    <li>(<span style="color: red"><b>${Math.round(100*nTicketsPersistits/nTicketsExistents)}</b>%</span> de éxito)</li>
-                                                </ul>
-                                                `        
+        if (nTicketsPersistits < 2) {
+            bannerMissatgesPas3_Parseig.innerHTML = `<ul>
+                                                        <li>No se pueden analizar ni persistir menos de 2 tickets! </li>
+                                                    </ul>
+                                                    `
+        } else {
+            bannerMissatgesPas3_Parseig.innerHTML = `<ul>
+                                                        <li><b>${nTicketsPersistits}</b> extraídos de <b>${nTicketsExistents}</b> tickets facilitados!</li>
+                                                        <li>(<span style="color: red"><b>${Math.round(100*nTicketsPersistits/nTicketsExistents)}</b>%</span> de éxito)</li>
+                                                    </ul>
+                                                    `    
+        }
     } else {
-        bannerMissatgesPas3_Parseig.innerHTML = `<ul>
-                                                    <li>Todos los Tickets parseados y guardados con éxito!</li>
-                                                </ul>
-                                                `         
+        if (nTicketsPersistits >= 2) {
+            bannerMissatgesPas3_Parseig.innerHTML = `<ul>
+                                                        <li>Todos los Tickets parseados y guardados con éxito!</li>
+                                                    </ul>
+                                                    `         
+        } else {
+            bannerMissatgesPas3_Parseig.innerHTML = `<ul>
+                                                        <li>No se pueden analizar ni persistir menos de 2 tickets! </li>
+                                                    </ul>
+                                                    `                 
+        }
     }
     aux_treuBorde("bannerMissatge_PAS3_PARSEIG"); 
     

@@ -81,8 +81,8 @@ async def pujarPdfsTicketDigital(payload_token: dict = Depends(verificar_token))
     permetSolicitudsEntrantsNomesA([0,2], permisos_enToken)
     
     totTicketOK, llErrors, nTicketsBenParsejats, nTicketsPersistits = serveiTickets.parsejaTicketsIguardaEnMONGODB(idUsuari_enToken) #hauria de se asincrono? 
-    #nTicketsPersistits = 2  # per a fer tests, borra
-    #totTicketOK = False     # per afer tests, borra
+    #nTicketsPersistits = 3  # per a fer tests (borra, testejat)--> CAL QUE SIGUI MINIM 2 PERQUE EN CLICAR A ENGRANATGE MOSTRI TOKEN
+    #totTicketOK = False     # per afer tests (borra, testejat)--> si totTicketOK es true el front farà una espera menor al pasar al dashboard (no hi haura errors a mostrar)
     nouTokenAccesPermisosA1 = serveiClient.expedeixTokenPerAdashboard_SI_SESCAU(nTicketsPersistits, idUsuari_enToken, permisos_enToken)
 
     return {

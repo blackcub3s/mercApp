@@ -29,12 +29,13 @@ def obtenirTokenSpringBoot(idUsuari_enToken):
     tokenPermisosA1 = f"token per a dashboard de permisos a 1 i per idUsuari: {idUsuari_enToken}"
     return tokenPermisosA1
 
-#PRE: - nTicketPersistits:  nombre de tickets que s'han persistit a mongo db (minim 2)
+#PRE: - nTicketPersistits:  nombre de tickets que s'han persistit a mongo db
 #     - idUsuari_enToken:   es l'id de l'usuari que te els permisos en token.
 #     - permisos en token:   HA DE SER (convidat, que esta al pas4 per exemple)
 #POST: 
-#     - nouTokenAccesPermisosA1: rtorna nou token d'accés expedit des de spring boot i amb 
-#      permisos a 1 (que permetra al frntend accedir al dashboard)
+#     - nouTokenAccesPermisosA1: si nTicketPersistits >= 2 retorna nou token d'accés expedit des 
+#               de spring boot i amb permisos a 1 (que permetra al frontend accedir al dashboard).
+#                                si nTicketsPersistits < 2 retorna un string buit
 def expedeixTokenPerAdashboard_SI_SESCAU(nTicketsPersistits, idUsuari_enToken, permisos_enToken):
     if permisos_enToken == 0:
         if nTicketsPersistits < 2:
