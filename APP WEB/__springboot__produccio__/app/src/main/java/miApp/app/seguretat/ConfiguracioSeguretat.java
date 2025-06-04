@@ -27,7 +27,9 @@ public class ConfiguracioSeguretat {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/correusUsuaris").hasRole("ADMIN")
+                                .requestMatchers("/api/obtenerTokenPermisosDashboard").permitAll() //EL PERMITIM SENSE TOKEN ENTRANT. OJO, AMB CROSSORIGIN FORCEM QUE NOMÉS PUGUI VENIR DE FASTAPI A NIVEL LDE CONTROLADOR
+
+                                .requestMatchers("/api/correusUsuaris").hasRole("ADMIN")    //TESTEJAT!
                                 .requestMatchers("/api/usuaris/*").hasAnyRole("USER", "ADMIN")  //TESTEJAT!      PROTEGEIXO RUTA /api/usuaris/{ID}. SI VOLGUES PROTEGIR TOTES LES SUBRUTES POSTERIORS (POSARIA DOS ASTERISCS EN COMPTES DE UN). HE AFINAT PER RESTRINGIT ALS USUARIS AMB PreAuthorise
                                 .requestMatchers("/api/usuaris").hasRole("ADMIN")   //TESTEJAT!                         AQUEST ENDPOINT NOMES L'HA DE VEURE L'ADMINISTRADOR. ENDPOINT PROTEGIT (ADMIN es permisos == 2 de la bbdd veure FiltreAutenticacioJwt)
                                 .requestMatchers("/api/nreUsuaris").hasAnyRole("USER", "ADMIN") //TESTEJAT!         ENDPOINT PROTEGIT (USER es permisos==1 de la bbdd) TESTEJAT! NOMES DEIXA ACCEDIR USERS I ADMIN

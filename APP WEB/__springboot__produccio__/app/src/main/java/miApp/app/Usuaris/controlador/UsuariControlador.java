@@ -142,8 +142,16 @@ public class UsuariControlador {
         return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);
     }
 
-
-
+    //PRE: un hashmap estil ---> {"idUsuari" : 3}                [provinent de FastApi, sense token entrant]
+    //POST: un hashmap estil --> {"nouToken" : "lksdqwoiqweih"}  [que tindrà permisos a 1 i l'idUsuari dins]
+    @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO NOMÉS A FASTAPI FER SOLICITUDS ENTRANTS I SENSE TOKEN
+    @PostMapping("/obtenerTokenPermisosDashboard")
+    public ResponseEntity<HashMap<String, String>> creaToken(@RequestBody HashMap<String, Integer> mapIdUsuari) {
+        Integer idUsuari = mapIdUsuari.get("idUsuari");
+        HashMap<String, String> mapSortida = new HashMap<>(); //Amb aixo expedim el token
+        mapSortida.put("nouToken", serveiUPP.obtenirTokenPermisosPerAdashboard(idUsuari));
+        return new ResponseEntity<>(mapSortida, HttpStatus.OK);
+    }
 
 
 

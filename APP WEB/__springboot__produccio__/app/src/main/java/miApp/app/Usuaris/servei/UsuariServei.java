@@ -328,4 +328,11 @@ public class UsuariServei {
         return mapJSONlike;
     }
 
+
+    public String obtenirTokenPermisosPerAdashboard(int idUsuari) {
+        return "el token aqui";
+    }
+
+
+
 }
