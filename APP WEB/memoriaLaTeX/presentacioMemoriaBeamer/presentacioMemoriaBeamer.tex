@@ -640,6 +640,36 @@
 	
 	
 	
+	\begin{frame}
+		\frametitle{Persistencia $|$ FastAPI $\rightarrow$ mongoDB}
+		
+
+		\begin{table}[h!]
+			\centering
+			\begin{tabular}{|l|l|}
+				\hline
+				\textbf{MongoDB (NoSQL)} & \textbf{MySQL (SQL)} \\
+				\hline
+				Colección (\textcolor{red}{tickets})  & Tabla  \\
+				Documento JSON $\rightarrow$ BSON (\textcolor{red}{ticket}) & Fila \\
+				Campos anidados: esquema flexible & Campos fijos: esquema rígido \\
+				\hline
+			\end{tabular}
+			\caption{Comparación entre MongoDB y MySQL}
+		\end{table}
+		
+	\end{frame}
+	
+	\begin{frame}
+		\frametitle{Persistencia $|$ FastAPI $\rightarrow$ mongoDB}
+		Se ha escogido MongoDB porque es una base de datos noSQL, ideal en el caso que aquí nos ocupa:
+		\begin{itemize}
+			\item No existe un número \textbf{fijo} de productos en un ticket.
+			\item \textbf{No tenemos} un \underline{listado exhaustivo de todos los productos} del supermercado.
+			\item En el \textit{``inflalyzer''} queremos hacer \textbf{filtros por productos que todavía no conocemos}.
+		\end{itemize}
+	\end{frame}
+	
 		\subsection{Front-end: Vanilla JS}
 		
 		\begin{frame}
