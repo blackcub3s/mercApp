@@ -26,15 +26,15 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
         localStorage.setItem("frequenciesProductes", Object.entries(diccDades)); //guardem les dades, necesaries per a després a l'inflalyzer (no volem fer crides innecessàries)
 
 
-        //prodInflacio es necessita en aquest script i en paginadorInflacio.js
-        //                   [prod, nreUnitats, categoria]
+        //prodInflacio es necessita en aquest script i en paginadorInflacio.js (ES NECESITA EN DOS LLOCS)
+        //                   
         prodInflacio = []
-        for (let clauProducte in diccDades) {
-            prodInflacio.push([clauProducte ,diccDades[clauProducte], 13])
+        for (let clauProducte in diccDades) {                                                    //[prod, nreUnitats, categoria]
+            prodInflacio.push([clauProducte ,diccDades[clauProducte], 13])  //let prodInflacio = [["cogollo", 43, 1], ["pollo", 23, 6], ["bezoya", 12, 4]];   //també s'usa a pagimadorInflacio
         }
 
 
-        //let prodInflacio = [["cogollo", 43, 1], ["pollo", 23, 6], ["bezoya", 12, 4]];   //també s'usa a pagimadorInflacio
+        
 
 
 
