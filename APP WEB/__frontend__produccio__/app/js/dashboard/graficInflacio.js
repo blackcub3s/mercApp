@@ -1,20 +1,97 @@
- document.addEventListener("DOMContentLoaded", () => {
 
-    const ctx = document.getElementById('myChart').getContext('2d');
+//AQUEST ITEM DE LOCAL STORAGE {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}        
+//NO ESTARÀ PLE FINS QUE LA CRIDA ASÍNCRONA A api/frequenciesProductes ESTIGUI RESOLTA. CADA 100 MILISEGONS
+//ESCANEGEM EL CONTINGUT DEL LOCAL STORAGE FINS TROBAR-LO.
 
-    // Datos de ejemplo con fechas en string ISO
-    let arrDataPreu = [
-      { "x": "2022-06-01", "y": 1 },
-      { "x": "2022-08-01", "y": 3 },
-      { "x": "2026-06-01", "y": 6 }
-    ];
+
+            
+
+        
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    
+    const idIntervalDashboard = setInterval(() => {
+        let freqProductes = localStorage.getItem("frequenciesProductes");
+        if (freqProductes !== null) {
+            
+            clearInterval(idIntervalDashboard);
+
+            // exemple dates format anglo aaaa-mm-dd ideals per a chart.js
+            let arrDataPreu = [
+                { "x": "2022-06-01", "y": 1 },
+                { "x": "2022-08-01", "y": 3 },
+                { "x": "2026-06-01", "y": 6 }
+            ];
+
+            
+
+
+
+            const tokenAcces = localStorage.getItem("AccessToken");
+            const nomVariable = "POLLO ENTERO LIMPIO"; // o lo que corresponda
+
+            fetch('http://localhost:8000/api/graficDataPreuProducte', {
+                method: "POST",
+                headers: {
+                    'Authorization': "Bearer " + tokenAcces,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"nomProducte": nomVariable})
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('La solicitud devolvió código de error en paso3 : ' + response.status + " || Mensaje de error: " + response.statusText);
+                }
+                return response.json();
+            })
+            .then(arrDataPreu => {
+                //CRIDEM A LA FUNCIÓ DE FER EL GRÀFIC
+
+                /*
+                    // LES DADES TINDRAN AQUEST ASPECTE ON x es la data i y es el preu. 
+                    // Tretes una per una amb solicitud post
+                    let arrDataPreu = [
+                        { "x": "2022-06-01", "y": 1 },
+                        { "x": "2022-08-01", "y": 3 },
+                        { "x": "2026-06-01", "y": 6 }
+                    ];
+                */
+
+                fesGrafic(arrDataPreu);
+            })
+            .catch(error => {
+                console.error('Error en paso3:', error);
+            });
+
+
+
+
+
+        }
+        
+    }, 200);
+
+
+
+
+
+});
+
+function fesGrafic(arrDataPreu) {
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+
 
     const myChart = new Chart(ctx, {
       type: 'scatter',
       data: {
         datasets: [
           {
-            label: "Evolució del preu",
+            label: "Evolución de precio por producto",
             data: arrDataPreu,
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'red',
@@ -51,7 +128,7 @@
         plugins: {
           title: {
             display: true,
-            text: ['Inflalyzer'],
+            text: ['Variación del coste a lo largo del tiempo'],
             font: {
               size: 30,
               weight: 'bold'
@@ -70,5 +147,4 @@
         }
       }
     });
-
-  });
+}
