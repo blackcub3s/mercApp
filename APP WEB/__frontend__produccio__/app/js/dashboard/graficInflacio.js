@@ -12,21 +12,19 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    
+    //HEM DE FER UN SET ITNERVAL PORQUÈ DEL LOCAL STORAGE NO SABEM QUAN HI HAURAN LES DADES DINS.
+    //LA VARIABLE DEL LOCAL STORAGE QUE CONSULTEM AMB getItem ((let freqProductes = localStorage.getItem("frequenciesProductes");))
+    //S'HAVIA EMPLENAT AMB LA SOLICITUD A l'endpoint /api/frequenciesProductes. D'ALLI EN TREIEM
+    //LES CLAUS DE freqProductes, en l'ordre en el que van (ORDRE DE MÉS A MENYS APARICIÓ) IDEAL
+    //PER A MOSTRAR ELS PRODUCTES EN EL GRÀFIC: PRIMER ELS QUE TENEN MÉS OCURRÈNCIA (PER ALS QUE EL GRÀFIC TÉ SENTIT)
+    //I DESPRÉS AMB EL PAGINADOR ANIREM ACCEDINT ALS QUE TENEN MENYS OCURRÈNCIA I PERMETEN, PER TANT,
+    //OBSERVAR PITJOR LA TENDÈNCIA D'INCREMENT DE PREUS
     const idIntervalDashboard = setInterval(() => {
         let freqProductes = localStorage.getItem("frequenciesProductes");
         if (freqProductes !== null) {
-            
+            //QUAN JA HEM TROBAT QUE S'HA EMPLENAT ALESHORES JA PODEM PRENDRE LES DADES
             clearInterval(idIntervalDashboard);
 
-            // exemple dates format anglo aaaa-mm-dd ideals per a chart.js
-            let arrDataPreu = [
-                { "x": "2022-06-01", "y": 1 },
-                { "x": "2022-08-01", "y": 3 },
-                { "x": "2026-06-01", "y": 6 }
-            ];
-
-            
 
 
 
