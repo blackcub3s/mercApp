@@ -18,11 +18,12 @@ function paginadorManual(prodInflacio) {
     botoDreta.addEventListener('click', (esdeveniment) => {  //navego a la dreta del paginador de inflacio
 
         if (i < nreProdInflacio - 1) {
-            ++i;                                    
+            ++i;    
 
             getDadesInflalyzer(esdeveniment, i, prodInflacio); //PERSISTÈNCIA --> Obtinc dades del sistema de persistència (localStorage o BBDD).
             avaluaPaginador(i, nreProdInflacio);     //VISTES --> m'asseguro que el paginador es difumina en els extrems
             colorejaContenidorTort(i, contTorcido);  //VISTES --> Poso el color pertinent (blau si es mante, verd si baixa, color rogenc si puja)
+            emplenaGrafic(i); 
         }
     });
 
@@ -35,11 +36,17 @@ function paginadorManual(prodInflacio) {
             getDadesInflalyzer(esdeveniment, i, prodInflacio); //PERSISTÈNCIA --> Obtinc dades del sistema de persistència (localStorage o BBDD).
             avaluaPaginador(i, nreProdInflacio);    //VISTES --> m'asseguro que el paginador es difumina en els extrems
             colorejaContenidorTort(i, contTorcido); //VISTES --> Poso el color pertinent (blau si es mante, verd si baixa, color rogenc si puja)
+            emplenaGrafic(i)
         }
     });
 }
 
-
+function emplenaGrafic(i) {
+    let freqProductes = JSON.parse(localStorage.getItem("frequenciesProductes"));    
+    const clauProductes = Object.keys(freqProductes);   //clauP
+    console.log(clauProductes[i]);
+    fesGraficProducte(clauProductes[i]);
+}
 
 
 

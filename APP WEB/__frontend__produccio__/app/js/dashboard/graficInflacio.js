@@ -84,71 +84,75 @@ function fesGraficProducte(nomProducte) {
 
 
 
-
+let myChartInstance = null; //indispensable que estigui com a variable global.
 function fesGrafic(arrDataPreu) {
-        const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx = document.getElementById('myChart').getContext('2d');
 
+    // Si ya hay un gráfico, lo destruimos (ABSOLUTAMENT FONAMENTAL, SI NO AMB EL PAGINADOR NO FUNCIONAVA!)
+    if (myChartInstance !== null) {
+        myChartInstance.destroy();
+    }
 
-
-    const myChart = new Chart(ctx, {
-      type: 'scatter',
-      data: {
-        datasets: [
-          {
-            label: "Evolución de precio por producto",
-            data: arrDataPreu,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'red',
-            borderWidth: 2
-          }
-        ]
-      },
-      options: {
-        scales: {
-          x: {
-            type: 'time', // Escala temporal
-            time: {
-              unit: 'month',
-              tooltipFormat: 'yyyy-MM-dd',
-              displayFormats: {
-                month: 'MM / yyyy' //podem canviar le format aqui (format de les labels!)
-              }
-            },
-            title: {
-              display: true,
-              text: 'Fecha',
-              color: 'black'
-            }
-          },
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Precio (€/kg o €)',
-              color: 'black'
-            }
-          }
+    // Creamos el nuevo gráfico y lo guardamos en la variable global
+    myChartInstance = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [
+                {
+                    label: "Evolución de precio por producto",
+                    data: arrDataPreu,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'red',
+                    borderWidth: 2
+                }
+            ]
         },
-        plugins: {
-          title: {
-            display: true,
-            text: ['Variación del coste a lo largo del tiempo'],
-            font: {
-              size: 30,
-              weight: 'bold'
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'month',
+                        tooltipFormat: 'yyyy-MM-dd',
+                        displayFormats: {
+                            month: 'MM/yy'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Fecha',
+                        color: 'black'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Precio (€/kg o €)',
+                        color: 'black'
+                    }
+                }
             },
-            padding: {
-              top: 20,
-              bottom: 20
-            },
-            color: "black"
-          },
-          legend: {
-            labels: {
-              color: 'black'
+            plugins: {
+                title: {
+                    display: true,
+                    text: ['Variación del coste a lo largo del tiempo'],
+                    font: {
+                        size: 30,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 20,
+                        bottom: 20
+                    },
+                    color: "black"
+                },
+                legend: {
+                    labels: {
+                        color: 'black'
+                    }
+                }
             }
-          }
         }
-      }
     });
 }
