@@ -28,14 +28,13 @@ def verificar_token(authorization: str = Header(...)):
 
 
 
-#PRE: una llista amb permisos 0 1 i/o 2. Permisos_enToken un enter amb 0, o 1 o 2.
+#PRE: llPermisosPermesos: una llista amb permisos 0 1 i/o 2 || Permisos_enToken un enter amb 0, o 1 o 2.
 #POST: Si el token d'acces entrant al controlador on posem aquesta funcio
 #      no te un dels permisos dins la llista llPermisosPermesos generara codi d'error 403
 #  ---- NOTA: Aquesta funció la carregarem dins de cada controlador. ---
 def permetSolicitudsEntrantsNomesA(llPermisosPermesos, permisos_enToken):
-    permisosPermesos = [0,2] 
-    if permisos_enToken not in permisosPermesos:
+    if permisos_enToken not in llPermisosPermesos:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Els permisos permesos son només: {permisosPermesos}"
+            detail=f"Els permisos permesos son només: {llPermisosPermesos}"
         )

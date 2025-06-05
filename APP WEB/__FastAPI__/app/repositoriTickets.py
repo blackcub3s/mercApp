@@ -56,7 +56,7 @@ def obtenir_tickets_per_usuari(id_usuari):
 #PRE: idUsuari d'un usuari a la base de dades
 #POST: obtindrem per a aquest usuari un diccionari amb 
 #      els noms dels productes de més a menys aparicions en els tickets (recompte)  
-#     {}'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1]
+#     {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}
 def frequencia_productes_per_usuari(id_usuari):
     colTickets = creaConexioAmongoDB_i_tornaTickets()
 
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     #print(frequencia_productes_per_usuari(2)[0])
 
     import json
-    dictTickets = frequencia_productes_per_usuari(2)
+    dictTickets = frequencia_productes_per_usuari(3)
     print(dictTickets)
     #print(json.dumps(dictTickets, indent=4, ensure_ascii=False))
     

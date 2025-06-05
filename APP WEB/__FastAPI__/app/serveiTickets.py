@@ -364,7 +364,7 @@ def parsejaTicketsIguardaEnMONGODB(idUsuari_enToken):
 #POST: els tickets es guarden DINS una carpeta al sistema d'arxius
 #      del servidor perquè puguem revisar-los i millorar el codi un cop ja en producció.
 #      la carpeta es /ticketsQueDonenError/{idUsuari_enToken__nomArxiu}
-def moureTicketsConflictiusPerRevisarlos(llErrors,idUsuari_enToken):
+def moureTicketsConflictiusPerRevisarlos(llErrors, idUsuari_enToken):
     for error in llErrors:
         nomTicket = os.path.basename(error["archivo"])
         pathArxiu_CarpetaUsuari = f"./tickets/{idUsuari_enToken}/{nomTicket}" #ubicacio actual (dins carpeta de l'usuari que s'ha trobat l'error)
@@ -378,6 +378,24 @@ def moureTicketsConflictiusPerRevisarlos(llErrors,idUsuari_enToken):
             print(f"Error copiant {nomTicket}: {e}")
 
         
+
+
+
+
+
+
+def frequenciesProductes(idUsuari_enToken):
+    return repositoriTickets.frequencia_productes_per_usuari(idUsuari_enToken)
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

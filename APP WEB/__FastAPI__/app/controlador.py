@@ -102,6 +102,16 @@ async def pujarPdfsTicketDigital(payload_token: dict = Depends(verificar_token))
 
 
 
+#PRE: un token d'accés amb idUsuari i permisos a 1 (els que tenen acces al dashboard)
+#POST: Si el token d'accés té els permisos a 1 retornarà les dades en format diccionari
+#     ex --> {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}
+@app.get("/api/frequenciesProductes")                                 
+async def contaPDFsPujatsAservidor(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
+    permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
+    idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
+    permetSolicitudsEntrantsNomesA([1], permisos_enToken)
+    
+    return serveiTickets.frequenciesProductes(idUsuari_enToken)
 
 
 
