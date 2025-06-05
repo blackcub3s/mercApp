@@ -42,8 +42,7 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
     .then(diccDades => {  //estil --> {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}                                                                                                                         
         const dom_nreProdDiferents = document.getElementById("nreProductesDiferentsAdquirits");
         dom_nreProdDiferents.innerHTML = Object.entries(diccDades).length;
-        localStorage.setItem("frequenciesProductes", Object.entries(diccDades));
-        console.log(localStorage.getItem("frequenciesProductes"));
+        localStorage.setItem("frequenciesProductes", Object.entries(diccDades)); //guardem les dades, necesaries per a l'inflalyzer (no volem fer crides innecessàries)
     })
     .catch(error => {
         console.error('Error en paso3:', error);
