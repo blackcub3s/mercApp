@@ -12,35 +12,109 @@
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError, PyMongoError
 
+
+
+
+# Connexió a MongoDB 
+# (creem base de dades, si no existeix; i una colecció, si no existeix)
+def creaConexioAmongoDB_i_tornaTickets():
+    client = MongoClient("mongodb://localhost:27017")
+    bbdd = client["mercApp"] # la base de dades serà mercApp
+    coleccioTickets = bbdd["tickets"] # la col·lecció es tickets.
+    return coleccioTickets
+
+
+
 def persisteixTicket_a_MONGODB(nTicketsPersistits, jsonTicket):
     if jsonTicket == {}:
         return nTicketsPersistits  # No hi ha ticket a guardar
-    
     try:
-        # Connexió a MongoDB (creem base de dades i una colecció)
-        client = MongoClient("mongodb://localhost:27017")
-        bbdd = client["mercApp"] # la base de dades serà mercApp
-        coleccioTickets = bbdd["tickets"] # la col·lecció es tickets.
 
+        coleccioTickets = creaConexioAmongoDB_i_tornaTickets() #faig la conexio (creant la bbdd i la conexio si no existeixen, automaticament)
         coleccioTickets.insert_one(jsonTicket) # Intenta inserir el document (assegura que el camp _id no estigui repetit)
-
-        # Si tot ha anat bé, incrementem el comptador
-        return nTicketsPersistits + 1
-
+        
+        return nTicketsPersistits + 1 # Si tot ha anat bé, incrementem el comptador
     except DuplicateKeyError:
         print("Ticket ja existeix (_id duplicat). No s’ha guardat.")
         return nTicketsPersistits  # No incrementem
-
     except PyMongoError as e:
         print(f"Error al guardar a MongoDB: {e}")
         return nTicketsPersistits  # No incrementem
 
 
+
+
+def obtenir_tickets_per_usuari(id_usuari):
+    colTickets = creaConexioAmongoDB_i_tornaTickets()
+    tickets_usuari = list(colTickets.find({"idUsuari": id_usuari}))
+    return tickets_usuari
+
+
+
+
+
+#PRE: idUsuari d'un usuari a la base de dades
+#POST: obtindrem per a aquest usuari un diccionari amb 
+#      els noms dels productes de més a menys aparicions en els tickets (recompte)  
+#     {}'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1]
+def frequencia_productes_per_usuari(id_usuari):
+    colTickets = creaConexioAmongoDB_i_tornaTickets()
+
+    pipeline = [
+        {"$match": {"idUsuari": id_usuari}},  # Filtra només els tiquets d'aquest usuari
+
+        {"$project": {
+            "productes": {"$objectToArray": "$productesAdquirits"}
+        }},
+        
+        {"$unwind": "$productes"},  # Separa cada producte en un document nou
+
+        {"$group": {
+            "_id": "$productes.k",  # El nom del producte
+            "recompte": {"$sum": 1}
+        }},
+
+        {"$sort": {"recompte": -1}}  # Ordena de més a menys freqüència
+    ]
+
+    resultats = list(colTickets.aggregate(pipeline)) #passem a llista l'objecte
+    
+    # passem la llista a diccionari
+    d = {}
+    for doc in resultats:
+        d[doc["_id"]] = doc["recompte"]
+    return d 
+
+
 if __name__ == "__main__":
+    #print(obtenir_tickets_per_usuari(3))
+    #print(frequencia_productes_per_usuari(2)[0])
+
+    import json
+    dictTickets = frequencia_productes_per_usuari(2)
+    print(dictTickets)
+    #print(json.dumps(dictTickets, indent=4, ensure_ascii=False))
+    
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    """
     jsonTicket_exemple = {
         "_id": "2423-015-327168_OP3084620",
         "idUsuari": 3,
@@ -83,3 +157,4 @@ if __name__ == "__main__":
     n = 0
     n = persisteixTicket_a_MONGODB(n, jsonTicket_exemple)
     print("Tickets persistits:", n)
+    """

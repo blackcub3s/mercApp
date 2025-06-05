@@ -368,7 +368,7 @@ def moureTicketsConflictiusPerRevisarlos(llErrors,idUsuari_enToken):
     for error in llErrors:
         nomTicket = os.path.basename(error["archivo"])
         pathArxiu_CarpetaUsuari = f"./tickets/{idUsuari_enToken}/{nomTicket}" #ubicacio actual (dins carpeta de l'usuari que s'ha trobat l'error)
-        pathArxiu_carpetaLogsNostra = f"./logTicketsConflictius/{str(idUsuari_enToken)+"__"+nomTicket}"  #ubicacio de la copia per a nosaltres (FUTURA)
+        pathArxiu_carpetaLogsNostra = f"./logTicketsConflictius/{str(idUsuari_enToken)}--{nomTicket}"  #ubicacio de la copia per a nosaltres (FUTURA)
         
         # Si no existeix, es crea la carpeta de destí
         os.makedirs("./logTicketsConflictius", exist_ok=True)
@@ -390,32 +390,33 @@ if __name__ == "__main__":
     document = "20250430 Mercadona 33,36 €" #EL TICKET ULTRA CONFLICTIU.
     #fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
 
-    proves = False
+    proves = True
+    idUsuari = 2
     if proves:
-        document = "20241218 Mercadona 29,42 €" #EL TICKET ULTRA CONFLICTIU.
-        print("---- EL DEL PARKING (solucionat)----")
-        fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
+        #document = "20241218 Mercadona 29,42 €" #EL TICKET ULTRA CONFLICTIU.
+        #print("---- EL DEL PARKING (solucionat)----")
+        #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)
 
 
-        document = "20240625 Mercadona 19,24 €" #EL TICKET DE LA DORADA (3 LINIES PER UN PRODUCTE A GRANEL)
+        #document = "20240625 Mercadona 19,24 €" #EL TICKET DE LA DORADA (3 LINIES PER UN PRODUCTE A GRANEL)
         #print("---- UN DE LA DORADA (si hi ha error no sortira res) ----")
-        #fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
+        #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)
 
         document = "20250107 Mercadona 7,35 €" #EL TICKET ULTRA CONFLICTIU.
         print("---- EL DE 2 OUS DE 12 UNITATS ----")
-        fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)
+        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)
         
 
         document = "20250507 Mercadona 7,05 €"
         print("---- EL DE LA DEMO DE LA MEMORIA ----")
-        fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)    
+        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)   
         
         
         #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
         #parsejaTicketsIguardaEnMONGODB(3)
         document = "20250207 Mercadona 23,01 €"
         print("---- EL DE LA DEMO DEL BEAMER ----")
-        fesScrapTicketMercadona(f"./tickets/3/{document}.pdf", [], 0, 3)   
+        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
 
     #A FUTUR, ESBORAR PDFS (NO USAT)
