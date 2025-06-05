@@ -412,3 +412,12 @@ body {overflow-x: hidden;}
     background: linear-gradient(90deg, var(--PI_colorAngularGradienteInicio), var(--PI_colorAngularGradienteFinal));
     text-align: center;
 }
+
+/*ESTIL DEL GRÀFIC D'INFLACIÓ*/
+#myChart {
+    margin: 0 auto;
+    position: relative;
+    top: -100em;
+    width: 1000px !important;
+    height: 500px !important;
+}

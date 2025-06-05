@@ -58,9 +58,13 @@
     <script src="js/dashboard/graficInflacio.js"></script>    <!--INFLALYZER: arxiu on posarem el codi referent al gràfic d'inflació-->
     <script src="/js/dashboard/gastoTotalFinestraTemporal.js"></script> <!--INTERVALIZER: arxiu on posarem el codi per rebre els gastos totals per finestra temporal-->
     <script src="/js/dashboard/diagramaGastosPerCategoria.js"></script>
-    
-
     <!-- FI ARXIUS EN TANDEM I PER ORDRE-->
+
+    <!-- CARREGUEM 3 LLBRERIES PER AL GRÀFIC DE chart.js (amb el que farem el gràfic d'inflació)-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!--LLIBRERIA BASE-->
+    <script src="https://cdn.jsdelivr.net/npm/luxon"></script>                  <!--per a mostrar dates encompes de ms desde la epoch a les X-->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>  <!--per a mostrar dates encompes de ms desde la epoch a les X-->
+    <script src="/js/dashboard/graficInflacio.js"></script> <!--codi del grafic-->
 
     <!--Carreguem l'arxiu de wow.js des del seu CDN per tal d'aconseguir que les animacions de animate.css s’activin mitjançant l'scroll.-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script> 
@@ -254,6 +258,10 @@
       (chart.js) conectado a sección 3-->
     <div id = "contenedorTorcidoTop"></div>
     
+    <!-- contenidor on hi haura el grafic d'inflacio-->
+    <section id = "contenidorGrafic">
+        <canvas id="myChart"></canvas>
+    </section>
 
     <!-- SECCION 5: RELLENO HASTA LA FOOTER-->
     <div id="fondoTablaDiferencias"></div>
