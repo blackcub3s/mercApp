@@ -1,8 +1,14 @@
-document.addEventListener("DOMContentLoaded", function paginadorManual() {
+
+
+function paginadorManual(prodInflacio) {
 
     const contTorcido = document.getElementById("contenedorTorcidoTop");
     const botoDreta = document.getElementById("botoDreta"); 
     const botoEsquerra = document.getElementById("botoEsquerra");
+
+
+    //prodInflacio es necessita en aquest script i en paginadorInflacio.js
+    //                   [prod, nreUnitats, categoria]
 
 
     
@@ -31,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function paginadorManual() {
             colorejaContenidorTort(i, contTorcido); //VISTES --> Poso el color pertinent (blau si es mante, verd si baixa, color rogenc si puja)
         }
     });
-});
+}
 
 
 

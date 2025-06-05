@@ -1,27 +1,8 @@
-//prodInflacio es necessita en aquest script i en paginadorInflacio.js
-//                   [prod, nreUnitats, categoria]
-let prodInflacio = [["cogollo", 43, 1], ["pollo", 23, 6], ["bezoya", 12, 4]];   //també s'usa a pagimadorInflacio
+
 
 
 //CÀRREGA DE DADES EL PRIMER COP QUE CARREGUEM LA PÀGINA
 document.addEventListener("DOMContentLoaded", (esdeveniment) => {
-
-
-    //OBTENCIO DEL NOM DE L'USUARI (NOMES EN CARREGAR DOM, UN COP)
-    const dom_nomUsuari = document.getElementById("nomUsuari");
-    dom_nomUsuari.innerHTML = "Nombre de usuario";
-
-
-    //OBTENCIÓ DE DADES PER AL SUBTITOL QUE HI HA SOTA DE "Hola NOMBRE USUARIO" (NOMES EN CARREGAR DOM, UN COP)
-    const dom_nreTicketsTotalUsuari = document.getElementById("nreTicketsTotalUsuari");
-    dom_nreTicketsTotalUsuari.innerHTML = "XXX";
-
-    const dom_dataInicialTickets = document.getElementById("dataInicialTickets");
-    dom_dataInicialTickets.innerHTML =  "dd/mm/aa";
-
-    const dom_dataFinalTickets = document.getElementById("dataFinalTickets");
-    dom_dataFinalTickets.innerHTML =  "DD/MM/AA";
-
 
     //OBTENCIÓ DE DADES DE LES CARDS (NOMES EN CARREGAR DOM, UN COP)
 
@@ -42,45 +23,112 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
     .then(diccDades => {  //estil --> {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}                                                                                                                         
         const dom_nreProdDiferents = document.getElementById("nreProductesDiferentsAdquirits");
         dom_nreProdDiferents.innerHTML = Object.entries(diccDades).length;
-        localStorage.setItem("frequenciesProductes", Object.entries(diccDades)); //guardem les dades, necesaries per a l'inflalyzer (no volem fer crides innecessàries)
+        localStorage.setItem("frequenciesProductes", Object.entries(diccDades)); //guardem les dades, necesaries per a després a l'inflalyzer (no volem fer crides innecessàries)
+
+
+        //prodInflacio es necessita en aquest script i en paginadorInflacio.js
+        //                   [prod, nreUnitats, categoria]
+        prodInflacio = []
+        for (let clauProducte in diccDades) {
+            prodInflacio.push([clauProducte ,diccDades[clauProducte], 13])
+        }
+
+
+        //let prodInflacio = [["cogollo", 43, 1], ["pollo", 23, 6], ["bezoya", 12, 4]];   //també s'usa a pagimadorInflacio
+
+
+
+
+
+
+        //OBTENCIO DEL NOM DE L'USUARI (NOMES EN CARREGAR DOM, UN COP)
+        const dom_nomUsuari = document.getElementById("nomUsuari");
+        dom_nomUsuari.innerHTML = "Nombre de usuario";
+
+
+        //OBTENCIÓ DE DADES PER AL SUBTITOL QUE HI HA SOTA DE "Hola NOMBRE USUARIO" (NOMES EN CARREGAR DOM, UN COP)
+        const dom_nreTicketsTotalUsuari = document.getElementById("nreTicketsTotalUsuari");
+        dom_nreTicketsTotalUsuari.innerHTML = "XXX";
+
+        const dom_dataInicialTickets = document.getElementById("dataInicialTickets");
+        dom_dataInicialTickets.innerHTML =  "dd/mm/aa";
+
+        const dom_dataFinalTickets = document.getElementById("dataFinalTickets");
+        dom_dataFinalTickets.innerHTML =  "DD/MM/AA";
+
+
+
+
+        const dom_nrePreuIncrementat = document.getElementById("nreProductesPreu_INCREMENTAT");
+        dom_nrePreuIncrementat.innerHTML = "X";
+
+        const dom_nrePreuMantingut = document.getElementById("nreProductesPreu_MANTINGUT");
+        dom_nrePreuMantingut.innerHTML = "Y"
+
+        const dom_nrePreuDecrementat = document.getElementById("nreProductesPreu_DECREMENTAT");
+        dom_nrePreuDecrementat.innerHTML = "Z";
+
+        // -------------------
+        // --- INFLALYZER ----
+        // -------------------
+        //OBTENCIO DADES DE L'INFLALYZER QUAN ES CARREGA LA PÀGINA PER PRIMER COP
+        paginadorManual(prodInflacio);
+        getDadesInflalyzer(esdeveniment, 0, prodInflacio);
+        
+
+        // -------------------
+        // --- CATEGORIZER----
+        // -------------------
+
+
+        //TO DO
+
+
+        // -------------------
+        // --- INTERVALIZER----
+        // -------------------
+
+
+
+
+        //TO DO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     })
     .catch(error => {
         console.error('Error en paso3:', error);
     });
 
-
-    const dom_nrePreuIncrementat = document.getElementById("nreProductesPreu_INCREMENTAT");
-    dom_nrePreuIncrementat.innerHTML = "X";
-
-    const dom_nrePreuMantingut = document.getElementById("nreProductesPreu_MANTINGUT");
-    dom_nrePreuMantingut.innerHTML = "Y"
-
-    const dom_nrePreuDecrementat = document.getElementById("nreProductesPreu_DECREMENTAT");
-    dom_nrePreuDecrementat.innerHTML = "Z";
-
-    // -------------------
-    // --- INFLALYZER ----
-    // -------------------
-    //OBTENCIO DADES DE L'INFLALYZER QUAN ES CARREGA LA PÀGINA PER PRIMER COP
-    getDadesInflalyzer(esdeveniment, 0, prodInflacio);
-
-
-    // -------------------
-    // --- CATEGORIZER----
-    // -------------------
-
-
-    //TO DO
-
-
-    // -------------------
-    // --- INTERVALIZER----
-    // -------------------
-
-
-
-
-    //TO DO
 
 
 
