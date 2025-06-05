@@ -105,7 +105,7 @@ function fesGrafic(arrDataPreu) {
               unit: 'month',
               tooltipFormat: 'yyyy-MM-dd',
               displayFormats: {
-                month: 'yyyy-MM'
+                month: 'MM / yyyy' //podem canviar le format aqui (format de les labels!)
               }
             },
             title: {
