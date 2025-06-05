@@ -4,9 +4,9 @@
 
     // Datos de ejemplo con fechas en string ISO
     let arrDataPreu = [
-      { x: "2022-06-01", y: 1 },
-      { x: "2022-08-01", y: 3 },
-      { x: "2026-06-01", y: 6 }
+      { "x": "2022-06-01", "y": 1 },
+      { "x": "2022-08-01", "y": 3 },
+      { "x": "2026-06-01", "y": 6 }
     ];
 
     const myChart = new Chart(ctx, {

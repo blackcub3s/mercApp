@@ -387,7 +387,8 @@ def moureTicketsConflictiusPerRevisarlos(llErrors, idUsuari_enToken):
 def frequenciesProductes(idUsuari_enToken):
     return repositoriTickets.frequencia_productes_per_usuari(idUsuari_enToken)
 
-
+def parellDataPreuUnitari(nomProducte, id_usuari):
+    return repositoriTickets.obtinguesArrayDeParellsDataPreuUnitari(nomProducte, id_usuari) #dictGraficPerUnProducte
 
 
 

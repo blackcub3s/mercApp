@@ -43,7 +43,7 @@ def persisteixTicket_a_MONGODB(nTicketsPersistits, jsonTicket):
 
 
 
-
+#FUNCIO NO UTILITZADA YET
 def obtenir_tickets_per_usuari(id_usuari):
     colTickets = creaConexioAmongoDB_i_tornaTickets()
     tickets_usuari = list(colTickets.find({"idUsuari": id_usuari}))
@@ -86,14 +86,64 @@ def frequencia_productes_per_usuari(id_usuari):
     return d 
 
 
+
+"""
+#PRE: nomProducte: un string identificatiu d'un producte en la base de dades per a un id_usuari particular.
+#POST: una llista de diccionaris de python tal que així on es mostren la data d'adquisició del producte "nomProducte" 
+#      i el seu preuUnitari. arrDataPreu és un array per a un Sol usuari, el de id_usuari que passa per parametre.
+
+    arrDataPreu = [
+      { "x": "2022-06-01", "y": 1 },
+      { "x": "2022-08-01", "y": 3 },
+      { "x": "2026-06-01", "y": 6 }
+    ];
+"""
+def obtinguesArrayDeParellsDataPreuUnitari(nomProducte, id_usuari):
+    colTickets = creaConexioAmongoDB_i_tornaTickets()
+
+    # Busquem tots els tiquets per a l'usuari on apareix el producte
+    cursor = colTickets.find({
+        "idUsuari": id_usuari,
+        f"productesAdquirits.{nomProducte}": {"$exists": True}
+    })
+
+    arrDataPreu = []
+
+    for doc in cursor:
+        data = doc.get("data")  # ja en format "YYYY-MM-DD"
+        infoProducte = doc["productesAdquirits"].get(nomProducte)
+
+        if infoProducte:
+            preu_unitari = infoProducte.get("preuUnitari")
+            if data and preu_unitari is not None:
+                arrDataPreu.append({
+                    "x": data,
+                    "y": preu_unitari
+                })
+
+    return arrDataPreu
+
+
+
+
+
+
 if __name__ == "__main__":
-    #print(obtenir_tickets_per_usuari(3))
+
+
+    
+    #print(obtenir_tickets_per_usuari(2))
     #print(frequencia_productes_per_usuari(2)[0])
 
+
     import json
-    dictTickets = frequencia_productes_per_usuari(3)
-    print(dictTickets)
-    #print(json.dumps(dictTickets, indent=4, ensure_ascii=False))
+    dictTickets = frequencia_productes_per_usuari(2)
+    print(json.dumps(dictTickets, indent=4, ensure_ascii=False))
+
+    dictGraficPerUnProducte = obtinguesArrayDeParellsDataPreuUnitari("POLLO ENTERO LIMPIO",2)
+    print(json.dumps(dictGraficPerUnProducte, indent=4, ensure_ascii=False))
+   
+
     
 
 

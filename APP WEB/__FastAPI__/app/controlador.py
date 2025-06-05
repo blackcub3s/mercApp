@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, status
+from fastapi import FastAPI, UploadFile, File, Depends, Body, HTTPException, status
 from fastapi import Header # per poder processar les headers i agafar el token fix
 from fastapi.middleware.cors import CORSMiddleware #Cal importar-ho per permetre el CORS des del navegador (que corre en port diferent)
 import os
@@ -115,7 +115,19 @@ async def contaPDFsPujatsAservidor(payload_token: dict = Depends(verificar_token
 
 
 
-
+#PRECONDICIÓ: un token d'accés amb idUsuari i permisos a 1 (els que tenen acces al dashboard). i un diccionari amb el nom d'un producte entrant pel body:
+#      {"nomProducte": "bronchals 5L"}
+#-----------------------------------------------------------------------
+#POSTCONDICIÓ: Si el token d'accés té els permisos a 1 retornarà les dades en format diccionari, ideal per fer gràfic d'inflació.
+#       [{"x": "2024-05-30","y": 5.81},{"x": "2024-07-17","y": 5.97},{"x": "2024-09-09","y": 5.72}, ..., {"x": "2025-05-27","y": 6.35}]  
+@app.post("/api/graficDataPreuProducte")                                 
+async def contaPDFsPujatsAservidor(payload_token: dict = Depends(verificar_token), dictNomProducte: dict = Body(...)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
+    permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
+    idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
+    permetSolicitudsEntrantsNomesA([1], permisos_enToken)
+    
+    nomProducte = dictNomProducte["nomProducte"]
+    return serveiTickets.parellDataPreuUnitari(nomProducte, idUsuari_enToken)
 
 
 
