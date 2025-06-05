@@ -35,6 +35,8 @@ function fesFetch_graficDataPreuProducte(producteBuscat) {
         // LES DADES TINDRAN AQUEST ASPECTE ON x es la data i y es el preu. 
         //let arrDataPreu = [{ "x": "2022-06-01", "y": 1 }, { "x": "2022-08-01", "y": 3 },{ "x": "2026-06-01", "y": 6 }];
         fesGrafic(arrDataPreu); // FEM EL GRAFIC JA
+        //localStorage.removeItem("arrDataPreu");
+        localStorage.setItem("arrDataPreu", JSON.stringify(arrDataPreu)); //AIXO ES INDISPENSABLE PER PODER TREURE EL PREU MINIM I MAXIM DINS LA CARD DE LA INFLACIÓ AIXI COM LES DATES.
     })
     .catch(error => {
         console.error('Error en paso3:', error);
@@ -76,7 +78,9 @@ function fesGraficProducte(nomProducte) {
             }
         }, 200);
     } else { //AQUEST PRODUCTES (2N PRODUCTE MES OCURRENT I SEGUENTS VINDRAN PER PARMETRE, DEL PAGINADOR.
-        fesFetch_graficDataPreuProducte(nomProducte);
+        setTimeout(() => {
+            fesFetch_graficDataPreuProducte(nomProducte);
+        }, 20);
     }
  
 }

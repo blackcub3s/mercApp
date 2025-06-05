@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
         //OBTENCIO DEL NOM DE L'USUARI (NOMES EN CARREGAR DOM, UN COP)
         const dom_nomUsuari = document.getElementById("nomUsuari");
-        dom_nomUsuari.innerHTML = "Nombre de usuario";
+        dom_nomUsuari.innerHTML = "";
 
 
         //OBTENCIÓ DE DADES PER AL SUBTITOL QUE HI HA SOTA DE "Hola NOMBRE USUARIO" (NOMES EN CARREGAR DOM, UN COP)
@@ -135,6 +135,46 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 });
 
 
+//QUÈ FA AQUESTA FUNCIÓ? --> TIPIC PROBLEMA D'ALGORISMIA <3
+//
+//AQUESTA FUNCIÓ AGFAFA arrDataPreu QUE LA GUARDEM AL LOCAL STORAGE JUST DESPRES DE FER
+//EL GRAFIC DE PRODUCTE obtenint les dades de la crida fetch a fastAPI, al endpoint: /api/graficDataPreuProducte. En guardar-lo
+//a local storage no cal fer més crides a endpoints. Des del client fem un esquema de recorregut de cada parell
+//de punts del gràfic. I quan l'acabem ja sabem quin és el preu màxim i el preu mínim històric de cada producte,
+//podent posar-lo a la taula de l'inflalyzer :D.
+//ASSUMPCIONS: No hi ha devolucions als tickets (preus negatius) i no hi ha cap producte de mercadona que costi més de 10000 euros
+function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
+    let arrDataPreuProducte = JSON.parse(localStorage.getItem("arrDataPreu"));    
+    let min = 10000;
+    let dataMin = "";
+    let max = -1;
+    let dataMax = "";
+    for (let i = 0; i < arrDataPreuProducte.length; ++i) {
+        let {"x" : data, "y": preu} = arrDataPreuProducte[i];
+        //console.log(data, preu);
+
+        //actualitzo els valors a cada iteracio.
+        if (preu < min) {
+            min = preu;
+            dataMin = data;
+        }
+        if (preu > max) {
+            max = preu;
+            dataMax = data;
+        }
+    }
+
+    //POSO AL DOM ELS VFALORS MINIM I MAX
+    preuMinim.innerHTML = min;
+    preuMaxim.innerHTML = max;
+    const dataMinESPANYOLA = dataANGLO => dataANGLO.split('-').reverse().join('/'); //bygpt
+    const dataMaxESPANYOLA = dataANGLO => dataANGLO.split('-').reverse().join('/');
+    dataPreuMinim.innerHTML = dataMinESPANYOLA(dataMin);
+    dataPreuMaxim.innerHTML = dataMaxESPANYOLA(dataMax);
+
+    
+}
+
 function aux_emplenaCardInflacio(i, prodInflacio) {
     const dom_inflalyzerNomProducte = document.getElementById("inflalyzerNomProducte");
     dom_inflalyzerNomProducte.innerHTML = prodInflacio[i][0]; //COGOLLO, per exemple
@@ -153,16 +193,23 @@ function aux_emplenaCardInflacio(i, prodInflacio) {
 
     /*RELLENO LA TAULA*/
     const preuMinim = document.getElementById("preuMinim");
-    preuMinim.innerHTML = "2,99";
-
     const preuMaxim = document.getElementById("preuMaxim");
-    preuMaxim.innerHTML = "3,46";
-
     const dataPreuMinim = document.getElementById("dataPreuMinim");
-    dataPreuMinim.innerHTML = "15/03/24";
-
     const dataPreuMaxim = document.getElementById("dataPreuMaxim");
-    dataPreuMaxim.innerHTML = "27/04/25";
+
+    //Sense aquest settimeout peta perque llegeix el local storage antic
+    //ja que no li ha donat temps a carregar-se amb la nova crida a endpoint api/grafucDataPreuProducte
+    
+    
+
+    const idInterval = setTimeout(() => {
+        pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim);
+        
+    }, 100);
+
+    
+
+
     /*FI RELLENO DE LA TAULA*/
 }
 
