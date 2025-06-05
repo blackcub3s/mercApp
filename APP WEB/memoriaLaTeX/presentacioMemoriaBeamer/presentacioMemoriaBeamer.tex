@@ -689,13 +689,37 @@
 			\begin{figure}
 				\centering
 				\includegraphics[width=1\linewidth]{imgEspecifiques/dashboardA}
-				\caption{Extracción de datos de un endpoint de fastAPI desde su salida del repositoriTickets.py (donde hacemos la consulta en MongoDB) hasta su llamada a controlador a través de POSTMAN mediante token de acceso (permisos a 1)}
+				\caption{Extracción de datos de un endpoint de fastAPI desde su salida del repositoriTickets.py (donde hacemos la consulta en MongoDB) hasta su llamada a controlador.py a través de POSTMAN mediante token de acceso (permisos a 1)}
 				\label{fig:dashboardA}
 			\end{figure}
 			
 		\end{frame}
 	
 	
+
+		\begin{frame}
+	
+			\begin{figure}
+				\centering
+				\includegraphics[width=.9\linewidth]{imgEspecifiques/dashboardB}
+				\caption{En lugar de postman ahora lo sacamos hacia el front con la función Fetch de JavaScript. Sacamos números de pares clave:valor del JSON (Nótese: Python (\textit{dict}) $\rightarrow$ JSON $\rightarrow$ JavaScript(\textit{\textcolor{green}{Object}}))}
+				\label{fig:dashboardB}
+			\end{figure}
+			
+		\end{frame}
+		
+		
+				\begin{frame}
+			
+			\begin{figure}
+				\centering
+				\includegraphics[width=.9\linewidth]{imgEspecifiques/dashboardC}
+				\caption{Persistimos los datos en el localStorage del cliente. Volveremos a usarlos después en el ``inflalyzer'' y así ahorramos sucesivas llamadas a BBDD para unos datos que ya se extrayeron una vez}
+				\label{fig:dashboardC}
+			\end{figure}
+			
+		\end{frame}
+		
 	
 		\subsection{Front-end: Vanilla JS}
 		

@@ -24,8 +24,31 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 
     //OBTENCIÓ DE DADES DE LES CARDS (NOMES EN CARREGAR DOM, UN COP)
-    const dom_nreProdDiferents = document.getElementById("nreProductesDiferentsAdquirits");
-    dom_nreProdDiferents.innerHTML = "X+Y+Z"; //posar aqui productes BBDD (POT SER STRING O POT SER INTEGER, ES IGUAL)
+
+    //NOMBRE PRODUCTES DIFERENTS ADQUIRITS
+    fetch('http://localhost:8000/api/frequenciesProductes', {
+        method: "GET",
+        headers: {
+            'Authorization': "Bearer " + localStorage.getItem("AccessToken"),
+            'Accept': 'application/json' 
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('La solicitud devolvió código de error en paso3 : ' + response.status + " || Mensaje de error: " + response.statusText);
+        }
+        return response.json();
+    })
+    .then(diccDades => {  //estil --> {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}                                                                                                                         
+        const dom_nreProdDiferents = document.getElementById("nreProductesDiferentsAdquirits");
+        dom_nreProdDiferents.innerHTML = Object.entries(diccDades).length;
+        localStorage.setItem("frequenciesProductes", Object.entries(diccDades));
+        console.log(localStorage.getItem("frequenciesProductes"));
+    })
+    .catch(error => {
+        console.error('Error en paso3:', error);
+    });
+
 
     const dom_nrePreuIncrementat = document.getElementById("nreProductesPreu_INCREMENTAT");
     dom_nrePreuIncrementat.innerHTML = "X";
