@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
     .then(diccDades => {  //estil --> {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}                                                                                                                         
         const dom_nreProdDiferents = document.getElementById("nreProductesDiferentsAdquirits");
         dom_nreProdDiferents.innerHTML = Object.entries(diccDades).length;
-        localStorage.setItem("frequenciesProductes", Object.entries(diccDades)); //guardem les dades, necesaries per a després a l'inflalyzer (no volem fer crides innecessàries)
+        localStorage.setItem("frequenciesProductes", JSON.stringify(diccDades)); //guardem les dades, necesaries per a després a l'inflalyzer (no volem fer crides innecessàries). Cal fer stringify sino es perd l'estructura d'objecte
 
 
         //prodInflacio es necessita en aquest script i en paginadorInflacio.js (ES NECESITA EN DOS LLOCS)

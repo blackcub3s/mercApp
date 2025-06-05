@@ -20,17 +20,25 @@ document.addEventListener("DOMContentLoaded", () => {
     //I DESPRÉS AMB EL PAGINADOR ANIREM ACCEDINT ALS QUE TENEN MENYS OCURRÈNCIA I PERMETEN, PER TANT,
     //OBSERVAR PITJOR LA TENDÈNCIA D'INCREMENT DE PREUS
     const idIntervalDashboard = setInterval(() => {
+
         let freqProductes = localStorage.getItem("frequenciesProductes");
+
         if (freqProductes !== null) {
             //QUAN JA HEM TROBAT QUE S'HA EMPLENAT ALESHORES JA PODEM PRENDRE LES DADES
             clearInterval(idIntervalDashboard);
 
-
-
-
             const tokenAcces = localStorage.getItem("AccessToken");
-            const nomVariable = "POLLO ENTERO LIMPIO"; // o lo que corresponda
 
+            //DESSERIALITZEM EL JSON QUE CONTE PARELL PRODUCTE I FREQUENCIA DE COMPRA 
+            //  AIXI ---> {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}
+            let freqProductes = JSON.parse(localStorage.getItem("frequenciesProductes"));    
+
+            const clauProductes = Object.keys(freqProductes);   //clauProductes conté els productes ordenats de MÉS A MENYS compres
+            const producteMesComprat = clauProductes[0];        //el producrte mes comprat es BOLSA PLASTICO i quan carreguem la pagina es el primer grafi que mostrem
+            
+            
+            //const producteMesComprat = "POLLO ENTERO LIMPIO"; // PROVES QUE HEM FET
+            
             fetch('http://localhost:8000/api/graficDataPreuProducte', {
                 method: "POST",
                 headers: {
@@ -38,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({"nomProducte": nomVariable})
+                body: JSON.stringify({"nomProducte": producteMesComprat})
             })
             .then(response => {
                 if (!response.ok) {
