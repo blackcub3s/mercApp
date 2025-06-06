@@ -116,7 +116,7 @@ async def contaPDFsPujatsAservidor(payload_token: dict = Depends(verificar_token
 
 
 #PRECONDICIÓ: un token d'accés amb idUsuari i permisos a 1 (els que tenen acces al dashboard). i un diccionari amb el nom d'un producte entrant pel body:
-#      {"nomProducte": "bronchals 5L"}
+#      {"nomProducte": "POLLO ENTERO LIMPIO"}
 #-----------------------------------------------------------------------
 #POSTCONDICIÓ: Si el token d'accés té els permisos a 1 retornarà les dades en format diccionari, ideal per fer gràfic d'inflació.
 #       [{"x": "2024-05-30","y": 5.81},{"x": "2024-07-17","y": 5.97},{"x": "2024-09-09","y": 5.72}, ..., {"x": "2025-05-27","y": 6.35}]  
