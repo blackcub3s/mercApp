@@ -399,7 +399,8 @@ def frequenciesProductes(idUsuari_enToken):
 def parellDataPreuUnitari(nomProducte, id_usuari):
     return repositoriTickets.obtinguesArrayDeParellsDataPreuUnitari(nomProducte, id_usuari) #dictGraficPerUnProducte
 
-
+def obtenirGastPerCategoria_GLOBAL(id_usuari):
+    return repositoriTickets.obtenirGastPerCategoria_GLOBAL(id_usuari)
 
 
 

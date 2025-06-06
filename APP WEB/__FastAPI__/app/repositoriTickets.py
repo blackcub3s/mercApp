@@ -125,6 +125,44 @@ def obtinguesArrayDeParellsDataPreuUnitari(nomProducte, id_usuari):
 
 
 
+#PRE: un id_usuari (enter)
+#POST: obtindrem un diccionari on les claus son les categories d'alimentacio i el preu es el total gastat desde sempre
+#   {"1": 598.31, "2": 399.44, "3": 460.55, "4": 240.0, ... , "13" : 32.3}
+def obtenirGastPerCategoria_GLOBAL(id_usuari):
+    colTickets = creaConexioAmongoDB_i_tornaTickets()
+
+    pipeline = [
+        {"$match": {"idUsuari": id_usuari}},
+        {"$project": {
+            "productes": {"$objectToArray": "$productesAdquirits"}
+        }},
+        {"$unwind": "$productes"},
+        {"$group": {
+            "_id": "$productes.v.categoria",
+            "totalGastat": {"$sum": "$productes.v.import"}
+        }},
+        {"$sort": {"_id": 1}}  # Ordena per categoria ascendent (opcional)
+    ]
+
+    resultats = colTickets.aggregate(pipeline)
+
+    # Convertim a dict {categoria: total}
+    gast_per_categoria = {doc["_id"]: doc["totalGastat"] for doc in resultats}
+
+    # Assegurar que hi ha totes les categories de l'1 al 13 (amb 0 si no hi ha dades)
+    for cat in range(1, 14):
+        if cat not in gast_per_categoria:
+            gast_per_categoria[cat] = 0.0
+
+    return gast_per_categoria
+
+
+
+
+
+
+
+
 
 
 
@@ -137,12 +175,22 @@ if __name__ == "__main__":
 
 
     import json
+
+    """
     dictTickets = frequencia_productes_per_usuari(2)
     print(json.dumps(dictTickets, indent=4, ensure_ascii=False))
+    """
 
+    """
     dictGraficPerUnProducte = obtinguesArrayDeParellsDataPreuUnitari("POLLO ENTERO LIMPIO",2)
-    #print(json.dumps(dictGraficPerUnProducte, indent=4, ensure_ascii=False))
-   
+    print(json.dumps(dictGraficPerUnProducte, indent=4, ensure_ascii=False))
+    """
+
+
+    diccCategoriaGasto = obtenirGastPerCategoria_GLOBAL(2)
+    print(json.dumps(diccCategoriaGasto, indent=4, ensure_ascii=False))
+
+
 
     
 
