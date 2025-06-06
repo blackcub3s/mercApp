@@ -1,0 +1,1 @@
+Aquest script en bash serveix per instal·lar docker ràpidament a linux.

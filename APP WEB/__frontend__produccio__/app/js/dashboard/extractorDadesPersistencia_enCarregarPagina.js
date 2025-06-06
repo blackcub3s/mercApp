@@ -52,13 +52,13 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
         //OBTENCIÓ DE DADES PER AL SUBTITOL QUE HI HA SOTA DE "Hola NOMBRE USUARIO" (NOMES EN CARREGAR DOM, UN COP)
         const dom_nreTicketsTotalUsuari = document.getElementById("nreTicketsTotalUsuari");
-        dom_nreTicketsTotalUsuari.innerHTML = "XXX";
+        dom_nreTicketsTotalUsuari.innerHTML = ""; //XXX TICKETS
 
         const dom_dataInicialTickets = document.getElementById("dataInicialTickets");
-        dom_dataInicialTickets.innerHTML =  "dd/mm/aa";
+        dom_dataInicialTickets.innerHTML =  "";//"dd/mm/aa";
 
         const dom_dataFinalTickets = document.getElementById("dataFinalTickets");
-        dom_dataFinalTickets.innerHTML =  "DD/MM/AA";
+        dom_dataFinalTickets.innerHTML =  "";//"DD/MM/AA";
 
 
 

@@ -1,4 +1,0 @@
-dissenyHtmlCSSpas4 ---> front end pas4 (HTML i CSS nomes)			ACABAT
-pas4googleAPIclient --> arquitectura frontend pas4 (javascript nomes)
-solicitudDeExtraccion -> backend fast api (parla de les parts a fer)
-
