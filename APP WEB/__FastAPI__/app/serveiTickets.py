@@ -119,8 +119,17 @@ import re
 #POST: true si i nomes si fa matx amb format d,dd (2,44 o 4,06).
 def esUnPreu(s):
     return bool(re.fullmatch(r'\d,\d{2}', s))
+from serveiClassificacionsTickets import productesClassificats
 
-
+#PRE: Un nom de producte passat per paràmetre, parsejat de un ticket digital.
+#POST: Si el producte es troba al diccionari, es classificarà en la seva categoria. Si no
+#      s'hi troba generarà una excepció per recollir el "KeyError" de clau no trobada i retornarà
+#      13 (categoria de "sense categoria")
+def categoritzaProducte(nomProducte):
+    try:
+        return productesClassificats[nomProducte]
+    except KeyError:
+        return 13
 
 
 # PRE: -doc:                  es un string amb el path al nom del ticket en pdf que vull processar 
@@ -242,7 +251,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                         "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
                         "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
                         "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
-                        "categoria": 13,             # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
+                        "categoria": categoritzaProducte(nomProducte), # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
                         "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
                     } 
                     
@@ -267,7 +276,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                         "esGranel": esGranel,        # exemple --> 0 (no granel) o 1 (sí és granel)
                         "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
                         "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
-                        "categoria": 13,             # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
+                        "categoria": categoritzaProducte(nomProducte),  # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
                         "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
                     } 
                     

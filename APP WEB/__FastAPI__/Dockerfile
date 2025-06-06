@@ -15,6 +15,8 @@ COPY app/serveiValidacions.py /usr/src/app/
 COPY app/jwtUtil.py /usr/src/app/
 COPY app/repositoriTickets.py /usr/src/app/
 COPY app/serveiClient.py /usr/src/app/
+COPY app/serveiClassificacionsTickets.py /usr/src/app/
+
 
 # Nomes ho posem per documentacio. El port intern del contenidor es defineix en la comanda CMD de fastAPI
 EXPOSE 8000
