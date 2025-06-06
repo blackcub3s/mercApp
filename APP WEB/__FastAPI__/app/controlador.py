@@ -106,7 +106,7 @@ async def pujarPdfsTicketDigital(payload_token: dict = Depends(verificar_token))
 #POST: Si el token d'accés té els permisos a 1 retornarà les dades en format diccionari
 #     ex --> {'BOLSA PLASTICO': 132, 'BANANA': 53, 'BRONCHALES 6L': 50, .... , 'AGUA MINERAL': 1}
 @app.get("/api/frequenciesProductes")                                 
-async def contaPDFsPujatsAservidor(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
+async def obtinguesProductesOrdenatsPerOcurrencia(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
     permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
     idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
     permetSolicitudsEntrantsNomesA([1], permisos_enToken)
@@ -121,7 +121,7 @@ async def contaPDFsPujatsAservidor(payload_token: dict = Depends(verificar_token
 #POSTCONDICIÓ: Si el token d'accés té els permisos a 1 retornarà les dades en format diccionari, ideal per fer gràfic d'inflació.
 #       [{"x": "2024-05-30","y": 5.81},{"x": "2024-07-17","y": 5.97},{"x": "2024-09-09","y": 5.72}, ..., {"x": "2025-05-27","y": 6.35}]  
 @app.post("/api/graficDataPreuProducte")                                 
-async def contaPDFsPujatsAservidor(payload_token: dict = Depends(verificar_token), dictNomProducte: dict = Body(...)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
+async def obtinguesPuntsGraficXY(payload_token: dict = Depends(verificar_token), dictNomProducte: dict = Body(...)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
     permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
     idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
     permetSolicitudsEntrantsNomesA([1], permisos_enToken)
