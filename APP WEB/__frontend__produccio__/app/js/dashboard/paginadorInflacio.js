@@ -22,7 +22,7 @@ function paginadorManual(prodInflacio) {
 
             getDadesInflalyzer(esdeveniment, i, prodInflacio); //PERSISTÈNCIA --> Obtinc dades del sistema de persistència (localStorage o BBDD).
             avaluaPaginador(i, nreProdInflacio);     //VISTES --> m'asseguro que el paginador es difumina en els extrems
-            colorejaContenidorTort(i, contTorcido);  //VISTES --> Poso el color pertinent (blau si es mante, verd si baixa, color rogenc si puja)
+            //colorejaContenidorTort(i, contTorcido);  //VISTES --> Poso el color pertinent (blau si es mante, verd si baixa, color rogenc si puja)
             emplenaGrafic(i); 
         }
     });
@@ -35,7 +35,7 @@ function paginadorManual(prodInflacio) {
 
             getDadesInflalyzer(esdeveniment, i, prodInflacio); //PERSISTÈNCIA --> Obtinc dades del sistema de persistència (localStorage o BBDD).
             avaluaPaginador(i, nreProdInflacio);    //VISTES --> m'asseguro que el paginador es difumina en els extrems
-            colorejaContenidorTort(i, contTorcido); //VISTES --> Poso el color pertinent (blau si es mante, verd si baixa, color rogenc si puja)
+            //colorejaContenidorTort(i, contTorcido); //VISTES --> Poso el color pertinent (blau si es mante, verd si baixa, color rogenc si puja)
             emplenaGrafic(i)
         }
     });

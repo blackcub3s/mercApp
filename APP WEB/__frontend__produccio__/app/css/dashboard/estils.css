@@ -141,7 +141,7 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 }
 
 #gridInferiorCardInflacio section img {width: 60%;} /*fletxes creixents i decreixents*/
-#gridInferiorCardInflacio section:nth-child(2) p:first-child {font-size: 3em; font-weight: bold; position: relative; top: -.6em;}  /*≃*/
+#gridInferiorCardInflacio section:nth-child(2) p:first-child {font-size: 3em; font-weight: bold; position: relative; top: -.25em;}  /*≃*/
 #gridInferiorCardInflacio section p:last-child {font-size: 1.22em; font-weight: bold; padding-top: .7em;}  /*els numeros de productes d'aument, igual o decrement*/
 
 #nreProductesPreu_INCREMENTAT {color: red;}  /*NUMERO inferior a la fletxa d'amunt*/
