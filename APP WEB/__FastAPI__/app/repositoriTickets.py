@@ -141,7 +141,7 @@ if __name__ == "__main__":
     print(json.dumps(dictTickets, indent=4, ensure_ascii=False))
 
     dictGraficPerUnProducte = obtinguesArrayDeParellsDataPreuUnitari("POLLO ENTERO LIMPIO",2)
-    print(json.dumps(dictGraficPerUnProducte, indent=4, ensure_ascii=False))
+    #print(json.dumps(dictGraficPerUnProducte, indent=4, ensure_ascii=False))
    
 
     

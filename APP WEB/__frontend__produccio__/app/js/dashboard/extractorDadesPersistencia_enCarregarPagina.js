@@ -29,8 +29,12 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
         //prodInflacio es necessita en aquest script i en paginadorInflacio.js (ES NECESITA EN DOS LLOCS)
         //                   
         prodInflacio = []
-        for (let clauProducte in diccDades) {                                                    //[prod, nreUnitats, categoria]
-            prodInflacio.push([clauProducte ,diccDades[clauProducte], 13])  //let prodInflacio = [["cogollo", 43, 1], ["pollo", 23, 6], ["bezoya", 12, 4]];   //també s'usa a pagimadorInflacio
+        for (let clauProducte in diccDades) {                            
+            //LA CATEGORIA DE CADA PRODUCTE NO SURT ENCARA DE BBDD. HEM FET UNA CLASSIFICACIÓ MANUAL EN EL FRONT PER DEMOSTRAR LA WEB. A FUTUR ES FARÀ AMB NLP.                        
+            let categoriaManual = productesClassificats[clauProducte]
+            if (categoriaManual == undefined)
+                categoriaManual = 13;                                                                           //[prod, nreUnitats, categoria]
+            prodInflacio.push([clauProducte ,diccDades[clauProducte], categoriaManual])  //let prodInflacio = [["cogollo", 43, 1], ["pollo", 23, 6], ["bezoya", 12, 4]];   //també s'usa a pagimadorInflacio
         }
 
 
