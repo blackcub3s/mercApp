@@ -132,8 +132,9 @@ async def obtinguesPuntsGraficXY(payload_token: dict = Depends(verificar_token),
 
 
 
-
-
+#PRECONDICIÓ: un token d'accés amb idUsuari i permisos a 1 (els que tenen acces al dashboard).
+#POSTCONDICIÓ: obtindrem un diccionari on les claus son les categories d'alimentacio i el preu es el total gastat des del principi
+#       {"1": 598.31, "2": 399.44, "3": 460.55, "4": 240.0, ... , "13" : 32.3}
 @app.get("/api/gastosPerCategoria")                                 
 async def asd(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
     permisos_enToken = payload_token.get("permisos", "clauDesconeguda")

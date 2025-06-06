@@ -44,7 +44,7 @@ function paginadorManual(prodInflacio) {
 function emplenaGrafic(i) {
     let freqProductes = JSON.parse(localStorage.getItem("frequenciesProductes"));    
     const clauProductes = Object.keys(freqProductes);   //clauP
-    console.log(clauProductes[i]);
+    //console.log(clauProductes[i]);
     fesGraficProducte(clauProductes[i]);
 }
 

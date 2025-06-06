@@ -140,7 +140,7 @@ function fesGrafic(arrDataPreu) {
             plugins: {
                 title: {
                     display: true,
-                    text: ['Variación del coste a lo largo del tiempo'],
+                    text: ['Variación del coste unitario a lo largo del tiempo'],
                     font: {
                         size: 30,
                         weight: 'bold'
