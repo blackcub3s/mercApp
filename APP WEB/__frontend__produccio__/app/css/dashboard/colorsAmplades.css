@@ -17,6 +17,10 @@
     --PI_colorReact: #087ea4;
     --PI_colorSpans4cards: #FFB007;
 
+    /*ESPECIFIC DE BAIXADA DE PREUS*/
+    --PI_cardSuperior: #e58282;
+    --PI_cardInferior: #e25f5f;
+
     
     /*GRADIENTE LINEAL DE CADA CARD (DE LAS 4CARDS DE LA SECCIÓN DE DIFERENCIAS DE LA PÁGINA INTERNA DEL FRONTEND*/
     --PI_inicioCard_VUE: #E7DFFF4c;  /*color original figma #E7DFFF al que se le ha aplicado opacidad del 30%*/

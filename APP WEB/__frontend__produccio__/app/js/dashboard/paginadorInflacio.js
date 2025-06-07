@@ -52,13 +52,15 @@ function emplenaGrafic(i) {
 
 //canvio color contenidor tort
 function colorejaContenidorTort(i, contenedor) {
-    if (i === 0) //SI PREU PRODUCTE BAIXA
+    if (i === -1) //SI PREU PRODUCTE BAIXA
         contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--colorVerdeVue'); 
     else if (i === 1) { //SI PREU PRODUCTE PUJA
-        var colorAngularINI = getComputedStyle(document.documentElement).getPropertyValue('--PI_colorAngularGradienteInicio');
-        var colorAngularFIN = getComputedStyle(document.documentElement).getPropertyValue('--PI_colorAngularGradienteFinal');
-        contenedor.style.background = `linear-gradient(to bottom, ${colorAngularINI}, ${colorAngularFIN})`;
-    } else if (i === 2) //SI PREU PRODUCTE ES MANTÉ
+        var colorCardSuperior = getComputedStyle(document.documentElement).getPropertyValue('--PI_cardSuperior');
+        var colorCardInferior = getComputedStyle(document.documentElement).getPropertyValue('--PI_cardInferior');
+        
+        
+        contenedor.style.background = `linear-gradient(to bottom, ${colorCardSuperior}, ${colorCardInferior})`;
+    } else if (i === 0) //SI PREU PRODUCTE ES MANTÉ
         contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_colorReact');
 }
 

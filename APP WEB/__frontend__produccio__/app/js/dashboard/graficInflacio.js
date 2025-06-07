@@ -124,7 +124,7 @@ function fesGrafic(arrDataPreu) {
                     },
                     title: {
                         display: true,
-                        text: 'Fecha',
+                        text: 'Fecha (mm/aa)',
                         color: 'black'
                     }
                 },
@@ -132,7 +132,7 @@ function fesGrafic(arrDataPreu) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Precio (€/kg o €)',
+                        text: 'Precio (€/kg o €/unidad)',
                         color: 'black'
                     }
                 }
