@@ -21,11 +21,11 @@ Esta aplicación permite hacer un análisis de tickets digitales del correo para
   * **1:** se concede cuando usuario antes invitado ha proporcionado tickets digitales Y ADEMÁS ha asegurado que se hayan persistido esos tickets en formato estructurado a mongoDB.
   * **2:** usuario tiene permisos de ADMIN, superusuario o amdinistrador. Se lo concedemos manualmente al propio desarrollador (nostros mismos).
 
-- [FastAPI](/APP%20WEB/__FastAPI__/) (*Back-end secundario*): Un segundo back-end para el parseo, extracción y persistencia de los tickets digitales. También para dar la señal a Spring Boot que expida un nuevo token de acceso cuando termina dicho parseo, extracción y persistencia (*permisos = 0* $\rightarrow $ *permisos = 1*). Solo podrán acceder a él usuarios registrados (permisos : {0,1,2}).
+- [FastAPI](/APP%20WEB/__FastAPI__/) (*Back-end secundario*): Un segundo back-end para el parseo, extracción y persistencia de los tickets digitales. También para dar la señal a Spring Boot que expida un nuevo token de acceso cuando termina dicho parseo, extracción y persistencia (*permisos = 0 **pasa a** permisos = 1*). Solo podrán acceder a endpoints de este back-end usuarios que estén registrados (permisos : {0,1,2}).
 
 -  [Vanilla Javascript](/APP%20WEB/__FastAPI__/) (Front-end): se hizo con vanilla JavaScript, vanilla CSS y vanilla HTML (a excepción del uso de librerías animate.css, wow.js y chart.js).
 
->⚠️ **NOTA**: Se ha configurado Google Cloud para que cada usuario hago automáticamente la extracción de tickets desde su Gmail mediante interacción con el front-end de nuestra aplicación; concretamente el acceso a la Gmail API mediante OAuth2.0. Podéis ver un esquema general de los componentes de la aplicación, su interacción con las bases de datos y el cloud de google. Más información en la memoria, apartado despliegue; hay muchísimas páginas dedicadas a desgranar cada uno de ellos.
+>⚠️ **NOTA**: Se ha configurado Google Cloud para que cada usuario haga automáticamente la extracción de tickets desde su Gmail mediante interacción con el front-end de nuestra aplicación; concretamente el acceso a la Gmail API mediante OAuth2.0. A continuación Podéis ver un esquema general de los componentes de la aplicación, su interacción con las bases de datos y el cloud de google. Más información en la memoria, apartado despliegue; hay muchísimas páginas dedicadas a desgranar cada uno de ellos.
 
 ![imatge](/APP%20WEB/memoriaLaTeX/img/diagramaSistemesAplicacioMercapp.png)
 
@@ -60,11 +60,11 @@ También se permite el despliegue de cada componente o microservicio del apartad
 
 # 5. Aspectos destacables
 
-Se manejó el enrutamiento de la aplicación mediante redirecciones en función del valor de la aplicación. Este enrutamiento se ha inspirado, mediante un proceso de desarrollo inverso, del que utiliza la aplicación web de NetFlix ante usuarios. 
+Se manejó el enrutamiento de vistas front-end mediante redirecciones con JavaScript en función de los valores devueltos en variables booleanas en endpoints a los que llamábamos en Spring Boot. Este enrutamiento se ha inspirado, mediante un proceso de desarrollo inverso, en el que utiliza la aplicación web de NetFlix ante usuarios. 
 
-Explicación completa del diagrama y lo que significa cada caja, paréntesis, rombo y color puede encontrarse en el apartado 3.6.3. Enrutamiento de vistas de la [memoria](/APP%20WEB/memoriaLaTeX/IESAbastos_2024-2025_Proyecto%20DAW_7S_SantiagoSanchezSans.pdf).
+Explicación completa del diagrama y lo que significa cada caja, paréntesis, rombo y color puede encontrarse en el apartado 3.6.3. Enrutamiento de vistas de la [memoria](/APP%20WEB/memoriaLaTeX/auxiliars/diagramaMercAppFront.pdf).
 
-![diagrama](/img/diagramaMercAppFrontADAPTAT.jpg)
+![diagrama](/APP%20WEB/memoriaLaTeX/img/diagramaMercAppFront.pdf)
 
 
 
