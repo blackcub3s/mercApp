@@ -177,6 +177,7 @@ function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
     dataPreuMaxim.innerHTML = dataMaxESPANYOLA(dataMax);
 
     //AFEGEIXO COLORACIÓ (dataMax es fata del primer màxim. dataMin primera data del primer mínim.)
+    //es tractar d'una primera aproximacio
     const contenidorTort = document.getElementById("contenedorTorcidoTop");
     if (dataMax > dataMin) {
         colorejaContenidorTort(1, contenidorTort) //preu puja

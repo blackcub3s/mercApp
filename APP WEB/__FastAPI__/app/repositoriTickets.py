@@ -11,14 +11,17 @@
 #                            - El ticket si tot va bé es persistirà a mongoDB.
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError, PyMongoError
-
+import os
 
 
 
 # Connexió a MongoDB 
 # (creem base de dades, si no existeix; i una colecció, si no existeix)
 def creaConexioAmongoDB_i_tornaTickets():
-    client = MongoClient("mongodb://localhost:27017")
+    if os.path.exists("/.dockerenv"):
+        client = MongoClient("mongodb://host.docker.internal:27017") #si es un contenidor doocker accedim a la bbdd aixi (en un entorn windows)
+    else:
+        client = MongoClient("mongodb://localhost:27017")  # si no corre en contenidor ho fem així
     bbdd = client["mercApp"] # la base de dades serà mercApp
     coleccioTickets = bbdd["tickets"] # la col·lecció es tickets.
     return coleccioTickets
