@@ -13,8 +13,11 @@ function zeroPadding(segons) {
     return `${segons}`;
 }
 
+//La redirrecció la fa  localStorage.removeItem("AccessToken");  que s'activa amb localStorage.clear(). Aquesta funcio
+//no només redirigeix, sino que neteja dades que no haurien de quedar al navegador (si hi queden seguent usuari tindra un leak)
+//de dades de l'anterior (en cas que ambdós es connectin al mateix pc)-
 function redirigeix_a_landing() {
-    localStorage.removeItem("AccessToken"); //borrem el token 
+    localStorage.clear(); //borrem el token (cosa que redirigirirà a landing) i mes info extra. 
     window.location.href = "index.html";
 }
 
