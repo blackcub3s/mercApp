@@ -76,7 +76,7 @@ function fesGraficProducte(nomProducte) {
                 
                 fesFetch_graficDataPreuProducte(producteMesComprat);
             }
-        }, 200);
+        }, 20);
     } else { //AQUEST PRODUCTES (2N PRODUCTE MES OCURRENT I SEGUENTS VINDRAN PER PARMETRE, DEL PAGINADOR.
         setTimeout(() => {
             fesFetch_graficDataPreuProducte(nomProducte);
