@@ -138,20 +138,20 @@
             <article class="cartaDashboard wow animate__animated animate__fadeInLeft" data-wow-duration="1s" data-wow-delay=".25s">
                 <h1 class = "subtitolSalutacio">Evolución precios por inflación</h1>
                 <img src="img/dashboard/escaletaCroppedDefinitiu.png" alt="imagenNoCargo">
-                <h2>Has adquirido <span id = "nreProductesDiferentsAdquirits" class = "colorBlauSortidaDades"></span> productos distintos.</h2>
+                <h2>Has adquirido <span id = "nreProductesDiferentsAdquirits" class = "colorBlauSortidaDades" title="NOTA EXPLICATIVA: Si un producto lo adquieres 10 veces y otro 3 veces, contabilizamos que has adquirido 2 productos distintos, no 13."></span> productos distintos.</h2>
                 
                 <section id = "gridInferiorCardInflacio">
                     <section>
                         <img src="img/dashboard/incrementPreu.png" alt="increment">
-                        <p><span id = "nreProductesPreu_INCREMENTAT"></span></p>  
+                        <p><span id = "nreProductesPreu_INCREMENTAT" title = "Número de productos distintos cuyo precio SE HA INCREMENTADO entre la primera y la última compra que hiciste. Para decidir si se ha producido un incremento de precio para un producto determinado hemos programado la siguiente aproximación: si la fecha del primer dia en que se dio el precio máximo en los tickets que nos has proporcionado es MÁS RECIENTE que la fecha del primer dia en que se dio el precio mínimo, consideraremos que el precio se ha incrementado."></span></p>  
                     </section>
                     <section>
                         <p>≃</p>
-                        <p><span id = "nreProductesPreu_MANTINGUT"></span></p>
+                        <p><span id = "nreProductesPreu_MANTINGUT" title = "Número de productos distintos cuyo precio SE HA MANTENIDO entre la primera y la última compra que hiciste. Para decidir si se ha mantenido el precio simplemente miraremos si la fecha en que se dio el máximo coincide con la fecha en que se dio el mínimo (cualquier caso que no se compute en los dos anteriores)"></span></p>
                     </section>
                     <section>
                         <img src="img/dashboard/decrementPreu.png" alt="decrement">
-                        <p><span id = "nreProductesPreu_DECREMENTAT"></span></p>
+                        <p><span id = "nreProductesPreu_DECREMENTAT"  title = "Número de productos distintos cuyo precio HA DISMINUIDO entre la primera y la última compra que hiciste. Para decidir si se ha producido un decremento de precio para un producto determinado hemos programado la siguiente aproximación: si la fecha del primer dia en que se dio el precio máximo en los tickets que nos has proporcionado es MÁS ANTIGUA que la fecha del primer dia en que se dio el precio múnimo, consideraremos que el precio ha disminuido."></span></p>
                     </section>
                 </section>
             </article>
@@ -225,12 +225,12 @@
                                         </thead>
                                         <tbody>
                                             <tr class="wow animate__animated animate__fadeIn" data-wow-duration="1.5s" data-wow-delay="0s">
-                                                <td id = "preuMinim" class = "colorBlauSortidaDades"></td> <!-- ej: 3.44 €-->
-                                                <td id = "preuMaxim" class = "colorBlauSortidaDades"></td> <!-- ej: 6.34 €-->
+                                                <td id = "preuMinim" class = "colorBlauSortidaDades" title="Precio mínimo observado en el producto a lo largo de todas las compras que has realizado."></td> <!-- ej: 3.44 €-->
+                                                <td id = "preuMaxim" class = "colorBlauSortidaDades" title="Precio máximo observado en el producto a lo largo de todas las compras que has realizado."></td> <!-- ej: 6.34 €-->
                                             </tr>
                                             <tr class="wow animate__animated animate__fadeIn" data-wow-duration="1.5s" data-wow-delay=".0s">
-                                                <td id = "dataPreuMinim" class = "colorBlauSortidaDades"></td>          <!--ej: 02/10/23-->
-                                                <td id = "dataPreuMaxim" class = "colorBlauSortidaDades"></td>  <!--ej: 04/11/24-->
+                                                <td id = "dataPreuMinim" class = "colorBlauSortidaDades" title ="Fecha en que se ha dado el precio mínimo (si existen múltiples mínimos la fecha del más antiguo)."></td>          <!--ej: 02/10/23-->
+                                                <td id = "dataPreuMaxim" class = "colorBlauSortidaDades" title ="Fecha en que se ha dado el precio máximo (si existen múltiples máximos la fecha del más antiguo)."></td>  <!--ej: 04/11/24-->
                                             </tr>
                                         </tbody>
                                     </table>
