@@ -143,6 +143,22 @@ async def asd(payload_token: dict = Depends(verificar_token)):   # Valida el jwt
     
     return serveiTickets.obtenirGastPerCategoria_GLOBAL(idUsuari_enToken)
 
+
+
+@app.get("/api/categoriaAmbMesGasto")                                 
+async def asd(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
+    permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
+    idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
+    permetSolicitudsEntrantsNomesA([1], permisos_enToken)
+
+    return serveiTickets.obtenirIndexCategoria_ONMESSHAGASTAT(idUsuari_enToken) #retorno index de la categoria on l'usuari ha gastat més calers
+
+    
+    
+
+
+
+
 """
 
 #ENDPOINTS PROVA RESTCLIENT
