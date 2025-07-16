@@ -145,7 +145,8 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 //EL GRAFIC DE PRODUCTE obtenint les dades de la crida fetch a fastAPI, al endpoint: /api/graficDataPreuProducte. En guardar-lo
 //a local storage no cal fer més crides a endpoints. Des del client fem un esquema de recorregut de cada parell
 //de punts del gràfic. I quan l'acabem ja sabem quin és el preu màxim i el preu mínim històric de cada producte,
-//podent posar-lo a la taula de l'inflalyzer :D.
+//que és el que després va a la taula de l'inflalyzer :D. Si existeixen varis mínims el primer minim i la primera data on es dona (més antiga) 
+//és la que sortirà. Passa el mateix amb els màxims, si n'existeixen varis el primer màxim i la primera data on es dona és la que sortirà.
 //ASSUMPCIONS: No hi ha devolucions als tickets (preus negatius) i no hi ha cap producte de mercadona que costi més de 10000 euros
 function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
     let arrDataPreuProducte = JSON.parse(localStorage.getItem("arrDataPreu"));    
