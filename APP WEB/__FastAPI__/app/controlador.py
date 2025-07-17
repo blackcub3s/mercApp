@@ -151,7 +151,7 @@ async def asd(payload_token: dict = Depends(verificar_token)):   # Valida el jwt
     idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
     permetSolicitudsEntrantsNomesA([1], permisos_enToken)
 
-    return serveiTickets.obtenirIndexCategoria_ONMESSHAGASTAT(idUsuari_enToken) #retorno index de la categoria on l'usuari ha gastat més calers
+    return {"categoriaMaximoGasto" : serveiTickets.obtenirIndexCategoria_ONMESSHAGASTAT(idUsuari_enToken)} #retorno index de la categoria on l'usuari ha gastat més calers
 
     
     
