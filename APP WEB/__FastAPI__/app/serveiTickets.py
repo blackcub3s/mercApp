@@ -402,7 +402,12 @@ def parellDataPreuUnitari(nomProducte, id_usuari):
 def obtenirGastPerCategoria_GLOBAL(id_usuari):
     return repositoriTickets.obtenirGastPerCategoria_GLOBAL(id_usuari)
 
-
+def obtenirIndexCategoria_ONMESSHAGASTAT(id_usuari):
+    dCatGasto = repositoriTickets.obtenirGastPerCategoria_GLOBAL(id_usuari) #reutilitzo aquesta funcio ja usada en la funcio obtenirGastPerCategoria_GLOBAL
+    llCategories = list(dCatGasto.keys()) #indexos de les categories
+    llGastos = list(dCatGasto.values()) #valors gastats per a cada cateogria
+    indexMaximGasto = llGastos.index(max(llGastos)) #index de categoria en la que HAS GASTAT MÉS
+    return llCategories[indexMaximGasto] #TORNO L'INDEX DE LA CATEOGIRA ON HE GASTAT MÉS
 
 
 

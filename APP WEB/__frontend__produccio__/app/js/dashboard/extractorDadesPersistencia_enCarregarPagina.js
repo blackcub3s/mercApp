@@ -72,6 +72,13 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
         const dom_nrePreuDecrementat = document.getElementById("nreProductesPreu_DECREMENTAT");
         dom_nrePreuDecrementat.innerHTML = "Z";
 
+        //--- SEGONA CARD TOP --
+        obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html();
+        
+
+
+
+
         // -------------------
         // --- INFLALYZER ----
         // -------------------
@@ -256,5 +263,44 @@ function getDadesInflalyzer(esdev, i, prodInflacio) {
         
     }
 
+}
+
+
+//PRE: existeix el endpoint /api/categoriaAmbMesGasto dins el back-end de fastAPI i en cridar-lo
+//     torna un JSON de l'estil {"categoriaMaximoGasto": 1}
+//POST: retorna un enter amb el valor de la categoria on s'ha gastat més.   
+function obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html() {
+    fetch('http://localhost:8000/api/categoriaAmbMesGasto', {
+        method : "GET",
+        headers : {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${localStorage.getItem("AccessToken")}`
+        }
+    })
+    .then(response => {
+        if (!response.ok)
+            throw new Error('Error en la solicitud: ' + response.status);
+        return response.json(); 
+    })
+    .then(data => {
+        //CARREGO LA IMATGE DE LA CATEGORIA EN L'HTML
+        carregaImatgeCategoria_segonaCard(data.categoriaMaximoGasto);
+    })
+    .catch(error => {console.error('Problema amb el fetch:', error);});
+}
+
+
+
+
+//PRE: idCategoria (de 1 a 13)
+//POST: la imatge es veu carregada sense problemes
+function carregaImatgeCategoria_segonaCard(idCategoria) {
+    const elementPareImatgeCategoriaCARD = document.getElementById("iconoSegonaCardCATEGORIA");
+    const elImg = document.createElement("img");
+    elImg.setAttribute("src", `img/dashboard/iconosCategories/${categoriesIMG[idCategoria]}.png`); //verduraIHortalisses sera la mes carrgada
+    elImg.setAttribute("alt", "imagen no cargó");
+    elImg.setAttribute("title", `Categoría de producto: "${categoriesTEXT[idCategoria]}"`);
+    elementPareImatgeCategoriaCARD.appendChild(elImg);
 }
 
