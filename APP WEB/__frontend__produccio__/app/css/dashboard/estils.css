@@ -407,7 +407,7 @@ body {overflow-x: hidden;}
 /*Ponemos que los td de precios mínimos, máximos y fechas se marquen 
 con cursor (porque al fin y al cabo muestran ifnormacion al hacer hover). Hacemos lo mismo con los textos
 extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc. */
-#tablaInflalyzer tbody td, #nreProductesDiferentsAdquirits, #gridInferiorCardInflacio span {cursor: help;}
+#tablaInflalyzer tbody td, #nreProductesDiferentsAdquirits, #gridInferiorCardInflacio span, #iconoSegonaCardCATEGORIA img {cursor: help;}
 
 
  /*PONEMOS COLOR LILA
