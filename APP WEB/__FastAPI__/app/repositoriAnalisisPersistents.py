@@ -22,26 +22,30 @@ def obtenirVariacionsUsuari(id_usuari):
     variacioUsuari = colVariacions.find_one({"_id": id_usuari}) #brutal! ja treu el diccionari directe
     return variacioUsuari
 
+#PRE: id_usuari del que vull GUARDAR els productes que pujen, baixen o es mantenten
+#     diccVariacions_RECENTCALCULAT: el diccionari que acabo de calcular i que vull guardar format tipo --> {"_id" : 2, "pujen" : 100, "mantenen" : 2, "baixen" : 14}
+def inserirVariacionsUsuari(id_usuari, diccVariacions_RECENTCALCULAT):
+    coleccioVariacions = creaConexioAmongoDB_i_tornaVariacions()
+    coleccioVariacions.insert_one(diccVariacions_RECENTCALCULAT)
 
 
 # PRE: - id_usuariEnTOken: conte l'id d'usuari.
 # POST: retorno format tipus --> {"_id" : 2, "pujen" : 100, "mantenen" : 2, "baixen" : 14}
-#       Per a l'usuari id_usuariEnTOken donat passa una de dues coses: 
-#             A) es persistenxien les dades dicVariacionsProductes, calculades en el service, en la collection "variacions"
+#      Per a l'usuari id_usuariEnTOken donat passa una de dues coses: 
+#             A) es persistenxien les dades dicVariacionsProductes, i es calculen en el service, en la collection "variacions" (COSTA 9 - 10 SEGONS DE FER EN MSI GS65 stealth 8SE: COMPUTACIONALMENT INTENSIU)
 #             B) sobtenen les variacions de preus que tenen els seus tikets cercant a la coleccio variacions en cas que JA S'HAGUESSIN CALCULAT (evitant recalcular-les)
 def persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuariEnToken):
 
     #TRACTO D'AFEGIR PER PRIMER COP
     try: 
-        coleccioVariacions = creaConexioAmongoDB_i_tornaVariacions() #faig la conexio (creant la bbdd i la conexio si no existeixen, automaticament)
-        dicVariacions = obtenirVariacionsUsuari(idUsuariEnToken)
         
+        dicVariacions = obtenirVariacionsUsuari(idUsuariEnToken)
         if dicVariacions:
             print("Ja s'havia calculat la variacio de preus: la recuperem de la BBDD!")
-            return dicVariacions
+            return dicVariacions  
         else:
             diccVariacions_RECENTCALCULAT = serveiAnalisisPersistents.computaProductesPujenMantenenBaixen_perUsuari(idUsuariEnToken) #PROGRAMAR LA SEUA OBTENCIÓ EN EL serveiAnalisisPersistents
-            coleccioVariacions.insert_one(diccVariacions_RECENTCALCULAT)
+            inserirVariacionsUsuari(idUsuariEnToken, diccVariacions_RECENTCALCULAT)
             print("Inserció feta a bbdd (hem calculat totes les pujades, baixades i manteniment de preus!")
             return diccVariacions_RECENTCALCULAT
         
