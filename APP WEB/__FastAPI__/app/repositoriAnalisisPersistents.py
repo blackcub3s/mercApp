@@ -50,5 +50,5 @@ def persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuariEnToken, dic
 
 
 if __name__ == "__main__":
-    dictGuardat = persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(2)
+    dictGuardat = persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(2, {"_id" : 2, "pujen" : 169, "mantenen" : 29, "baixen" : 19})
     print(dictGuardat)
