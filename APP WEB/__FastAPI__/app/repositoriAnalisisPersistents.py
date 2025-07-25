@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError, PyMongoError
 import os
-
+import serveiAnalisisPersistents
 
 
 # Connexió a MongoDB
@@ -25,30 +25,31 @@ def obtenirVariacionsUsuari(id_usuari):
 
 
 # PRE: - id_usuariEnTOken: conte l'id d'usuari.
-#      - dicVariacionsProductes: té els productes amb info de si pujen mantene o baixen tal que aixi  {"_id" : 2, "pujen" : 100, "mantenen" : 2, "baixen" : 14}
 # POST: retorno format tipus --> {"_id" : 2, "pujen" : 100, "mantenen" : 2, "baixen" : 14}
 #       Per a l'usuari id_usuariEnTOken donat passa una de dues coses: 
 #             A) es persistenxien les dades dicVariacionsProductes, calculades en el service, en la collection "variacions"
 #             B) sobtenen les variacions de preus que tenen els seus tikets cercant a la coleccio variacions en cas que JA S'HAGUESSIN CALCULAT (evitant recalcular-les)
-def persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuariEnToken, dicVariacionsProductes):
+def persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuariEnToken):
 
     #TRACTO D'AFEGIR PER PRIMER COP
     try: 
         coleccioVariacions = creaConexioAmongoDB_i_tornaVariacions() #faig la conexio (creant la bbdd i la conexio si no existeixen, automaticament)
-        coleccioVariacions.insert_one(dicVariacionsProductes)
-        print("Inserció feta a bbdd!")
-        return dicVariacionsProductes
-    
-    #SI JA EXISTEIX LA INFORMACIO DE INCREMENTS I DECREMENTS GUARDADA HO INFORMO
-    except DuplicateKeyError:
-        print("Ja era a la BBDD! Es retorna el resultat existent :)")
-        return obtenirVariacionsUsuari(idUsuariEnToken)
-    
+        dicVariacions = obtenirVariacionsUsuari(idUsuariEnToken)
+        
+        if dicVariacions:
+            print("Ja s'havia calculat la variacio de preus: la recuperem de la BBDD!")
+            return dicVariacions
+        else:
+            diccVariacions_RECENTCALCULAT = serveiAnalisisPersistents.computaProductesPujenMantenenBaixen_perUsuari(idUsuariEnToken) #PROGRAMAR LA SEUA OBTENCIÓ EN EL serveiAnalisisPersistents
+            coleccioVariacions.insert_one(diccVariacions_RECENTCALCULAT)
+            print("Inserció feta a bbdd (hem calculat totes les pujades, baixades i manteniment de preus!")
+            return diccVariacions_RECENTCALCULAT
+        
     except PyMongoError as e:
         print(f"Error al guardar a MongoDB: {e}")
         return {} #veure què poso aqui
 
 
 if __name__ == "__main__":
-    dictGuardat = persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(2, {"_id" : 2, "pujen" : 169, "mantenen" : 29, "baixen" : 19})
-    print(dictGuardat)
+    d = persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(2)
+    print(d)

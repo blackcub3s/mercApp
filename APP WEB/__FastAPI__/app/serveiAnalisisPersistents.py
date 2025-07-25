@@ -72,8 +72,8 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
 #PRE: token de l'usuari del que volem fer l'analisis
 #POST: Diccionari amb la informació corresponent estil {"_id" : idUsuariEnToken, "pujen" : 256, "mantenen" : 2, "baixen" : 10}
 def pujenMantenenBaixen(idUsuari_enToken):
-    diccVariacionsProductes = computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken) #PROGRAMAR LA SEUA OBTENCIÓ EN EL serveiAnalisisPersistents
-    return repositoriAnalisisPersistents.persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuari_enToken, diccVariacionsProductes)
+    
+    return repositoriAnalisisPersistents.persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuari_enToken)
 
 
 if __name__ == "__main__":
