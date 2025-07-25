@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 
         //--- PRIMERA CARD TOP ---
-        obtinguesNreProductesPUJEN_MANTENEN_BAIXEN();
+        //obtinguesNreProductesPUJEN_MANTENEN_BAIXEN(); // NOTA: Crides la funcio dins del data en la funcio obtinguesIdCategoriaDeMesGasto_, si no bloqueja el fluxe
 
 
         //--- SEGONA CARD TOP ---
@@ -280,6 +280,9 @@ function obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html() {
     .then(data => {
         //CARREGO LA IMATGE DE LA CATEGORIA EN L'HTML
         carregaImatgeCategoria_segonaCard(data.categoriaMaximoGasto);
+
+        //ARA JA ACONSEGUEIXO QUE CARREGUI EL CONTINGUT DE LA PRIMERA CARD. SI NO, QUEDARIA BLOQUEJANT LA CARREGA DEL CONTENIGUT DE LA SEGONA CARD:
+        obtinguesNreProductesPUJEN_MANTENEN_BAIXEN();
     })
     .catch(error => {console.error('Problema amb el fetch:', error);});
 }
