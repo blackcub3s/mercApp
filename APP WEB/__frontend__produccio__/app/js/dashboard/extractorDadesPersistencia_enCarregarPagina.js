@@ -308,14 +308,27 @@ function carregaImatgeCategoria_segonaCard(idCategoria) {
 
 
 function obtinguesNreProductesPUJEN_MANTENEN_BAIXEN() {
+    
+    //CARREGO DEL DOM ELS PLACEHOLDERS PER POSAR LES TRES DADES:
     const dom_nrePreuIncrementat = document.getElementById("nreProductesPreu_INCREMENTAT");
-    dom_nrePreuIncrementat.innerHTML = "X";
-
     const dom_nrePreuMantingut = document.getElementById("nreProductesPreu_MANTINGUT");
-    dom_nrePreuMantingut.innerHTML = "Y"
-
     const dom_nrePreuDecrementat = document.getElementById("nreProductesPreu_DECREMENTAT");
-    dom_nrePreuDecrementat.innerHTML = "Z";
+    
+    //CREO ELS PUNTS SUSPENSIUS:
+    let s = ".";
+    const intervalId = setInterval(() => {
+
+        dom_nrePreuIncrementat.innerHTML = s;
+        dom_nrePreuMantingut.innerHTML = s;
+        dom_nrePreuDecrementat.innerHTML = s;
+        s += ".";
+        
+        if (s.length > 3) {
+            setTimeout(() => {}, 1200);
+            s = ".";
+        }
+    }, 600);
+
 
 
     fetch('http://localhost:8000/api/calculaPujadesBaixadesEnProductes', {
@@ -332,7 +345,7 @@ function obtinguesNreProductesPUJEN_MANTENEN_BAIXEN() {
         return response.json(); 
     })
     .then(data => {
-
+        clearInterval(intervalId);
         dom_nrePreuIncrementat.innerHTML = data.pujen;
         dom_nrePreuMantingut.innerHTML = data.mantenen;
         dom_nrePreuDecrementat.innerHTML = data.baixen;
