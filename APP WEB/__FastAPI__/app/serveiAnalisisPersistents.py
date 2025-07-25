@@ -5,6 +5,7 @@
 import repositoriAnalisisPersistents
 import repositoriTickets
 import time
+from pymongo.errors import PyMongoError
 
 #PRE: id de l'usuari l'usuari del que volem fer l'analisis de si productes baixen o pujen de preu. || No existeixen 
 #      productes de preu superior als 10 000 euros en mercadona
@@ -72,9 +73,34 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
 #PRE: token de l'usuari del que volem fer l'analisis
 #POST: Diccionari amb la informació corresponent estil {"_id" : idUsuariEnToken, "pujen" : 256, "mantenen" : 2, "baixen" : 10}
 def pujenMantenenBaixen(idUsuari_enToken):
-    
-    return repositoriAnalisisPersistents.persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuari_enToken)
+    return persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuari_enToken)
+
+
+# PRE: - id_usuariEnTOken: conte l'id d'usuari.
+# POST: retorno format tipus --> {"_id" : 2, "pujen" : 100, "mantenen" : 2, "baixen" : 14}
+#      Per a l'usuari id_usuariEnTOken donat passa una de dues coses: 
+#             A) es persistenxien les dades dicVariacionsProductes, i es calculen en el service, en la collection "variacions" (COSTA 9 - 10 SEGONS DE FER EN MSI GS65 stealth 8SE: COMPUTACIONALMENT INTENSIU)
+#             B) sobtenen les variacions de preus que tenen els seus tikets cercant a la coleccio variacions en cas que JA S'HAGUESSIN CALCULAT (evitant recalcular-les)
+def persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuariEnToken):
+    try: 
+        dicVariacions = repositoriAnalisisPersistents.obtenirVariacionsUsuari(idUsuariEnToken)
+       
+        if dicVariacions:   #Si el diccionari existeix, vol dir que ja s'havia calculat la variacio de preus: la recuperem de la BBDD!
+            return dicVariacions  
+        else:               #Si el diccionari no existeix (es NoneType), vol dir que NO s'havia calculat la variacio de preus: la CALCULEM!
+            #Calculem els productes que pujen, baixen i mantenen (INTENSIU COMPUTACIONALMENT) i guardem a mongoDB per propores consultes (que no requereixin calcul)
+            diccVariacions_RECENTCALCULAT = computaProductesPujenMantenenBaixen_perUsuari(idUsuariEnToken) #PROGRAMAR LA SEUA OBTENCIÓ EN EL serveiAnalisisPersistents
+            repositoriAnalisisPersistents.inserirVariacionsUsuari(idUsuariEnToken, diccVariacions_RECENTCALCULAT)
+            return diccVariacions_RECENTCALCULAT
+        
+    except PyMongoError as e:
+        print(f"Error al guardar a MongoDB: {e}")
+        return {} #veure què poso aqui
+
+
 
 
 if __name__ == "__main__":
-    print(computaProductesPujenMantenenBaixen_perUsuari(2))
+    #print(computaProductesPujenMantenenBaixen_perUsuari(2))
+    d = persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(2)
+    print(d)

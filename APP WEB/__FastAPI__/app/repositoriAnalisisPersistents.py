@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-from pymongo.errors import DuplicateKeyError, PyMongoError
 import os
 import serveiAnalisisPersistents
 
@@ -27,33 +26,3 @@ def obtenirVariacionsUsuari(id_usuari):
 def inserirVariacionsUsuari(id_usuari, diccVariacions_RECENTCALCULAT):
     coleccioVariacions = creaConexioAmongoDB_i_tornaVariacions()
     coleccioVariacions.insert_one(diccVariacions_RECENTCALCULAT)
-
-
-# PRE: - id_usuariEnTOken: conte l'id d'usuari.
-# POST: retorno format tipus --> {"_id" : 2, "pujen" : 100, "mantenen" : 2, "baixen" : 14}
-#      Per a l'usuari id_usuariEnTOken donat passa una de dues coses: 
-#             A) es persistenxien les dades dicVariacionsProductes, i es calculen en el service, en la collection "variacions" (COSTA 9 - 10 SEGONS DE FER EN MSI GS65 stealth 8SE: COMPUTACIONALMENT INTENSIU)
-#             B) sobtenen les variacions de preus que tenen els seus tikets cercant a la coleccio variacions en cas que JA S'HAGUESSIN CALCULAT (evitant recalcular-les)
-def persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(idUsuariEnToken):
-
-    #TRACTO D'AFEGIR PER PRIMER COP
-    try: 
-        
-        dicVariacions = obtenirVariacionsUsuari(idUsuariEnToken)
-        if dicVariacions:
-            print("Ja s'havia calculat la variacio de preus: la recuperem de la BBDD!")
-            return dicVariacions  
-        else:
-            diccVariacions_RECENTCALCULAT = serveiAnalisisPersistents.computaProductesPujenMantenenBaixen_perUsuari(idUsuariEnToken) #PROGRAMAR LA SEUA OBTENCIÓ EN EL serveiAnalisisPersistents
-            inserirVariacionsUsuari(idUsuariEnToken, diccVariacions_RECENTCALCULAT)
-            print("Inserció feta a bbdd (hem calculat totes les pujades, baixades i manteniment de preus!")
-            return diccVariacions_RECENTCALCULAT
-        
-    except PyMongoError as e:
-        print(f"Error al guardar a MongoDB: {e}")
-        return {} #veure què poso aqui
-
-
-if __name__ == "__main__":
-    d = persisteix_o_obtingues_VariacionsPreusTickets_a_MONGODB(2)
-    print(d)
