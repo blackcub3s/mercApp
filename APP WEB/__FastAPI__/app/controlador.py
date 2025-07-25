@@ -155,7 +155,7 @@ async def trobaCategoriaOnMesShaGastat(payload_token: dict = Depends(verificar_t
 
     
     
-@app.get("/api/calculaPujadesBaixadesEnProductes")                                 
+@app.post("/api/calculaPujadesBaixadesEnProductes")                                 
 async def calculaPorductesPujatsBaixatsPerUsuari(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
     permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
     idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
