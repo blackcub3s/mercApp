@@ -62,17 +62,11 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 
 
+        //--- PRIMERA CARD TOP ---
+        obtinguesNreProductesPUJEN_MANTENEN_BAIXEN();
 
-        const dom_nrePreuIncrementat = document.getElementById("nreProductesPreu_INCREMENTAT");
-        dom_nrePreuIncrementat.innerHTML = "X";
 
-        const dom_nrePreuMantingut = document.getElementById("nreProductesPreu_MANTINGUT");
-        dom_nrePreuMantingut.innerHTML = "Y"
-
-        const dom_nrePreuDecrementat = document.getElementById("nreProductesPreu_DECREMENTAT");
-        dom_nrePreuDecrementat.innerHTML = "Z";
-
-        //--- SEGONA CARD TOP --
+        //--- SEGONA CARD TOP ---
         obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html();
         
 
@@ -304,3 +298,46 @@ function carregaImatgeCategoria_segonaCard(idCategoria) {
     elementPareImatgeCategoriaCARD.appendChild(elImg);
 }
 
+
+
+
+
+
+
+
+
+
+function obtinguesNreProductesPUJEN_MANTENEN_BAIXEN() {
+    const dom_nrePreuIncrementat = document.getElementById("nreProductesPreu_INCREMENTAT");
+    dom_nrePreuIncrementat.innerHTML = "X";
+
+    const dom_nrePreuMantingut = document.getElementById("nreProductesPreu_MANTINGUT");
+    dom_nrePreuMantingut.innerHTML = "Y"
+
+    const dom_nrePreuDecrementat = document.getElementById("nreProductesPreu_DECREMENTAT");
+    dom_nrePreuDecrementat.innerHTML = "Z";
+
+
+    fetch('http://localhost:8000/api/calculaPujadesBaixadesEnProductes', {
+        method : "POST",
+        headers : {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${localStorage.getItem("AccessToken")}`
+        }
+    })
+    .then(response => {
+        if (!response.ok)
+            throw new Error('Error en la solicitud: ' + response.status);
+        return response.json(); 
+    })
+    .then(data => {
+
+        dom_nrePreuIncrementat.innerHTML = data.pujen;
+        dom_nrePreuMantingut.innerHTML = data.mantenen;
+        dom_nrePreuDecrementat.innerHTML = data.baixen;
+    })
+    .catch(error => {console.error('Problema amb el fetch:', error);});
+
+
+}
