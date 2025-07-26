@@ -6,6 +6,8 @@ import repositoriAnalisisPersistents
 import repositoriTickets
 import time
 from pymongo.errors import PyMongoError
+from datetime import datetime
+import scipy
 
 #PRE: id de l'usuari l'usuari del que volem fer l'analisis de si productes baixen o pujen de preu. || No existeixen 
 #      productes de preu superior als 10 000 euros en mercadona
@@ -34,29 +36,26 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
 
         #codifiquem aqui la mateixa lògica vista en funció pMinMax() 
         # de "extractorDadesPersistencia_enCarregarPagina.js" (al que ens referim amb NOTA de la capçalera)
-        min = 10000
-        dataMin = ""
-        max = -1
-        dataMax = ""
-
+        
+        xDates = [] #dates
+        yPreus = [] #preus
         for i in range(len(llDataPreu)):
             data, preu = llDataPreu[i]["x"], llDataPreu[i]["y"], 
-            
+               
+            xDates.append(datetime.strptime(data, "%Y-%m-%d").toordinal())  # obtinc objecte de l'string aaaa-mm-dd, el passo a dies
+            yPreus.append(preu)   # els valors de Y son facils de tractar (nomes es reubicar)
 
-            #actualitzo els valors a cada iteracio.
-            if preu < min:
-                min = preu
-                dataMin = data
+        resultatRegLineal = scipy.stats.linregress(xDates, yPreus) #ojo que aixo no anira cal importar
 
-            if preu > max:
-                max = preu
-                dataMax = data
-    
-        #Un cop ja trobats els màxims i minims per a un producte donat i obtenides les preimeres dates on es donaren aquests màxims i minims emetem
-        #el judici per cada producte i el resultat del judici l'acumulem a les variables de nombre de productes que pujen baixen o es mantenen.
-        if dataMax > dataMin:
+        pendent = resultatRegLineal.slope   #pendent es coeficient b1
+        pValorB1 = resultatRegLineal.pvalue #pValor
+
+        print("b1 = ", pendent, " | ", "p = ", pValorB1, "| nItems ="+str(len(xDates))+ " strProducte: "+strProducte)
+
+        # a partir del pendent de la regressió lineal diem si el preu puja o baixa.
+        if pendent > 0:
             pujen += 1          #preu puja (al llarg del temps)
-        elif dataMax < dataMin:
+        elif pendent < 0:
             baixen += 1         #preu baixa (al llarg del temps)
         else:
             mantenen += 1       #preu es manté (dataMax == dataMin)
