@@ -60,8 +60,11 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
             pujen += 1          #preu puja (al llarg del temps)
         elif pendent < 0:
             baixen += 1         #preu baixa (al llarg del temps)
+        elif pendent == 0: 
+            mantenen += 1       #preu es manté (posem explicitament pendent == 0 perque la regressio afina a 0.0 si hi ha 2 o mes productes perfectament alineats)
         else:
-            mantenen += 1       #preu es manté (dataMax == dataMin)
+            pass                #Aqui es dona quan es dona A) el pendent es nan perquè només hi ha 1 sol producte (no hi ha mes de 1 punt a la recta i no puc fer regressio). B) Perque hi ha hagut un error de lectura dels punts dels productes que cal subsanar
+            #print("NOT A NUMBER")
         
     #INICI SEGON XIVATO DE TEMPS
     t2 =  time.perf_counter()
