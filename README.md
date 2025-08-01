@@ -54,8 +54,13 @@ También se permite el despliegue de cada componente o microservicio del apartad
 
 - **mongoDB**: Donde persistimos los tickets, en una collection.
 
->⚠️ **NOTA**: a mySQL solo se persisten y leen datos desde Spring Boot. Mientras que a MongoDB la conexión es únicamente mediante fastAPI.
+>⚠️ **NOTA 1**: a mySQL solo se persisten y leen datos desde Spring Boot. Mientras que a MongoDB la conexión es únicamente mediante fastAPI.
 
+>ℹ️ **NOTA 2**: Para iniciar mongodb en mac es necesario activar la bbdd con este comando de zsh. En windows no es necesario hacer nada más que iniciar mongo db compass:
+
+```
+brew services start mongodb/brew/mongodb-community
+```
 
 
 # 5. Aspectos destacables
