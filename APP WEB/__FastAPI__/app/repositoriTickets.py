@@ -103,11 +103,24 @@ def frequencia_productes_per_usuari(id_usuari):
 def obtinguesArrayDeParellsDataPreuUnitari(nomProducte, id_usuari):
     colTickets = creaConexioAmongoDB_i_tornaTickets()
 
-    # Busquem tots els tiquets per a l'usuari on apareix el producte
-    cursor = colTickets.find({
-        "idUsuari": id_usuari,
-        f"productesAdquirits.{nomProducte}": {"$exists": True}
-    })
+    # Busquem tots els tiquets per a l'usuari on apareix el producte (cal fer una consulta amb $in per a cercar dins de productesAdquirits)
+    # sense la qual no podriem cercar productes que continguin punts en el seu nom.
+    cursor = colTickets.aggregate([
+        {"$match": {"idUsuari": id_usuari}},
+        {
+            "$match": {
+                "$expr": {
+                    "$in": [nomProducte, {
+                        "$map": {
+                            "input": {"$objectToArray": "$productesAdquirits"},
+                            "as": "item",
+                            "in": "$$item.k"
+                        }
+                    }]
+                }
+            }
+        }
+    ])
 
     arrDataPreu = []
 
