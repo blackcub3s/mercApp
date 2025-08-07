@@ -23,7 +23,7 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
     baixen = 0   #baixen
 
     #INICI CONTADOR
-    t1 =  time.perf_counter()
+    #t1 =  time.perf_counter()
 
 
     TUPLA_productesDiferentsUsuari = tuple(repositoriTickets.frequencia_productes_per_usuari(idUsuari_enToken).keys())  # ('BOLSA PLASTICO', 'BANANA', 'BRONCHALES 1,5L', 'BRONCHALES 6L', [...], 'LECHE SEMI')
@@ -67,8 +67,8 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
             #print("NOT A NUMBER")
         
     #INICI SEGON XIVATO DE TEMPS
-    t2 =  time.perf_counter()
-    print(t2 - t1)
+    #t2 =  time.perf_counter()
+    #print(t2 - t1)
     #FI SEGON XIVATO DE TEMPS
 
     return {"_id" : idUsuari_enToken, "pujen" : pujen, "mantenen" : mantenen, "baixen" : baixen}
