@@ -139,6 +139,46 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 });
 
+// PRE: rep un array d'objectes amb la forma {"x": data, "y": preu} on x és una data (string o Date) i y és un preu (número).
+// POST: retorna un array amb tres valors booleans: [puja, baixa, es manté]
+function fesRegressioLineal(arrDataPreuProducte) {
+    if (!arrDataPreuProducte || arrDataPreuProducte.length < 2) {
+        throw new Error("Calen com a mínim dues dades per fer una regressió lineal.");
+    }
+
+    const xArray = [];
+    const yArray = [];
+
+    // Converteix les dates a timestamps i guarda els preus
+    for (let i = 0; i < arrDataPreuProducte.length; ++i) {
+        const { x: data, y: preu } = arrDataPreuProducte[i];
+        const timestamp = new Date(data).getTime();
+        if (isNaN(timestamp) || typeof preu !== "number") {
+            throw new Error("Dades invàlides: assegura't que 'x' és una data vàlida i 'y' és un número.");
+        }
+        xArray.push(timestamp);
+        yArray.push(preu);
+    }
+
+    const n = xArray.length;
+    const sumX = xArray.reduce((a, b) => a + b, 0);
+    const sumY = yArray.reduce((a, b) => a + b, 0);
+    const sumXY = xArray.reduce((acc, val, i) => acc + val * yArray[i], 0);
+    const sumX2 = xArray.reduce((acc, val) => acc + val * val, 0);
+
+    // Fórmula dels mínims quadrats per al pendent (slope)
+    const numerator = (n * sumXY) - (sumX * sumY);
+    const denominator = (n * sumX2) - (sumX * sumX);
+
+    const slope = denominator !== 0 ? numerator / denominator : 0;
+
+    // Debug opcional
+    // console.log("Slope:", slope);
+
+    return [slope > 0, slope < 0, slope === 0];
+}
+
+
 
 //QUÈ FA AQUESTA FUNCIÓ? --> TIPIC PROBLEMA D'ALGORISMIA <3
 //
@@ -150,7 +190,8 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 //és la que sortirà. Passa el mateix amb els màxims, si n'existeixen varis el primer màxim i la primera data on es dona és la que sortirà.
 //ASSUMPCIONS: No hi ha devolucions als tickets (preus negatius) i no hi ha cap producte de mercadona que costi més de 10000 euros
 function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
-    let arrDataPreuProducte = JSON.parse(localStorage.getItem("arrDataPreu"));    
+    let arrDataPreuProducte = JSON.parse(localStorage.getItem("arrDataPreu"));
+    let [preuPuja, preuBaixa, preuMantingut] = fesRegressioLineal(arrDataPreuProducte); //per si volem fer estadístiques de puja, baixa i mantingut
     let min = 10000;
     let dataMin = "";
     let max = -1;
@@ -178,16 +219,19 @@ function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
     dataPreuMinim.innerHTML = dataMinESPANYOLA(dataMin);
     dataPreuMaxim.innerHTML = dataMaxESPANYOLA(dataMax);
 
-    //AFEGEIXO COLORACIÓ (dataMax es fata del primer màxim. dataMin primera data del primer mínim.)
-    //es tractar d'una primera aproximacio
+    //AFEGEIXO COLORACIÓ a partir de l'slope o pendent de la recta de regressió lineal.
+    //Si el preu puja, es posa verd, si baixa vermell i si es manté blau.
     const contenidorTort = document.getElementById("contenedorTorcidoTop");
-    if (dataMax > dataMin) {
-        colorejaContenidorTort(1, contenidorTort) //preu puja
-    } else if (dataMax < dataMin){
-        colorejaContenidorTort(-1, contenidorTort); //preu es baixa
-    } else {
+
+
+    if (min == max) {
         colorejaContenidorTort(0, contenidorTort); //preu es mante (dataMax == dataMin)
     }
+    else if (preuPuja) {
+        colorejaContenidorTort(1, contenidorTort) //preu puja
+    } else if (preuBaixa){
+        colorejaContenidorTort(-1, contenidorTort); //preu es baixa
+    } 
 
     
 }
