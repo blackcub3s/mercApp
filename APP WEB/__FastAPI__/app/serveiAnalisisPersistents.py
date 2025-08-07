@@ -50,10 +50,10 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
         pendent = resultatRegLineal.slope   #pendent es coeficient b1
         pValorB1 = resultatRegLineal.pvalue #pValor
 
-        # xivatos:
+        """# xivatos:
         mantingut = "[MANTE]" if pendent == 0 else "UD"
         print("b1 = ", round(pendent,6), " | ", "p = ", round(pValorB1,4), "| nItems ="+str(len(xDates))+ " strProducte: "+strProducte + "preu: "+mantingut)
-
+        """
         
         # a partir del pendent de la regressió lineal diem si el preu puja o baixa.
         if pendent > 0:
