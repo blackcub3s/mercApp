@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 });
 
 // PRE: rep un array d'objectes amb la forma {"x": data, "y": preu} on x és una data (string o Date) i y és un preu (número).
-// POST: retorna un array amb tres valors booleans: [puja, baixa, es manté]
+// POST: retorna un array amb tres valors booleans: [puja, baixa]
 function fesRegressioLineal(arrDataPreuProducte) {
     if (!arrDataPreuProducte || arrDataPreuProducte.length < 2) {
         throw new Error("Calen com a mínim dues dades per fer una regressió lineal.");
@@ -173,9 +173,9 @@ function fesRegressioLineal(arrDataPreuProducte) {
     const slope = denominator !== 0 ? numerator / denominator : 0;
 
     // Debug opcional
-    // console.log("Slope:", slope);
+    console.log(slope.toString());
 
-    return [slope > 0, slope < 0, slope === 0];
+    return [slope > 0, slope < 0];
 }
 
 
@@ -186,12 +186,16 @@ function fesRegressioLineal(arrDataPreuProducte) {
 //EL GRAFIC DE PRODUCTE obtenint les dades de la crida fetch a fastAPI, al endpoint: /api/graficDataPreuProducte. En guardar-lo
 //a local storage no cal fer més crides a endpoints. Des del client fem un esquema de recorregut de cada parell
 //de punts del gràfic. I quan l'acabem ja sabem quin és el preu màxim i el preu mínim històric de cada producte,
-//que és el que després va a la taula de l'inflalyzer :D. Si existeixen varis mínims el primer minim i la primera data on es dona (més antiga) 
+//que és el que després va a la taula de l'inflalyzer :D. 
+// 
+//Si existeixen varis mínims el primer minim i la primera data on es dona (més antiga) 
 //és la que sortirà. Passa el mateix amb els màxims, si n'existeixen varis el primer màxim i la primera data on es dona és la que sortirà.
-//ASSUMPCIONS: No hi ha devolucions als tickets (preus negatius) i no hi ha cap producte de mercadona que costi més de 10000 euros
+//ASSUMPCIONS: No hi ha devolucions als tickets (preus negatius) i no hi ha cap producte de mercadona que costi més de 10000 euros.
+
+// NOTA: la funció també aplica una regressio lineal per a saber si el preu puja o baixa. Si es manté ja no cal aplicar regressió lineal, 
+// ja que el preu mínim i màxim són iguals.
 function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
     let arrDataPreuProducte = JSON.parse(localStorage.getItem("arrDataPreu"));
-    let [preuPuja, preuBaixa, preuMantingut] = fesRegressioLineal(arrDataPreuProducte); //per si volem fer estadístiques de puja, baixa i mantingut
     let min = 10000;
     let dataMin = "";
     let max = -1;
@@ -224,16 +228,16 @@ function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
     const contenidorTort = document.getElementById("contenedorTorcidoTop");
 
 
-    if (min == max) {
-        colorejaContenidorTort(0, contenidorTort); //preu es mante (dataMax == dataMin)
-    }
-    else if (preuPuja) {
-        colorejaContenidorTort(1, contenidorTort) //preu puja
-    } else if (preuBaixa){
-        colorejaContenidorTort(-1, contenidorTort); //preu es baixa
-    } 
-
-    
+    if (dataMax == dataMin) {
+        colorejaContenidorTort(0, contenidorTort); //preu es mante (dataMax == dataMin) no cal mirar el pendent de regressió lineal en aquest cas (com que es un real mai es < 0)
+    } else {
+        let [preuPuja, preuBaixa] = fesRegressioLineal(arrDataPreuProducte); //per si volem fer estadístiques de puja, baixa i mantingut
+        if (preuPuja) {
+            colorejaContenidorTort(1, contenidorTort) //preu puja
+        } else if (preuBaixa) {
+            colorejaContenidorTort(-1, contenidorTort); //preu baixa
+        }   
+    }  
 }
 
 function aux_emplenaCardInflacio(i, prodInflacio) {
