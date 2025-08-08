@@ -47,4 +47,7 @@
 
     /*TAMAÑO DEL BORDE DE LA TABLA DE INFLALYZER*/
     --radioBordeTablaInflalizer: .4em;
+
+    /*COLOR GRIS DE QUAN NO HI HA UNA VARIACIO*/
+    --PI_grisNoVariacio: #747474;
 }

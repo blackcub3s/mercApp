@@ -229,7 +229,11 @@ function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
 
 
     if (dataMax == dataMin) {
-        colorejaContenidorTort(0, contenidorTort); //preu es mante (dataMax == dataMin) no cal mirar el pendent de regressió lineal en aquest cas (com que es un real mai es < 0)
+        if (arrDataPreuProducte.length > 1)
+            colorejaContenidorTort(0, contenidorTort); //preu es mante (dataMax == dataMin) no cal mirar el pendent de regressió lineal en aquest cas (com que es un real mai es < 0)
+        else {
+            colorejaContenidorTort(2, contenidorTort); //preu no es manté, no hi ha prou dades per fer una regressió lineal (nomes hi ha un producte i el pintem gris)
+        }
     } else {
         let [preuPuja, preuBaixa] = fesRegressioLineal(arrDataPreuProducte); //per si volem fer estadístiques de puja, baixa i mantingut
         if (preuPuja) {
