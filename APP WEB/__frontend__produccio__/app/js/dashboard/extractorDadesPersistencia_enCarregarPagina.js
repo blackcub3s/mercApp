@@ -62,17 +62,11 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 
 
+        //--- PRIMERA CARD TOP ---
+        //obtinguesNreProductesPUJEN_MANTENEN_BAIXEN(); // NOTA: Crides la funcio dins del data en la funcio obtinguesIdCategoriaDeMesGasto_, si no bloqueja el fluxe
 
-        const dom_nrePreuIncrementat = document.getElementById("nreProductesPreu_INCREMENTAT");
-        dom_nrePreuIncrementat.innerHTML = "X";
 
-        const dom_nrePreuMantingut = document.getElementById("nreProductesPreu_MANTINGUT");
-        dom_nrePreuMantingut.innerHTML = "Y"
-
-        const dom_nrePreuDecrementat = document.getElementById("nreProductesPreu_DECREMENTAT");
-        dom_nrePreuDecrementat.innerHTML = "Z";
-
-        //--- SEGONA CARD TOP --
+        //--- SEGONA CARD TOP ---
         obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html();
         
 
@@ -145,6 +139,46 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 });
 
+// PRE: rep un array d'objectes amb la forma {"x": data, "y": preu} on x és una data (string o Date) i y és un preu (número).
+// POST: retorna un array amb tres valors booleans: [puja, baixa]
+function fesRegressioLineal(arrDataPreuProducte) {
+    if (!arrDataPreuProducte || arrDataPreuProducte.length < 2) {
+        throw new Error("Calen com a mínim dues dades per fer una regressió lineal.");
+    }
+
+    const xArray = [];
+    const yArray = [];
+
+    // Converteix les dates a timestamps i guarda els preus
+    for (let i = 0; i < arrDataPreuProducte.length; ++i) {
+        const { x: data, y: preu } = arrDataPreuProducte[i];
+        const timestamp = new Date(data).getTime();
+        if (isNaN(timestamp) || typeof preu !== "number") {
+            throw new Error("Dades invàlides: assegura't que 'x' és una data vàlida i 'y' és un número.");
+        }
+        xArray.push(timestamp);
+        yArray.push(preu);
+    }
+
+    const n = xArray.length;
+    const sumX = xArray.reduce((a, b) => a + b, 0);
+    const sumY = yArray.reduce((a, b) => a + b, 0);
+    const sumXY = xArray.reduce((acc, val, i) => acc + val * yArray[i], 0);
+    const sumX2 = xArray.reduce((acc, val) => acc + val * val, 0);
+
+    // Fórmula dels mínims quadrats per al pendent (slope)
+    const numerator = (n * sumXY) - (sumX * sumY);
+    const denominator = (n * sumX2) - (sumX * sumX);
+
+    const slope = denominator !== 0 ? numerator / denominator : 0;
+
+    // Debug opcional
+    console.log(slope.toString());
+
+    return [slope > 0, slope < 0];
+}
+
+
 
 //QUÈ FA AQUESTA FUNCIÓ? --> TIPIC PROBLEMA D'ALGORISMIA <3
 //
@@ -152,11 +186,16 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 //EL GRAFIC DE PRODUCTE obtenint les dades de la crida fetch a fastAPI, al endpoint: /api/graficDataPreuProducte. En guardar-lo
 //a local storage no cal fer més crides a endpoints. Des del client fem un esquema de recorregut de cada parell
 //de punts del gràfic. I quan l'acabem ja sabem quin és el preu màxim i el preu mínim històric de cada producte,
-//que és el que després va a la taula de l'inflalyzer :D. Si existeixen varis mínims el primer minim i la primera data on es dona (més antiga) 
+//que és el que després va a la taula de l'inflalyzer :D. 
+// 
+//Si existeixen varis mínims el primer minim i la primera data on es dona (més antiga) 
 //és la que sortirà. Passa el mateix amb els màxims, si n'existeixen varis el primer màxim i la primera data on es dona és la que sortirà.
-//ASSUMPCIONS: No hi ha devolucions als tickets (preus negatius) i no hi ha cap producte de mercadona que costi més de 10000 euros
+//ASSUMPCIONS: No hi ha devolucions als tickets (preus negatius) i no hi ha cap producte de mercadona que costi més de 10000 euros.
+
+// NOTA: la funció també aplica una regressio lineal per a saber si el preu puja o baixa. Si es manté ja no cal aplicar regressió lineal, 
+// ja que el preu mínim i màxim són iguals.
 function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
-    let arrDataPreuProducte = JSON.parse(localStorage.getItem("arrDataPreu"));    
+    let arrDataPreuProducte = JSON.parse(localStorage.getItem("arrDataPreu"));
     let min = 10000;
     let dataMin = "";
     let max = -1;
@@ -184,18 +223,21 @@ function pMinMax(preuMinim, preuMaxim, dataPreuMinim, dataPreuMaxim) {
     dataPreuMinim.innerHTML = dataMinESPANYOLA(dataMin);
     dataPreuMaxim.innerHTML = dataMaxESPANYOLA(dataMax);
 
-    //AFEGEIXO COLORACIÓ (dataMax es fata del primer màxim. dataMin primera data del primer mínim.)
-    //es tractar d'una primera aproximacio
+    //AFEGEIXO COLORACIÓ a partir de l'slope o pendent de la recta de regressió lineal.
+    //Si el preu puja, es posa verd, si baixa vermell i si es manté blau.
     const contenidorTort = document.getElementById("contenedorTorcidoTop");
-    if (dataMax > dataMin) {
-        colorejaContenidorTort(1, contenidorTort) //preu puja
-    } else if (dataMax < dataMin){
-        colorejaContenidorTort(-1, contenidorTort); //preu es baixa
-    } else {
-        colorejaContenidorTort(0, contenidorTort); //preu es mante (dataMax == dataMin)
-    }
 
-    
+
+    if (dataMax == dataMin) {
+        colorejaContenidorTort(0, contenidorTort); //preu es mante (dataMax == dataMin) no cal mirar el pendent de regressió lineal en aquest cas (com que es un real mai es < 0)
+    } else {
+        let [preuPuja, preuBaixa] = fesRegressioLineal(arrDataPreuProducte); //per si volem fer estadístiques de puja, baixa i mantingut
+        if (preuPuja) {
+            colorejaContenidorTort(1, contenidorTort) //preu puja
+        } else if (preuBaixa) {
+            colorejaContenidorTort(-1, contenidorTort); //preu baixa
+        }   
+    }  
 }
 
 function aux_emplenaCardInflacio(i, prodInflacio) {
@@ -286,6 +328,9 @@ function obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html() {
     .then(data => {
         //CARREGO LA IMATGE DE LA CATEGORIA EN L'HTML
         carregaImatgeCategoria_segonaCard(data.categoriaMaximoGasto);
+
+        //ARA JA ACONSEGUEIXO QUE CARREGUI EL CONTINGUT DE LA PRIMERA CARD. SI NO, QUEDARIA BLOQUEJANT LA CARREGA DEL CONTENIGUT DE LA SEGONA CARD:
+        obtinguesNreProductesPUJEN_MANTENEN_BAIXEN();
     })
     .catch(error => {console.error('Problema amb el fetch:', error);});
 }
@@ -304,3 +349,59 @@ function carregaImatgeCategoria_segonaCard(idCategoria) {
     elementPareImatgeCategoriaCARD.appendChild(elImg);
 }
 
+
+
+
+
+
+
+
+
+
+function obtinguesNreProductesPUJEN_MANTENEN_BAIXEN() {
+    
+    //CARREGO DEL DOM ELS PLACEHOLDERS PER POSAR LES TRES DADES:
+    const dom_nrePreuIncrementat = document.getElementById("nreProductesPreu_INCREMENTAT");
+    const dom_nrePreuMantingut = document.getElementById("nreProductesPreu_MANTINGUT");
+    const dom_nrePreuDecrementat = document.getElementById("nreProductesPreu_DECREMENTAT");
+    
+    //CREO ELS PUNTS SUSPENSIUS:
+    let s = ".";
+    const intervalId = setInterval(() => {
+
+        dom_nrePreuIncrementat.innerHTML = s;
+        dom_nrePreuMantingut.innerHTML = s;
+        dom_nrePreuDecrementat.innerHTML = s;
+        s += ".";
+        
+        if (s.length > 3) {
+            setTimeout(() => {}, 1200);
+            s = ".";
+        }
+    }, 600);
+
+
+
+    fetch('http://localhost:8000/api/calculaPujadesBaixadesEnProductes', {
+        method : "POST",
+        headers : {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${localStorage.getItem("AccessToken")}`
+        }
+    })
+    .then(response => {
+        if (!response.ok)
+            throw new Error('Error en la solicitud: ' + response.status);
+        return response.json(); 
+    })
+    .then(data => {
+        clearInterval(intervalId);
+        dom_nrePreuIncrementat.innerHTML = data.pujen;
+        dom_nrePreuMantingut.innerHTML = data.mantenen;
+        dom_nrePreuDecrementat.innerHTML = data.baixen;
+    })
+    .catch(error => {console.error('Problema amb el fetch:', error);});
+
+
+}

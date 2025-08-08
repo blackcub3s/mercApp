@@ -26,8 +26,8 @@ CREATE TABLE usuari_ampliat ( -- nomes usuaris quan JA HAN PAGAT o han pagat alg
 );
 
 
-/*INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) 
-VALUES ('acces@gmail.com', "123","blackcub3s",1);*/
+-- INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) 
+-- VALUES ('acces1@gmail.com', "12345678Mm_","blackcub3s",1);
 
 /*INSERT INTO usuari(correu_electronic, hash_contrasenya, alies, permisos) 
 VALUES ('noacces@gmail.com', "123","whitecub3s",0);*/

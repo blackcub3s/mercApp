@@ -143,15 +143,15 @@
                 <section id = "gridInferiorCardInflacio">
                     <section>
                         <img src="img/dashboard/incrementPreu.png" alt="increment">
-                        <p><span id = "nreProductesPreu_INCREMENTAT" title = "Número de productos distintos cuyo precio SE HA INCREMENTADO entre la primera y la última compra que hiciste. Para decidir si se ha producido un incremento de precio para un producto determinado hemos programado la siguiente aproximación: si la fecha del primer dia en que se dio el precio máximo en los tickets que nos has proporcionado es MÁS RECIENTE que la fecha del primer dia en que se dio el precio mínimo, consideraremos que el precio se ha incrementado."></span></p>  
+                        <p><span id = "nreProductesPreu_INCREMENTAT" title = "Número de productos distintos cuyo precio SE HA INCREMENTADO entre la primera y la última compra que hiciste. Para decidir si se ha producido un INCREMENTO de precio para un producto determinado hemos mirado si el pendiente del coeficiente b1 (pendiente) de la recta de regresión por mínimos cuadrados para ese producto es positivo (b1 > 0)."></span></p>  
                     </section>
                     <section>
                         <p>≃</p>
-                        <p><span id = "nreProductesPreu_MANTINGUT" title = "Número de productos distintos cuyo precio SE HA MANTENIDO entre la primera y la última compra que hiciste. Para decidir si se ha mantenido el precio simplemente miraremos si la fecha en que se dio el máximo coincide con la fecha en que se dio el mínimo (cualquier caso que no se compute en los dos anteriores)"></span></p>
+                        <p><span id = "nreProductesPreu_MANTINGUT" title = "Número de productos distintos cuyo precio SE HA MANTENIDO entre la primera y la última compra que hiciste. Estos productos se han recopilando viendo el coeficiente b1 (pendiente) de la recta de regresión por mínimos cuadrados, que sea exactamente 0. NOTA: Se han excluido productos solo adquiridos una sola vez: ahi no podemos decir si hay un incremento o decremento porque solo temnemos una observación."></span></p>
                     </section>
                     <section>
                         <img src="img/dashboard/decrementPreu.png" alt="decrement">
-                        <p><span id = "nreProductesPreu_DECREMENTAT"  title = "Número de productos distintos cuyo precio HA DISMINUIDO entre la primera y la última compra que hiciste. Para decidir si se ha producido un decremento de precio para un producto determinado hemos programado la siguiente aproximación: si la fecha del primer dia en que se dio el precio máximo en los tickets que nos has proporcionado es MÁS ANTIGUA que la fecha del primer dia en que se dio el precio múnimo, consideraremos que el precio ha disminuido."></span></p>
+                        <p><span id = "nreProductesPreu_DECREMENTAT"  title = "Número de productos distintos cuyo precio HA DISMINUIDO entre la primera y la última compra que hiciste. Para decidir si se ha producido un DECREMENTO de precio para un producto determinado hemos mirado si el pendiente del coeficiente b1 (pendiente) de la recta de regresión por mínimos cuadrados es negativo (b1 inferior estricto a 0)."></span></p>
                     </section>
                 </section>
             </article>

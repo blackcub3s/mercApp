@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 #PyPDF2p parseja pdf a text | per pytz manejar be zones temporals a espanya | uvicorn important per a correr fastAPI |
 #python jose es per manejar el jwt i veure si es valid amb el secret | multipart per llegir dades de formularis (adjunts)
-RUN pip install PyPDF2 && pip install pytz && pip install --no-cache-dir fastapi uvicorn && pip install python-jose && pip install python-multipart && pip install pymongo && pip install httpx
+RUN pip install PyPDF2 && pip install pytz && pip install --no-cache-dir fastapi uvicorn && pip install python-jose && pip install python-multipart && pip install pymongo && pip install httpx && pip install scipy==1.16.0
 
 #copiem els scripts a l'arrel de la imatge
 COPY app/controlador.py /usr/src/app/
@@ -16,6 +16,8 @@ COPY app/jwtUtil.py /usr/src/app/
 COPY app/repositoriTickets.py /usr/src/app/
 COPY app/serveiClient.py /usr/src/app/
 COPY app/serveiClassificacionsTickets.py /usr/src/app/
+COPY app/repositoriAnalisisPersistents.py /usr/src/app/
+COPY app/serveiAnalisisPersistents.py /usr/src/app/
 
 
 # Nomes ho posem per documentacio. El port intern del contenidor es defineix en la comanda CMD de fastAPI
