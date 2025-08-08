@@ -63,7 +63,7 @@ function colorejaContenidorTort(i, contenedor) {
     } else if (i === 0) //SI PREU PRODUCTE ES MANTÉ
         contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_colorReact');
     else if (i === 2) //SI NOMES HI HA UN PRODUCTE, NO PODEM DEDUIR SI PUJA O BAIXA I TAMPOC PAS QE ES MANTINGUI (PQ NO HO SABEM)
-        contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_inicioCard_VUE')
+        contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_grisNoVariacio')
 }
 
 //Funcio que a cada posicio del llistat de products s'assegura que el paginador del costat respectiu
