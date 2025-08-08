@@ -174,7 +174,45 @@ def obtenirGastPerCategoria_GLOBAL(id_usuari):
 
 
 
+def producteEsGranel(nomProducte, idUsuari):
+    colTickets = creaConexioAmongoDB_i_tornaTickets()
+    pipeline = [
+        # Filtrar por usuario
+        {"$match": {"idUsuari": idUsuari}},
+        
+        # Pasar productesAdquirits a array clave-valor
+        {
+            "$project": {
+                "productes": {"$objectToArray": "$productesAdquirits"}
+            }
+        },
+        
+        # Filtrar el producto exacto con esGranel = True
+        {
+            "$match": {
+                "productes": {
+                    "$elemMatch": {
+                        "k": nomProducte
+                    }
+                }
+            }
+        },
+        
+        # Nos quedamos solo con el primer resultado
+        {"$limit": 1}
+    ]
 
+    resultat = list(colTickets.aggregate(pipeline))
+    
+    if not resultat:
+        return None  # No encontrado
+    
+    # Buscar dentro del primer ticket si esGranel es True
+    for prod in resultat[0]["productes"]:
+        if prod["k"] == nomProducte:
+            return prod["v"].get("esGranel", False)
+    
+    return None
 
 
 

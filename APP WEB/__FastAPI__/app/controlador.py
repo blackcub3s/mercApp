@@ -163,6 +163,23 @@ async def calculaPorductesPujatsBaixatsPerUsuari(payload_token: dict = Depends(v
     
     return serveiAnalisisPersistents.pujenMantenenBaixen(idUsuari_enToken) #pujen, mantenen, baixen
 
+
+#PRECONDICIÓ: un token d'accés amb idUsuari i permisos a 1 (els que tenen acces al dashboard). 
+# i un diccionari amb el nom d'un producte entrant pel body:
+#      {"nomProducte": "POLLO ENTERO LIMPIO"} o be {"nomProducte": "NECTARINA"}
+#POSTCONDICIO: 
+#      {"esGranel" : true} o be {"esGranel" : false}, rspecitvament.
+#       NOTA: si el producte no existeix (que sempre que el cridem si existira) tornaria {"esGranel" : none}
+@app.post("/api/esGranel")                                 
+async def obtinguesSiProducteEsGranel(payload_token: dict = Depends(verificar_token), dictNomProducte: dict = Body(...)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
+    permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
+    idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
+    permetSolicitudsEntrantsNomesA([1], permisos_enToken)
+    
+    nomProducte = dictNomProducte["nomProducte"]
+    return {"esGranel" : serveiTickets.miraSiEsGranel(nomProducte, idUsuari_enToken)}
+
+
     
 
 

@@ -410,7 +410,8 @@ def obtenirIndexCategoria_ONMESSHAGASTAT(id_usuari):
     return llCategories[indexMaximGasto] #TORNO L'INDEX DE LA CATEOGIRA ON HE GASTAT MÉS
 
 
-
+def miraSiEsGranel(nomProducte, idUsuari):
+    return repositoriTickets.producteEsGranel(nomProducte, idUsuari)
 
 
 

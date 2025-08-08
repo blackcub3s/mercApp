@@ -35,7 +35,7 @@ function fesFetch_graficDataPreuProducte(producteBuscat) {
         // LES DADES TINDRAN AQUEST ASPECTE ON x es la data i y es el preu. 
         //let arrDataPreu = [{ "x": "2022-06-01", "y": 1 }, { "x": "2022-08-01", "y": 3 },{ "x": "2026-06-01", "y": 6 }];
         localStorage.setItem("arrDataPreu", JSON.stringify(arrDataPreu)); //AIXO ES INDISPENSABLE PER PODER TREURE EL PREU MINIM I MAXIM DINS LA CARD DE LA INFLACIÓ AIXI COM LES DATES.
-        fesGrafic(arrDataPreu); // FEM EL GRAFIC JA
+        fesGrafic(arrDataPreu, producteBuscat); // FEM EL GRAFIC JA
         //localStorage.removeItem("arrDataPreu");
        
     })
@@ -90,13 +90,23 @@ function fesGraficProducte(nomProducte) {
 
 
 let myChartInstance = null; //indispensable que estigui com a variable global.
-function fesGrafic(arrDataPreu) {
+function fesGrafic(arrDataPreu, producteBuscat) {
     const ctx = document.getElementById('myChart').getContext('2d');
 
     // Si ya hay un gráfico, lo destruimos (ABSOLUTAMENT FONAMENTAL, SI NO AMB EL PAGINADOR NO FUNCIONAVA!)
     if (myChartInstance !== null) {
         myChartInstance.destroy();
     }
+
+    //INICI TO DO --> extreure aqui el que torna l'endpoint api/esGranel
+    console.log(producteBuscat);
+    let esGranel = false;
+    if (esGranel) {
+        titol = "Precio (€/kg)";
+    } else {
+        titol = "Precio (€/unidad)";
+    }
+    //FI TO DO 
 
     // Creamos el nuevo gráfico y lo guardamos en la variable global
     myChartInstance = new Chart(ctx, {
@@ -133,7 +143,7 @@ function fesGrafic(arrDataPreu) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Precio (€/kg o €/unidad)',
+                        text: `${titol}`,
                         color: 'black'
                     }
                 }
