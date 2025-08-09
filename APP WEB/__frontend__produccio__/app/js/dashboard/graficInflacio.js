@@ -86,11 +86,32 @@ function fesGraficProducte(nomProducte) {
  
 }
 
+//PRE: un producte "NECTARINA", passat {""}per exemple.
+//POST: {"esGranel" : true} si es granel. {"esGranel" : false} si no ho és. I 
+async function miraAmongo_SiProducteEsGranel(producte) {
+    const tokenAcces = localStorage.getItem("AccessToken");
+    const response = await fetch("http://localhost:8000/api/esGranel", {
+        method: "POST", // Cambiamos a POST para enviar datos
+        headers: {
+            'Authorization': "Bearer " + tokenAcces,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nomProducte: producte }) // Enviamos el JSON
+    });
+    if (!response.ok) 
+        throw new Error("Error en la solicitud: " + response.status);
+    return response.json(); //torno una promesa
+}
 
+
+    
+
+            
 
 
 let myChartInstance = null; //indispensable que estigui com a variable global.
-function fesGrafic(arrDataPreu, producteBuscat) {
+async function fesGrafic(arrDataPreu, producteBuscat) {
     const ctx = document.getElementById('myChart').getContext('2d');
 
     // Si ya hay un gráfico, lo destruimos (ABSOLUTAMENT FONAMENTAL, SI NO AMB EL PAGINADOR NO FUNCIONAVA!)
@@ -98,14 +119,24 @@ function fesGrafic(arrDataPreu, producteBuscat) {
         myChartInstance.destroy();
     }
 
-    //INICI TO DO --> extreure aqui el que torna l'endpoint api/esGranel
-    console.log(producteBuscat);
-    let esGranel = false;
-    if (esGranel) {
-        titol = "Precio (€/kg)";
-    } else {
-        titol = "Precio (€/unidad)";
+    //EXTREC DE l'endpoint api/esGranel SI PRODUCTE es o no granel
+    try {
+        let dadesResposta = await miraAmongo_SiProducteEsGranel(producteBuscat);
+        let esGranel = dadesResposta.esGranel; //obtinc el booleà de la response {"esGranel" : true}
+        console.log(`{esGranel : ${esGranel}`);
+
+        //ASSIGNEM EL TÍTOL PERTINENT A L'EIX DE LES Y
+        if (esGranel) {
+            var titol = "Precio (€/kg)";
+        } else {
+            var titol = "Precio (€/unidad)";
+        }
+    } catch (error) {
+        console.error("No s'ha pogut veure si el producte es granel o no", error);
     }
+    
+    
+
     //FI TO DO 
 
     // Creamos el nuevo gráfico y lo guardamos en la variable global
