@@ -173,6 +173,19 @@ los precios por producto ("inflación")?)
 }
 
 
+
+
+/*inici ccontenidor balança*/
+#contenidorBalansssa {height: 0em;}
+#cardInflacio article:first-child article:first-child article:first-child img {
+    width: 2em;
+    position: relative;
+    left: 4em;
+    bottom: .2em;
+}
+/*Final contenidor balança*/
+
+
 /***********************************/
 /*3B) sistema paginador! */
 /***********************************/

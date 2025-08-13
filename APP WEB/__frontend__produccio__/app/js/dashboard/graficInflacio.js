@@ -126,10 +126,13 @@ async function fesGrafic(arrDataPreu, producteBuscat) {
         console.log(`{esGranel : ${esGranel}`);
 
         //ASSIGNEM EL TÍTOL PERTINENT A L'EIX DE LES Y
+        const contenidorBalansssa = document.getElementById("contenidorBalansssa");
         if (esGranel) {
             var titol = "Precio (€/kg)";
+            contenidorBalansssa.style.display = "block";
         } else {
             var titol = "Precio (€/unidad)";
+            contenidorBalansssa.style.display = "none";
         }
     } catch (error) {
         console.error("No s'ha pogut veure si el producte es granel o no", error);
