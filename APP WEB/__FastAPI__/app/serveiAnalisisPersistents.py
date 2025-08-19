@@ -8,18 +8,18 @@ import time
 from pymongo.errors import PyMongoError
 from datetime import datetime
 import scipy
-
+import math 
 #PRE: pendent, pValorB1, xDates, strProducte de la recta de regressio lineal que s'ha calculat per a un producte
 #POST: imprimeix per consola el pendent, pValorB1, xDates i strProducte de la recta de regressio lineal que s'ha calculat per a un producte (per a depurar)
 def xivatos(pendent, pValorB1, xDates, strProducte):
-    if pendent == 0: 
+    if math.isnan(pValorB1) and math.isnan(pendent):  
+        judici = "NOMES UN PRODUCTE: NO JUDICI"    
+    elif pValorB1 > 0.99 or math.isnan(pValorB1): 
         judici = "es manté"
     elif pendent > 0:
         judici = "puja"     
     elif pendent < 0:
         judici = "baixa"
-    else:
-        judici = "NOMES UN PRODUCTE: NO JUDICI"
     print("b1 = ", round(pendent,6), " | (p = ", round(pValorB1,4), ") || nItems = "+str(len(xDates))+ " strProducte: "+strProducte + "| JUDICI: "+judici)
 
 
@@ -68,20 +68,18 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
         pValorB1 = resultatRegLineal.pvalue #pValor
 
         # xivatos:
-        # xivatos(pendent, pValorB1, xDates, strProducte)
+        xivatos(pendent, pValorB1, xDates, strProducte)
         
-        
-        # a partir del pendent de la regressió lineal diem si el preu puja o baixa.
-        if pendent > 0:
-            pujen += 1          #preu puja (al llarg del temps)
-        elif pendent < 0:
-            baixen += 1         #preu baixa (al llarg del temps)
-        elif pendent == 0: 
-            mantenen += 1       #preu es manté (posem explicitament pendent == 0 perque la regressio afina a 0.0 si hi ha 2 o mes productes perfectament alineats)
-        else:
-            pass                #Aqui es dona quan es dona A) el pendent es nan perquè només hi ha 1 sol producte (no hi ha mes de 1 punt a la recta i no puc fer regressio). B) Perque hi ha hagut un error de lectura dels punts dels productes que cal subsanar
-            #print("NOT A NUMBER")
-        
+        #CAS PARTICULAR 1: si tant p com pendent son NAN aleshores només HI HA UN SOL PRODUCTE!!!
+        if math.isnan(pValorB1) and math.isnan(pendent):  
+            pass    
+        elif pValorB1 > 0.99 or math.isnan(pValorB1): #CAS PARTICULAR 2: si p es proper a 1 (0.99 ES ARBITRARI, PODRIA HAVER POSAT 0.98) O BÉ es dona que p es nan (i pel flux de l'elif sabem que pendent no es aqui mai nan, aleshores PUC DIR QUE preu es mante).
+            mantenen += 1
+        elif pendent > 0: # pendent positiu -descartats ja els dos casos particulars 1 i 2 de manteniment-
+            pujen += 1
+        elif pendent < 0: # pendent negatiu -descartats ja els casos particulars 1 i 2.
+            baixen += 1
+            
     #INICI SEGON XIVATO DE TEMPS
     #t2 =  time.perf_counter()
     #print(t2 - t1)
