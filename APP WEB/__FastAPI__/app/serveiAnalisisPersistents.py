@@ -68,7 +68,7 @@ def computaProductesPujenMantenenBaixen_perUsuari(idUsuari_enToken):
         pValorB1 = resultatRegLineal.pvalue #pValor
 
         # xivatos:
-        xivatos(pendent, pValorB1, xDates, strProducte)
+        #xivatos(pendent, pValorB1, xDates, strProducte)
         
         #CAS PARTICULAR 1: si tant p com pendent son NAN aleshores només HI HA UN SOL PRODUCTE!!!
         if math.isnan(pValorB1) and math.isnan(pendent):  
