@@ -50,20 +50,34 @@ function emplenaGrafic(i) {
 
 
 
-//canvio color contenidor tort
+//canvio color contenidor tort i poso iconets de preu a la card.
 function colorejaContenidorTort(i, contenedor) {
-    if (i === -1) //SI PREU PRODUCTE BAIXA
+    const iconoUp = document.getElementById("contenidorUp");
+    const iconoDown = document.getElementById("contenidorDown");
+    if (i === -1) { //SI PREU PRODUCTE BAIXA
         contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--colorVerdeVue'); 
+        
+        iconoDown.style.display = "block";
+        iconoUp.style.display = "none";
+    }
     else if (i === 1) { //SI PREU PRODUCTE PUJA
         var colorCardSuperior = getComputedStyle(document.documentElement).getPropertyValue('--PI_cardSuperior');
         var colorCardInferior = getComputedStyle(document.documentElement).getPropertyValue('--PI_cardInferior');
         
+        iconoUp.style.display = "block";
+        iconoDown.style.display = "none";
         
         contenedor.style.background = `linear-gradient(to bottom, ${colorCardSuperior}, ${colorCardInferior})`;
-    } else if (i === 0) //SI PREU PRODUCTE ES MANTÉ
+    } else if (i === 0) { //SI PREU PRODUCTE ES MANTÉ
         contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_colorReact');
-    else if (i === 2) //SI NOMES HI HA UN PRODUCTE, NO PODEM DEDUIR SI PUJA O BAIXA I TAMPOC PAS QE ES MANTINGUI (PQ NO HO SABEM)
-        contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_grisNoVariacio')
+        iconoUp.style.display = "none";
+        iconoDown.style.display = "none";
+    }
+    else if (i === 2) { //SI NOMES HI HA UN PRODUCTE, NO PODEM DEDUIR SI PUJA O BAIXA I TAMPOC PAS QE ES MANTINGUI (PQ NO HO SABEM)
+        contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_grisNoVariacio');
+        iconoUp.style.display = "none";
+        iconoDown.style.display = "none";
+    }
 }
 
 //Funcio que a cada posicio del llistat de products s'assegura que el paginador del costat respectiu
