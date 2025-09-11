@@ -185,8 +185,8 @@ los precios por producto ("inflación")?)
 }
 /*Final contenidor balança*/
 
-/*CONTENIDORS UP I DOWN*/
-#contenidorUp, #contenidorDown {height: 0em;}
+/*CONTENIDORS UP I DOWN I ESTABLE*/
+#contenidorUp, #contenidorDown, #contenidorEstable {height: 0em;}
 #cardInflacio article:first-child article:first-child article:nth-child(2) img { /*ESTIL FLETXA UP*/
     width: 2em;
     position: relative;
@@ -199,7 +199,13 @@ los precios por producto ("inflación")?)
     right: 4em;
     bottom: .2em;
 }
-/*FI CONTENIDORS UP I DOWN*/
+#cardInflacio article:first-child article:first-child article:nth-child(4) img { /*ESTIL FLETXA ESTABLE*/
+    width: 2em;
+    position: relative;
+    right: 4em;
+    bottom: .2em;
+}
+/*FI CONTENIDORS UP I DOWN I ESTABLE*/
 
 /***********************************/
 /*3B) sistema paginador! */

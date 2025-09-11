@@ -54,11 +54,13 @@ function emplenaGrafic(i) {
 function colorejaContenidorTort(i, contenedor) {
     const iconoUp = document.getElementById("contenidorUp");
     const iconoDown = document.getElementById("contenidorDown");
+    const iconoEstable = document.getElementById("contenidorEstable");
     if (i === -1) { //SI PREU PRODUCTE BAIXA
         contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--colorVerdeVue'); 
         
         iconoDown.style.display = "block";
         iconoUp.style.display = "none";
+        iconoEstable.style.display = "none";
     }
     else if (i === 1) { //SI PREU PRODUCTE PUJA
         var colorCardSuperior = getComputedStyle(document.documentElement).getPropertyValue('--PI_cardSuperior');
@@ -66,17 +68,22 @@ function colorejaContenidorTort(i, contenedor) {
         
         iconoUp.style.display = "block";
         iconoDown.style.display = "none";
+        iconoEstable.style.display = "none";
         
         contenedor.style.background = `linear-gradient(to bottom, ${colorCardSuperior}, ${colorCardInferior})`;
     } else if (i === 0) { //SI PREU PRODUCTE ES MANTÉ
         contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_colorReact');
+        
         iconoUp.style.display = "none";
         iconoDown.style.display = "none";
+        iconoEstable.style.display = "block";
     }
     else if (i === 2) { //SI NOMES HI HA UN PRODUCTE, NO PODEM DEDUIR SI PUJA O BAIXA I TAMPOC PAS QE ES MANTINGUI (PQ NO HO SABEM)
         contenedor.style.background =  getComputedStyle(document.documentElement).getPropertyValue('--PI_grisNoVariacio');
+        
         iconoUp.style.display = "none";
         iconoDown.style.display = "none";
+        iconoEstable.style.display = "none";
     }
 }
 
