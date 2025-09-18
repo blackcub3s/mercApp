@@ -1,0 +1,115 @@
+
+/*FAIG PUJAR EL CONTENIDOR DEL TRIPO DE PRODUCTES PERQUÈ QUEDI 
+BÉ EN EL GRADIENT I CENTRO */
+#ContenidorTrioProductes > section {
+    color: white;
+    text-align: center;  
+    border-top: 1px solid black;
+    padding-top: 4em;
+
+}
+
+
+/*POSICIONAMENT DE INFLALYZER EN RELACIÓ AL GRADIENT
+ DE FONS*/
+#ContenidorTrioProductes > section:first-child {
+    position: relative;
+    bottom: 52em;
+    
+}
+
+/*POSICIONAMENT DE CATEGORYZER EN RELACIÓ AL GRADIENT
+ DE FONS*/
+#ContenidorTrioProductes > section:nth-child(2) {
+    position: relative;
+    bottom: 45em;
+}
+
+/*POSICIONAMENT DE INTERVALYZER EN RELACIÓ AL GRADIENT
+ DE FONS*/
+#ContenidorTrioProductes > section:nth-child(3) {
+    position: relative;
+    bottom: 25em;
+    
+}
+
+
+
+
+/* Contenedor de las imágenes dentro de cada producto */
+#ContenidorTrioProductes section > section:nth-of-type(2) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
+    gap: 0em;
+    justify-items: center;
+    align-items: center;
+    max-width: 1000px;   /* límite de ancho */
+    margin: 0 auto;      /* centra el grid en la página */
+    padding: 0 1em;      /* aire en los lados */
+}
+
+/* Todas las imágenes dentro del contenedor de iconos */
+#ContenidorTrioProductes section > section:nth-of-type(2) img {
+    max-width: 15em;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+
+/*M'asseguro que hi ha un sombrejat en cada titular*/
+#ContenidorTrioProductes > section > section > h1 {
+    font-style: italic;
+    text-shadow: 3px 3px 1px rgba(0,0,0,0.6);
+    font-size: 3em;
+    padding-bottom: 1em;
+}
+
+#ContenidorTrioProductes > section > section > #h2inflalyzer {
+    font-size: 1em;
+    max-width: 800px;
+    margin: 0 auto;
+    transition: border .05s ease-in-out, border-radius .05s ease-in-out;
+    
+}
+
+#h2inflalyzer:hover {
+    border: 2px dashed white;
+    border-radius: .5em;
+}
+
+#ContenidorTrioProductes img {
+    filter: drop-shadow(4px 4px 1px rgba(0, 0, 0, 0.6));
+    transition: filter .05s ease-in-out;
+}
+
+#ContenidorTrioProductes img:hover {
+    filter: drop-shadow(6px 6px 2px rgba(0, 0, 0, 0.6));
+}
+
+.emfasisCarta {
+    font-style: italic;
+    filter: drop-shadow(1px 1px 0px rgba(20, 20, 20, 0.7));
+    color: rgb(242, 242, 242);
+    
+}
+
+.liniaNova {
+    display: block;
+}
+
+.verdVue {
+    color: var(--colorVerdVue);
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.5));
+}
+
+.blauReact {
+    color: var(--PI_colorReact);
+    filter: drop-shadow(2px 2px 0px rgba(20, 20, 20, 0.7));
+}
+
+.vermellRandom {
+    color: red;
+    filter: drop-shadow(2px 2px 0px rgba(20, 20, 20, 0.7));
+}
