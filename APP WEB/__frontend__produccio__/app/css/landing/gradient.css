@@ -2,7 +2,7 @@
     background: linear-gradient(to bottom, 
                             var(--blancoGradiente) 0%, 
                             var(--azulClaroGradiente) 50%,
-                            var(--azulOscuroGradiente) 100%);
+                            var(--azulOscuroGradiente) 90%);
     height: 58em;
 }
 
@@ -10,7 +10,7 @@
 #ContenidorTrioProductes {
     background: linear-gradient(to bottom, 
                         var(--azulOscuroGradiente) 0%, 
-                        black 100%);
+                        black 20%);
     height: 50em;
 
 }
