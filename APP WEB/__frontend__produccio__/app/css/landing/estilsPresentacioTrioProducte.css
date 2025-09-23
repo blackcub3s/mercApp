@@ -66,26 +66,33 @@ BÉ EN EL GRADIENT I CENTRO */
     padding-bottom: 1em;
 }
 
-#ContenidorTrioProductes > section > section > #h2inflalyzer {
+#ContenidorTrioProductes #h2inflalyzer {
     font-size: 1em;
     max-width: 800px;
-    margin: 0 auto;
-    transition: border .05s ease-in-out, border-radius .05s ease-in-out;
-    
+    margin: 1em auto;
+    transition: transform .2s ease-in-out;
 }
 
-#h2inflalyzer:hover {
-    border: 2px dashed white;
-    border-radius: .5em;
+#ContenidorTrioProductes #h2Categoryzer {
+    margin: 1.5em auto;
+    transition: transform .2s ease-in-out;
 }
+
+#h2inflalyzer:hover, #h2Categoryzer:hover{
+    transform: scale(1.02);
+}
+
+
 
 #ContenidorTrioProductes img {
     filter: drop-shadow(4px 4px 1px rgba(0, 0, 0, 0.6));
-    transition: filter .05s ease-in-out;
+    transition: filter .2s ease-in-out, transform .2s ease-in-out;
+    
 }
 
 #ContenidorTrioProductes img:hover {
     filter: drop-shadow(6px 6px 2px rgba(0, 0, 0, 0.6));
+    transform: scale(1.02);
 }
 
 .emfasisCarta {
@@ -143,12 +150,19 @@ per la coincidencia de background amb color dels textos associats a les imatges 
 
 /*CREATS HOVERS PER A LES IMATGES (TRANSICIO I FILTER INICIAL) */
 #ContenidorTrioProductes section:nth-child(2) > section:nth-child(3) ul li img {
-    filter: drop-shadow(2px 2px 1px rgba(113, 77, 77, 0.768));
-    transition: transform .3s ease-in-out, filter .1s ease-in-out;
+    filter: drop-shadow(4px 4px 1px rgba(57, 61, 87, 0.768));
+    transition: transform .2s ease-in-out, filter .2s ease-in-out;
 }
 
 /*CREATS HOVERS PER A LES IMATGES: DEFINIM INCREMENT DE TAMANY I EL DROP SHADOW A BLANC */
 #ContenidorTrioProductes section:nth-child(2) > section:nth-child(3) ul li img:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(4px 4px 1px rgba(255, 255, 255, 0.6));
+    transform: scale(1.02);
+    filter: drop-shadow(6px 6px 1px  rgba(57, 61, 87, 0.768));
+}
+
+
+/*INTERVALIZER*/
+#ContenidorTrioProductes > section:nth-child(3) {
+    background-color: white;
+
 }
