@@ -14,6 +14,21 @@
         <script src="/js/jwt/decodificaJWT.js"></script>
         <script src="/js/jwt/restringeixVistesPubliques_USUARI_LOGUEJAT.js"></script>
 
+
+         <!--Carreguem l'arxiu de wow.js des del seu CDN per tal d'aconseguir que les animacions de animate.css s’activin mitjançant l'scroll.-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script> 
+
+        <!--També afegim l’objecte instanciat de wow.js per tal de poder iniciar les animacions 
+        de animate.css quan l’usuari faci scroll cap a la zona on s’apliquin les mateixes. -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function instanciaWow() {
+                new WOW().init();
+            });
+        </script>
+
+        <!--Cargamos el CSS de animate.style para hacer animaciones, p. ej menu desplegable de la navbar -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+       
         <!-- estils per a totes les pagines -->
         <link rel="stylesheet" href="css/estilsGlobals.css"> 
 
@@ -154,7 +169,7 @@
             <section>
                 <!--titol-->
                 <section>
-                     <h1>Inflalyzer</h1>
+                     <h1 class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="2s" data-wow-delay="0s">Inflalyzer</h1>
                      <section id = "h2inflalyzer">
                         <h2>Este producto te permite ver  <span class="emfasisCarta">cualquiera de tus productos de Mercadona</span>
                         <span class="liniaNova"> y si han <span class = "verdVue">disminuido</span>, <span class = "blauReact">mantenido</span> o <span class = "vermellRandom">aumentado</span> su precio*.</span>
@@ -167,9 +182,9 @@
 
                 <!--continguts imatges-->
                 <section>
-                     <img src="img/dashboard/iconoBaixada_noAlpha.png" alt="decrement preu no trobat">
-                     <img src="img/dashboard/iconoEstable_noAlpha.png" alt="estabilitat preu no trobat">
-                     <img src="img/dashboard/iconoPujada_noAlpha.png" alt="Ingrement preu no trobat">
+                     <img class="cartaDashboard wow animate__animated animate__fadeInRight" data-wow-duration="1.5s" data-wow-delay="0s" src="img/dashboard/iconoBaixada_noAlpha.png" alt="decrement preu no trobat">
+                     <img class="cartaDashboard wow animate__animated animate__fadeInRight" data-wow-duration="1.5s" data-wow-delay=".4s" src="img/dashboard/iconoEstable_noAlpha.png" alt="estabilitat preu no trobat">
+                     <img class="cartaDashboard wow animate__animated animate__fadeInRight" data-wow-duration="1.5s" data-wow-delay=".8s" src="img/dashboard/iconoPujada_noAlpha.png" alt="Ingrement preu no trobat">
                 </section>
                 
                 <section>
@@ -182,7 +197,7 @@
                           
                 <!--titol-->
                 <section>
-                     <h1>Categoryzer</h1>
+                     <h1  class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="2s" data-wow-delay="0s">Categoryzer</h1>
                 </section>
 
                 <!--continguts-->
@@ -193,18 +208,18 @@
                 <!--imatges cateogries-->
                 <section>
                     <ul>
-                        <li><img src="img/dashboard/iconosCategories/verduraIHortalisses.png" alt="noCargó!" width="70%"><p>Verdura y hortalizas</p></li>
-                        <li><img src="img/dashboard/iconosCategories/fruites.png" alt="noCargó!" width="70%"><p>Frutas</p></li>
-                        <li><img src="img/dashboard/iconosCategories/ousILactics.png" alt="noCargó!" width="70%"><p>Huevos y lácteos</p></li>
-                        <li><img src="img/dashboard/iconosCategories/aiguaIBegudes.png" alt="noCargó!" width="70%"><p>Agua y bebidas</p></li>
-                        <li><img src="img/dashboard/iconosCategories/oliIEspecies.png" alt="noCargó!" width="70%"><p>Aceite y especias</p></li>
-                        <li><img src="img/dashboard/iconosCategories/carns.png" alt="noCargó!" width="70%"><p>Carnes</p></li>
-                        <li><img src="img/dashboard/iconosCategories/peix.png" alt="noCargó!" width="70%"><p>Pescado</p></li>
-                        <li><img src="img/dashboard/iconosCategories/llarIHigienePersonal.png" alt="noCargó!" width="70%"><p>Hogar e higiene personal</p></li>
-                        <li><img src="img/dashboard/iconosCategories/paIPastisseria.png" alt="noCargó!" width="70%"><p>Pan y pastelería</p></li>
-                        <li><img src="img/dashboard/iconosCategories/pastaIArrosILlegums.png" alt="noCargó!" width="70%"><p>Pasta, arroz y legumbres</p></li>
-                        <li><img src="img/dashboard/iconosCategories/snacksIDolços.png" alt="noCargó!" width="70%"><p>Snacks y dulces</p></li>
-                        <li><img src="img/dashboard/iconosCategories/mascotes.png" alt="noCargó!" width="70%"><p>Mascotas</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay="0s"><img src="img/dashboard/iconosCategories/verduraIHortalisses.png" alt="noCargó!" width="70%"><p>Verdura y hortalizas</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay=".2s"><img src="img/dashboard/iconosCategories/fruites.png" alt="noCargó!" width="70%"><p>Frutas</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay=".4s"><img src="img/dashboard/iconosCategories/ousILactics.png" alt="noCargó!" width="70%"><p>Huevos y lácteos</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay=".8s"><img src="img/dashboard/iconosCategories/aiguaIBegudes.png" alt="noCargó!" width="70%"><p>Agua y bebidas</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay=".6s"><img src="img/dashboard/iconosCategories/oliIEspecies.png" alt="noCargó!" width="70%"><p>Aceite y especias</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay=".4s"><img src="img/dashboard/iconosCategories/carns.png" alt="noCargó!" width="70%"><p>Carnes</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay=".8s"><img src="img/dashboard/iconosCategories/peix.png" alt="noCargó!" width="70%"><p>Pescado</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay="1s"><img src="img/dashboard/iconosCategories/llarIHigienePersonal.png" alt="noCargó!" width="70%"><p>Hogar e higiene personal</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay="1.2s"><img src="img/dashboard/iconosCategories/paIPastisseria.png" alt="noCargó!" width="70%"><p>Pan y pastelería</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay="1.6s"><img src="img/dashboard/iconosCategories/pastaIArrosILlegums.png" alt="noCargó!" width="70%"><p>Pasta, arroz y legumbres</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay="1.4s"><img src="img/dashboard/iconosCategories/snacksIDolços.png" alt="noCargó!" width="70%"><p>Snacks y dulces</p></li>
+                        <li class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="3s" data-wow-delay="1.2s"><img src="img/dashboard/iconosCategories/mascotes.png" alt="noCargó!" width="70%"><p>Mascotas</p></li>
                     </ul>
                 </section>
             </section>
@@ -215,7 +230,7 @@
                           
                 <!--titol-->
                 <section>
-                     <h1>Intervalizer</h1>
+                     <h1  class="cartaDashboard wow animate__animated animate__fadeIn" data-wow-duration="2s" data-wow-delay="0s">Intervalizer</h1>
                 </section>
 
                 <!--continguts-->
