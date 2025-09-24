@@ -4,11 +4,15 @@ BÉ EN EL GRADIENT I CENTRO */
 #ContenidorTrioProductes > section {
     color: white;
     text-align: center;  
-    border-top: 1px solid black;
+    border-top: 1px solid transparent;
     padding-top: 4em;
 
+    transition: border-top ease-in-out .5s; /*Fem que el border top sigui automatitzat, queda brutal*/
 }
 
+#ContenidorTrioProductes > section:hover {
+    border-top: 1px solid black;
+}
 
 /*POSICIONAMENT DE INFLALYZER EN RELACIÓ AL GRADIENT
  DE FONS*/
