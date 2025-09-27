@@ -1,0 +1,172 @@
+
+/*FAIG PUJAR EL CONTENIDOR DEL TRIPO DE PRODUCTES PERQUÈ QUEDI 
+BÉ EN EL GRADIENT I CENTRO */
+#ContenidorTrioProductes > section {
+    color: white;
+    text-align: center;  
+    border-top: 1px solid transparent;
+    padding-top: 4em;
+
+    transition: border-top ease-in-out .5s; /*Fem que el border top sigui automatitzat, queda brutal*/
+}
+
+#ContenidorTrioProductes > section:hover {
+    border-top: 1px solid black;
+}
+
+/*POSICIONAMENT DE INFLALYZER EN RELACIÓ AL GRADIENT
+ DE FONS*/
+#ContenidorTrioProductes > section:first-child {
+    position: relative;
+    bottom: 52em;
+    
+}
+
+/*POSICIONAMENT DE CATEGORYZER EN RELACIÓ AL GRADIENT
+ DE FONS*/
+#ContenidorTrioProductes > section:nth-child(2) {
+    position: relative;
+    bottom: 45em;
+}
+
+/*POSICIONAMENT DE INTERVALYZER EN RELACIÓ AL GRADIENT
+ DE FONS*/
+#ContenidorTrioProductes > section:nth-child(3) {
+    position: relative;
+    bottom: 25em;
+    
+}
+
+
+
+
+/* FET AMB XAT GPT: Contenedor de las imágenes dentro de cada producto */
+#ContenidorTrioProductes section > section:nth-of-type(2) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
+    gap: 0em;
+    justify-items: center;
+    align-items: center;
+    max-width: 1000px;   /* límite de ancho */
+    margin: 0 auto;      /* centra el grid en la página */
+    padding: 0 1em;      /* aire en los lados */
+}
+
+/* FET AMB XAT GPT: Todas las imágenes dentro del contenedor de iconos */
+#ContenidorTrioProductes section > section:nth-of-type(2) img {
+    max-width: 15em;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+
+/*M'asseguro que hi ha un sombrejat en cada titular*/
+#ContenidorTrioProductes > section > section > h1 {
+    font-style: italic;
+    text-shadow: 3px 3px 1px rgba(0,0,0,0.6);
+    font-size: 3em;
+    padding-bottom: 1em;
+}
+
+#ContenidorTrioProductes #h2inflalyzer {
+    font-size: 1em;
+    max-width: 800px;
+    margin: 1em auto;
+    transition: transform .2s ease-in-out;
+}
+
+#ContenidorTrioProductes #h2Categoryzer {
+    margin: 1.5em auto;
+    transition: transform .2s ease-in-out;
+}
+
+#h2inflalyzer:hover, #h2Categoryzer:hover{
+    transform: scale(1.02);
+}
+
+
+
+#ContenidorTrioProductes img {
+    filter: drop-shadow(4px 4px 1px rgba(0, 0, 0, 0.6));
+    transition: filter .2s ease-in-out, transform .2s ease-in-out;
+    
+}
+
+#ContenidorTrioProductes img:hover {
+    filter: drop-shadow(6px 6px 2px rgba(0, 0, 0, 0.6));
+    transform: scale(1.02);
+}
+
+.emfasisCarta {
+    font-style: italic;
+    filter: drop-shadow(1px 1px 0px rgba(20, 20, 20, 0.7));
+    color: rgb(242, 242, 242);
+    
+}
+
+.liniaNova {
+    display: block;
+}
+
+.verdVue {
+    color: var(--colorVerdVue);
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.5));
+}
+
+.blauReact {
+    color: var(--PI_colorReact);
+    filter: drop-shadow(2px 2px 0px rgba(20, 20, 20, 0.7));
+}
+
+.vermellRandom {
+    color: red;
+    filter: drop-shadow(2px 2px 0px rgba(20, 20, 20, 0.7));
+}
+
+
+/*------------------------------------------------------------------------------*/
+/*CATEGORYZER: afecto ELS li dels ULL per posar 3 columne sa lles imatges, centra*/
+/*------------------------------------------------------------------------------*/
+
+/*afecto ELS li dels ULL per posar 3 columne sa lles imatges, centra*/
+#ContenidorTrioProductes section:nth-child(2) > section:nth-child(3) ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    list-style-type: none;
+    margin: 0 auto;
+    max-width: 50em;   
+    color: black;
+}
+
+/*poso la transition en cada li (Que s'areciarà en variacio del color del text de negre -invisible- a blanc -visible-)*/
+#ContenidorTrioProductes section:nth-child(2) > section:nth-child(3) ul li {
+     transition: color .1s ease-in-out;
+}
+
+/*el hover en cada li -que conte tant imatges de cada una de les 12 categories com els seus respectius textos descriptius- 
+farà que en passar per damunt de l'icono o el text, el text es mostri sobre el fons negre, fins ara ocult 
+per la coincidencia de background amb color dels textos associats a les imatges de les 12 categories.*/
+#ContenidorTrioProductes section:nth-child(2) > section:nth-child(3) ul li:hover {
+    color: white;
+}
+
+/*CREATS HOVERS PER A LES IMATGES (TRANSICIO I FILTER INICIAL) */
+#ContenidorTrioProductes section:nth-child(2) > section:nth-child(3) ul li img {
+    filter: drop-shadow(4px 4px 1px rgba(57, 61, 87, 0.768));
+    transition: transform .2s ease-in-out, filter .2s ease-in-out;
+}
+
+/*CREATS HOVERS PER A LES IMATGES: DEFINIM INCREMENT DE TAMANY I EL DROP SHADOW A BLANC */
+#ContenidorTrioProductes section:nth-child(2) > section:nth-child(3) ul li img:hover {
+    transform: scale(1.02);
+    filter: drop-shadow(6px 6px 1px  rgba(57, 61, 87, 0.768));
+}
+
+
+/*INTERVALIZER*/
+#ContenidorTrioProductes > section:nth-child(3) {
+    background-color: white;
+
+}

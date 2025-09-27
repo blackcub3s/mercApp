@@ -14,7 +14,7 @@
     --contorn_blau: rgb(0, 0, 219);
     --colorFonsInput: #fff;
     --contorn_verd: var(--temaPrincipal_verd); /*potser la canviaré*/
-
+    
 
     /*COLORS PER A USAR*/
     --grisTransparenteCard: rgba(255, 255, 255, 0.4);  /*parte front end landing queden*/ 
@@ -23,6 +23,9 @@
     --azulOscuroGradiente: #16203E;     /*parte front end landing y back-end landing*/
 
     font-size: 1em;  /* PUC AUMENTAR LLEUGERAMENT AIXO O DISMINUIR-HO PER CANVAIR EL FONT SIZE */
+
+    --colorVerdVue: #41B883;  
+    --PI_colorReact: #087ea4;
 }
 
 

@@ -2,16 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0em 0em 30em 0em;
+    padding: 0em 0em 1em 0em;
 
     vertical-align: auto;
 
 
     
-    background: linear-gradient(to bottom, 
-                            var(--blancoGradiente) 10%, 
-                            var(--azulClaroGradiente) 100%
-                        );
+
 
 
 }
