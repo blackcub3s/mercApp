@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <!-- Aquests dos seguents scripts redirigeixen a la landing
+    page si el token d'acces està expirat o no hi ha token, en refrescar pàgina -->
+    <script src="/js/jwt/decodificaJWT.js"></script>
+    <script src="/js/jwt/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.js"></script>
+
+    <!-- a usari loguejat el moc de dashboard a pas4 o viceversa en funció
+    dels permisos que tingui quan entra a una de les dos pàgines-->
+     <script src="/js/jwt/restringeixVistesPrivades_USUARI_LOGUEJAT.js"></script> 
+ 
+    <!--script que elimina token (tanca "la sessió", molt entre cometes)
+    quan cliquem botó d'id "botoEliminarToken"-->
+     <script src = "js/jwt/tancaSessioEliminantToken.js"></script>
+
+
+
+
+    <!--Cargamos la fuente roboto de google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!--Cargamos el CSS de animate.style para hacer animaciones, p. ej menu desplegable de la navbar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <link rel="stylesheet" href="css/dashboard/navFooter.css">
+    <link rel="stylesheet" href="css/botoHome.css">
+    <link rel="stylesheet" href="css/estilsGlobals.css">
+    <link rel="stylesheet" href="css/contact/contact.css">
+
+</head>
+<body>
+        <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegación-->
+    <header>
+         <a href="dashboard.html" ><img src="img/iconoHome.png"  class = "botoHome" alt = "home" height="30px"></a> <!-- boto home per a tornar a la pantalla principal -->
+        <button id = "botoEliminarToken">Cerrar Sesión</button> <!-- botó per a eliminar el token i fer que el javascript automaticament redirigeixi a pas1 (index.html)-->
+        <nav>
+            
+            <ul>
+                <li>
+                    <span>Servicios</span> <img src="img/dashboard/flechaDesplegablePaint.png" alt="v">
+                    <ul>
+                        <li><a href="dashboard.html#PRIV_evolucionInflacionPorProducto">Inflalyzer</a></li>
+                        <li><a href="dashboard.html#priv_categorizer">Categorizer</a></li>
+                        <li><a href="dashboard.html#">Intervalizer</a></li>
+                    </ul>
+                </li>
+                <li><span><a href="tickets.html">Mis tickets</a></span></li>
+                <li><span><a href="datos.html">Mis datos</a></span></li>
+                <li><span><a href="contact.html">Contacto</a></span></li>
+            </ul>
+        </nav>
+    </header>
+
+
+
+
+
+
+
+
+    <!-- contenedor contacto-->
+    <section id="PIfondoContacto">
+        <section >
+            <article>
+                <h1>Contáctanos</h1>
+                <p>Para obtener más información, contratar nuestros servicios
+                    o preguntarnos dudas sobre cómo podemos ayudarte a realizar
+                    tu proyecto, contáctanos utilizando el formulario de contacto.</p>
+            </article>
+            <article>
+                <form action="formularioFicticio.php" method="post">
+                    <label for="nombre">Nombre:<span>*</span></label>
+                    <input type="text" id="nombre" name="nombre" required>
+                
+                    <label for="email">E-mail:<span>*</span></label>
+                    <input type="email" id="email" name="email" required>
+                
+                    <label for="comentarios">Comentarios:<span>*</span></label>
+                    <textarea id="comentarios" name="comentarios" rows="5" cols="30" required></textarea>
+                
+                    <button type="submit">contacto</button>
+                </form>
+                
+            </article>
+        </section>
+    </section> 
+
+
+
+
+
+
+    <!-- SECCIÓN 6 (S6): footer -->   
+    <footer>
+
+       <!-- section:first-child del footer-->
+        <section> 
+
+            <!--primera columna     section:first-child-->
+            <section>
+                <h1>Servicios</h1>
+                <ul> 
+                    <li><span><a href="dashboard.html#PRIV_evolucionInflacionPorProducto">Inflalyzer</a></span></li>
+                    <li><span><a href="dashboard.html#priv_categorizer">Categorizer</a></span></li>
+                    <li><span><a href="#">Intervalizer</a></span></li>
+                </ul>
+            </section>
+
+            <!--segunda columna     section:nth-child(2)-->
+            <section>
+                <h1>Datos de usuario</h1>
+                <ul>
+                    <li><span><a href="tickets.html">Mis tickets</a></span></li>
+                    <li><span><a href="datos.html">Mis datos</a></span></li>
+                </ul>
+            </section>
+
+            <!--tercera columna: section:last-child-->
+            <section>
+                <h1>Contacto</h1>
+                <ul>
+                    <li><span><a href="contact.html">Contacto</a></span></li>
+                    <li><span><a href="https://www.linkedin.com/in/santiagosanchezsans/"><img src="img/dashboard/linkedin_logoDefinitiu.jpg" alt="LinkedIn"></a></span></li>
+                </ul>
+            </section>
+
+        </section>    
+        
+
+        <!-- section:last-child del footer-->
+        <section>
+            <p id="copyright"><i>&copy; 2025 | Todos los derechos reservados</i></p>   
+        </section> 
+    </footer>
+
+</body>
+</html>

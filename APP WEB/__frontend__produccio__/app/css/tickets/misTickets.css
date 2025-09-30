@@ -1,0 +1,32 @@
+/*Cal manipulñar aixi el body perquè no quedi espai en blanc sota el footer en fer zoom out o en pantalles grans*/
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* header - contenido - footer */
+    min-height: 100vh;
+    margin: 0;
+}
+
+
+
+/*definimos el contenedor: fondo y el grid que lo compone */
+#PIfondoTickets {
+
+
+    
+    /*Posem flex i align items center per aconseguir que el formulari de contacte está centrat en els zooms*/
+    display: flex; 
+    align-items: center;
+}
+
+
+
+
+/*CENTRO IMATGE OBRER*/
+#PIfondoTickets > section:first-child {
+    margin: 0 auto;
+}
+
+#PIfondoTickets > section:first-child img {
+    width: 15em;
+}
+/*FI CENTRO IMATGE OBRER*/
