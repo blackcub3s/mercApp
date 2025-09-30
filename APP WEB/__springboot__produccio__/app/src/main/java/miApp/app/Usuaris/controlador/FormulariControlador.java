@@ -2,6 +2,7 @@ package miApp.app.Usuaris.controlador;
 
 import jakarta.validation.Valid;
 import miApp.app.Usuaris.dto.FormulariDTO;
+import miApp.app.Usuaris.dtoSORTIDA.FormulariDTOsortida;
 import miApp.app.Usuaris.servei.CorreuServei;
 import miApp.app.Usuaris.servei.UsuariServei;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,43 @@ public class FormulariControlador {
         this.correuServei = correuServei;
     }
 
+
+    /*    Si entra en el DTO d'entrada (pel body) un text de l'estil:
+
+    {
+        "nom" : "benitò",
+            "correuElectronic" : "ijkgm@gmail.com",
+            "comentaris" : "ijl qwek iwqehiqwer bjkasdb"
+    }
+
+     */
+
+    //     Si l'enviament de mail ha sigut exitós tornemo 200 OK i pel body el seguent dto de sortida
+    //
+    //          {"mailEnviat" : true,
+    //           "missatge" : "Formulario enviado correctamente al correo del admin"}
+    //
+    //      Si ha fallat l'enviament del mail torno 500 i pel body:
+    //
+    //          {"mailEnviat" : false,
+    //          "missatge : "Error mandando el formulario por correo: TEXTO DEL ERROR"}
+    //
+    //      Si un camp de nom XXX de FormulariDTO falla les seves validacions, aleshores
+    //      tornarà (si n'hi han varis s'acumularàn com a més parells clau-valor) CODI 400 més el
+    //      JSON programat al ManejadorExcepcions.java:
+    //
+    //          {"XXX": "el campo XXX tiene tal problema"}
+    //
     @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/formulari")
-    public ResponseEntity<HashMap<String, Object>> enviaCorreu(@RequestBody @Valid FormulariDTO dto) {
-        String eMail = dto.getCorreuElectronic();
-        HashMap<String, Object> mapJSONlike = correuServei.enviaMail(dto);
-        return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //torno la response
+    public ResponseEntity<FormulariDTOsortida> enviaCorreu(@RequestBody @Valid FormulariDTO dto) {
+        FormulariDTOsortida dtoSortida = correuServei.enviaMail(dto);
+
+        if (dtoSortida.isMailEnviat()) {
+            return new ResponseEntity<>(dtoSortida, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(dtoSortida, HttpStatus.INTERNAL_SERVER_ERROR);  // 500
+        }
+
     }
 }

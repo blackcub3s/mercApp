@@ -1,6 +1,7 @@
 package miApp.app.Usuaris.servei;
 
 import miApp.app.Usuaris.dto.FormulariDTO;
+import miApp.app.Usuaris.dtoSORTIDA.FormulariDTOsortida;
 import miApp.app.Usuaris.repositori.UsuariAmpliatRepositori;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +22,21 @@ public class CorreuServei {
     }
 
     //PRE: Les dades d'entrada en el DTO (el dto te ja dades valides en l'entrada! nom, mail i comentari del formualri)
-    //POST: Si falla l'enviament posem false (si falla serà per algun problema aliè a les dades entrants)
-    //      {"mailEnviat" : true} -- si s'ha enviat mail
-    //      {"mailEnviat" : false} -- si ha fallat l'enviament del mail
-    public HashMap<String, Object> enviaMail(FormulariDTO dto) {
+    //POST: Si s'ha enviat el mail torno true i si no false a traves del FormulariDTOSortida. també un missatge adient.
+    public FormulariDTOsortida enviaMail(FormulariDTO dto) {
+        try {
+
+            // AQUI FER ENVIAR CORREU
+            // ------ TO DO ------
+            // FI ENVIAMENT CORREU
 
 
-        //AQUI FER ENVIAR CORREU (fer fucnio que torni un boolea o posar-ho aqui)
-
-
-
-        boolean mailEnviat = true;
-        HashMap<String, Object> mapJSONlike = new HashMap<>();
-        mapJSONlike.put("mailEnviat", mailEnviat); //posem el clau valor al hasmap
-        return mapJSONlike;
+            return new FormulariDTOsortida(true, "Formulario enviado correctamente al correo del admin");
+        } catch (Exception e) {
+            return new FormulariDTOsortida(false, "Error mandando el formulario por correo: " + e.getMessage());
+        }
     }
+
+
+
 }
