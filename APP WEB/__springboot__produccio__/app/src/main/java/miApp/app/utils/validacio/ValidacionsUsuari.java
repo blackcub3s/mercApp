@@ -22,6 +22,10 @@ public class ValidacionsUsuari {
     public static final String REGEX_TEXT_SEGUR = "^[a-zA-Z0-9àéèíòóú_.ÀÉÈÍÒÓÚñÑçÇ ]*$";
     public static final String MISSATGE_ERROR_TEXT = "Se admiten puntos y barras bajas pero no otros caracteres raros!";
 
+    //REGEX DE VALIDACIO DE CAMPS D'ENTRADA LLARGS (COMENTARIS EN UN FORMULARI)
+    public static final String REGEX_TEXT_LLARG = "^[a-zA-Z0-9àéèíòóú_.ÀÉÈÍÒÓÚñÑçÇ() ]*$";
+    public static final String MISSATGE_ERROR_LLARG = "Hay Caracteres no admitidos en el campo de comentarios del formulario!";
+
     //VALIDACIO CAMP CORREU ELECTRONIC
     public static final int TAMANY_MAXIM_EMAIL = 70;
     public static final String MISSATGE_ERROR_TAMANY_EMAIL = "El tamaño del correo electrónico no puede superar 70 caracteres!";
