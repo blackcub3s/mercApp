@@ -1,0 +1,159 @@
+/*################################################*/
+/*------------------------------------------------*/
+/*----------PÁGINA INTERNA: contacto.html---------*/
+/*------------------------------------------------*/
+/*################################################*/
+/*--------------------*/
+/*ESTILOS contacto.css*/
+/*--------------------*/
+
+
+
+:root {
+    /* ------------------------------------------
+    /* ---- ESTILOS GENERALES Contacto.html -----
+    /* ------------------------------------------*/
+
+    /*COLOR DE FONDO DE PAGINA CONTACTO*/
+    --PI_gradienteIzqContacto: #8D4378;
+    --PI_gradienteDerContacto: #2F415D;
+    --PI_asteriscFormContacto: #6A00FF;
+    
+    /*TIEMPO DE LA ANIMACIÓN DE ANIMATE STYLE PARA LA PÁGINA DE CONTACTO*/
+    --PI_tiemposFadeINContacto: 1.5s;
+
+    /* ---------------------------------------------
+    /* ---- FIN estilos GENERALES Contacto.html ---- 
+    /* ---------------------------------------------*/
+
+
+}
+
+/*Cal manipulñar aixi el body perquè no quedi espai en blanc sota el footer en fer zoom out o en pantalles grans*/
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* header - contenido - footer */
+    min-height: 100vh;
+    margin: 0;
+}
+
+
+
+/*definimos el contenedor: fondo y el grid que lo compone */
+#PIfondoContacto {
+    background: linear-gradient(62deg, var(--PI_gradienteIzqContacto) 10%, var(--PI_gradienteDerContacto) 64%);
+        
+    /*Posem flex i align items center per aconseguir que el formulari de contacte está centrat en els zooms*/
+    display: flex; 
+    align-items: center;
+}
+
+/*PIfondoContacto section es el contenedor del 
+contenido de la pagina (por un lado, texto contacto y, por el otro, formulario)*/
+#PIfondoContacto section {
+    display: grid;
+    grid-template-columns: 6fr 4fr; /*seis fracciones en la parte izquierda (mensaje de contacto) y cuatro a la derecha (mensaje de formulario)*/
+    align-items: center; /*centramos verticalmente tanto la parte izquierda (mensaje contacto) como derecha (form) de la pagina*/
+    padding: 3em;
+
+
+    max-width: 1000px; /*definimos ancho máximo de la pagina para que no se mueva al hacer zoom out*/
+    margin: 0 auto; /*centramos el contenedor del contenido de la pagina para que no se mueva al hacer zoom out*/
+}
+
+/*estilos del formulario*/
+#PIfondoContacto form {
+    display: flex;
+    flex-direction: column;
+}
+
+/*definimos margin de las distintas labels del formulario 
+(usamos xxx-of-type, ya que aqui xxx-child no usa porque coexisten hijos label con input)*/
+#PIfondoContacto form label:first-of-type {margin-top: 1em;}  /*primera label que cuelga de form (label:"Tu nombre")*/
+#PIfondoContacto form label:nth-of-type(2) {margin-top: 2em;} /*segunda label que cuelga de form (label:"E-mail")*/
+#PIfondoContacto form label:last-of-type{margin-top: 2em;}    /*tercera label que cuelga de form (label:"Comentarios")*/
+
+/*estilos mensaje contacto (izquierda página)*/
+#PIfondoContacto section > article:first-child {
+    position: relative;
+    top: -.6em; /*lo subimos un poquito*/
+    font-size: 2em;
+    padding-left: 5%;
+    padding-right: 5%;
+    color: white;
+    max-width: 17em;
+    animation: fadeInLeft; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: var(--PI_tiemposFadeINContacto); /* don't forget to set a duration! */
+
+}
+
+/*definimos estilos de tamaño distinto en h1 y en p para el mensaje de la izquierda de la pagina*/
+#PIfondoContacto section > article:first-child h1 {font-size: 1.5em; margin-bottom: .2em;}
+#PIfondoContacto section > article:first-child p {font-size: .6em;}
+
+/*estilos formulario (derecha página)*/
+#PIfondoContacto section > article:last-child  {
+    background-color: white;
+    margin: 1em;
+    border: 1px solid black;
+    padding: 2em;
+    max-width: 15em;
+    border-radius: .4em;
+
+    animation: fadeInRight; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: var(--PI_tiemposFadeINContacto); /* don't forget to set a duration! */
+}
+
+
+
+
+/*estilos labels del formulario*/
+#PIfondoContacto section > article:last-child form label {
+    font-size: .9em; 
+    margin-bottom: .25em;
+}
+
+
+/*alturas para elementos donde podemos poner texto (inputs y textarea, respectivamente) y
+definiciones margen para el texto que se introduzca*/
+#PIfondoContacto section > article:last-child form input {height: 3em; padding-left: 1em; padding-right: 1em;}
+#PIfondoContacto section > article:last-child form textarea {height: 8em; padding: 1em; resize: none;} /*resize:none nos permite evitar que el usuario pueda redimensionar la textarea con el ratón*/
+
+
+
+/*estilos comunes a elementos input y textarea formulario*/
+#PIfondoContacto section > article:last-child form input, 
+#PIfondoContacto section > article:last-child form textarea {
+    border-radius: .4em;
+    border: 1px solid black;
+    box-shadow: inset 1px 2px 2px rgb(217, 217, 217); /*NOTA: con el inset conseguimos la smbra por dentro*/
+}                    /*x   y   blur    colorsombra*/
+
+
+/*defiimos estilo botón del formulario*/
+#PIfondoContacto section article:last-child button {
+    margin-top: 2em;
+    background-color: var(--colorAzulBoton);
+    color: white;
+    width: 6em;
+    padding: .5em;
+    border-radius: .6em;
+    border: none;
+
+    transition: background-color var(--tiempoTransicionEstandar) ease-in-out; 
+}
+
+/*definimos el hover para el boton del formulario*/
+#PIfondoContacto section article:last-child button:hover {
+    background-color: var(--colorAzulBotonHover); /* Cambia a un tono más oscuro del color azul */
+}
+
+/*definimos el span de los asteriscos de las labels del formulario,
+ que el mockup de figma, si nos fijamos tiene un color distinto*/
+#PIfondoContacto section article:last-child span {
+    color: var(--PI_asteriscFormContacto);
+    font-size: .8em;
+
+    position: relative;
+    bottom: .3em; /*subimos un poquito hacia arriba el asterisco*/
+}

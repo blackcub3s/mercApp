@@ -25,7 +25,7 @@ function redirigeix_a_dashboard_o_pas4() {
                     window.location.href = "dashboard.html";
                 }
             } else if (payload.permisos == 0) {
-                if (paginaActual == "dashboard.html") {
+                if (paginaActual == "dashboard.html" || paginaActual == "contact.html" || paginaActual == "tickets.html" || paginaActual == "datos.html" ) { //AFEGIR AQUI LES ALTRES PAGINES PRIVADES QUE AFEGIRÀS!
                     window.location.href = "pas4_concedirAccesGmail.html";
                 }
             }
