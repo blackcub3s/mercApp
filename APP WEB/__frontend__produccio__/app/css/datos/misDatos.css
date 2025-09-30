@@ -19,6 +19,7 @@ body {
 }
 
 
+/*CENTRO IMATGE OBRER*/
 #PIfondoDatos > section:first-child {
     margin: 0 auto;
 }
@@ -26,3 +27,4 @@ body {
 #PIfondoDatos > section:first-child img {
     width: 15em;
 }
+/*FI CENTRO IMATGE OBRER*/
