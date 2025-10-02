@@ -1,5 +1,6 @@
 package miApp.app;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
 import miApp.app.Usuaris.servei.UsuariAmpliatServei;
@@ -13,10 +14,21 @@ import miApp.app.Usuaris.servei.UsuariServei;
 public class AppApplication {
 	public static void main(String[] args) {
 
+		//CARREGO LES VARIABLES D'ENTORN DE DINS DE .env (NO SINCRONITZAT AMB EL REPO PER PRIVACITAT)
+		//I LES INJECTO AL SISTEMA. MOLT IMPORTANT: ES FA ABANS DE SPRINGBOOTAPLLICATION.RUN. EN CAS CONTRARI
+		//TRACTARIA DE LLEGIR PRIMER L'APPLICATION.PROPERTIES QUE NO TINDRIA LES VARAIBLES D'ENTORN DEFINIDES:
+		Dotenv dotenv = Dotenv.load();
+		System.setProperty("MAIL_USUARI", dotenv.get("MAIL_USUARI"));
+		System.setProperty("MAIL_CONTRA", dotenv.get("MAIL_CONTRA"));
+
+
+
+
 		//SpringApplication.run(AppApplication.class, args);
 
 		ApplicationContext context = SpringApplication.run(AppApplication.class, args); //obtens context
 		UsuariServei usuariServei = context.getBean(UsuariServei.class); //obtens la bean del context per pillar classe usuariServei
+
 
 
 		//TESTEJO AFEGIR USUARI (EL PRIMER TÉ ACCÉS A RECURSOS, EL SEGON NO TÉ ACCÉS -es un usuari que ha registrat nom pero mai ha arribat a guanyar permisos-)

@@ -34,3 +34,6 @@ build/
 
 ### evito que es guardin els logs
 logs/
+
+### evito que es guardin les variables d entorn al repo remot que es public.
+.env
