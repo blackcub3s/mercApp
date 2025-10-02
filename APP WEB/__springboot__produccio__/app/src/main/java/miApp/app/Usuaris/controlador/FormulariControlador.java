@@ -31,9 +31,9 @@ public class FormulariControlador {
     /*    Si entra en el DTO d'entrada (pel body) un text de l'estil:
 
     {
-        "nom" : "benitò",
-            "correuElectronic" : "ijkgm@gmail.com",
-            "comentaris" : "ijl qwek iwqehiqwer bjkasdb"
+            "nom" : "benito",
+            "correuElectronic" : "benitete.majete@gmail.com",
+            "comentaris" : "La teva aplicacio es la canya!"
     }
 
      */
@@ -43,7 +43,12 @@ public class FormulariControlador {
     //          {"mailEnviat" : true,
     //           "missatge" : "Formulario enviado correctamente al correo del admin"}
     //
-    //      Si ha fallat l'enviament del mail torno 500 i pel body:
+    //      Si ha fallat l'enviament del mail torno 500 i pel body (et donara error, per exemple si no
+    //      carregues les variables d'entorn a .env amb els noms
+    //
+    //      MAIL_USUARI=EL TEU MAIL D'ON VOLS ENVIAR
+    //      MAIL_CONTRA=la contra de 16 digits que obtens de la teva compta del mail d'on vols enviar
+    //                                 ( https://myaccount.google.com/apppasswords )
     //
     //          {"mailEnviat" : false,
     //          "missatge : "Error mandando el formulario por correo: TEXTO DEL ERROR"}
