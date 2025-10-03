@@ -22,6 +22,9 @@
     /*TIEMPO DE LA ANIMACIÓN DE ANIMATE STYLE PARA LA PÁGINA DE CONTACTO*/
     --PI_tiemposFadeINContacto: 1.5s;
 
+    --colorAzulBoton: #5474C4;             /*boto contacte*/
+    --colorAzulBotonHover: #3652a3;        /*boto contacte*/  
+
     /* ---------------------------------------------
     /* ---- FIN estilos GENERALES Contacto.html ---- 
     /* ---------------------------------------------*/
