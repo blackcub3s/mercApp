@@ -20,8 +20,8 @@ import static miApp.app.utils.validacio.ValidacionsUsuari.MISSATGE_ERROR_CONTRAS
 
 
 //-------VALIDACIONS DTO Alies--------
-@Size(max = 3000, message = "El campo de comentarios es demasiado grande! No puede tener más de 3000 caracteres!") //també va en tàndem a @valid (COMPTE QUE NO CUBREIX EL CAS EN QUE ENTRI null EN COMPTES DE STRING BUIT)
-@Pattern(regexp = REGEX_TEXT_LLARG, message = MISSATGE_ERROR_LLARG)
+@Size(max = 3000, message = "El campo de comentarios no puede tener más de 3000 caracteres!") //també va en tàndem a @valid (COMPTE QUE NO CUBREIX EL CAS EN QUE ENTRI null EN COMPTES DE STRING BUIT)
+//@Pattern(regexp = REGEX_TEXT_LLARG, message = MISSATGE_ERROR_LLARG)  //m'he carregat la regex perquè no ho emmagatzemo a BBDD
 //-------FI VALIDACIONS DTO Alies--------
 public @interface TextLlarg {
     String message() default "comentarios no son válidos";
