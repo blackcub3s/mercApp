@@ -21,6 +21,7 @@
 
     
     <script src = "js/contact/emplenaCampsFormulari.js"></script>
+    <script src = "js/contact/enviaFormulari.js"></script>
 
 
     <!--Cargamos la fuente roboto de google fonts -->
@@ -75,7 +76,7 @@
                     tu proyecto, contáctanos utilizando el formulario de contacto.</p>
             </article>
             <article>
-                <form action="formularioFicticio.php" method="post">
+                <form method = "post" id = "formete"> <!-- poso post pq no surtin les variables en la URL -el get del default- -->
                     <label for="nombre">Nombre:<span>*</span></label>
                     <input type="text" id="nombre" name="nombre" required>
                 
