@@ -17,9 +17,13 @@
  
     <!--script que elimina token (tanca "la sessió", molt entre cometes)
     quan cliquem botó d'id "botoEliminarToken"-->
-     <script src = "js/jwt/tancaSessioEliminantToken.js"></script>
+     <script src = "/js/jwt/tancaSessioEliminantToken.js"></script>
 
+    <!-- carrega el contingut del select quan carrega la pàgina--> 
+    <script src = "/js/tickets/ticketsCarregaSelect.js"></script>
 
+    <!-- Fes fetch quan HI HA GI CANVIS EN EL SELECT!--> 
+    <script src = "/js/tickets/fesFetchEnSeleccionar.js"></script>
 
 
     <!--Cargamos la fuente roboto de google fonts -->
@@ -65,6 +69,17 @@
 
 
     <section id = "PIfondoTickets">
+        <section>
+            <h1 class = "titulo">Consulta todos los tickets donde sale un producto</h1>
+        </section>
+        <!--first child: el select de cerca i el titol-->
+        <section>
+            <label for="productillos" class = "subtitolSalutacio" id = "etiqueta">Escoge tu producto:</label>
+            <select name="productes" id="selectProductes" class = "subtitolSalutacio">
+                <option value="defecte" disabled selected hidden>Escull una opció</option>
+            </select>
+        </section>
+
         <section>
             <img src="img/desenvolupadorConstruint.png" alt="imatge construccio no ha carregat">
         </section>
