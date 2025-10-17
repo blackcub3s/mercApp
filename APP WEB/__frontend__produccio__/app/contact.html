@@ -21,6 +21,7 @@
 
     
     <script src = "js/contact/emplenaCampsFormulari.js"></script>
+    <script src = "js/contact/enviaFormulari.js"></script>
 
 
     <!--Cargamos la fuente roboto de google fonts -->
@@ -67,15 +68,19 @@
 
     <!-- contenedor contacto-->
     <section id="PIfondoContacto">
-        <section >
+        <section>
             <article>
                 <h1>Contáctanos</h1>
                 <p>Para obtener más información, contratar nuestros servicios
                     o preguntarnos dudas sobre cómo podemos ayudarte a realizar
                     tu proyecto, contáctanos utilizando el formulario de contacto.</p>
             </article>
+
             <article>
-                <form action="formularioFicticio.php" method="post">
+
+
+
+                <form method = "post" id = "formete"> <!-- poso post pq no surtin les variables en la URL -el get del default- -->
                     <label for="nombre">Nombre:<span>*</span></label>
                     <input type="text" id="nombre" name="nombre" required>
                 
@@ -87,10 +92,15 @@
                 
                     <button type="submit">contacto</button>
                 </form>
-                
+
+                <!-- banner per a mostrar eRRORS programàticament amb javascript!-->
+                <section id="bannerErrors" style = "display: none;"></section>
+
             </article>
         </section>
     </section> 
+
+
 
 
 

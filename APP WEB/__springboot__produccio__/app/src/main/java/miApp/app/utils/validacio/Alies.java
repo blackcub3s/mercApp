@@ -19,12 +19,12 @@ import static miApp.app.utils.validacio.ValidacionsUsuari.MISSATGE_ERROR_CONTRAS
 @Retention(RetentionPolicy.RUNTIME)
 
 
-//-------VALIDACIONS DTO Contrasenya--------
-@Size(max = 30, message = "El campo es demasiado grande! No puede tener más de 30 caracteres!") //també va en tàndem a @valid (COMPTE QUE NO CUBREIX EL CAS EN QUE ENTRI null EN COMPTES DE STRING BUIT)
+//-------VALIDACIONS DTO Alies--------
+@Size(max = 30, message = "El campo Nombre no puede tener más de 30 caracteres!") //també va en tàndem a @valid (COMPTE QUE NO CUBREIX EL CAS EN QUE ENTRI null EN COMPTES DE STRING BUIT)
 @Pattern(regexp = REGEX_TEXT_SEGUR, message = MISSATGE_ERROR_TEXT)
-//-------FI VALIDACIONS DTO Contrasenya--------
+//-------FI VALIDACIONS DTO Alies--------
 public @interface Alies {
-    String message() default "Contrasenya no válida";
+    String message() default "Alias o nombre no válido";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

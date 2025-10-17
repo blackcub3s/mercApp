@@ -22,6 +22,9 @@
     /*TIEMPO DE LA ANIMACIÓN DE ANIMATE STYLE PARA LA PÁGINA DE CONTACTO*/
     --PI_tiemposFadeINContacto: 1.5s;
 
+    --colorAzulBoton: #5474C4;             /*boto contacte*/
+    --colorAzulBotonHover: #3652a3;        /*boto contacte*/  
+
     /* ---------------------------------------------
     /* ---- FIN estilos GENERALES Contacto.html ---- 
     /* ---------------------------------------------*/
@@ -156,4 +159,17 @@ definiciones margen para el texto que se introduzca*/
 
     position: relative;
     bottom: .3em; /*subimos un poquito hacia arriba el asterisco*/
+}
+
+
+#PIfondoContacto section:first-child  article:nth-child(2) #bannerErrors {
+    display: block;
+    padding: .4em;
+    margin-top: .5em;
+    border-radius: 5px;
+}
+
+/*Aplico un padding als errors P que siguin segon i posteriors fills*/
+#PIfondoContacto section:first-child  article:nth-child(2) #bannerErrors p:not(:first-child) {
+    padding-top: .4em;
 }

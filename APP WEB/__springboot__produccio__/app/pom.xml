@@ -108,6 +108,23 @@
 			<version>2.6.0</version>
 		</dependency>
 
+		<!-- Afegeixo la dependencia per poder enviar correus electronics: JavaMailSender-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+
+		<!-- Afegeixo la dependencia per a poder usar la dependenci dotenv que ens permetra
+		carregar variables d entorn des de .env (fitxer que no estara sincronitzat amb el repo public)
+		 de github. Pillo versio 3 que es la mes usada com veiem a mvn repository-->
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>dotenv-java</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
