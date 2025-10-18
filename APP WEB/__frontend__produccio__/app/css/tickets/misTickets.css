@@ -16,10 +16,13 @@ body {
     place-items: center;
 }
 
+/*L'envoltori del filtre per productes*/
 #PIfondoTickets > section:nth-child(2) {
     display: grid;
     place-items: center;
-    
+    border: 1px dashed grey;
+    padding: 2em;
+    border-radius: 1em;
 }
 
 /*******************************************/
