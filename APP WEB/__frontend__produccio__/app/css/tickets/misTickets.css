@@ -36,9 +36,19 @@ body {
     place-items: center;
 }
 
-/*EDITO AMPLADA IMATGE OBRER*/
-#PIfondoTickets > section:last-child img {
-    width: 15em;
+
+#PIfondoTickets > section:last-child {
+    padding-top: 1em;
+    padding-bottom: 10em;
+}
+
+/*TOTES LES CARDS*/
+#PIfondoTickets > section:last-child > article{
+    border: 1px solid black;
+    width: 50em;
+    aspect-ratio: 1.618;
+    border-radius: .5em;
+    margin-bottom: 1em;
 }
 
 
@@ -51,7 +61,7 @@ body {
 
 
 /*COPIO ESTILS DE LTITOL I SUBTITOL DEL DASHBOARD PER*/
-.titulo {font-size: 2.1rem; margin-top: 1rem;}     
+.titulo {font-size: 2.1rem; margin-top: 2em; margin-bottom: 2em;}     
 .subtitolSalutacio {font-size: 1.7rem; }
 
 /*Poso padding sota del text que encapçala el select*/
@@ -61,5 +71,5 @@ body {
 
 #selectProductes {
     padding: .5em;
-    border-radius: .3em;
+    border-radius: .4em;
 }
