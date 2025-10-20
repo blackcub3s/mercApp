@@ -15,12 +15,16 @@ Esta aplicación permite hacer un análisis de tickets digitales del correo para
 
 Remitimos al lector a lo siguientes dos enlaces que le ayudarán, por un lado, a ganar comprensión de las complejidades del proyecto; y, por el otro, de entender cómo se han abordado los distintos problemas que han entrañado el desarrollo de esta aplicación: arquitectura, patrones de diseño, desacople entre los distintos microservicios, etc:
 
-| **Documento**                                                                 | **Enlace**                                                                                             |
-|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| **Memoria Completa** (120 páginas)                                            | [Memoria LaTeX](https://drive.google.com/file/d/12gHzV9FWSaKpbUgoN8VF0Hd1BpAlayGW/view)               |
-| **Presentación del Proyecto** (79 diapositivas)                              | [Presentación Beamer](./APP%20WEB/memoriaLaTeX/presentacioMemoriaBeamer/presentacioMemoriaBeamer.pdf)  |
+<div align="center">
 
 
+| **Documento** | **Enlace** |
+|---------------|------------|
+| **Memoria Completa** (120 páginas)                | [Memoria LaTeX](https://drive.google.com/file/d/12gHzV9FWSaKpbUgoN8VF0Hd1BpAlayGW/view)   |
+| **Presentación del Proyecto** (79 diapositivas)   | [Presentación Beamer](./APP%20WEB/memoriaLaTeX/presentacioMemoriaBeamer/presentacioMemoriaBeamer.pdf)  |
+
+
+</div>
 
 # 2. Microservicios programados
 
