@@ -11,15 +11,22 @@ temporales de gastos.
 ```
 
 
-Esta aplicación permite hacer un análisis de tickets digitales del correo para los usuarios del ticket digital de mercadona. Se programó de cero múltiples microservicios que permiten orquestrar la aplicación web:
+Esta aplicación permite hacer un análisis de tickets digitales del correo para los usuarios del ticket digital de mercadona y fue programada de cero mediante mútliples microservicios que permiten orquestrar la aplicación web (como veremos en el apartado 2).
+
+Remitimos al lector a lo siguientes dos enlaces que le ayudarán, por un lado, a ganar comprensión de las complejidades del proyecto; y, por el otro, de entender cómo se han abordado los distintos problemas que han entrañado el desarrollo de esta aplicación: arquitectura, patrones de diseño, desacople entre los distintos microservicios, etc:
+
+*memoria completa*  (120 páginas) $\rightarrow$ [memoria LaTeX](https://drive.google.com/file/d/12gHzV9FWSaKpbUgoN8VF0Hd1BpAlayGW/view)
+*Presentación del proyecto* (79 d.)  $\rightarrow$ [presentación beamer](./APP%20WEB/memoriaLaTeX/presentacioMemoriaBeamer/presentacioMemoriaBeamer.pdf)
+
+
 
 # 2. Microservicios programados
 
-- [Spring Boot](/APP%20WEB/__springboot__produccio__/) (*Back-end primario*): con este back-end gestionamos:  **los usuarios**, definiendo tres niveles de permisos para usuarios que se hayan registrado: 
+- [Spring Boot](/APP%20WEB/__springboot__produccio__/) (*Back-end primario*): con este back-end gestionamos  **los usuarios**, definiendo tres niveles de permisos para aquellos usuarios que se hayan registrado:
 
   * **0:** se concede cuando usuario es invitado (ya ha proporcionado correo y contraseña, pero nada más).
   * **1:** se concede cuando usuario antes invitado ha proporcionado tickets digitales Y ADEMÁS ha asegurado que se hayan persistido esos tickets en formato estructurado a mongoDB.
-  * **2:** usuario tiene permisos de ADMIN, superusuario o amdinistrador. Se lo concedemos manualmente al propio desarrollador (nostros mismos).
+  * **2:** usuario tiene permisos de ADMIN, superusuario o administrador. Se lo concederemos manualmente al propio desarrollador (nosotros mismos).
 
 - [FastAPI](/APP%20WEB/__FastAPI__/) (*Back-end secundario*): Un segundo back-end para el parseo, extracción y persistencia de los tickets digitales. También para dar la señal a Spring Boot que expida un nuevo token de acceso cuando termina dicho parseo, extracción y persistencia (*permisos = 0 **pasa a** permisos = 1*). Solo podrán acceder a endpoints de este back-end usuarios que estén registrados (permisos : {0,1,2}).
 
