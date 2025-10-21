@@ -14,10 +14,11 @@ body {
     que el formulari de contacte estigui centrat en els zooms*/
     display: grid; 
     place-items: center;
+    grid-template-columns: 1fr 1fr; /*fem que cercador estigui a l'esquerra i els tickets a la dreta*/
 }
 
 /*L'envoltori del filtre per productes*/
-#PIfondoTickets > section:nth-child(2) {
+#PIfondoTickets > section:nth-child(1) {
     display: grid;
     place-items: center;
     border: 1px dashed grey;
@@ -30,28 +31,32 @@ body {
 /*******************************************/
 
 
-/*EDITO EL CONTENIDOR DE LA IMATGE DE L'OBRER*/
-#PIfondoTickets > section:last-child {
-    display: grid;
-    place-items: center;
+/*EDITO EL CONTENIDOR DEL GRID DE CONSULTA DE TICKETS (va a l'esquerra en vista escriptri)*/
+#PIfondoTickets > section:nth-child(1) {
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
-
-#PIfondoTickets > section:last-child {
-    padding-top: 1em;
-    padding-bottom: 10em;
+/*EL CONTENEDOR QUE TE LES CARDS (va a la dreta en vist d'escriptori)*/
+#PIfondoTickets > section:nth-child(2) {
+    height: 100vh;
+    overflow-y: auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 /*TOTES LES CARDS*/
-#PIfondoTickets > section:last-child > article{
+#PIfondoTickets > section:nth-child(2) > section {
     border: 1px solid black;
-    width: 50em;
+    width: 28em;
     aspect-ratio: 1.618;
     border-radius: .5em;
-    margin-bottom: 1em;
+    margin-bottom: 1em; /*ESpai entre cada card i la següent, i la última i el que va per sota*/
 }
 
-
+#PIfondoTickets > section:nth-child(2) > section:first-child {
+    margin-top: 1em; /*ESpai entre primera card i part de dalt*/
+}
 
 /*******************************************/
 /*FINAL IMATGE D'OBRER, BORRAR QUAN ACABAT*/
@@ -61,8 +66,8 @@ body {
 
 
 /*COPIO ESTILS DE LTITOL I SUBTITOL DEL DASHBOARD PER*/
-.titulo {font-size: 2.1rem; margin-top: 2em; margin-bottom: 2em;}     
-.subtitolSalutacio {font-size: 1.7rem; }
+.titulo {font-size: 2.1rem; margin-top: .5em; margin-bottom: 1em;}     
+.subtitolSalutacio {font-size: 1rem; margin-bottom: 1em;}
 
 /*Poso padding sota del text que encapçala el select*/
 #PIfondoTickets > section:nth-child(2) > label {
@@ -72,4 +77,18 @@ body {
 #selectProductes {
     padding: .5em;
     border-radius: .4em;
+}
+
+
+/*FEM MEDIA QUERY PERQUÈ ELS TICKETS ES POSIN SOTA DEL BUSCADOR*/
+
+@media (max-width: 1000px) {
+    #PIfondoTickets {
+        grid-template-columns: 1fr;
+    }
+
+    #PIfondoTickets > section:nth-child(1) {
+        margin-top: 3em;
+    }
+
 }
