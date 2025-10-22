@@ -61,9 +61,9 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
     margin-top: 1em; /*ESpai entre primera card i part de dalt*/
 }
 
-
+/*---------------------------------------------------------------*/
 /*SISTEMA DE BLURS AL TOP I AL BOTTOM DE LA SECTION DE LES CARDS*/
-
+/*---------------------------------------------------------------*/
 #blurTopCards {
     position: sticky;
     margin-top: -2.5em; /*poso margin-top MENYS l'altura (aprox) per treure-li l'espai que ocuparia si no*/
@@ -79,14 +79,11 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
     height: 3em; 
     background: linear-gradient(to top, white 0%, transparent 100%);
 }
-      
+  
+/*---------------------------------------------------------------------*/
+/*FINAL SISTEMA DE BLURS AL TOP I AL BOTTOM DE LA SECTION DE LES CARDS*/
+/*--------------------------------------------------------------------*/
 
-
-/*******************************************/
-/*FINAL IMATGE D'OBRER, BORRAR QUAN ACABAT*/
-/*******************************************/
-
-/*FI CENTRO IMATGE OBRER*/
 
 
 /*COPIO ESTILS DE LTITOL I SUBTITOL DEL DASHBOARD PER*/
