@@ -31,16 +31,17 @@ body {
 /*******************************************/
 
 
-/*EDITO EL CONTENIDOR DEL GRID DE CONSULTA DE TICKETS (va a l'esquerra en vista escriptri)*/
-#PIfondoTickets > section:nth-child(1) {
+/*EDITO EL CONTENIDOR DEL GRID DE 
+CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
+#PIfondoTickets > section:first-child {
     padding-top: 1em;
     padding-bottom: 1em;
 }
 
-/*EL CONTENEDOR QUE TE LES CARDS (va a la dreta en vist d'escriptori)*/
+/*EL CONTENEDOR QUE TÉ LES CARDS (va a la dreta en vista d'escriptori)*/
 #PIfondoTickets > section:nth-child(2) {
     height: 100vh;
-    overflow-y: auto;
+    overflow-y: auto; /*treu l'scroll si no cal. El posa si cal. per aixo auto.*/
     margin-top: 2em;
     margin-bottom: 2em;
 }
@@ -51,12 +52,35 @@ body {
     width: 28em;
     aspect-ratio: 1.618;
     border-radius: .5em;
+    border-width: .1em;
     margin-bottom: 1em; /*ESpai entre cada card i la següent, i la última i el que va per sota*/
+    background: linear-gradient(45deg, orange 0%, brown 100%);
 }
 
 #PIfondoTickets > section:nth-child(2) > section:first-child {
     margin-top: 1em; /*ESpai entre primera card i part de dalt*/
 }
+
+
+/*SISTEMA DE BLURS AL TOP I AL BOTTOM DE LA SECTION DE LES CARDS*/
+
+#blurTopCards {
+    position: sticky;
+    margin-top: -2.5em; /*poso margin-top MENYS l'altura (aprox) per treure-li l'espai que ocuparia si no*/
+    top: 0;             /*amb top 0 l'sticky el pega dalt*/
+    height: 3em;
+    background: linear-gradient(to bottom, white 0%, transparent 100%);
+}
+
+#blurBottomCards {
+    position: sticky;
+    margin-top: -3.5em; /*poso margin top menos l'altura per treure-li l'espai que ocuparia si no*/          
+    bottom: 0;        /*amb bottom 0 l'sticky el pega sota :)*/
+    height: 3em; 
+    background: linear-gradient(to top, white 0%, transparent 100%);
+}
+      
+
 
 /*******************************************/
 /*FINAL IMATGE D'OBRER, BORRAR QUAN ACABAT*/
@@ -68,11 +92,6 @@ body {
 /*COPIO ESTILS DE LTITOL I SUBTITOL DEL DASHBOARD PER*/
 .titulo {font-size: 2.1rem; margin-top: .5em; margin-bottom: 1em;}     
 .subtitolSalutacio {font-size: 1rem; margin-bottom: 1em;}
-
-/*Poso padding sota del text que encapçala el select*/
-#PIfondoTickets > section:nth-child(2) > label {
-    margin-bottom: 1em;
-}
 
 #selectProductes {
     padding: .5em;

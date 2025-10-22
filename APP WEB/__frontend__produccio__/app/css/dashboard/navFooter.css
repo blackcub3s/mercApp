@@ -241,6 +241,8 @@ nav ul li ul li:hover {color: var(--colorBarraNavegacionHover);}
 footer {
 	background-color: var(--negroFooter);
 	color: white;
+    padding-top: 1.5em;
+    padding-bottom: 1em;
 }
 
 /*No queremos decoración en los links*/
