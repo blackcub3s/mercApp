@@ -40,7 +40,7 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 
 /*EL CONTENEDOR QUE TÉ LES CARDS (va a la dreta en vista d'escriptori)*/
 #PIfondoTickets > section:nth-child(2) {
-    height: 100vh;
+    height: 70vh;
     overflow-y: auto; /*treu l'scroll si no cal. El posa si cal. per aixo auto.*/
     margin-top: 2em;
     margin-bottom: 2em;
@@ -49,7 +49,7 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 /*TOTES LES CARDS*/
 #PIfondoTickets > section:nth-child(2) > section {
     border: 1px solid black;
-    width: 28em;
+    width: 20em;
     aspect-ratio: 1.618;
     border-radius: .5em;
     border-width: .1em;
