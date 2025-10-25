@@ -42,8 +42,8 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 #PIfondoTickets > section:nth-child(2) {
     height: 70vh;
     overflow-y: auto; /*treu l'scroll si no cal. El posa si cal. per aixo auto.*/
-    margin-top: 2em;
-    margin-bottom: 2em;
+    display: grid;
+    margin: 2em 0em;
 }
 
 /*TOTES LES CARDS*/
