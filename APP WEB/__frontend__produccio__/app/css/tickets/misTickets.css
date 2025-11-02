@@ -47,16 +47,74 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 }
 
 /*L'ESTIL QUE POSEM A LES CARDS*/
-#PIfondoTickets > section:nth-child(2) > section > section {
+#PIfondoTickets > section:nth-child(2) > section > .carta {
     border: 1px solid black;
     width: 24em;
     aspect-ratio: 1.618;
-    border-radius: .5em;
-    border-width: .1em;
+    border-radius: 1em;
+    border-width: 0em;
     margin-bottom: 1em; /*ESpai entre cada card i la següent, i la última i el que va per sota*/
-    background: linear-gradient(45deg, orange 0%, brown 100%);
+    background: linear-gradient(82deg, #C8E4AB 0%, #547867 75%);
+    color: white;
 }
 
+
+
+
+/*ample destinat a cada columna de la card (30% a la imatge,
+ 40% al text i el percentatge restant l'ocuparé amb un relatiu,
+  per la lupa i l'icono de drop down*/
+.carta > section:first-child {
+    display: grid;
+    grid-template-columns: 30% 60%; /*no suma 100 per cent perque vull evitar que adreça sauper s'apropi mass al borde dret de la card*/
+}
+/*-----------------------------*/
+/*PART DE LES CARDS QUE TÉ GRID*/
+/*-----------------------------*/
+
+.carta > section:first-child > :nth-child(odd) {
+    justify-self: center; /* izquierda */
+}
+
+/*Segona colu,na del grid de la card queda centrada verticalment
+(elements posicions 2,4,6...)*/
+.carta > section:first-child > :nth-child(even) {
+    align-self: center;  /* centrado vertical */
+}
+
+.carta img {
+    width: 3.3em; /*tamany de cada image icono en la card*/
+    padding-top: .3em;/*espai entre cada imatge*/ 
+}
+
+/*-----------------------------*/
+/*FI PART DE LES CARDS QUE TÉ GRID*/
+/*-----------------------------*/
+
+
+/*----------------------------------------------------------------*/
+/*INICI PART DE LES CARDS QUE NO TE GRID (LUPA I DROPDOWN ACORDEO)*/
+/*----------------------------------------------------------------*/
+
+.carta > section:nth-child(2) {
+    height: 0; /*el seciton que conte les imatges no ha de tenir altura si no reventa la card!*/
+}
+
+.carta > section:nth-child(2) > img:first-child { /*la lupa*/
+    position: relative;
+    bottom: 14em;
+    left: 20em;
+}
+
+.carta > section:nth-child(2) > img:nth-child(2) { /*la lupa*/
+    position: relative;
+    bottom: 4em;
+    left: 16.3em;
+}
+
+/*----------------------------------------------------------------*/
+/*FINAL PART DE LES CARDS QUE NO TE GRID (LUPA I DROPDOWN ACORDEO)*/
+/*----------------------------------------------------------------*/
 
 
 
