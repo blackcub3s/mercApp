@@ -73,8 +73,12 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 /*-----------------------------*/
 
 .carta > section:first-child > :nth-child(odd) {
-    justify-self: center; /* izquierda */
+    justify-self: center; /* al centre (start per esquerra) */
 }
+
+/*--> [B] <-- posem una miqueta de padding per sobre de l'imatge de icono de calendari
+i per sobre de la data (va en tandem amb linia --> [A] <-- ) */
+.carta > section:first-child > :nth-child(1), .carta > section:first-child > :nth-child(2) {padding-top: .7em;}
 
 /*Segona colu,na del grid de la card queda centrada verticalment
 (elements posicions 2,4,6...)*/
@@ -82,9 +86,9 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
     align-self: center;  /* centrado vertical */
 }
 
-.carta img {
+.carta img { /*--> [A] <-- | va en tàndem amb línia --> [B] <--*/
     width: 3.3em; /*tamany de cada image icono en la card*/
-    padding-top: .3em;/*espai entre cada imatge*/ 
+    padding-top: 0em;/*espai entre cada imatge*/ 
 }
 
 /*-----------------------------*/
@@ -97,18 +101,18 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 /*----------------------------------------------------------------*/
 
 .carta > section:nth-child(2) {
-    height: 0; /*el seciton que conte les imatges no ha de tenir altura si no reventa la card!*/
+    height: 0; /*el section que conté les imatges no ha de tenir altura si no reventa la card!*/
 }
 
 .carta > section:nth-child(2) > img:first-child { /*la lupa*/
     position: relative;
-    bottom: 14em;
+    bottom: 13em;
     left: 20em;
 }
 
-.carta > section:nth-child(2) > img:nth-child(2) { /*la lupa*/
+.carta > section:nth-child(2) > img:nth-child(2) { /*el dropdown*/
     position: relative;
-    bottom: 4em;
+    bottom: 3.5em;
     left: 16.3em;
 }
 
@@ -141,7 +145,8 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 /*FINAL SISTEMA DE BLURS AL TOP I AL BOTTOM DE LA SECTION DE LES CARDS*/
 /*--------------------------------------------------------------------*/
 
-
+/*POSOO HORA A LES CARDS AMB BON ESTIL*/
+.horaCompra {font-style: italic;}
 
 /*COPIO ESTILS DE LTITOL I SUBTITOL DEL DASHBOARD PER*/
 .titulo {font-size: 2.1rem; margin-top: .5em; margin-bottom: 1em;}     
