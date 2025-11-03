@@ -168,6 +168,31 @@ i per sobre de la data (va en tandem amb linia --> [A] <-- ) */
     border-radius: .4em;
 }
 
+/*----------------------*/
+/*SELECTOR DE CARPETA*/
+/*----------------------*/
+#PIselectorCarpeta {
+    position: relative;
+    top: 1em;
+    left: 0em;
+}
+
+#PIselectorCarpeta img {
+    width: 3.2em;
+    filter: drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.4));
+    transition: all 0.15s ease-in-out;
+} 
+
+#PIselectorCarpeta img:hover {
+    filter: drop-shadow(1px 5px 1px rgba(0, 0, 0, 0.4));
+    transform:scale(1.05);
+}
+
+
+/*----------------------*/
+/*FI SELECTOR DE CARPETA*/
+/*----------------------*/
+
 
 /*FEM MEDIA QUERY PERQUÈ ELS TICKETS ES POSIN SOTA DEL BUSCADOR
   EN CONSULTES DE MOBIL QUE ENTRARA QUAN L'AMPLADA SIGUI COM AM AXIM 1000 PIXELS*/
