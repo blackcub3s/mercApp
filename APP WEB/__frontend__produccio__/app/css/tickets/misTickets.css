@@ -108,12 +108,14 @@ i per sobre de la data (va en tandem amb linia --> [A] <-- ) */
     position: relative;
     bottom: 13em;
     left: 20em;
+    cursor: pointer;
 }
 
 .carta > section:nth-child(2) > img:nth-child(2) { /*el dropdown*/
     position: relative;
     bottom: 3.5em;
     left: 16.3em;
+    cursor: pointer;
 }
 
 .carta > section:nth-child(2) > .informadorNreTicket {
@@ -181,6 +183,7 @@ i per sobre de la data (va en tandem amb linia --> [A] <-- ) */
     width: 3.2em;
     filter: drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.4));
     transition: all 0.15s ease-in-out;
+    cursor: pointer;
 } 
 
 #PIselectorCarpeta img:hover {
