@@ -98,41 +98,56 @@ function rellenaCard(contenidorCards, ticket) {
 
 }
 
-/*Quan carrega el dom pillem tots els tickets*/
+/*Quan carrega el dom pillem tots els tickets de api/totsElsTickets. Si tornem a carregar ho impedim
+i els pillem del localStorage per no sobrecarregar el servidor*/
 document.addEventListener("DOMContentLoaded", () => {
 
-
     const tokenAcces = localStorage.getItem("AccessToken");
-    fetch('http://localhost:8000/api/totsElsTickets', {
-        method: "GET",
-        headers: {
-            'Authorization': "Bearer " + tokenAcces,
-            'Accept': 'application/json',
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la solicitud: ' + response.status + " || Mensaje de error: " + response.statusText);
-        }
-        return response.json();
-    })
-    .then(tickets => {
+    const llTicketsLocalStorage = localStorage.getItem("totsElsTickets");
 
-        //----------------------
-        //--- MOLT IMPORTANT ---
-        //----------------------
+    //ES QUE ELS TICKETS NO S'HAN DESCARREGAT (PRIMER CÀRREGA DE LA PAGINA. ALESHORES PILLES DEL SERVER)
+    if (llTicketsLocalStorage == null) {
 
-        creaIrellenaCards(tickets.llTickets);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ LES CARDS!
+        console.log("EXTRAIEM TICKETS DEL BACK-END!");
+        
+        fetch('http://localhost:8000/api/totsElsTickets', {
+            method: "GET",
+            headers: {
+                'Authorization': "Bearer " + tokenAcces,
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud: ' + response.status + " || Mensaje de error: " + response.statusText);
+            }
+            return response.json();
+        })
+        .then(tickets => {
 
-        //----------------------
-        //--- MOLT IMPORTANT ---
-        //----------------------
+            //----------------------
+            //--- MOLT IMPORTANT ---
+            //----------------------
+
+            creaIrellenaCards(tickets.llTickets);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ LES CARDS!
+            localStorage.setItem("totsElsTickets", JSON.stringify(tickets.llTickets)); //GUARDO A LOCAL STORAGE LA LLISTA D'OBJECTS (LLISTA TICKETS) PASSO A STRING AMB STRINGIFY!
+            //----------------------
+            //--- MOLT IMPORTANT ---
+            //----------------------
 
 
-    })
-    .catch(error => {
-        console.error('Error en paso3:', error);
-    });
+        })
+        .catch(error => {
+            console.error('Error en paso3:', error);
+        });
+    } 
+    //CAS EN QUE ELS TICKETS DEL LOCAL STORAGE JA S'HAN CARREGAT DEL SERVIDOR (NO SERA NULL)
+    else if (llTicketsLocalStorage != null) {
+        console.log("TICKETS REEXTRETS DEL LOCAL STORAGE");
+        creaIrellenaCards(JSON.parse(localStorage.getItem("totsElsTickets")));  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ LES CARDS DEL LOCAL STORAGE (SERIALITZO AMB JSON.parse())
+    }
+
+    
 
 
 
