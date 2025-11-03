@@ -54,14 +54,16 @@ function creaIrellenaCards(llTickets) {
     contenidorCards.innerHTML = ""; //buido tickets cards, si en queden d'anteriors cerques.
     for (let i = 0; i < llTickets.length; ++i) {
         ticket = llTickets[i];
-        rellenaCard(contenidorCards, ticket);
+        rellenaCard(contenidorCards, ticket, llTickets.length, i+1);
     }
 }
 
 //PRE: - contenidorCards:  el contenidor que contindrà les cartes (que es un section) 
 //     - ticket: un object amb la forma d'UND DELS ELEMENTS de la llista/arry definida all PRE de la funcio creaIrellenaCards.
+//     - nreTicketsTotalsEnBatch: el nombre de tickets (cards) totals a crear.
+//     - nreTicketActual: el contandor ièssim del ticket actual (des de 1 fins a nreTicketsToalsEnBatch, ambdós inclosos)
 //POST: afegida al dom una card.
-function rellenaCard(contenidorCards, ticket) {
+function rellenaCard(contenidorCards, ticket, nreTicketsTotalsEnBatch, nreTicketActual) {
     const unaCard = document.createElement("section");
     unaCard.setAttribute("class", "carta");
     
@@ -93,6 +95,7 @@ function rellenaCard(contenidorCards, ticket) {
                     <section>
                         <img src="./img/tickets/lupa.png" alt="lupa no carrega">
                         <img src="./img/tickets/desplegaAcordeo.png" alt="dropdown acordeo no carrega">
+                        <p class = "informadorNreTicket">${nreTicketActual} de ${nreTicketsTotalsEnBatch}</p>
                     </section>
         `
     contenidorCards.appendChild(unaCard);

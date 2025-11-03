@@ -116,6 +116,17 @@ i per sobre de la data (va en tandem amb linia --> [A] <-- ) */
     left: 16.3em;
 }
 
+.carta > section:nth-child(2) > .informadorNreTicket {
+    position: relative;
+    bottom: 24.5em;
+    left: 1em;
+    font-size: .7em;
+    color: white;
+    font-style: italic;
+    font-weight: bolder;
+    filter: opacity(1);
+}
+
 /*----------------------------------------------------------------*/
 /*FINAL PART DE LES CARDS QUE NO TE GRID (LUPA I DROPDOWN ACORDEO)*/
 /*----------------------------------------------------------------*/
