@@ -51,6 +51,7 @@
 //POST: les cards estaràn posades al DOM de tickets.
 function creaIrellenaCards(llTickets) {
     const contenidorCards = document.getElementById("contenidorCartes");
+    contenidorCards.innerHTML = ""; //buido tickets cards, si en queden d'anteriors cerques.
     for (let i = 0; i < llTickets.length; ++i) {
         ticket = llTickets[i];
         rellenaCard(contenidorCards, ticket);
