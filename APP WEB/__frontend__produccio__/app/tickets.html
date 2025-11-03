@@ -22,6 +22,9 @@
     <!-- carrega el contingut del select quan carrega la pàgina--> 
     <script src = "/js/tickets/ticketsCarregaSelect.js"></script>
 
+    <!-- funcio que creara les cards i les rellenarà, Serà cridada.-->
+    <script src = "/js/tickets/creaIrellenaCards.js"></script>
+
     <!-- Fes fetch quan HI HA GI CANVIS EN EL SELECT!--> 
     <script src = "/js/tickets/fesFetchEnSeleccionar.js"></script>
 
@@ -87,11 +90,11 @@
         <!--nth child 2: els articles-->
         <section>
             <div id = "blurTopCards"></div>
-
-            <section>
+            
+            <section id = "contenidorCartes">
+            <!-- AIXO SERA CREAT PROGRAMATICAMENT
                 <section class="carta">
-
-                    <!-- section que té grid (section: first child)-->
+                    
                     <section>
                             <img src="./img/tickets/iconoCalendar.png" alt="calendari no carrega">
                             <p>26/03/2025 <span class="horaCompra">13:24</span></p>
@@ -106,18 +109,23 @@
                             <p>7 productos</p>
                     </section>
 
-                    <!-- section que té posicionament relatiu en comptes de grid (section:2ndchild -TO DO ENCARA-)-->
                     <section>
                         <img src="./img/tickets/lupa.png" alt="lupa no carrega">
                         <img src="./img/tickets/desplegaAcordeo.png" alt="dropdown acordeo no carrega">
                     </section>
-
+                    
                 </section>
-                <section class="carta">asd ANTIC </section>
-                <section class="carta">asd MES ANTIC</section>
-                <section class="carta">asd DEL SEGLE PASSAT</section>
-                <section class="carta">asd DEL MILENI PASSAT</section>
-                <section class="carta">asd</section>
+                -->
+
+                <!--
+                <section class="carta"></section>
+                <section class="carta"></section>
+                <section class="carta"></section>
+                <section class="carta"></section>
+                <section class="carta"></section>
+                
+                FI CREACIÓ PROGRAMÀTICAMENT
+                -->
             </section>
 
 
