@@ -42,6 +42,7 @@ CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 #PIfondoTickets > section:nth-child(2) {
     height: 70vh;
     overflow-y: auto; /*treu l'scroll si no cal. El posa si cal. per aixo auto.*/
+    overflow-x: hidden; /*evitem l'scroll horitzontal vestigial!!*/
     display: grid;
     margin: 2em 0em;
 }
@@ -217,9 +218,11 @@ COM PANTALLA D'ORDINADOR 16:9: AIXÍ EL QUE ACONSEGIREM ÉS QUE ES POSI GRID DE
 DUES COLUMNES EN LA VISTA DELS TICKETS CERCATS APROFITANT MÉS L'AMPLADA DISPONIBLE*/
 
 @media (min-width: 1600px) {
+
     #PIfondoTickets > section:nth-child(2) > section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1em;
-}
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+    }
+
 }
