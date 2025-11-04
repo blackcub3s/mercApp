@@ -79,10 +79,10 @@ function rellenaCard(contenidorCards, ticket, nreTicketsTotalsEnBatch, nreTicket
                     <!-- section que té grid (section: first child)-->
                     <section>
                             <img src="./img/tickets/iconoCalendar.png" alt="calendari no carrega">
-                            <p>${ticket.data} <span class="horaCompra">${ticket.hora}</span></p>
+                            <p>${formatejaData(ticket.data)} <span class="horaCompra">${ticket.hora}</span></p>
                         
                             <img src="./img/tickets/dollarIcono.png" alt="dollar no carrega">
-                            <p>${ticket.totalTicket.toString().replace(".",",")} €</p>
+                            <p>${formatejaPreu(ticket.totalTicket)} €</p>
 
                             <img src="./img/tickets/supermercatIcono.png" alt="super no carrega">
                             <p>${ticket.direccioSuper}</p>
@@ -93,7 +93,7 @@ function rellenaCard(contenidorCards, ticket, nreTicketsTotalsEnBatch, nreTicket
 
                     <!-- section que té posicionament relatiu en comptes de grid (section:2ndchild -TO DO ENCARA-) -->
                     <section>
-                        <img src="./img/tickets/lupa.png" alt="lupa no carrega" title="${ticket.data.replaceAll("-","")} Mercadona ${ticket.totalTicket.toString().replace(".",",")} €.pdf">
+                        <img src="./img/tickets/lupa.png" alt="lupa no carrega" title="${ticket.data.replaceAll("-","")} Mercadona ${formatejaPreu(ticket.totalTicket)} €.pdf">
                         <img src="./img/tickets/desplegaAcordeo.png" alt="dropdown acordeo no carrega">
                         <p class = "informadorNreTicket">${nreTicketActual} de ${nreTicketsTotalsEnBatch}</p>
                     </section>
