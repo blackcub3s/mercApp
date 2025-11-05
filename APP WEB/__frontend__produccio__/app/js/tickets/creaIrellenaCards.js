@@ -93,7 +93,7 @@ function rellenaCard(contenidorCards, ticket, nreTicketsTotalsEnBatch, nreTicket
 
                     <!-- section que té posicionament relatiu en comptes de grid (section:2ndchild -TO DO ENCARA-) -->
                     <section>
-                        <img src="./img/tickets/lupa.png" alt="lupa no carrega" title="${ticket.data.replaceAll("-","")} Mercadona ${formatejaPreu(ticket.totalTicket)} €.pdf">
+                        <img src="./img/tickets/lupa.png" alt="lupa no carrega" class="obrirTicketDigitalFisic" title="${ticket.data.replaceAll("-","")} Mercadona ${formatejaPreu(ticket.totalTicket)} €.pdf">
                         <img src="./img/tickets/desplegaAcordeo.png" alt="dropdown acordeo no carrega">
                         <p class = "informadorNreTicket">${nreTicketActual} de ${nreTicketsTotalsEnBatch}</p>
                     </section>
