@@ -31,6 +31,11 @@
     <!-- Fes fetch quan HI HA GI CANVIS EN EL SELECT!--> 
     <script src = "/js/tickets/fesFetchEnSeleccionar.js"></script>
 
+    <!-- Script per poder seleccionar els tickets digitals d'una carpeta física del
+     pc de l'usuari i poder accedir a ells cliant a la lupa. Script fet per gpt. Jo només he adaptat per a 
+     l'esdeveniment.target.title per agafar nom de ticket-->
+    <script src="/js/tickets/bannerGPT.js"></script>
+
 
     <!--Cargamos la fuente roboto de google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -38,13 +43,15 @@
     <!--Cargamos el CSS de animate.style para hacer animaciones, p. ej menu desplegable de la navbar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
+    <!-- CSS generic de la web -->
     <link rel="stylesheet" href="css/dashboard/navFooter.css">
     <link rel="stylesheet" href="css/botoHome.css">
     <link rel="stylesheet" href="css/estilsGlobals.css">
 
 
-
+    <!-- CSS específic de la pàgina interna-->
     <link rel="stylesheet" href="css/tickets/misTickets.css">
+    <link rel="stylesheet" href="css/tickets/bannerGPT.css">
 
 </head>
 <body>
@@ -70,9 +77,11 @@
         </nav>
     </header>
 
+    <!--contenidor que contindrà els banners informatius de la seleccio de carpetes (ideat per GPT)-->
+    <div class="banner-container" id="bannerContainer"></div>
 
     <section id = "PIselectorCarpeta">
-        <img src="/img/tickets/carpetaMaEditGimpCompost.png" alt="no ha carregat pickejador" title = "Selecciona la carpeta donde descargaste los tickets si quieres poder acceder a los documentos originales al clicar en las lupas de las cards que los representan.">
+        <img src="/img/tickets/carpetaMaEditGimpCompost.png" alt="no ha carregat pickejador" id="escollirCarpetaTicketsFisics" title = "Selecciona la carpeta donde descargaste los tickets si quieres poder acceder a los documentos originales al clicar en las lupas de las cards que los representan.">
     </section>
 
     <section id = "PIfondoTickets">
