@@ -78,16 +78,16 @@ function rellenaCard(contenidorCards, ticket, nreTicketsTotalsEnBatch, nreTicket
     unaCard.innerHTML = `
                     <!-- section que té grid (section: first child)-->
                     <section>
-                            <img src="./img/tickets/iconoCalendar.png" alt="calendari no carrega">
+                            <img src="./img/tickets/iconoCalendar.png" alt="calendari no carrega" title = "Fecha y hora de la compra.">
                             <p>${formatejaData(ticket.data)} <span class="horaCompra">${ticket.hora}</span></p>
                         
-                            <img src="./img/tickets/dollarIcono.png" alt="dollar no carrega">
+                            <img src="./img/tickets/dollarIcono.png" alt="dollar no carrega" title = "Importe total de la compra.">
                             <p>${formatejaPreu(ticket.totalTicket)} €</p>
 
-                            <img src="./img/tickets/supermercatIcono.png" alt="super no carrega">
+                            <img src="./img/tickets/supermercatIcono.png" alt="super no carrega"  title = "Dirección del Mercadona donde se compraron los artículos.">
                             <p>${ticket.direccioSuper}</p>
 
-                            <img src="./img/tickets/bossaDeLaCompra.png" alt="compra no carrega">
+                            <img src="./img/tickets/bossaDeLaCompra.png" alt="compra no carrega" title = "Número de productos DISTINTOS que incluye esta compra.">
                             <p>${descripcioNprod}</p>
                     </section>
 
