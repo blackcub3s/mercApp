@@ -90,6 +90,7 @@ i per sobre de la data (va en tandem amb linia --> [A] <-- ) */
 .carta img { /*--> [A] <-- | va en tàndem amb línia --> [B] <--*/
     width: 3.3em; /*tamany de cada image icono en la card*/
     padding-top: 0em;/*espai entre cada imatge*/ 
+    cursor: help;
 }
 
 /*-----------------------------*/
