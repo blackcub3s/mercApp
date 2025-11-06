@@ -37,3 +37,20 @@ function formatejaData(data) {
     arr = data.split("-");
     return arr[2]+"/"+arr[1]+"/"+arr[0];
 }
+
+function fesUnShake() {
+    
+    const iconoCarpeta = document.getElementById("escollirCarpetaTicketsFisics");
+
+    //TRANSICIO PER SORTIR L'ICONO durant 0.2 segons
+    iconoCarpeta.style.transition = "all 0.2s ease-in-out";
+    iconoCarpeta.style.transform = "scale(1.5)";
+    iconoCarpeta.style.filter = "drop-shadow(3px 6px 1px rgba(0, 0, 0, 0.4))";
+
+    //REESTABLEIXO L'ICONO AL CAP DE 0.2 SEGONS I FAIG DURAR LA TRANSICIÓ DE RETORN 0.2s    
+    setTimeout(() => {
+        iconoCarpeta.style.transition = "all 0.2s ease-in-out";
+        iconoCarpeta.style.transform = "scale(1)";
+        iconoCarpeta.style.filter = "drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.4))"; //reestableixo a valor original
+    }, 200);
+}
