@@ -215,14 +215,77 @@ def producteEsGranel(nomProducte, idUsuari):
     return None
 
 
+#PRE: un id_usuari (enter)
+#POST: obtindrem una llista de diccionaris on cada diccionari és un ticket
+#  de mongoDB amb tota la seva informació interna i els tickets estan ordenats de més 
+# recent a mes antic. Estil:
+
+"""
+[
+        {
+            "_id": "3960-024-550481_OP341937",
+            "idUsuari": 2,
+            "productesAdquirits": {
+                "RODANXA DE SALMÓ": {
+                    "esGranel": false,
+                    "preuUnitari": 7.28,
+                    "quantitat": 1,
+                    "categoria": 7,
+                    "import": 7.28
+                },
+                "PORROS": {
+                    "esGranel": false,
+                    "preuUnitari": 3.04,
+                    "quantitat": 1,
+                    "categoria": 1,
+                    "import": 3.04
+                },
+            "totalTicket": 13.71,
+            "direccioSuper": "C/ NOGUERA PALLARESA 12 25600 BALAGUER",
+            "data": "2025-09-25",
+            "hora": "15:23"
+        },
+        {
+            "_id": "3960-011-284751_OP364104",
+            "idUsuari": 2,
+            "productesAdquirits": {
+                "BOSSA PLÀSTIC": {
+                    "esGranel": false,
+                    "preuUnitari": 0.15,
+                    "quantitat": 1,
+                    "categoria": 13,
+                    "import": 0.15
+                },
+                "BRONCHALES 6X1,5L": {
+                    "esGranel": false,
+                    "preuUnitari": 2.22,
+                    "quantitat": 1,
+                    "categoria": 4,
+                    "import": 2.22
+                },
+            },
+            "totalTicket": 27.4,
+            "direccioSuper": "C/ NOGUERA PALLARESA 12 25600 BALAGUER",
+            "data": "2025-09-24",
+            "hora": "20:07"
+        }
+    ]
 
 
-
-
+"""
+def obtinguesTickets(id_usuari):
+    colTickets = creaConexioAmongoDB_i_tornaTickets()
+    pipeline = [
+        {"$match": {"idUsuari": id_usuari}},
+        {"$sort": {"data": -1, "hora": -1}}  # -1 = descendent, 1 = ascendent ORDENEM DE MÉS NOU A MÉS ANTIC
+    ]
+    return list(colTickets.aggregate(pipeline))
+    
 if __name__ == "__main__":
 
 
-    
+    print(obtinguesTickets(2))
+
     #print(obtenir_tickets_per_usuari(2))
     #print(frequencia_productes_per_usuari(2)[0])
 
@@ -240,8 +303,8 @@ if __name__ == "__main__":
     """
 
 
-    diccCategoriaGasto = obtenirGastPerCategoria_GLOBAL(2)
-    print(json.dumps(diccCategoriaGasto, indent=4, ensure_ascii=False))
+    #diccCategoriaGasto = obtenirGastPerCategoria_GLOBAL(2)
+    #print(json.dumps(diccCategoriaGasto, indent=4, ensure_ascii=False))
 
 
 

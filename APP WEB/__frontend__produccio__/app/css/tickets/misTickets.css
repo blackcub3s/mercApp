@@ -10,23 +10,219 @@ body {
 
 /*definimos el contenedor: fondo y el grid que lo compone */
 #PIfondoTickets {
-
-
-    
-    /*Posem flex i align items center per aconseguir que el formulari de contacte está centrat en els zooms*/
-    display: flex; 
-    align-items: center;
+    /*Posem flex i align items center per aconseguir 
+    que el formulari de contacte estigui centrat en els zooms*/
+    display: grid; 
+    place-items: center;
+    grid-template-columns: 1fr 1fr; /*fem que cercador estigui a l'esquerra i els tickets a la dreta*/
 }
 
+/*L'envoltori del filtre per productes*/
+#PIfondoTickets > section:nth-child(1) {
+    display: grid;
+    place-items: center;
+    border: 1px dashed grey;
+    padding: 2em;
+    border-radius: 1em;
+}
+
+/*******************************************/
+/*INICI IMATGE OBRER BORRAR QUAN ACABAT*/
+/*******************************************/
 
 
-
-/*CENTRO IMATGE OBRER*/
+/*EDITO EL CONTENIDOR DEL GRID DE 
+CONSULTA DE TICKETS (va a l'esquerra en vista escriptori)*/
 #PIfondoTickets > section:first-child {
-    margin: 0 auto;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
-#PIfondoTickets > section:first-child img {
-    width: 15em;
+/*EL CONTENEDOR QUE TÉ LES CARDS (va a la dreta en vista d'escriptori)*/
+#PIfondoTickets > section:nth-child(2) {
+    height: 70vh;
+    overflow-y: auto; /*treu l'scroll si no cal. El posa si cal. per aixo auto.*/
+    overflow-x: hidden; /*evitem l'scroll horitzontal vestigial!!*/
+    display: grid;
+    margin: 2em 0em;
 }
-/*FI CENTRO IMATGE OBRER*/
+
+/*L'ESTIL QUE POSEM A LES CARDS*/
+#PIfondoTickets > section:nth-child(2) > section > .carta {
+    border: 1px solid black;
+    width: 24em;
+    aspect-ratio: 1.618;
+    border-radius: 1em;
+    border-width: 0em;
+    margin-bottom: 1em; /*ESpai entre cada card i la següent, i la última i el que va per sota*/
+    background: linear-gradient(82deg, #C8E4AB 0%, #547867 75%);
+    color: white;
+}
+
+
+
+
+/*ample destinat a cada columna de la card (30% a la imatge,
+ 40% al text i el percentatge restant l'ocuparé amb un relatiu,
+  per la lupa i l'icono de drop down*/
+.carta > section:first-child {
+    display: grid;
+    grid-template-columns: 30% 60%; /*no suma 100 per cent perque vull evitar que adreça sauper s'apropi mass al borde dret de la card*/
+}
+/*-----------------------------*/
+/*PART DE LES CARDS QUE TÉ GRID*/
+/*-----------------------------*/
+
+.carta > section:first-child > :nth-child(odd) {
+    justify-self: center; /* al centre (start per esquerra) */
+}
+
+/*--> [B] <-- posem una miqueta de padding per sobre de l'imatge de icono de calendari
+i per sobre de la data (va en tandem amb linia --> [A] <-- ) */
+.carta > section:first-child > :nth-child(1), .carta > section:first-child > :nth-child(2) {padding-top: .7em;}
+
+/*Segona colu,na del grid de la card queda centrada verticalment
+(elements posicions 2,4,6...)*/
+.carta > section:first-child > :nth-child(even) {
+    align-self: center;  /* centrado vertical */
+}
+
+.carta img { /*--> [A] <-- | va en tàndem amb línia --> [B] <--*/
+    width: 3.3em; /*tamany de cada image icono en la card*/
+    padding-top: 0em;/*espai entre cada imatge*/ 
+}
+
+/*-----------------------------*/
+/*FI PART DE LES CARDS QUE TÉ GRID*/
+/*-----------------------------*/
+
+
+/*----------------------------------------------------------------*/
+/*INICI PART DE LES CARDS QUE NO TE GRID (LUPA I DROPDOWN ACORDEO)*/
+/*----------------------------------------------------------------*/
+
+.carta > section:nth-child(2) {
+    height: 0; /*el section que conté les imatges no ha de tenir altura si no reventa la card!*/
+}
+
+.carta > section:nth-child(2) > img:first-child { /*la lupa*/
+    position: relative;
+    bottom: 13em;
+    left: 20em;
+    cursor: pointer;
+}
+
+.carta > section:nth-child(2) > img:nth-child(2) { /*el dropdown*/
+    position: relative;
+    bottom: 3.5em;
+    left: 16.3em;
+    cursor: pointer;
+}
+
+.carta > section:nth-child(2) > .informadorNreTicket {
+    position: relative;
+    bottom: 24.5em;
+    left: 1em;
+    font-size: .7em;
+    color: white;
+    font-style: italic;
+    font-weight: bolder;
+    filter: opacity(1);
+}
+
+/*----------------------------------------------------------------*/
+/*FINAL PART DE LES CARDS QUE NO TE GRID (LUPA I DROPDOWN ACORDEO)*/
+/*----------------------------------------------------------------*/
+
+
+
+/*---------------------------------------------------------------*/
+/*SISTEMA DE BLURS AL TOP I AL BOTTOM DE LA SECTION DE LES CARDS*/
+/*---------------------------------------------------------------*/
+#blurTopCards {
+    position: sticky;
+    margin-top: -2.5em; /*poso margin-top MENYS l'altura (aprox) per treure-li l'espai que ocuparia si no*/
+    top: 0;             /*amb top 0 l'sticky el pega dalt*/
+    height: 3em;
+    background: linear-gradient(to bottom, white 0%, transparent 100%);
+}
+
+#blurBottomCards {
+    position: sticky;
+    margin-top: -3.5em; /*poso margin top menos l'altura per treure-li l'espai que ocuparia si no*/          
+    bottom: 0;        /*amb bottom 0 l'sticky el pega sota :)*/
+    height: 3em; 
+    background: linear-gradient(to top, white 0%, transparent 100%);
+}
+  
+/*---------------------------------------------------------------------*/
+/*FINAL SISTEMA DE BLURS AL TOP I AL BOTTOM DE LA SECTION DE LES CARDS*/
+/*--------------------------------------------------------------------*/
+
+/*POSOO HORA A LES CARDS AMB BON ESTIL*/
+.horaCompra {font-style: italic;}
+
+/*COPIO ESTILS DE LTITOL I SUBTITOL DEL DASHBOARD PER*/
+.titulo {font-size: 2.1rem; margin-top: .5em; margin-bottom: 1em;}     
+.subtitolSalutacio {font-size: 1rem; margin-bottom: 1em;}
+
+#selectProductes {
+    padding: .5em;
+    border-radius: .4em;
+}
+
+/*----------------------*/
+/*SELECTOR DE CARPETA*/
+/*----------------------*/
+#PIselectorCarpeta {
+    position: relative;
+    top: 1em;
+    left: 0em;
+}
+
+#PIselectorCarpeta img {
+    width: 3.2em;
+    filter: drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.4));
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+} 
+
+#PIselectorCarpeta img:hover {
+    filter: drop-shadow(1px 5px 1px rgba(0, 0, 0, 0.4));
+    transform:scale(1.05);
+}
+
+
+/*----------------------*/
+/*FI SELECTOR DE CARPETA*/
+/*----------------------*/
+
+
+/*FEM MEDIA QUERY PERQUÈ ELS TICKETS ES POSIN SOTA DEL BUSCADOR
+  EN CONSULTES DE MOBIL QUE ENTRARA QUAN L'AMPLADA SIGUI COM AM AXIM 1000 PIXELS*/
+
+@media (max-width: 1000px) {
+    #PIfondoTickets {
+        grid-template-columns: 1fr;
+    }
+
+    #PIfondoTickets > section:nth-child(1) {
+        margin-top: 3em;
+    }
+
+}
+
+
+/*FEM MEDIA QUERY PER A DISPOSITIUS ULTRA AMPLES (com a MÍNIM 1600 píxels d'ample), 
+COM PANTALLA D'ORDINADOR 16:9: AIXÍ EL QUE ACONSEGIREM ÉS QUE ES POSI GRID DE 
+DUES COLUMNES EN LA VISTA DELS TICKETS CERCATS APROFITANT MÉS L'AMPLADA DISPONIBLE*/
+
+@media (min-width: 1600px) {
+
+    #PIfondoTickets > section:nth-child(2) > section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+    }
+
+}

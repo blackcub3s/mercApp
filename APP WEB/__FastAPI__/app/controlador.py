@@ -179,8 +179,19 @@ async def obtinguesSiProducteEsGranel(payload_token: dict = Depends(verificar_to
     nomProducte = dictNomProducte["nomProducte"]
     return {"esGranel" : serveiTickets.miraSiEsGranel(nomProducte, idUsuari_enToken)}
 
+#PRE: un token d'accés amb idUsuari i permisos a 1 (els que tenen acces al dashboard). 
+#POST: obtindrem una llista de diccionaris on cada diccionari és un ticket
+#  de mongoDB amb tota la seva informació interna per a l'usuari donat en el token.
+@app.get("/api/totsElsTickets")                              
+async def obtinguesTotsElsTickets(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.
+    permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
+    idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
+    permetSolicitudsEntrantsNomesA([1], permisos_enToken)
 
+    return {"llTickets" : serveiTickets.obtinguesTotsElsTickets(idUsuari_enToken)} #retorno TOTS els tickets de l'id usuari del tocket
     
+
+
 
 
 

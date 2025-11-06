@@ -415,6 +415,11 @@ def miraSiEsGranel(nomProducte, idUsuari):
 
 
 
+def obtinguesTotsElsTickets(id_usuari):
+    return repositoriTickets.obtinguesTickets(id_usuari)
+
+
+
 if __name__ == "__main__":
     #MOSTRO L'HORA EN QUE S'HA EXECUTAT L'SCRIPT
     imprimeix_hora_espanyola()

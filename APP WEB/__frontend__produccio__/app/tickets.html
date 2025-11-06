@@ -7,7 +7,7 @@
 
 
     <!-- Aquests dos seguents scripts redirigeixen a la landing
-    page si el token d'acces està expirat o no hi ha token, en refrescar pàgina -->
+    page si el token d'acces està expirat o no hi ha token, en refrescar pàgina  -->
     <script src="/js/jwt/decodificaJWT.js"></script>
     <script src="/js/jwt/restringeixVistesPrivades_USUARI_NO_LOGUEJAT.js"></script>
 
@@ -17,9 +17,24 @@
  
     <!--script que elimina token (tanca "la sessió", molt entre cometes)
     quan cliquem botó d'id "botoEliminarToken"-->
-     <script src = "js/jwt/tancaSessioEliminantToken.js"></script>
+     <script src = "/js/jwt/tancaSessioEliminantToken.js"></script>
 
+    <!-- funcions auxiliars -->
+    <script src="/js/tickets/auxiliars.js"></script>
 
+    <!-- carrega el contingut del select quan carrega la pàgina--> 
+    <script src = "/js/tickets/ticketsCarregaSelect.js"></script>
+
+    <!-- funcio que creara les cards i les rellenarà, Serà cridada.-->
+    <script src = "/js/tickets/creaIrellenaCards.js"></script>
+
+    <!-- Fes fetch quan HI HA GI CANVIS EN EL SELECT!--> 
+    <script src = "/js/tickets/fesFetchEnSeleccionar.js"></script>
+
+    <!-- Script per poder seleccionar els tickets digitals d'una carpeta física del
+     pc de l'usuari i poder accedir a ells cliant a la lupa. Script fet per gpt. Jo només he adaptat per a 
+     l'esdeveniment.target.title per agafar nom de ticket-->
+    <script src="/js/tickets/bannerGPT.js"></script>
 
 
     <!--Cargamos la fuente roboto de google fonts -->
@@ -28,13 +43,15 @@
     <!--Cargamos el CSS de animate.style para hacer animaciones, p. ej menu desplegable de la navbar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
+    <!-- CSS generic de la web -->
     <link rel="stylesheet" href="css/dashboard/navFooter.css">
     <link rel="stylesheet" href="css/botoHome.css">
     <link rel="stylesheet" href="css/estilsGlobals.css">
 
 
-
+    <!-- CSS específic de la pàgina interna-->
     <link rel="stylesheet" href="css/tickets/misTickets.css">
+    <link rel="stylesheet" href="css/tickets/bannerGPT.css">
 
 </head>
 <body>
@@ -60,14 +77,77 @@
         </nav>
     </header>
 
+    <!--contenidor que contindrà els banners informatius de la seleccio de carpetes (ideat per GPT)-->
+    <section class="banner-container" id="bannerContainer"></section>
 
-
-
+    <section id = "PIselectorCarpeta">
+        <img src="/img/tickets/carpetaMaEditGimpCompost.png" alt="no ha carregat pickejador" id="escollirCarpetaTicketsFisics" title = "Selecciona la carpeta donde descargaste los tickets si quieres poder acceder a los documentos originales al clicar en las lupas de las cards que los representan.">
+    </section>
 
     <section id = "PIfondoTickets">
         <section>
-            <img src="img/desenvolupadorConstruint.png" alt="imatge construccio no ha carregat">
+            <!--nth-child(1): el select de cerca i el titol-->
+            <section>
+                <h1 class = "titulo">Filtra tus tickets por:</h1>
+            </section>
+        
+            <!--nth child 2: el select de cerca i el titol-->
+            <section>
+                <label for="productillos" class = "subtitolSalutacio" id = "etiqueta"><i>producto:</i></label>
+                <select name="productes" id="selectProductes" class = "subtitolSalutacio">
+                    <option value="perDefecte" selected>Sin filtro</option>
+                </select>
+            </section>
         </section>
+
+        <!--nth child 2: els articles-->
+        <section>
+            <div id = "blurTopCards"></div>
+            
+            <section id = "contenidorCartes">
+            <!-- AIXO SERA CREAT PROGRAMATICAMENT
+                <section class="carta">
+                    
+                    <section>
+                            <img src="./img/tickets/iconoCalendar.png" alt="calendari no carrega">
+                            <p>26/03/2025 <span class="horaCompra">13:24</span></p>
+                        
+                            <img src="./img/tickets/dollarIcono.png" alt="dollar no carrega">
+                            <p>27,65</p>
+
+                            <img src="./img/tickets/supermercatIcono.png" alt="super no carrega">
+                            <p>Carrer Metropolis, 69, Smallville (69696)</p>
+
+                            <img src="./img/tickets/bossaDeLaCompra.png" alt="compra no carrega">
+                            <p>7 productos</p>
+                    </section>
+
+                    <section>
+                        <img src="./img/tickets/lupa.png" alt="lupa no carrega" title="aaaammdd Mercadona preu €.pdf">
+                        <img src="./img/tickets/desplegaAcordeo.png" alt="dropdown acordeo no carrega">
+                        <p class = "informadorNreTicket">1 de 300</p>
+                    </section>
+                    
+                </section>
+                -->
+
+                <!--
+                <section class="carta"></section>
+                <section class="carta"></section>
+                <section class="carta"></section>
+                <section class="carta"></section>
+                <section class="carta"></section>
+                
+                FI CREACIÓ PROGRAMÀTICAMENT
+                -->
+            </section>
+
+
+            <div id = "blurBottomCards"></div>
+        </section>
+
+
+        
     </section>
 
 
