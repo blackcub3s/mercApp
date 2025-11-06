@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!dirHandle) {
             mostrarBanner("¡Selecciona una carpeta primero!", "error");
+            fesUnShake();
             console.warn("⚠️ No hi ha carpeta seleccionada");
             return;
         }
@@ -61,3 +62,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+
