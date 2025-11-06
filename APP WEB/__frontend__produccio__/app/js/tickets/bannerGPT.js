@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!button) return; // ignorar altres clics
 
         if (!dirHandle) {
-            mostrarBanner("¡Selecciona una carpeta primero!", "error");
+            mostrarBanner("¡Selecciona la carpeta donde descargaste tus tickets digitales de Mercadona primero! ¡Luego podrás abrirlos desde la aplicación!", "error");
             fesUnShake();
             console.warn("⚠️ No hi ha carpeta seleccionada");
             return;
