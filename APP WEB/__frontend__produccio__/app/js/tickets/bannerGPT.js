@@ -1,53 +1,63 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-    let dirHandle;
+    let dirHandle = null;
 
     // --- FUNCIONS PER MOSTRAR BANNERS BONICS ---
     function mostrarBanner(missatge, tipus = "info") {
         const container = document.getElementById("bannerContainer");
+        if (!container) return;
         const banner = document.createElement("div");
         banner.className = `banner ${tipus}`;
         banner.textContent = missatge;
         container.appendChild(banner);
-
-        // Eliminar després de 4 segons
         setTimeout(() => banner.remove(), 4000);
     }
 
     // --- ESCOLLIR CARPETA ---
-    const carpetaButtons = document.getElementById("escollirCarpetaTicketsFisics");
-    carpetaButtons.addEventListener("click", async () => {
+    const carpetaButton = document.getElementById("escollirCarpetaTicketsFisics");
+    carpetaButton.addEventListener("click", async () => {
         try {
             dirHandle = await window.showDirectoryPicker();
+            await dirHandle.requestPermission({ mode: "read" }); // reforça permisos
             mostrarBanner(`Carpeta seleccionada: ${dirHandle.name}`, "success");
+            console.log("✅ Carpeta seleccionada:", dirHandle.name);
         } catch (err) {
-            console.error(err); // usuari pot haver cancel·lat
+            console.error("❌ Error seleccionant carpeta:", err);
+            mostrarBanner("Error al seleccionar la carpeta.", "error");
         }
     });
 
+    // --- OBRIR TICKETS (delegació d'esdeveniments) ---
+    document.body.addEventListener("click", async (e) => {
+        const button = e.target.closest(".obrirTicketDigitalFisic");
+        if (!button) return; // ignorar altres clics
 
-    // --- OBRIR TICKETS ---
-    const ticketButtons = document.getElementsByClassName("obrirTicketDigitalFisic");
-    for (let i = 0; i < ticketButtons.length; i++) {
-        ticketButtons[i].addEventListener("click", async (esdeveniment) => {
-            if (!dirHandle) {
-                mostrarBanner("Selecciona una carpeta primer!", "error");
+        if (!dirHandle) {
+            mostrarBanner("¡Selecciona una carpeta primero!", "error");
+            console.warn("⚠️ No hi ha carpeta seleccionada");
+            return;
+        }
+
+        try {
+            const nomFitxer = button.getAttribute("title")?.trim();
+            if (!nomFitxer) {
+                mostrarBanner("Este botón no tiene nombre de archivo.", "error");
                 return;
             }
 
-            try {
-                const nomFitxer = esdeveniment.target.title; //agafo el nom del ticket digital original per tal d'obrir-lo si la carpeta ja està seleccionada.
-                const fileHandle = await dirHandle.getFileHandle(nomFitxer);
-                const file = await fileHandle.getFile();
-                const blobUrl = URL.createObjectURL(file);
-                window.open(blobUrl, "_blank");
-                mostrarBanner(`Obrint ticket: ${nomFitxer}`, "info");
-            } catch (err) {
-                mostrarBanner("No s'ha pogut obrir: " + err.message, "error");
+            console.log("🧾 Intentant obrir fitxer:", nomFitxer);
+            const fileHandle = await dirHandle.getFileHandle(nomFitxer);
+            const file = await fileHandle.getFile();
+            const blobUrl = URL.createObjectURL(file);
+
+            window.open(blobUrl, "_blank");
+            mostrarBanner(`Abriendo ticket: ${nomFitxer}`, "info");
+        } catch (err) {
+            console.error("❌ Error obrint ticket:", err);
+            if (err.name === "NotFoundError") {
+                mostrarBanner("El archivo no se ha encontrado en la carpeta seleccionada.", "error");
+            } else {
+                mostrarBanner("No se ha podido abrir el archivo: " + err.message, "error");
             }
-        });
-    }
-
-
-
+        }
+    });
 });
