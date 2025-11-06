@@ -1,3 +1,6 @@
+:root {
+    --ampleEstandarParagraf: 3.4em; /*L'ample dels textos*/
+}
 
 /*FAIG PUJAR EL CONTENIDOR DEL TRIPO DE PRODUCTES PERQUÈ QUEDI 
 BÉ EN EL GRADIENT I CENTRO */
@@ -65,8 +68,8 @@ BÉ EN EL GRADIENT I CENTRO */
  NO S'EXPANDIEXI MASSA CAP ALS LATERALS*/
 #ContenidorTrioProductes > section:nth-child(2) > section:nth-child(2) {
     max-width: 1000px;
-    padding-left: 3em;
-    padding-right: 3em;
+    padding-left: var(--ampleEstandarParagraf);
+    padding-right: var(--ampleEstandarParagraf);
 } 
 
 /*M'asseguro que hi ha un sombrejat en cada titular*/
@@ -77,10 +80,15 @@ BÉ EN EL GRADIENT I CENTRO */
     padding-bottom: 1em;
 }
 
+/*Defineoixo les propietats del text 
+"este producto te permite ver cualquiera..."*/
 #ContenidorTrioProductes #h2inflalyzer {
     font-size: 1em;
     max-width: 800px;
-    margin: 1em auto;
+    padding-left: var(--ampleEstandarParagraf);
+    padding-right: var(--ampleEstandarParagraf);
+
+    margin: 0em auto;
     transition: transform .2s ease-in-out;
 }
 
