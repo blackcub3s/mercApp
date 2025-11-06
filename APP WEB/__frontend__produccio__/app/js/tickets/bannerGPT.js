@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const blobUrl = URL.createObjectURL(file);
 
             window.open(blobUrl, "_blank");
-            mostrarBanner(`Abriendo ticket: ${nomFitxer}`, "info");
+            mostrarBanner(`Ticket: ${nomFitxer} abierto en nueva pestaña.`, "info");
         } catch (err) {
             console.error("❌ Error obrint ticket:", err);
             if (err.name === "NotFoundError") {
