@@ -1,30 +1,25 @@
 # 1. Introducción
 
-En este repositorio muestro el código de la aplicación web del proyecto final de mi grado superior de DAW:
+En este repositorio muestro el código de la aplicación web del proyecto final de mi grado superior de DAW.
 
-```
-Creación de un dashboard para usuarios del ticket
+```Título```
+
+> Creación de un dashboard para usuarios del ticket
 digital de Mercadona con visualización gráfica de
 datos: evolución de precios por producto, gastos
 por categoría de alimentación y ventanas
 temporales de gastos.
-```
-
-
-Esta aplicación permite hacer un análisis de tickets digitales del correo para los usuarios del ticket digital de mercadona y fue programada de cero mediante mútliples microservicios que permiten orquestrar la aplicación web (como veremos en el apartado 2).
 
 Remitimos al lector a lo siguientes dos enlaces que le ayudarán, por un lado, a ganar comprensión de las complejidades del proyecto; y, por el otro, de entender cómo se han abordado los distintos problemas que han entrañado el desarrollo de esta aplicación: arquitectura, patrones de diseño, desacople entre los distintos microservicios, etc:
 
-<div align="center">
+
+```Links importantes```
+> - Explicación del proyecto → [memoria en LaTeX](https://drive.google.com/file/d/12gHzV9FWSaKpbUgoN8VF0Hd1BpAlayGW/view)  
+> - Presentación en diapositivas → [presentación en Beamer](/APP%20WEB/memoriaLaTeX/presentacioMemoriaBeamer/presentacioMemoriaBeamer.pdf)
 
 
-| **Documento** | **Enlace** |
-|---------------|------------|
-| **Memoria Completa** (120 páginas)                | [Memoria LaTeX](https://drive.google.com/file/d/12gHzV9FWSaKpbUgoN8VF0Hd1BpAlayGW/view)   |
-| **Presentación del Proyecto** (79 diapositivas)   | [Presentación Beamer](./APP%20WEB/memoriaLaTeX/presentacioMemoriaBeamer/presentacioMemoriaBeamer.pdf)  |
+En esencia, esta aplicación web permite hacer un análisis de datos a partir de los tickets digitales de Mercadona que un usuario del mismo acumulará en su correo. La aplicación fue programada desde cero mediante una arquitectura desacoplada y con varios microservicios que permiten orquestrar la aplicación web de una forma contenerizada y escalable mediante docker (como veremos en el apartado 2).
 
-
-</div>
 
 # 2. Microservicios programados
 

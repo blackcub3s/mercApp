@@ -1,0 +1,38 @@
+/* --- ESTILS DELS BANNERS BY GPT--- */
+.banner-container {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.banner {
+    min-width: 300px;
+    max-width: 90%;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-family: sans-serif;
+    font-size: 15px;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(-15px);
+    animation: slideDown 0.4s forwards, fadeOut 0.4s ease-in 3.5s forwards;
+}
+
+.banner.info { background-color: #2563eb; }   /* Blau informatiu */
+.banner.error { background-color: #dc2626; }  /* Vermell error */
+.banner.success { background-color: #16a34a; }/* Verd èxit */
+
+@keyframes slideDown {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateY(-15px); }
+}
