@@ -64,6 +64,12 @@ BÉ EN EL GRADIENT I CENTRO */
     object-fit: contain;
 }
 
+/*defineixo l'ample pel paragraf petit de sota els tres iconos "hemos usado"*/
+#ContenidorTrioProductes > section:first-child > section:nth-of-type(3) {
+    padding-left: var(--ampleEstandarParagraf);
+    padding-right: var(--ampleEstandarParagraf);
+} 
+
 /*DEFINEIXO LIMITS PER A QUE EL TEXT" "lasificamos automáticamente los productos encontrados en tus tickets digitales "
  NO S'EXPANDIEXI MASSA CAP ALS LATERALS*/
 #ContenidorTrioProductes > section:nth-child(2) > section:nth-child(2) {
