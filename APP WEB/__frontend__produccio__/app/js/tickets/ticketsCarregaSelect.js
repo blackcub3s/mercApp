@@ -47,7 +47,7 @@ function emplenaSelectSupermercat() {
             emplenaSelectSupers("selectSupermercat", matriuSupersTickets); //empleno el select dels supers
         }
 
-    }, 100);
+    }, 50);
 
 
     
