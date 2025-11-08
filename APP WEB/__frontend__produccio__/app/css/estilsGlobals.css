@@ -21,7 +21,8 @@
     --blancoGradiente: #FFFFFF;         /*parte front end landing queden*/
     --azulClaroGradiente: #5474C4;      /*parte front end landing*/
     --azulOscuroGradiente: #16203E;     /*parte front end landing y back-end landing*/
-
+    --rojoOscuroGradiente: rgb(77, 12, 12);
+    --rojoClaroGradiente: rgb(201, 23, 23); 
     font-size: 1em;  /* PUC AUMENTAR LLEUGERAMENT AIXO O DISMINUIR-HO PER CANVAIR EL FONT SIZE */
 
     --colorVerdVue: #41B883;  
