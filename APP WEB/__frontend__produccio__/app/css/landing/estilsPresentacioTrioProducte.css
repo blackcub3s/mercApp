@@ -13,15 +13,15 @@ BÉ EN EL GRADIENT I CENTRO */
     transition: border-top ease-in-out .5s; /*Fem que el border top sigui automatitzat, queda brutal*/
 }
 
-#ContenidorTrioProductes > section:hover {
-    border-top: 1px solid black;
-}
+#ContenidorTrioProductes > section.visible:first-child {border-top: 1px solid black;} /*INFLALYZER: 'activa amb el intersectionObserver quan passem per sobre*/
+#ContenidorTrioProductes > section.visible:nth-child(2) {border-top: 1px solid white;} /*CATEGORYZER: s'activa amb el intersectionObserver quan passem per sobre*/
+#ContenidorTrioProductes > section.visible:nth-child(3) {border-top: 1px solid pink;} /*INTERVALYZER: s'activa amb el intersectionObserver quan passem per sobre*/
 
 /*POSICIONAMENT DE INFLALYZER EN RELACIÓ AL GRADIENT
  DE FONS*/
 #ContenidorTrioProductes > section:first-child {
     position: relative;
-    bottom: 52em;
+    bottom: 45em;
     
 }
 
@@ -29,14 +29,14 @@ BÉ EN EL GRADIENT I CENTRO */
  DE FONS*/
 #ContenidorTrioProductes > section:nth-child(2) {
     position: relative;
-    bottom: 45em;
+    bottom: 37em; /*altura categoryzer*/
 }
 
 /*POSICIONAMENT DE INTERVALYZER EN RELACIÓ AL GRADIENT
  DE FONS*/
 #ContenidorTrioProductes > section:nth-child(3) {
     position: relative;
-    bottom: 25em;
+    bottom: 30em;
     
 }
 
@@ -186,11 +186,55 @@ per la coincidencia de background amb color dels textos associats a les imatges 
 }
 
 
-/*INTERVALIZER*/
+/*-----------------------------------------------------------------*/
+/*INICI SISTEMA DE FILTRE ROIG COMBINAT AMB intersectionObserver.js*/
+/*                    (INTERVALIZER)                               */
+/*-----------------------------------------------------------------*/
 #ContenidorTrioProductes > section:nth-child(3) {
-    background-color: white;
-
+  position: relative;
+  height: 100em; /*altura intervalizer*/
+  background: linear-gradient(to bottom, 
+              black 0%,
+              var(--azulClaroGradiente) 45%, 
+              var(--azulClaroGradiente) 55%, 
+              black 100%);
+  overflow: hidden;
+  z-index: 0; /* Capa base */
 }
+
+#ContenidorTrioProductes > section:nth-child(3)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, 
+              black 0%,
+              var(--rojoClaroGradiente) 45%,
+              var(--rojoClaroGradiente) 55%, 
+              black 100%);
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  z-index: -1; /* Importante: va detrás del contenido */
+}
+
+#ContenidorTrioProductes > section.visible:nth-child(3)::after {
+  opacity: 1;
+}
+
+#ContenidorTrioProductes > section:nth-child(3) * {
+  position: relative;
+  z-index: 1; /* El texto y otros elementos quedan por encima */
+}
+
+/*-----------------------------------------------------------------*/
+/*FINAL SISTEMA DE FILTRE ROIG COMBINAT AMB intersectionObserver.js*/
+/*-----------------------------------------------------------------*/
+
+/*Defineixo una mica de distancia entre les imatges de les categories i 
+el paragraf previ de "clasificamos automáticamente los productos..."*/
+#ContenidorTrioProductes > section:nth-child(2) > section:nth-child(3) {
+    padding-top: 2em;
+}
+
 
 /*MEDIA QUERY PER A MÒBIL*/
 @media (max-width: 600px) {

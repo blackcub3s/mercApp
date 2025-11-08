@@ -54,3 +54,44 @@ function fesUnShake() {
         iconoCarpeta.style.filter = "drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.4))"; //reestableixo a valor original
     }, 200);
 }
+
+
+//PRE: Una llista de tickets (llista amb objectes de tipus ticket).
+//POST: els supermercats diferents que hi ha com a claus i el nombre 
+//      d'ocurrències (tickets) de cada supermercat ordenats de més a menys ocurrència tal que així
+//          {['C/ Metropolis 24 46001 VALENCIA', 219], ['C/ BLA BLA 6 46680 LLEIDA', 24], ... }
+function trobaSupermercats(arrTickets) {
+    dSupers = {};
+    for (let i = 0; i < arrTickets.length; ++i) {
+        let superEnTicket = arrTickets[i].direccioSuper;
+        if (!(superEnTicket in dSupers)) {
+            dSupers[superEnTicket] = 1;
+        } else {
+            dSupers[superEnTicket] = dSupers[superEnTicket] + 1;
+        }
+    }
+    return Object.entries(dSupers).sort((a, b) => b[1] - a[1]); //ordeno de més a menys ocurrència
+}
+
+
+
+
+function emplenaSelectSupers(idSelect, matriuSupersTickets) {
+    const selectSupers = document.getElementById(idSelect);
+ 
+    for (let i = 0; i < matriuSupersTickets.length; ++i) {
+        //Per a cada super crearé un option de l'estil
+        //<option value="SUPER CARRER COVADONGA">SUPER CARRER COVADONGA</option>
+
+        let supermercat = matriuSupersTickets[i][0];       //  c/valencia
+        let freqSuper = matriuSupersTickets[i][1];        // 454   
+
+        const optionSuper = document.createElement("option");
+        optionSuper.value = supermercat;       
+        
+        //al 'usuari li mostro la ciutat al final, completa; i part de l'inici de la direcció perquè ho reconegui juntament amb la frequencia
+        optionSuper.textContent = supermercat.slice(0,11) + "  [...]  " + supermercat.slice(supermercat.lastIndexOf(" "), supermercat.length)+` (${freqSuper} tickets)`;
+
+        selectSupers.appendChild(optionSuper);
+    }
+}
