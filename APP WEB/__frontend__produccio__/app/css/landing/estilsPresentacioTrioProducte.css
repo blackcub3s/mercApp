@@ -229,6 +229,11 @@ per la coincidencia de background amb color dels textos associats a les imatges 
 /*FINAL SISTEMA DE FILTRE ROIG COMBINAT AMB intersectionObserver.js*/
 /*-----------------------------------------------------------------*/
 
+/*Defineixo una mica de distancia entre les imatges de les categories i 
+el paragraf previ de "clasificamos automáticamente los productos..."*/
+#ContenidorTrioProductes > section:nth-child(2) > section:nth-child(3) {
+    padding-top: 2em;
+}
 
 
 /*MEDIA QUERY PER A MÒBIL*/
