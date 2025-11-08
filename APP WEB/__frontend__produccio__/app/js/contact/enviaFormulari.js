@@ -24,28 +24,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 }),
             });
 
+            const bannerErrors = document.getElementById("bannerErrors");
+            netejaImostraBanner(bannerErrors);
+
             if (!resposta.ok) {
                 //POSO ELS ERRORS CONEGUTS DEL BACK-END AL BANNER
                 const dadesErrors = await resposta.json(); // esperar resposta JSON del servidor
-                const bannerErrors = document.getElementById("bannerErrors");
-                bannerErrors.style.display = "block";
-                bannerErrors.innerHTML = ""; //netejo missatges anteriors
-
                 posaEstilsBannerError(bannerErrors);
 
-                for (const [campo, mensaje] of Object.entries(dadesErrors)) {
-                    const pError = document.createElement("p");
-                    pError.textContent = mensaje;
-                    bannerErrors.appendChild(pError);
-                    
-                    console.log(`Campo: ${campo} → Error: ${mensaje}`); //el campo no l'uso perquè surt del back del dto i esta en catala
+                /*SERVIDOR APAGAT, PER EXEMPLE*/ 
+                if (resposta.status >= 500) { 
+                    throw new Error("Error en la petición");
+                } else { 
+                    /*SERVIDOR ENCÈS, PERÒ PER EXEMPLE CAMPS QUE NO TOLERA EL BACKEND*/ 
+                    for (const [campo, mensaje] of Object.entries(dadesErrors)) {
+                        const pError = document.createElement("p");
+                        pError.textContent = mensaje;
+                        bannerErrors.appendChild(pError);
+                        console.log(`Campo: ${campo} → Error: ${mensaje}`); //el campo no l'uso perquè surt del back del dto i esta en catala
+                    }
                 }
-
-                //FINAL DEP OSAR ELS ERRORS CONEGUTS DEL BACK-END AL BANNER
-
-                throw new Error("Error en la petición");
+                
             } else {
 
+                //SI LA RESPOSTA ES EXITOSA (200 crec):
                 const data = await resposta.json(); // esperar resposta JSON del servidor
                 console.log("resposta del servidor:", data);
 
@@ -62,6 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (error) {
             console.error("Error:", error);
+
+            //SI EL SERVIDOR ESTA APAGAT (CODI 500 O SUERIOR EN PRINCIPI)
+            bannerErrors.innerHTML = "¡Servidor de correo apagaduuu! ¡Inténtalo en otro momento!"; //netejo missatges anteriors
+            posaEstilsBannerError(bannerErrors);
         }
 
 
@@ -69,6 +75,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }); 
 });
 
+
+function netejaImostraBanner(bannerErrors) {
+    bannerErrors.style.display = "block";
+    bannerErrors.innerHTML = ""; //netejo missatges anteriors
+}
 
 function posaEstilsBannerExitos(bannerErrors) {
     bannerErrors.style.backgroundColor = "#d4edda";
@@ -80,4 +91,5 @@ function posaEstilsBannerError(bannerErrors) {
     bannerErrors.style.backgroundColor = "#f8d7da";
     bannerErrors.style.color = "#721c24";
     bannerErrors.style.border = "1px solid #f5c6cb";
+    bannerErrors.style.display = "block";
 }
