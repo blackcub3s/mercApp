@@ -67,7 +67,7 @@ header {
     display: none;
     position: absolute;
     top: 1em;
-    right: 1em;
+    left: 1em;
     width: 2.25em;
     height: 1.75em;
     cursor: pointer;
@@ -397,13 +397,12 @@ footer section section ul li span:hover */
 /*--------------RESPONSIVE PRIV NAVBAR------------*/
 /*------------------------------------------------*/
 @media (max-width: 768px) {
-    header {
-        padding-top: 3.8em;
-    }
+
 
     .nav-toggle-label {
         display: block;
     }
+
 
     nav {
         width: 100%;
@@ -417,7 +416,7 @@ footer section section ul li span:hover */
         flex-direction: column;
         align-items: flex-start;
         gap: 1em;
-        padding: 1.25em 1.5em 1.5em;
+        padding: 1.25em 1.5em 1.5em 4em;
         width: 100%;
         box-sizing: border-box;
         background-color: var(--colorBarraNavegacion);
@@ -462,15 +461,5 @@ footer section section ul li span:hover */
         right: auto;
     }
 
-    #botoEliminarToken {
-        position: absolute;
-        top: 1.05em;
-        right: 3.6em;
-        margin: 0;
-        z-index: 2;
-    }
 
-    #botoEliminarToken:hover {
-        background-color: #410404;
-    }
 }
