@@ -4,3 +4,14 @@
     top: .7em;
     left: .7em;
 }
+
+/*MEDIA QUERY PARA EL BOTÓN DE HOME EN MOBILE qu
+e se adapta a la media query de la aparicion
+ de la hamburguesa en el header (veure css/dashboard/navFooter.css)
+ a on posa "APARICIÓ DE L'HAMBURGUESA"*/
+@media (max-width: 768px) {
+    .botoHome {
+        top: .9em;
+        left: 4em;
+    }
+}
