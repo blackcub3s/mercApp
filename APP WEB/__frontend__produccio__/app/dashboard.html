@@ -87,7 +87,11 @@
     <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegación-->
     <header>
         <button id = "botoEliminarToken">Cerrar Sesión</button> <!-- botó per a eliminar el token i fer que el javascript automaticament redirigeixi a pas1 (index.html)-->
-        <nav>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Alternar menú de navegación">
+        <label for="nav-toggle" class="nav-toggle-label" aria-label="Alternar menú de navegación" aria-controls="navMenuPrivado">
+            <span></span>
+        </label>
+        <nav id="navMenuPrivado">
             
             <ul>
                 <li>
