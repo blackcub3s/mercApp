@@ -1,7 +1,7 @@
 /*AÑADIDO ÚLTIMA HORA, PARA TODAS LAS PAGINAS INTERNAS*/
 .botoHome {
     position: absolute;
-    top: .7em;
+    top: .8em;
     left: .7em;
 }
 
@@ -11,7 +11,7 @@ e se adapta a la media query de la aparicion
  a on posa "APARICIÓ DE L'HAMBURGUESA"*/
 @media (max-width: 768px) {
     .botoHome {
-        top: .9em;
+        top: .8em;
         left: 4em;
     }
 }
