@@ -469,4 +469,17 @@ footer section section ul li span:hover */
     }
 
 
+    /*edits per evitar els paddings left de la versió d'escriptori, que ara la versió de mobile no seran
+    producitus: això va en contraposició al que definiem en els paddings lefts correspsonents fora de la query.
+    Això cursor no ho veia :D
+    */
+    nav ul li ul li:first-child, nav ul li ul li:nth-child(2), nav ul li ul li:last-child {
+        left: 0;
+    } 
+
+    /* ------------- -------------- */
+    /* -- FIAPARICIÓ DE L'HAMBURGUESA- */
+    /* ----------------------------- */
+
+    
 }
