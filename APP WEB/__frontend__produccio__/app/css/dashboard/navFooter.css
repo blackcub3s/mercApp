@@ -48,6 +48,82 @@ ella -para lo definido en rem o em-. */
 
 html {font-size: 16px;}  /*APUNTE NO MODIFICAR: Se destroza todo*/
 
+
+/*------------------------------------------------*/
+/*--------------CONTROLES HAMBURGUESA-------------*/
+/*------------------------------------------------*/
+
+header {
+    position: relative;
+}
+
+.nav-toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nav-toggle-label {
+    display: none;
+    position: absolute;
+    top: .9em;
+    left: 1em;
+    width: 2.25em;
+    height: 1.75em;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.nav-toggle-label span,
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0.2em;
+    background-color: white;
+    border-radius: 2em;
+    transition: transform 0.3s ease, opacity 0.3s ease, top 0.3s ease;
+}
+
+.nav-toggle-label span {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+    content: "";
+}
+
+.nav-toggle-label span::before {
+    top: -0.6em;
+}
+
+.nav-toggle-label span::after {
+    top: 0.6em;
+}
+
+#nav-toggle:checked + .nav-toggle-label span {
+    background-color: transparent;
+}
+
+#nav-toggle:checked + .nav-toggle-label span::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+#nav-toggle:checked + .nav-toggle-label span::after {
+    top: 0;
+    transform: rotate(-45deg);
+}
+
+
+/*------------------------------------------------*/
+/*--------------FIN DE CONTROLES HAMBURGUESA------*/
+/*------------------------------------------------*/
+
+
 /*TAMAÑO DE LOS TITULOS QUE ENCABEZAN CADA SECCIÓN
 (FRONTEND, BACKEND, IA, ETC)*/
 .tituloSeccion {font-size: 2.5rem;}     /*son 40 px en figma. Con el font-size del root a 16 con 2.5rem tenemos los 40px (40 = 16*2.5)*/
@@ -321,3 +397,89 @@ footer section section ul li span {}   */
 
 /*CUIDADO! SE DEFINE JUNTO CON LA NAVBAR, ESTILO COMPARTIDO:
 footer section section ul li span:hover */
+
+
+/*------------------------------------------------*/
+/*--------------APARICIÓ DE L'HAMBURGUESA----------*/
+/*------------------------------------------------*/
+
+@media (max-width: 768px) {
+
+
+    .nav-toggle-label {
+        display: block;
+    }
+
+
+    nav {
+        width: 100%;
+        padding-top: 3.6em; /*Faltava un padding perquè es veies a la mateixa altura que el fons en entrar la query*/
+        padding-bottom: 0;
+        background-color: var(--colorBarraNavegacion);
+    }
+
+    nav > ul {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1em;
+        padding: 1.25em 1.5em 1.5em 4em;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: var(--colorBarraNavegacion);
+    }
+
+    #nav-toggle:checked ~ nav > ul {
+        display: flex;
+    }
+
+    nav ul li {
+        width: 100%;
+        text-align: left;
+    }
+
+    nav ul li span,
+    nav ul li a {
+        display: inline-block;
+    }
+
+    nav ul li img {
+        width: 1.2em;
+        margin-left: 0.5em;
+    }
+
+    nav ul li ul {
+        display: block;
+        margin-top: 0.5em;
+        padding-left: 1.5em;
+    }
+
+    nav ul li ul li {
+        position: static;
+        animation: none;
+        margin-top: 0.35em;
+    }
+
+    nav ul li:first-child,
+    nav ul li:nth-child(2),
+    nav ul li:last-child {
+        position: static;
+        left: auto;
+        right: auto;
+    }
+
+
+    /*edits per evitar els paddings left de la versió d'escriptori, que ara la versió de mobile no seran
+    producitus: això va en contraposició al que definiem en els paddings lefts correspsonents fora de la query.
+    Això cursor no ho veia :D
+    */
+    nav ul li ul li:first-child, nav ul li ul li:nth-child(2), nav ul li ul li:last-child {
+        left: 0;
+    } 
+
+    /* ------------- -------------- */
+    /* -- FIAPARICIÓ DE L'HAMBURGUESA- */
+    /* ----------------------------- */
+
+    
+}
