@@ -12,4 +12,4 @@ docker rm contSpringBoot
 #redirecciono port 8080 de springboot intern (dreta dels dospunts) al port 8080 (esquerra dels dos punts)
 #ja que vull el mateix numero de port que feiem servir amb intelliJ
 docker create -p 8080:8080 --name contSpringBoot back-end-springboot 
-docker start contSpringBoot
+docker start -a contSpringBoot
