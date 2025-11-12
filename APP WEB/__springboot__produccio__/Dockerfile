@@ -1,4 +1,5 @@
 # Multi-stage build per Spring Boot
+
 # Stage 1: Build stage - compila l'aplicació i genera el JAR
 FROM maven:3.9-eclipse-temurin-22 AS build
 
@@ -9,7 +10,7 @@ WORKDIR /app
 # (si el pom.xml no canvia, no cal tornar a descarregar dependències)
 COPY app/pom.xml .
 
-# Descarguem les dependències (això es fa en una capa separada per optimitzar la cache)
+# Descarreguem les dependències (això es fa en una capa separada per optimitzar la cache)
 RUN mvn dependency:go-offline -B
 
 # Copiem el codi font
@@ -29,8 +30,11 @@ USER spring:spring
 WORKDIR /app
 
 # Copiem el JAR generat des del stage de build
-# El nom del JAR és app-0.0.1-SNAPSHOT.jar segons el pom.xml
 COPY --from=build /app/target/app-0.0.1-SNAPSHOT.jar app.jar
+
+# Copiem el fitxer .env al directori de treball
+# Assegura't que tens un .env al directori arrel del projecte (on fas docker build)
+COPY app/.env ./
 
 # Exposem el port 8080 (port per defecte de Spring Boot)
 EXPOSE 8080
