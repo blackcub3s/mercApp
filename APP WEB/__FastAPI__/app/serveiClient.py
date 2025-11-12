@@ -28,8 +28,13 @@
 
 
 import httpx
+import os
 
-BASE_URL = "http://localhost:8080"
+# Detecta si correm dins d'un contenidor Docker i ajusta la URL base
+if os.path.exists("/.dockerenv"):
+    BASE_URL = "http://host.docker.internal:8080"  # si es un contenidor docker accedim a Spring Boot així (en un entorn windows)
+else:
+    BASE_URL = "http://localhost:8080"  # si no corre en contenidor ho fem així
 
 
 #FUNCIO QUE OBTE EL NOU TOKEN AMB PERMISOS A 1 DE SPRING BOOT PERSONALOTZAT PER A L'idUsuari_enToken entrant
