@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 #PyPDF2p parseja pdf a text | per pytz manejar be zones temporals a espanya | uvicorn important per a correr fastAPI |
 #python jose es per manejar el jwt i veure si es valid amb el secret | multipart per llegir dades de formularis (adjunts)
-RUN pip install PyPDF2 && pip install pytz && pip install --no-cache-dir fastapi uvicorn && pip install python-jose && pip install python-multipart && pip install pymongo && pip install httpx && pip install scipy==1.16.0
+RUN pip install PyPDF2==3.0.1 && pip install pytz==2025.2 && pip install --no-cache-dir fastapi uvicorn==0.34.0 && pip install python-jose==3.4.0 && pip install python-multipart==0.0.20 && pip install pymongo==4.13.0 && pip install httpx==0.28.1 && pip install scipy==1.16.0
 
 #copiem els scripts a l'arrel de la imatge
 COPY app/controlador.py /usr/src/app/
