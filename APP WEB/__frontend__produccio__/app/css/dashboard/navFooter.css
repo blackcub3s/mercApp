@@ -135,7 +135,15 @@ header {
 /*---------------BARRA NAVEGACIÓN-----------------*/
 /*------------------------------------------------*/
 /*------------------------------------------------*/
-nav {
+
+/*Navbar específica del pas4*/
+#navBarPas4 { 
+    height: 3.6em; 
+    background-color: black;
+}
+
+/*navbar de les pàgines internes*/
+#navMenuPrivado {
     background-color: var(--colorBarraNavegacion);
     color: white;
     padding-top: 1.2em;
@@ -144,7 +152,7 @@ nav {
 
 /*Ponemos estilo a los 4 elementos de la primera
  lista no ordenada (la navbar visible sin clicar)*/
-nav > ul {
+#navMenuPrivado > ul {
     display: grid;          /*ponemos una grid de 4 columnas, uno para cada elemento de la li del menú de navegación*/
     grid-template-columns: repeat(4,1fr);  /*definimos las 4 columnas con 4 fracciones de grid*/
     text-align: center;     /*centramos el texto de cada elemento de navegación dentro de su columna*/ 
@@ -174,7 +182,7 @@ conservar la misma lógica en ambos sitios
 
 */
 
-nav ul li span, footer section section ul li span {
+#navMenuPrivado ul li span, footer section section ul li span {
     border-bottom: 2px solid var(--colorBarraNavegacion); /*[A}*/
 
     /*hacemos que cambios de propiedades sean graduales en entrada y salida (para el hover)*/
@@ -183,7 +191,7 @@ nav ul li span, footer section section ul li span {
 }
 
 /*queremos que cada elemento del menú de navegación sea dinámico al pasar por encima*/
-nav ul li span:hover, footer section section ul li span:hover {
+#navMenuPrivado ul li span:hover, footer section section ul li span:hover {
     color: var(--colorBarraNavegacionHover);
     border-bottom: 2px solid var(--colorBarraNavegacionHover); /*[B]*/
 }   
@@ -191,21 +199,21 @@ nav ul li span:hover, footer section section ul li span:hover {
 
 /* ---- FIN ÁREA COMENTARIO 1 ---- */
 
-nav ul li img {
+#navMenuPrivado ul li img {
     margin: 0 0 .05em 0; /*Subimos un pelín la flecha del desplegable hacia arriba*/
     width: 9%;
     
 }
 
 /*SITUAMOS EL li de "Servicios" un poco más cerca de mis tickets*/
-nav ul li:first-child {
+#navMenuPrivado ul li:first-child {
     position: relative;
     left: 1.5em;
 }
 
 
 /*SITUAMOS EL li "Mis tickets" un poco mas cerca de "Mis datos"*/
-nav ul li:nth-child(2) {
+#navMenuPrivado ul li:nth-child(2) {
     position: relative;
     left: .8em;
 }
@@ -215,14 +223,14 @@ nav ul li:nth-child(2) {
 
 
 /*SITUAMOS EL li "Contacto" un poco mas cerca de "Mis datos"*/
-nav ul li:last-child {
+#navMenuPrivado ul li:last-child {
     position: relative;
     right: 1.2em;
 }
 
 /*NOTA: IMPORTANTE PARA QUE NAVBAR Y FOOTER SALGAN CON LOS MISMOS HOVERS
 SUBRAYADOS Y CON COLOR GRIS*/
-nav ul li a, footer section section ul li a {
+#navMenuPrivado ul li a, footer section section ul li a {
     text-decoration: none; /*Quitamos los subrayados vestigiales de los links, que sino se ven en el hover!*/
     color: inherit;        /*heretamos el color de sus padres, definidos en li y el nav: el blanco y el gris en el hover.*/
 }
@@ -236,7 +244,7 @@ nav ul li a, footer section section ul li a {
 
 
 /*SUBMENÚ DESPLEGABLE*/
-nav ul li ul {
+#navMenuPrivado ul li ul {
     display: none;  /*Oculto si no pasamos sobre él*/
     margin-top: 1em;    
     list-style-type: none;
@@ -245,7 +253,7 @@ nav ul li ul {
 
 /* MUESTRA SUBMENÚ DESPLEGABLE OCULTO AL PASAR EL RATÓN
 POR ENCIMA DE "Servicios" */
-nav ul li:hover ul {display: block;}
+#navMenuPrivado ul li:hover ul {display: block;}
 
 
 /*¡Cuidado! Por motivos que escapan a nuestra comprensión
@@ -264,7 +272,7 @@ va a tener .8s de duración, el segundo el doble y el tercero
 el triple, quedando un diseño visual atractivo.*/
 
 /*desplegable "inflación" (inflalyzer)"*/
-nav ul li ul li:first-child {
+#navMenuPrivado ul li ul li:first-child {
     position: relative;
     left: -.4em;                /*[A]*/
     animation: fadeInDown;      /*[B]*/
@@ -272,7 +280,7 @@ nav ul li ul li:first-child {
 }
 
 /*desplegable "Categorizer"*/
-nav ul li ul li:nth-child(2) {
+#navMenuPrivado ul li ul li:nth-child(2) {
     position: relative;
     left: .1em;                  /*[A]*/   
     animation: fadeInDown;      /*[B]*/
@@ -280,7 +288,7 @@ nav ul li ul li:nth-child(2) {
 }
 
 /*desplegable "Intervalizer"*/
-nav ul li ul li:last-child {
+#navMenuPrivado ul li ul li:last-child {
     position: relative;
     left: .05em;                /*[A]*/
     animation: fadeInDown;      /*[B]*/
@@ -288,10 +296,10 @@ nav ul li ul li:last-child {
 }
 
 /*Espaciado entre los elementos del desplegable*/
-nav ul li ul li {margin-top: .5em;}
+#navMenuPrivado ul li ul li {margin-top: .5em;}
 
 
-nav ul li ul li:hover {color: var(--colorBarraNavegacionHover);}   
+#navMenuPrivado ul li ul li:hover {color: var(--colorBarraNavegacionHover);}   
 
 
 
@@ -411,14 +419,14 @@ footer section section ul li span:hover */
     }
 
 
-    nav {
+    #navMenuPrivado {
         width: 100%;
         padding-top: 3.6em; /*Faltava un padding perquè es veies a la mateixa altura que el fons en entrar la query*/
         padding-bottom: 0;
         background-color: var(--colorBarraNavegacion);
     }
 
-    nav > ul {
+    #navMenuPrivado > ul {
         display: none;
         flex-direction: column;
         align-items: flex-start;
@@ -433,36 +441,36 @@ footer section section ul li span:hover */
         display: flex;
     }
 
-    nav ul li {
+    #navMenuPrivado ul li {
         width: 100%;
         text-align: left;
     }
 
-    nav ul li span,
-    nav ul li a {
+    #navMenuPrivado ul li span,
+    #navMenuPrivado ul li a {
         display: inline-block;
     }
 
-    nav ul li img {
+    #navMenuPrivado ul li img {
         width: 1.2em;
         margin-left: 0.5em;
     }
 
-    nav ul li ul {
+    #navMenuPrivado ul li ul {
         display: block;
         margin-top: 0.5em;
         padding-left: 1.5em;
     }
 
-    nav ul li ul li {
+    #navMenuPrivado ul li ul li {
         position: static;
         animation: none;
         margin-top: 0.35em;
     }
 
-    nav ul li:first-child,
-    nav ul li:nth-child(2),
-    nav ul li:last-child {
+    #navMenuPrivado ul li:first-child,
+    #navMenuPrivado ul li:nth-child(2),
+    #navMenuPrivado ul li:last-child {
         position: static;
         left: auto;
         right: auto;
@@ -473,7 +481,9 @@ footer section section ul li span:hover */
     producitus: això va en contraposició al que definiem en els paddings lefts correspsonents fora de la query.
     Això cursor no ho veia :D
     */
-    nav ul li ul li:first-child, nav ul li ul li:nth-child(2), nav ul li ul li:last-child {
+    #navMenuPrivado ul li ul li:first-child, 
+    #navMenuPrivado ul li ul li:nth-child(2), 
+    #navMenuPrivado ul li ul li:last-child {
         left: 0;
     } 
 
