@@ -133,11 +133,11 @@ Write-Host "==========================================" -ForegroundColor Green
 if (Get-Command minikube -ErrorAction SilentlyContinue) {
     $minikubeIp = minikube ip 2>$null
     if ($minikubeIp) {
-        Write-Host "Frontend: http://$minikubeIp:30080" -ForegroundColor Cyan
+        Write-Host "Frontend: http://$minikubeIp:5500" -ForegroundColor Cyan
         Write-Host "O ejecuta: minikube service frontend-service" -ForegroundColor Cyan
     }
 } else {
-    Write-Host "Frontend: http://localhost:30080" -ForegroundColor Cyan
+    Write-Host "Frontend: http://localhost:5500" -ForegroundColor Cyan
 }
 
 Write-Host "`nPara ver los logs:" -ForegroundColor Yellow

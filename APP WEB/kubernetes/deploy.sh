@@ -140,10 +140,10 @@ echo "Acceso a la aplicación:"
 echo "==========================================${NC}"
 
 if command_exists minikube && minikube status >/dev/null 2>&1; then
-    echo "Frontend: http://$(minikube ip):30080"
+    echo "Frontend: http://$(minikube ip):5500"
     echo "O ejecuta: minikube service frontend-service"
 else
-    echo "Frontend: http://localhost:30080"
+    echo "Frontend: http://localhost:5500"
 fi
 
 echo ""

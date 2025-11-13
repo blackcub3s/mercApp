@@ -111,16 +111,16 @@ kubectl logs <nombre-del-pod>
 
 ### 7. Acceder a la aplicación
 
-El frontend está expuesto mediante **NodePort** en el puerto **30080**.
+El frontend está expuesto mediante **NodePort** en el puerto **5500** (igual que en desarrollo con Docker).
 
 - **Con Minikube**:
   ```bash
   minikube service frontend-service
   ```
-  O accede directamente a: `http://<minikube-ip>:30080`
+  O accede directamente a: `http://<minikube-ip>:5500`
 
 - **Con Docker Desktop**:
-  Accede a: `http://localhost:30080`
+  Accede a: `http://localhost:5500`
 
 ## Configuración para bases de datos locales
 
