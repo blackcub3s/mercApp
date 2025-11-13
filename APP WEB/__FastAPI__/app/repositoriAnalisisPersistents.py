@@ -5,7 +5,14 @@ import serveiAnalisisPersistents
 
 # Connexió a MongoDB
 def creaConexioAmongoDB_i_tornaVariacions():
-    if os.path.exists("/.dockerenv"):
+    # Prioridad: variables de entorno (Kubernetes) > detección Docker > localhost
+    mongodb_host = os.getenv("MONGODB_HOST", None)
+    mongodb_port = os.getenv("MONGODB_PORT", "27017")
+    
+    if mongodb_host:
+        # Kubernetes: usar el nombre del servicio
+        client = MongoClient(f"mongodb://{mongodb_host}:{mongodb_port}")
+    elif os.path.exists("/.dockerenv"):
         client = MongoClient("mongodb://host.docker.internal:27017") #si es un contenidor doocker accedim a la bbdd aixi (en un entorn windows)
     else:
         client = MongoClient("mongodb://localhost:27017")  # si no corre en contenidor ho fem així

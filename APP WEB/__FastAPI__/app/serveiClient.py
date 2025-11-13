@@ -30,8 +30,13 @@
 import httpx
 import os
 
-# Detecta si correm dins d'un contenidor Docker i ajusta la URL base
-if os.path.exists("/.dockerenv"):
+# Detecta el entorno y ajusta la URL base
+# Prioridad: variables de entorno (Kubernetes) > detección Docker > localhost
+SPRING_BOOT_SERVICE = os.getenv("SPRING_BOOT_SERVICE", None)
+if SPRING_BOOT_SERVICE:
+    # Kubernetes: usar el nombre del servicio
+    BASE_URL = SPRING_BOOT_SERVICE
+elif os.path.exists("/.dockerenv"):
     BASE_URL = "http://host.docker.internal:8080"  # si es un contenidor docker accedim a Spring Boot així (en un entorn windows)
 else:
     BASE_URL = "http://localhost:8080"  # si no corre en contenidor ho fem així

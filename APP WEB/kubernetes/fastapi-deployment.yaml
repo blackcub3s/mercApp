@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-backend
+  labels:
+    app: fastapi-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-backend
+  template:
+    metadata:
+      labels:
+        app: fastapi-backend
+    spec:
+      containers:
+      - name: fastapi
+        image: back-end-fastapi:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+        - name: SPRING_BOOT_SERVICE
+          value: "http://springboot-service:8080"
+        # Para MongoDB en Kubernetes, usa: "mongodb-service"
+        # Para MongoDB local (fuera de K8s), usa: "host.docker.internal"
+        - name: MONGODB_HOST
+          value: "host.docker.internal"  # Cambia a mongodb-service si despliegas MongoDB en K8s
+        - name: MONGODB_PORT
+          value: "27017"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+  labels:
+    app: fastapi-backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: fastapi-backend
+

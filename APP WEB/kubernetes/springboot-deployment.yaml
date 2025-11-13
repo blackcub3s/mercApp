@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-backend
+  labels:
+    app: springboot-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-backend
+  template:
+    metadata:
+      labels:
+        app: springboot-backend
+    spec:
+      containers:
+      - name: springboot
+        image: back-end-springboot:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        # Para MySQL en Kubernetes, usa: "jdbc:mysql://mysql-service:3306/mercApp"
+        # Para MySQL local (fuera de K8s), usa: "jdbc:mysql://host.docker.internal:3306/mercApp"
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://host.docker.internal:3306/mercApp"  # Cambia a mysql-service si despliegas MySQL en K8s
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "root"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "12345sss"
+        - name: MAIL_USUARI
+          valueFrom:
+            secretKeyRef:
+              name: springboot-secrets
+              key: mail-usuari
+        - name: MAIL_CONTRA
+          valueFrom:
+            secretKeyRef:
+              name: springboot-secrets
+              key: mail-contra
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-service
+  labels:
+    app: springboot-backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: springboot-backend
+
