@@ -30,11 +30,22 @@
 import httpx
 import os
 
-# Detecta si correm dins d'un contenidor Docker i ajusta la URL base
-if os.path.exists("/.dockerenv"):
-    BASE_URL = "http://host.docker.internal:8080"  # si es un contenidor docker accedim a Spring Boot així (en un entorn windows)
+# Detecta l'entorn i ajusta la URL base per connectar amb Spring Boot
+# Prioritat: Variable d'entorn > Kubernetes > Docker local > Local
+SPRINGBOOT_HOST = os.getenv("SPRINGBOOT_HOST")  # Per Kubernetes o configuració personalitzada
+
+if SPRINGBOOT_HOST:
+    # Si hi ha variable d'entorn, la fem servir (útil per Kubernetes)
+    BASE_URL = f"http://{SPRINGBOOT_HOST}:8080"
+elif os.path.exists("/var/run/secrets/kubernetes.io"):
+    # Detecta si estem en Kubernetes (hi ha secrets de K8s)
+    BASE_URL = "http://springboot-service:8080"  # Nom del servei de Kubernetes
+elif os.path.exists("/.dockerenv"):
+    # Si estem en Docker local (no Kubernetes)
+    BASE_URL = "http://host.docker.internal:8080"  # Docker local (Windows/Mac)
 else:
-    BASE_URL = "http://localhost:8080"  # si no corre en contenidor ho fem així
+    # Desenvolupament local sense contenidor
+    BASE_URL = "http://localhost:8080"
 
 
 #FUNCIO QUE OBTE EL NOU TOKEN AMB PERMISOS A 1 DE SPRING BOOT PERSONALOTZAT PER A L'idUsuari_enToken entrant

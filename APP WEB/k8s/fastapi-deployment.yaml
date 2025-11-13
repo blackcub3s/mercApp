@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-backend
+  labels:
+    app: fastapi-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi-backend
+  template:
+    metadata:
+      labels:
+        app: fastapi-backend
+    spec:
+      containers:
+      - name: fastapi
+        image: back-end-fastapi:latest  # O usar un registry: tu-registry/back-end-fastapi:tag
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MONGODB_HOST
+          value: "mongodb-service"  # Nombre del servicio de MongoDB en K8s
+        - name: SPRINGBOOT_HOST
+          value: "springboot-service"  # Nombre del servicio de Spring Boot en K8s (usado por serveiClient.py)
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+spec:
+  selector:
+    app: fastapi-backend
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: ClusterIP
+
