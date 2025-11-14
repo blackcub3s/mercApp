@@ -32,16 +32,6 @@ spec:
           value: "root"
         - name: SPRING_DATASOURCE_PASSWORD
           value: "12345sss"
-        - name: MAIL_USUARI
-          valueFrom:
-            secretKeyRef:
-              name: springboot-secrets
-              key: mail-usuari
-        - name: MAIL_CONTRA
-          valueFrom:
-            secretKeyRef:
-              name: springboot-secrets
-              key: mail-contra
         resources:
           requests:
             memory: "512Mi"

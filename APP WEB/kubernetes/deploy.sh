@@ -88,23 +88,6 @@ echo -e "${YELLOW}Aplicando configuraciones de Kubernetes...${NC}"
 
 cd kubernetes
 
-# Secretos
-echo "Aplicando secrets..."
-kubectl apply -f springboot-secrets.yaml
-
-# Bases de datos (opcional - comentar si usas bases de datos locales)
-read -p "¿Deseas desplegar MySQL y MongoDB en Kubernetes? (s/n): " deploy_db
-if [[ $deploy_db == "s" || $deploy_db == "S" ]]; then
-    echo "Desplegando MySQL..."
-    kubectl apply -f mysql-deployment.yaml
-    echo "Desplegando MongoDB..."
-    kubectl apply -f mongodb-deployment.yaml
-    echo -e "${GREEN}✓ Bases de datos desplegadas${NC}"
-else
-    echo -e "${YELLOW}Saltando despliegue de bases de datos (usarás bases de datos locales)${NC}"
-    echo -e "${YELLOW}NOTA: Asegúrate de actualizar los deployments para usar host.docker.internal${NC}"
-fi
-
 # Aplicaciones
 echo "Desplegando Spring Boot..."
 kubectl apply -f springboot-deployment.yaml
@@ -140,7 +123,7 @@ echo "Acceso a la aplicación:"
 echo "==========================================${NC}"
 
 if command_exists minikube && minikube status >/dev/null 2>&1; then
-    echo "Frontend: http://$(minikube ip):5500"
+    echo "Frontend: http://$(minikube ip):30080"
     echo "O ejecuta: minikube service frontend-service"
 else
     echo "Frontend: http://localhost:5500"
