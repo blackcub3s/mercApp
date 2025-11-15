@@ -59,7 +59,7 @@ public class FormulariControlador {
     //
     //          {"XXX": "el campo XXX tiene tal problema"}
     //
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
+    //@CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/formulari")
     public ResponseEntity<FormulariDTOsortida> enviaCorreu(@RequestBody @Valid FormulariDTO dto) {
         FormulariDTOsortida dtoSortida = correuServei.enviaMail(dto);
