@@ -117,22 +117,25 @@ kubectl get pods
 echo ""
 kubectl get services
 
-# -----------------------
-# PORT-FORWARD PER A TOTS 3
-# -----------------------
-echo ""
-echo -e "${YELLOW}Creant port-forward per Frontend, FastAPI i SpringBoot...${NC}"
+for svc_port in \
+    "frontend-service 5500 80" \
+    "fastapi-service 8000 8000" \
+    "springboot-service 8080 8080"; do
 
-for svc in frontend-service:5500:80 fastapi-service:8000:8000 springboot-service:8080:8080; do
+    read svc local_port target_port <<< $svc_port
+
     OLD_PID=$(pgrep -f "kubectl port-forward svc/$svc" || true)
     if [ -n "$OLD_PID" ]; then
         echo "Matant port-forward antic per $svc (PID $OLD_PID)..."
         kill $OLD_PID || true
     fi
-    kubectl port-forward svc/${svc} >/dev/null 2>&1 &
+
+    echo "Creant port-forward per $svc ($local_port -> $target_port)..."
+    kubectl port-forward svc/$svc $local_port:$target_port >/dev/null 2>&1 &
     PF_PID=$!
     echo -e "${GREEN}✓ Port-forward actiu per $svc (PID $PF_PID)${NC}"
 done
+
 
 # Accés a les aplicacions
 echo ""
