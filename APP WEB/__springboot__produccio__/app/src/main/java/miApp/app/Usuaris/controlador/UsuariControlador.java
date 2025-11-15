@@ -46,7 +46,7 @@ public class UsuariControlador {
     //          - body:        {"existeixUsuari": BOOLEÀ, "teAccesArecursos": BOOLEÀ}
     //
     // Un hashmap que es passara per response POST amb {"existeixUsuari":"True", teAccesArecursos:"true"} o false segons sigui el cas
-    @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
+    //@CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/avaluaUsuari")
     public ResponseEntity<HashMap<String, Object>> verificaUsuari(@RequestBody @Valid CorreuDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
         String eMail = dto.getCorreuElectronic();
@@ -99,7 +99,7 @@ public class UsuariControlador {
                             "contrasenyaCorrecta": true
                         }
     */
-    @CrossOrigin(origins = "http://127.0.0.1:5500") //permeto comunicacio amb vsCode
+    //@CrossOrigin(origins = "http://127.0.0.1:5500") //permeto comunicacio amb vsCode
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
     public ResponseEntity<HashMap<String, Object>> login(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
         HashMap<String, Object> mapJSONlike = serveiUPP.generaBodyLogin(dto.getCorreuElectronic(), dto.getContrasenya());
@@ -115,7 +115,7 @@ public class UsuariControlador {
     //POST: Si l'usuari no existeix a usuari es registraran correu i contrasenya:
     //      Si usuari NO existia (ergo    es registra) --> {"existiaUsuari": false, "usuariShaRegistrat" : true, "AccessToken" : "eyJhbGciOiJIUz [...]"}
     //      Si usuari JA existia (ergo no es registra) --> {"existiaUsuari": true, "usuariShaRegistrat" : false}
-    @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
+    //@CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/registraUsuari")
     public ResponseEntity<HashMap<String, Object>> registraUsuari(@RequestBody @Valid RegistreDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
         HashMap<String, Object> mapJSONLike = serveiUPP.registraUsuari(dto);
@@ -134,7 +134,7 @@ public class UsuariControlador {
 
     //PRE: existeix la bbdd i la taula de usuaris (no hi ha parametres d'entrada)
     //POST: Obtens el nombre d'usuaris que hi ha a la teva aplicacio a l'endpoint (NO SE SI SERA UTIL)
-    @CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
+    //@CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @GetMapping("/nreUsuaris")
     public ResponseEntity<HashMap<String, Integer>> mostraNreUsuaris() { //ni RequestBody ni RequestParam, perque no hi ha dades d'entrada.
         HashMap<String, Integer> mapJSONlike = new HashMap<>();
