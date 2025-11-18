@@ -22,7 +22,7 @@ spec:
         - containerPort: 8080
           name: http
         env:
-        - name: SPRING_PROFILES_ACTIVE
+        - name: SPRING_PROFILES_ACTIVE #passo la variable d'entorn prod, per permetre que carregui variables presents en application-prod.properties nomes a kubernetes (produccio)
           value: "prod"
         # Para MySQL en Kubernetes, usa: "jdbc:mysql://mysql-service:3306/mercApp"
         # Para MySQL local (fuera de K8s), usa: "jdbc:mysql://host.docker.internal:3306/mercApp"
