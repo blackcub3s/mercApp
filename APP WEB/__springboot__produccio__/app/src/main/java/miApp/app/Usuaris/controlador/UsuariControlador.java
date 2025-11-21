@@ -118,7 +118,7 @@ public class UsuariControlador {
     //      Si usuari JA existia (ergo no es registra) --> {"existiaUsuari": true, "usuariShaRegistrat" : false}
     //@CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/registraUsuari")
-    public ResponseEntity<RegistreSortidaDTO> registraUsuari(@RequestBody @Valid RegistreDTO dto) {
+    public ResponseEntity<RegistreSortidaDTO> registraUsuari(@RequestBody @Valid RegistreDTO dto) { //@RequestBody pren el body de la solicitud POST que entra des del front
         RegistreSortidaDTO respostaJSONlike = serveiUPP.registraUsuari(dto);
         return new ResponseEntity<>(respostaJSONlike, HttpStatus.OK);
     }
