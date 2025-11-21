@@ -214,7 +214,7 @@
                             else { //SI NO EXISTIA USUARI A DINS BASE DE DADES POT SER QUE ARA L'HAGUEM AFEGIT O QUE NO SI HA ANAT MALAMENT. 
                                 if (dadesExitosesJSON.usuariShaRegistrat) {
                                                                                                        
-                                    let tokenAccesJWT = dadesExitosesJSON.AccessToken;  //extrec el token que anava al body de la response
+                                    let tokenAccesJWT = dadesExitosesJSON.accessToken;  //extrec el token que anava al body de la response (compte que ha d'anar amb minúscula al principi per culpa de usar jackson al back-end de springBoot)
                                     localStorage.setItem("AccessToken", tokenAccesJWT); //guardem token al localStorage (nivell de permisos 0)
                                     
                                     window.location.href = "/pas4_concedirAccesGmail.html";
