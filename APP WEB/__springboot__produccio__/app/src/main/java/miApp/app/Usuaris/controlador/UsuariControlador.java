@@ -7,6 +7,7 @@ package miApp.app.Usuaris.controlador;
 
 import jakarta.validation.Valid;
 import miApp.app.Usuaris.dto.*;
+import miApp.app.Usuaris.dtoSORTIDA.RegistreSortidaDTO;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
 import miApp.app.Usuaris.servei.UsuariServei;
@@ -117,10 +118,11 @@ public class UsuariControlador {
     //      Si usuari JA existia (ergo no es registra) --> {"existiaUsuari": true, "usuariShaRegistrat" : false}
     //@CrossOrigin(origins = "http://127.0.0.1:5500") // PERMETO AL FRONTEND DEL VSCODE ENVIAR EL CORREU DEL FORMULARI
     @PostMapping("/registraUsuari")
-    public ResponseEntity<HashMap<String, Object>> registraUsuari(@RequestBody @Valid RegistreDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
-        HashMap<String, Object> mapJSONLike = serveiUPP.registraUsuari(dto);
-        return new ResponseEntity<>(mapJSONLike, HttpStatus.OK);  //torno la response
+    public ResponseEntity<RegistreSortidaDTO> registraUsuari(@RequestBody @Valid RegistreDTO dto) {
+        RegistreSortidaDTO respostaJSONlike = serveiUPP.registraUsuari(dto);
+        return new ResponseEntity<>(respostaJSONlike, HttpStatus.OK);
     }
+
 
 
     //PRE: existeix la bbdd i la taula de usuaris (no hi ha parametres d'entrada)

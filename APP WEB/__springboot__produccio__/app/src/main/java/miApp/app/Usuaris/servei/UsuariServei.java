@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import miApp.app.Usuaris.dto.ActualitzaContrasenyaDTO;
 import miApp.app.Usuaris.dto.RegistreDTO;
 import miApp.app.Usuaris.dto.UsuariDTO;
+import miApp.app.Usuaris.dtoSORTIDA.RegistreSortidaDTO;
 import miApp.app.Usuaris.repositori.UsuariAmpliatRepositori;
 import miApp.app.seguretat.jwt.AccessToken;
 import miApp.app.utils.EncriptaContrasenyes;
@@ -287,29 +288,26 @@ public class UsuariServei {
 
 
     //PRE: un correu electronic i una contrasenya plana a través del dto.
-    //POST: un hashmap amb les dades segons els casos descrits en funcio registraUsuari() del controlador
+    //POST: un RegistreSortidaDTO amb les dades segons els casos descrits en funcio registraUsuari() del controlador
     //      que generarà el contingut del body de les solicituds POST que consumeixin l'endpoint /api/registraUsuari.
-    public HashMap<String, Object> registraUsuari(RegistreDTO dto) {
+    //NOTA: Hem refactoritzat aquesta funció perquè no faci servir u Hashmap<String, Object> a la sortida
+    //      sino que faci servir un RegistreSortidaDTO fent ús de jackson en el dto.
+    public RegistreSortidaDTO registraUsuari(RegistreDTO dto) {
         String eMail = dto.getCorreuElectronic();
         boolean existiaUsuari = this.usuariRegistrat(eMail);
 
-        //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
-        HashMap<String, Object> mapJSONlike = new HashMap<>();
         if (existiaUsuari) {
-            mapJSONlike.put("existiaUsuari", true); //posem el clau valor al hashmap infromant que no registrem l'usuari obviament (pq ja esta registrat)
-            mapJSONlike.put("usuariShaRegistrat", false);
+            return new RegistreSortidaDTO(true, null, false);
         } else { //L'USUARI NO EXISTIA, ERGO L'AFEGEIXO A BBDD (AMB PERMISOS 0!)
-            String contraPlana = dto.getContrasenya();
-            boolean usuariAfegitCorrectament = this.afegirUsuari(eMail, contraPlana, "aliesAleatoritzat", (byte) 0);
-            mapJSONlike.put("usuariShaRegistrat", usuariAfegitCorrectament); //posem el clau valor al hashmap
-            mapJSONlike.put("existiaUsuari", false);
+
+            boolean usuariAfegitCorrectament = this.afegirUsuari(eMail, dto.getContrasenya(), "aliesAleatoritzat", (byte) 0);
 
             //GENERO EL TOKEN PER AL NOU USUARI REGISTRAT!
             String tokenJWTgenerat = this.generaTokenAccesPerUsuariParticular(eMail);
-            System.out.println("TOKENETE NOU USUARI "+tokenJWTgenerat);
-            mapJSONlike.put("AccessToken", tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
+            System.out.println("TOKENETE NOU USUARI "+tokenJWTgenerat); //canviar per logger!!
+
+            return new RegistreSortidaDTO(false, tokenJWTgenerat, usuariAfegitCorrectament);
         }
-        return mapJSONlike;
     }
 
     //PRE: un correu electrònic ja validat per les classes de validació (activades del controlador en /avaluaUsuari)
