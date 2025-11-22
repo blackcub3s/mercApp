@@ -76,29 +76,47 @@ public class UsuariControlador {
     //          "teAccesArecursos": false,
     //          "contrasenyaCorrecta": false
     //       }
-    //      - Si l'usuari existeix (dins BBDD) i TÉ ACCÉS a recursos("permis" >= 1 en BBDD) es retorna:
+    //      - Si l'usuari existeix (dins BBDD) i TÉ ACCÉS a recursos("permis" >= 1 en BBDD) i A MÉS
+    //        contra és INCORRECTA:
 
-    //            {"existeixUsuari" : true, "teAccesArecursos" : true, "contrasenyaCorrecta": ????}  -? pot ser True o false-
+    //            {"existeixUsuari" : true, "teAccesArecursos" : true, "contrasenyaCorrecta": False}
 
-    //      - Si l'usuari existeix i NO té accés a recursos (permis bbdd == 0) es retorna:
+    //      - Si l'usuari existeix i NO té accés a recursos (permis bbdd == 0) I A MÉS
+    //        contra es INCORRECTA:
 
-    //             {"existeixUsuari": true, "teAccesArecursos": false, "contrasenyaCorrecta": ????}
+    //             {"existeixUsuari": true, "teAccesArecursos": false, "contrasenyaCorrecta": False}
     //      ---------------------------------------------------------------
     //
-    //      - Si login correcte (E usuari i es contra correcta)
+    //      - Si login correcte (E usuari i es contra correcta) i TÉ accés a recursos:
     /*
                  * Pel Body s'enviarà:
                         {
                             "usuari": {
                                 "alies": "the protein kingdom",
-                                "permisos": 2,
-                                "idUsuari": 1
+                                "permisos": 1,
+                                "idUsuari": 4
                             },
                             "existeixUsuari": true,
-                            "AccessToken": "eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNvcyI6MiwiaWRVc3VhcmkiOjEsInN1YiI6InN1cGVyYWNjZXNAZ21haWwuY29tIiwiaWF0IjoxNzQzNjc2ODcyLCJleHAiOjE3NDM2Nzc3NzJ9.8X-Y78Wzcntao3H6SrPhk2nDWMUOIdI8RuB9WMKBgQw",
+                            "AccessToken": "eyJhbGciOiJIUzI [...] 8Wzcntao3H6SrPhk2nDWMUOIdI8RuB9WMKBgQw",
                             "teAccesArecursos": true,
                             "contrasenyaCorrecta": true
                         }
+
+             - Si login correcte (E usuari i es contra correcta) i NO té acces a recursos:
+
+                * Pel body s'enviarà:
+                         {
+                            "usuari": {
+                                "alies": "UsuariPermisos0TestIntegracio",
+                                "permisos": 0,
+                                "idUsuari": 32                           //VARIARÀ, TESTEJARÉ QUE SIGUI UN NOMBRE
+                            },
+                            "existeixUsuari": true,
+                                "AccessToken": "eyJhEJQWNFLKQR [...]",   //VARIARÀ: TESTEJARÉ QUE VALUE SIGUI STRING
+                                "teAccesArecursos": false,
+                                "contrasenyaCorrecta": true
+                        }
+
     */
     //@CrossOrigin(origins = "http://127.0.0.1:5500") //permeto comunicacio amb vsCode
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
