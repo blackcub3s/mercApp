@@ -30,7 +30,7 @@ import java.util.Optional;
 //       Aqui injectarem la dependència del Repositori (consultes a bbdd).
 
 @Service
-public class UsuariServeiImpl {
+public class UsuariServeiImpl implements UsuariServei {
 
     //NOTA: Autowired es millor posar-lo en el constructor que en l'atribut i fer l'atribut constant amb final
     private final UsuariRepositori repoUsuari;
