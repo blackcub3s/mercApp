@@ -122,11 +122,11 @@ class TestIntegracioApiLogin {
     //     que generi un 200 ok:
     //          {"correuElectronic": "noacces@gmail.com", "contrasenya": "12345678Mm_"}
     //POST:
-    //     Passa el test si la solicitud post fa la seguent response:
+    //     Passa el test si la solicitud post fa la seguent response EXACTA sense mes parells clau valor:
     //             {
     //                 "existeixUsuari": true,
     //                 "teAccesArecursos": false,
-    //                 "contrasenyaCorrecta": true
+    //                 "contrasenyaCorrecta": false
     //             }
     @Test
     void testUsuariExisteix_Permisos0_CONTRA_INCORRECTA() throws Exception {
@@ -155,9 +155,13 @@ class TestIntegracioApiLogin {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.existeixUsuari").value(true))
-                .andExpect(jsonPath("$.teAccesArecursos").value(false))
-                .andExpect(jsonPath("$.contrasenyaCorrecta").value(false));
+                .andExpect(content().json("""
+                    {
+                        "existeixUsuari": true,
+                        "teAccesArecursos": false,
+                        "contrasenyaCorrecta": false
+                    }
+                """, true));  // <--- strict = true
     }
 
 
@@ -169,7 +173,7 @@ class TestIntegracioApiLogin {
     //     que generi un 200 ok:
     //          {"correuElectronic": "noacces@gmail.com", "contrasenya": "12345678Mm_"}
     //POST:
-    //     Passa el test si la solicitud post fa la seguent response:
+    //     Passa el test si la solicitud post fa la seguent response EXACTA sense mes parells clau valor:
     //             {
     //                 "existeixUsuari": true,
     //                 "teAccesArecursos": true,
@@ -202,9 +206,13 @@ class TestIntegracioApiLogin {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.existeixUsuari").value(true))
-                .andExpect(jsonPath("$.teAccesArecursos").value(true))
-                .andExpect(jsonPath("$.contrasenyaCorrecta").value(false));
+                .andExpect(content().json("""
+        {
+            "existeixUsuari": true,
+            "teAccesArecursos": true,
+            "contrasenyaCorrecta": false
+        }
+        """, true));  // <--- strict = true
     }
 
 
