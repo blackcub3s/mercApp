@@ -6,7 +6,9 @@ import io.jsonwebtoken.ExpiredJwtException;
 import miApp.app.Usuaris.dto.ActualitzaContrasenyaDTO;
 import miApp.app.Usuaris.dto.RegistreDTO;
 import miApp.app.Usuaris.dto.UsuariDTO;
+import miApp.app.Usuaris.dtoSORTIDA.LoginResponseDTO;
 import miApp.app.Usuaris.dtoSORTIDA.RegistreSortidaDTO;
+import miApp.app.Usuaris.dtoSORTIDA.UsuariDadesDTO;
 import miApp.app.Usuaris.repositori.UsuariAmpliatRepositori;
 import miApp.app.seguretat.jwt.AccessToken;
 import miApp.app.utils.EncriptaContrasenyes;
@@ -250,40 +252,34 @@ public class UsuariServei {
     }
 
     //PRE: un correu electronic i una contrasenya plana
-    //POST: un hashmap amb les dades segons els casos descrits en funcio login() del controlador
+    //POST: un LoginResponseDTO amb les dades segons els casos descrits en funcio login() del controlador
     //      que generarà el contingut del body de les solicituds POST que consumeixin l'endpoint /api/login.
-    public HashMap<String, Object> generaBodyLogin(String eMail, String contraPlana) {
+    public LoginResponseDTO generaBodyLogin(String eMail, String contraPlana) {
         boolean existeixUsuari = this.usuariRegistrat(eMail);
         boolean usuariTeAcces = this.usuariTeAcces(eMail);
         boolean esContraCorrecta = this.contraCoincideix(contraPlana, eMail);
 
-        //CREEM UN HASHMAP PER TORNAR UN OBJECTE DE TIPUS JSON PER SEGUIR AMB ELS PRINCIPIS REST
-        HashMap<String, Object> mapJSONlike = new HashMap<>();
-        mapJSONlike.put("existeixUsuari", existeixUsuari); //posem el clau valor al hashmap
-        mapJSONlike.put("teAccesArecursos",usuariTeAcces); /*TEST*/
-        mapJSONlike.put("contrasenyaCorrecta", esContraCorrecta);
+        LoginResponseDTO response = new LoginResponseDTO();
+        response.setExisteixUsuari(existeixUsuari);
+        response.setTeAccesArecursos(usuariTeAcces);
+        response.setContrasenyaCorrecta(esContraCorrecta);
 
         if (esContraCorrecta) {
-            /*
-                AFEGIR AQUI LATRES MISSATGES AL JSON SI HO NECESSITES
-            */
-            //POSO MISSATGE INFORMATIU
-            HashMap<String, Object> mapUsuariIntern = new HashMap<>();
             Usuari usuariLoguejat = this.trobaUsuariPerEmail(eMail);
-            mapUsuariIntern.put("idUsuari", usuariLoguejat.getIdUsuari());
-            mapUsuariIntern.put("alies", usuariLoguejat.getAlies());
-            mapUsuariIntern.put("permisos", usuariLoguejat.getPermisos());
-
-
-            mapJSONlike.put("usuari", mapUsuariIntern);
+            UsuariDadesDTO usuariDades = new UsuariDadesDTO(
+                usuariLoguejat.getIdUsuari(),
+                usuariLoguejat.getAlies(),
+                usuariLoguejat.getPermisos()
+            );
+            response.setUsuari(usuariDades);
 
             //EL TOKEN VIATJARÀ DEL server AL CLIENT PEL BODY!
             String tokenJWTgenerat = this.generaTokenAccesPerUsuariParticular(eMail);
             System.out.println("TOKENETE ACCESETE per a "+usuariLoguejat.getAlies()+": "+tokenJWTgenerat);
 
-            mapJSONlike.put("AccessToken", tokenJWTgenerat); //POSO EL TOKEN A LA CAPSALERA
+            response.setAccessToken(tokenJWTgenerat);
         }
-        return mapJSONlike;
+        return response;
     }
 
 

@@ -7,6 +7,7 @@ package miApp.app.Usuaris.controlador;
 
 import jakarta.validation.Valid;
 import miApp.app.Usuaris.dto.*;
+import miApp.app.Usuaris.dtoSORTIDA.LoginResponseDTO;
 import miApp.app.Usuaris.dtoSORTIDA.RegistreSortidaDTO;
 import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
@@ -120,9 +121,9 @@ public class UsuariControlador {
     */
     //@CrossOrigin(origins = "http://127.0.0.1:5500") //permeto comunicacio amb vsCode
     @PostMapping("/login")              //@RequestParam es per a solicitud get (http://localhost:8080/api/usuariExisteix?eMail=santiago.sanchez.sans.44@gmail.com)
-    public ResponseEntity<HashMap<String, Object>> login(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
-        HashMap<String, Object> mapJSONlike = serveiUPP.generaBodyLogin(dto.getCorreuElectronic(), dto.getContrasenya());
-        return new ResponseEntity<>(mapJSONlike, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike (amb el token d'accés)!
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginDTO dto) {  //@RequestBody es per la solicitud POST d'entrada des del front (la post tambe permet obtenir resposta, passant el mail pel formulari i obtenint el json de reposta no nomes es modificar el servidor ojo amb el lio)
+        LoginResponseDTO response = serveiUPP.generaBodyLogin(dto.getCorreuElectronic(), dto.getContrasenya());
+        return new ResponseEntity<>(response, HttpStatus.OK);  //200 --> torno la response: el mapJSONlike (amb el token d'accés)!
     }
 
 
