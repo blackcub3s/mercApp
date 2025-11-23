@@ -21,8 +21,6 @@ public interface UsuariServei {
 
     List<String> correusUsuarisApp();
 
-    void imprimirUsuarisPerPantalla();
-
     boolean afegirUsuari(String correuElectronic, String contrasenyaPlana, String alies, Byte plaSuscripcioActual);
 
     List<Usuari> trobaTotsElsUsuaris();
