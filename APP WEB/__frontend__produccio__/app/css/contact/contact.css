@@ -173,3 +173,13 @@ definiciones margen para el texto que se introduzca*/
 #PIfondoContacto section:first-child  article:nth-child(2) #bannerErrors p:not(:first-child) {
     padding-top: .4em;
 }
+
+#PIfondoContacto #bannerEsperes {
+    position: absolute;
+    background-color: red;
+    bottom: 8.5em;
+    right: 24em;
+    height: 0em;
+    padding: 0em;
+    font-size: 1.3em;
+}
