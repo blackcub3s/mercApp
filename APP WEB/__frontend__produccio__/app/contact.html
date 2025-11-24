@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,20 +14,20 @@
 
     <!-- a usari loguejat el moc de dashboard a pas4 o viceversa en funció
     dels permisos que tingui quan entra a una de les dos pàgines-->
-     <script src="/js/jwt/restringeixVistesPrivades_USUARI_LOGUEJAT.js"></script> 
- 
+    <script src="/js/jwt/restringeixVistesPrivades_USUARI_LOGUEJAT.js"></script>
+
     <!--script que elimina token (tanca "la sessió", molt entre cometes)
     quan cliquem botó d'id "botoEliminarToken"-->
-     <script src = "js/jwt/tancaSessioEliminantToken.js"></script>
+    <script src="js/jwt/tancaSessioEliminantToken.js"></script>
 
-    
-    <script src = "js/contact/emplenaCampsFormulari.js"></script>
-    <script src = "js/contact/enviaFormulari.js"></script>
+
+    <script src="js/contact/emplenaCampsFormulari.js"></script>
+    <script src="js/contact/enviaFormulari.js"></script>
 
 
     <!--Cargamos la fuente roboto de google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <!--Cargamos el CSS de animate.style para hacer animaciones, p. ej menu desplegable de la navbar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
@@ -36,22 +37,23 @@
     <link rel="stylesheet" href="css/contact/contact.css">
 
 </head>
+
 <body>
-        <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegación-->
+    <!-- SECCIÓ 0 (S0) -- HEADER: barra de navegación-->
     <header>
-         <a href="dashboard.html" ><img src="img/iconoHome.png"  class = "botoHome" alt = "home" height="30px"></a> <!-- boto home per a tornar a la pantalla principal -->
-         
-        <button id = "botoEliminarToken">Cerrar Sesión</button> <!-- botó per a eliminar el token i fer que el javascript automaticament redirigeixi a pas1 (index.html)-->
-        
+        <a href="dashboard.html"><img src="img/iconoHome.png" class="botoHome" alt="home" height="30px"></a> <!-- boto home per a tornar a la pantalla principal -->
+
+        <button id="botoEliminarToken">Cerrar Sesión</button> <!-- botó per a eliminar el token i fer que el javascript automaticament redirigeixi a pas1 (index.html)-->
+
         <!-- Sistema afegit per cursor per a l'hamburguesa-->
         <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Alternar menú de navegación">
         <label for="nav-toggle" class="nav-toggle-label" aria-label="Alternar menú de navegación" aria-controls="navMenuPrivado">
             <span></span>
         </label>
-         <!-- Final Sistema afegit per cursor per a l'hamburguesa-->
+        <!-- Final Sistema afegit per cursor per a l'hamburguesa-->
 
-        <nav id = "navMenuPrivado">
-            
+        <nav id="navMenuPrivado">
+
             <ul>
                 <li>
                     <span>Servicios</span> <img src="img/dashboard/flechaDesplegablePaint.png" alt="v">
@@ -89,25 +91,32 @@
 
 
 
-                <form method = "post" id = "formete"> <!-- poso post pq no surtin les variables en la URL -el get del default- -->
+                <form method="post" id="formete">
+                    <!-- poso post pq no surtin les variables en la URL -el get del default- -->
                     <label for="nombre">Nombre:<span>*</span></label>
                     <input type="text" id="nombre" name="nombre" required>
-                
+
                     <label for="email">E-mail:<span>*</span></label>
                     <input type="email" id="email" name="email" required>
-                
+
                     <label for="comentarios">Comentarios:<span>*</span></label>
                     <textarea id="comentarios" name="comentarios" rows="5" cols="30" required></textarea>
-                
-                    <button type="submit">contacto</button>
+                    
+                    <!-- Aquest form-actions l'ha wrapejat antigravity en un div per que surtin junts el boto i el banner d'esperes-->
+                    <div class="form-actions">
+                        <button type="submit">contacto</button>
+                        <!-- banner per a mostrar ESPERES de la petició http de la crida a /api/formulari/ -->
+                        <section id="bannerEsperes" style="display: none;"></section>
+                    </div>
+                    <!-- fi antigravity wrap!-->
                 </form>
 
                 <!-- banner per a mostrar eRRORS programàticament amb javascript!-->
-                <section id="bannerErrors" style = "display: none;"></section>
+                <section id="bannerErrors" style="display: none;"></section>
 
             </article>
         </section>
-    </section> 
+    </section>
 
 
 
@@ -116,16 +125,16 @@
 
 
 
-    <!-- SECCIÓN 6 (S6): footer -->   
+    <!-- SECCIÓN 6 (S6): footer -->
     <footer>
 
-       <!-- section:first-child del footer-->
-        <section> 
+        <!-- section:first-child del footer-->
+        <section>
 
             <!--primera columna     section:first-child-->
             <section>
                 <h1>Servicios</h1>
-                <ul> 
+                <ul>
                     <li><span><a href="dashboard.html#PRIV_evolucionInflacionPorProducto">Inflalyzer</a></span></li>
                     <li><span><a href="dashboard.html#priv_categorizer">Categorizer</a></span></li>
                     <li><span><a href="#">Intervalizer</a></span></li>
@@ -146,18 +155,20 @@
                 <h1>Contacto</h1>
                 <ul>
                     <li><span><a href="contact.html">Contacto</a></span></li>
-                    <li><span><a href="https://www.linkedin.com/in/santiagosanchezsans/"><img src="img/dashboard/linkedin_logoDefinitiu.jpg" alt="LinkedIn"></a></span></li>
+                    <li><span><a href="https://www.linkedin.com/in/santiagosanchezsans/"><img
+                                    src="img/dashboard/linkedin_logoDefinitiu.jpg" alt="LinkedIn"></a></span></li>
                 </ul>
             </section>
 
-        </section>    
-        
+        </section>
+
 
         <!-- section:last-child del footer-->
         <section>
-            <p id="copyright"><i>&copy; 2025 | Todos los derechos reservados</i></p>   
-        </section> 
+            <p id="copyright"><i>&copy; 2025 | Todos los derechos reservados</i></p>
+        </section>
     </footer>
 
 </body>
+
 </html>
