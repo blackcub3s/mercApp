@@ -105,7 +105,7 @@ function posaEstilsBannerError(bannerErrors) {
 function posaPuntsSuspensius(bannerEsperes) {
     bannerEsperes.style.display = "block";
     let s = "";
-    let final = 3;
+    let final = 0;
     idIntervalPuntsContacte = setInterval(() => {
         if (final < 3) {
             s = s + ".";
