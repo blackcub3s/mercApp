@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log(nom + email + comentaris);
 
-        
         try {
             const bannerEsperes = document.getElementById("bannerEsperes");
             posaPuntsSuspensius(bannerEsperes); //abans d'iniciar la solicitud ja mostrem a l'usuari els punts suspensius

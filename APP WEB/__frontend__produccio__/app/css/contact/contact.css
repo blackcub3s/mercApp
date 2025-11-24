@@ -175,11 +175,12 @@ definiciones margen para el texto que se introduzca*/
 }
 
 #PIfondoContacto #bannerEsperes {
-    position: absolute;
-    background-color: red;
-    bottom: 8.5em;
-    right: 24em;
-    height: 0em;
+    position: relative;
+    background-color: white;
+    bottom: 1.4em;
+    left: 4em;
+    
     padding: 0em;
-    font-size: 1.3em;
+    margin: 0em;
+    font-size: 1.2em;
 }
