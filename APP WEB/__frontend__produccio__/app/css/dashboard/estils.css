@@ -486,3 +486,35 @@ el contenedor de paginador no se solape con el contenedor superior */
     position: relative;
     top: -90em;
 }
+
+
+
+/*MEDIA QUERY PER A LES 3 CARDS DEL DASHBOARD (TABLETS I MOBILS). */
+@media (max-width: 972px) {
+
+    #PRIV_caracteristicasDashboard>div:last-child {
+        grid-template-columns: 1fr;
+    }
+
+    #PRIV_caracteristicasDashboard>div:last-child article {
+        margin-top: 1em;
+    }
+
+}
+
+/*MEDIA QUERY PER AL PARAGRAF P DINS DE MOBIL  */
+@media (max-width: 597px) {
+    #PRIV_caracteristicasDashboard>div:first-child p {
+        min-width: 300px;
+        padding-left: 5em;
+    }
+
+}
+
+@media (max-width: 500px) {
+    #PRIV_caracteristicasDashboard>div:first-child p {
+        min-width: 300px;
+        padding-left: 3em;
+    }
+
+}
