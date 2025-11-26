@@ -226,10 +226,23 @@ definiciones margen para el texto que se introduzca*/
     font-size: 1.2em;
 }
 
-.form-actions { /*arreglat el posicionament per part de antigravity :) (gemini3)*/
+.form-actions {
     display: flex;
-    align-items: center; /*Flexbox 'align-items: center' handles vertical alignment.*/
+    align-items: center;
     gap: 1em;
     margin-top: 2em;
 }
 
+
+
+/*Media query per a mòbil: poso en una sola columna i 
+limito l'ample de la secció de contacte a 300px*/
+@media (max-width: 768px) {
+    #PIfondoContacto section {
+        grid-template-columns: 1fr;
+    }
+
+    #PIfondoContacto section>article:first-child {
+        max-width: 300px;
+    }
+}
