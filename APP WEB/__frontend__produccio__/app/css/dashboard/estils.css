@@ -85,7 +85,7 @@ de la página interna FrontEnd mediante la clase .cartaDashboard*/
     width: 300px; /* Hemos optado para definir las cards con ancho fijo por más control */
     aspect-ratio: 1/1.618; /* Proporción áurea --> 1:618 (ancho:alto) */
     border-radius: 1em;
-    padding: .2em 1.9em 1em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes*/
+    padding: 1em 1.9em 1em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes*/
     box-sizing: border-box; /* Para asegurarse de que el padding no afecte el tamaño */
     box-shadow: 0px 5px 4px rgba(143, 141, 141, 0.3); 
     background: linear-gradient(to bottom, var(--g), var(--r)); /* GRADIENTE YA ESTA HECHO BIEN, NO TOCAR */
@@ -489,11 +489,48 @@ el contenedor de paginador no se solape con el contenedor superior */
 
 
 
-/*MEDIA QUERY PER A LES 3 CARDS DEL DASHBOARD (TABLETS I MOBILS). */
-@media (max-width: 972px) {
+
+
+
+
+/*MEDIA QUERY PER A LES 3 CARDS DEL DASHBOARD (TABLETS I MOBILS AMPLES). */
+
+/*NOTA IMPORTANT: El punt de tall entre tablet i mobil es important, perque definim si s'eixampla la media query
+que modifica moltes dimensions de les cards -fent-les menys òptimes visualment parlant- o bé anem al tamany estandard 
+ben definit originariament al figma. El punt de tall és el [[A: PUNT DE TALL MOBIL TABLET]] */
+
+@media (min-width: 767px) and (max-width: 972px) {       /*[[A: PUNT DE TALL MOBIL TABLET]] --> 767px*/
 
     #PRIV_caracteristicasDashboard>div:last-child {
         grid-template-columns: 1fr;
+    }
+
+    #PRIV_caracteristicasDashboard .cartaDashboard {
+        width: 400px; /* Ample eren 300px. Ara ho hem de fer mes ample. Apect ratio esta ja definit, no toquis altura.*/
+        padding-top: 1em;
+        font-size: 1.3em;
+    }
+
+    #PRIV_caracteristicasDashboard .cartaDashboard h1 {
+        font-size: 1.6em;
+        white-space: pre-line; /* pre-line crea un salt d elinia en l'html que he definit en l'h1 corresponent (Sense usar br)*/
+    }
+
+
+    #PRIV_caracteristicasDashboard>div:last-child article {
+        margin-top: 2em;
+    }
+
+
+}
+
+
+/*MEDIA QUERY PER A LES 3 CARDS DEL DASHBOARD (MOBILS PETTS). */
+@media (max-width: 767px) {                            /* [[A: PUNT DE TALL MOBIL TABLET]] --> 767px*/
+
+    #PRIV_caracteristicasDashboard>div:last-child {
+        grid-template-columns: 1fr;
+        
     }
 
     #PRIV_caracteristicasDashboard>div:last-child article {
@@ -502,7 +539,7 @@ el contenedor de paginador no se solape con el contenedor superior */
 
 }
 
-/*MEDIA QUERY PER AL PARAGRAF P DINS DE MOBIL  */
+/*MEDIA QUERY PER AL PARAGRAF P (MÒBIL)  */
 @media (max-width: 597px) {
     #PRIV_caracteristicasDashboard>div:first-child p {
         min-width: 300px;
