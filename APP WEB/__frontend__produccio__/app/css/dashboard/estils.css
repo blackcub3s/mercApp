@@ -85,7 +85,7 @@ de la página interna FrontEnd mediante la clase .cartaDashboard*/
     width: 300px; /* Hemos optado para definir las cards con ancho fijo por más control */
     aspect-ratio: 1/1.618; /* Proporción áurea --> 1:618 (ancho:alto) */
     border-radius: 1em;
-    padding: 1em 1.9em 1em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes*/
+    padding: .85em 1.9em 1em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes. OJO: No passar paddding top de .85 o cards 1 i 2 aumenten massa per sota i queden desiguals*/
     box-sizing: border-box; /* Para asegurarse de que el padding no afecte el tamaño */
     box-shadow: 0px 5px 4px rgba(143, 141, 141, 0.3); 
     background: linear-gradient(to bottom, var(--g), var(--r)); /* GRADIENTE YA ESTA HECHO BIEN, NO TOCAR */
@@ -99,11 +99,11 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 
 /*DEFINO ESTILOS PARA LAS IMÁGENES MAS GRANDES DE LAS CARDS (elemento img):
   -- IMAGEN (ESCALERA) ----- PRIMERA CARD de características*/
-#PRIV_caracteristicasDashboard div:last-child article:first-child > img {width: 80%; padding-top: 2.2em; padding-bottom: 2.2em;}
+#PRIV_caracteristicasDashboard div:last-child article:first-child > img {width: 70%; padding-top: 2.2em; padding-bottom: 2.2em;}
 /*-- IMAGEN (RAYO) --------- SEGUNDA CARD de características*/
-#PRIV_caracteristicasDashboard div:last-child article:nth-child(2) > img {width: 43%; padding-top: 2.2em; padding-bottom: 1.5em;}
+#PRIV_caracteristicasDashboard div:last-child article:nth-child(2) > img {width: 40%; padding-top: 2.2em; padding-bottom: 1.5em;}
 /*-- IMAGEN (DOLLAR) ---- TERCERA CARD de características*/
-#PRIV_caracteristicasDashboard div:last-child article:last-child > img {width: 65%; padding-top: 1.5em; padding-bottom: 1.7em;}
+#PRIV_caracteristicasDashboard div:last-child article:last-child > img {width: 63%; padding-top: 1.5em; padding-bottom: 1.7em;}
 
 /*-- IMAGEN INFERIOR CARD 2 (CATEGORIA DE PRODUCTE) --------- EXCLUSIVA A SEGUNDA CARD de características del dashboard*/
 #PRIV_caracteristicasDashboard #iconoSegonaCardCATEGORIA > img {width: 7.65em;}
