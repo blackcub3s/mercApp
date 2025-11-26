@@ -497,7 +497,7 @@ el contenedor de paginador no se solape con el contenedor superior */
     }
 
     #PRIV_caracteristicasDashboard>div:last-child article {
-        margin-top: 1em;
+        margin-top: 2em;
     }
 
 }
@@ -511,6 +511,16 @@ el contenedor de paginador no se solape con el contenedor superior */
 
 }
 
+/*MEDIA QUERY PER AL PARAGRAF P DINS DE MOBIL  */
+@media (max-width: 539px) {
+    #PRIV_caracteristicasDashboard>div:first-child p {
+        min-width: 300px;
+        padding-left: 4em;
+    }
+
+}
+
+
 @media (max-width: 500px) {
     #PRIV_caracteristicasDashboard>div:first-child p {
         min-width: 300px;
@@ -518,3 +528,23 @@ el contenedor de paginador no se solape con el contenedor superior */
     }
 
 }
+
+
+@media (max-width: 420px) {
+    #PRIV_caracteristicasDashboard>div:first-child p {
+        min-width: 300px;
+        padding-left: 2em;
+    }
+
+}
+
+@media (max-width: 368px) {
+    #PRIV_caracteristicasDashboard>div:first-child p {
+        min-width: 300px;
+        padding-left: 1em;
+        
+    }
+
+}
+
+
