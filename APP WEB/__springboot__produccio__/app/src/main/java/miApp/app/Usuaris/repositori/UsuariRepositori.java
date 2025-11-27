@@ -45,5 +45,6 @@ public interface UsuariRepositori extends JpaRepository<Usuari, Integer> {
     @Query(value = "SELECT * FROM usuari WHERE id = :idenete", nativeQuery = true)
     Optional<Usuari> obtinguesUsuariPerId(@Param("idenete") Byte id);
 
-
+    @Query(value = "SELECT max(id_usuari) FROM usuari", nativeQuery = true)
+    Optional<Integer> trobaUltimId();
 }
