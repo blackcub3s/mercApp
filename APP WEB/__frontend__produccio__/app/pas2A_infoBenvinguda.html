@@ -89,6 +89,25 @@
         }
 
 
+        #wrapperCorreu {
+            border: 1px dashed grey;
+            border-radius: .5em;
+            margin-bottom: 1em;
+            padding: 1em;
+        }
+        
+        #correuDeLocalStorage {
+            color: rgb(32, 22, 22);
+            font-size: 1.3em;
+            
+            padding: .6em 0em;
+            color: brown;
+        }
+
+        #wrapperCorreu p:first-child {
+            padding-top: .6em;
+        }
+
         @media screen and (max-width: 500px) {
             #infoPerAusuari {
                 max-width: 70%;
@@ -105,6 +124,21 @@
         }
     </style>
 
+    <script>
+        //SI EXISTEIX EL CORREU AL LOCAL STORAGE (IE VOL DIR QUE VENIM DE pas2C_login REDIRIGITS SENSE QUE L'USUARI EXISTÍS
+        //ALESHORES MOSTREM EL BANNER DE CORREU PER INFORMAR A L'USUARI QUE ES REGISTRARA AMB LA CONTA. SI NO EXISTEIX 
+        //FEM INVISIBLE EL DIV QUE EL CONTÉ.)
+        document.addEventListener("DOMContentLoaded", () => {
+            const correu = localStorage.getItem("emailNouUsuari");
+            if (correu != null) {
+                const h2Correu = document.getElementById("correuDeLocalStorage");
+                h2Correu.innerHTML= correu;
+            } else {
+                const embolcallInfoCorreu = document.getElementById("wrapperCorreu");
+                embolcallInfoCorreu.style.display = "none";
+            }
+        });
+    </script>
 </head>
 <body>
 
@@ -129,7 +163,13 @@
         <div>
             <p id = "infoPassos">PASO <b>1</b> DE <b>3</b></p>
             <h1>Configura tu cuenta</h1>
-            <p id = "missatge">MercApp personalizado para ti. Crea una contraseña para empezar a usar MercApp</p>
+            
+            <p id = "missatge">MercApp personalizado para ti. Crea una contraseña para empezar a usar MercApp.</p>
+            <div id = "wrapperCorreu">
+                <p>El correo con el que crearás tu usuario:</p>
+                <p id = "correuDeLocalStorage"></p>
+            </div>
+           
         </div>
         <div id = "botoSeguirWrap">
             <button id = "botoSeguent">Siguiente</button>

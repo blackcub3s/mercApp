@@ -77,9 +77,12 @@
                                 }
                             } else { //no existeix usuari
                                 bannerAlerta([email], "usuariInexistent",vermellAlerta);
-
                                 
-                                //window.location.href = "pas2A_infoBenvinguda.html";  //SI EL VOLS REDIRIGIR PER A QUÈ ES REGISTRI
+                                localStorage.setItem('emailNouUsuari', email); //poso el mail que necessitarà el pas2A_infoBenvinguda.html
+                                setInterval(() => {
+                                    window.location.href = "pas2A_infoBenvinguda.html";  //El redirigeixo per a què es registri, esperant 3 segons perquè vegi el banner en que s'informa uqe noe stpa regsitrat
+                                }, 3000);
+                                
                             }
                         })
                         .catch(error => {
