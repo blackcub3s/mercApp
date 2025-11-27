@@ -47,4 +47,6 @@ public interface UsuariServei {
 
     String obtenirTokenPermisosPerAdashboard(int idUsuari);
 
+    String generaAliesAleatori(int idUsuari);
+
 }

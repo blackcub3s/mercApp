@@ -18,10 +18,7 @@ import miApp.app.Usuaris.model.Usuari;
 import miApp.app.Usuaris.model.UsuariAmpliat;
 import miApp.app.Usuaris.repositori.UsuariRepositori;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 
 //PAS 3: Implementem lògica de negoci. Això ho fem en els "services". Aqui fem un servei
@@ -296,7 +293,18 @@ public class UsuariServeiImpl implements UsuariServei {
             return new RegistreSortidaDTO(true, null, false);
         } else { //L'USUARI NO EXISTIA, ERGO L'AFEGEIXO A BBDD (AMB PERMISOS 0!)
 
-            boolean usuariAfegitCorrectament = this.afegirUsuari(eMail, dto.getContrasenya(), "aliesAleatoritzat", (byte) 0);
+            //CADA ALIES TE CONCATENAT L'ID DE L'USUARI.
+            Optional<Integer> idPrevi = repoUsuari.trobaUltimId();
+            int idNouUsuari;
+            if (idPrevi.isPresent()) {
+                idNouUsuari = idPrevi.get() + 1; //SI JA HAVIA USUARI ABANS D'AFEGIR-LO AGAFO L'ANTERIOR MÉS 1
+            } else {
+                idNouUsuari = 1; //SI L'OPTIONAL ERA BUIT ALEHORES L'ID SERÀ 1 SEGUR!
+            }
+
+            //ARA SÍ, AFEGEIXO L'USUARI AMB L'EMAIL, LA CONTRA (FAREM EL HASH), L'ALIES ALEATORI I ELS PERMISOS
+            boolean usuariAfegitCorrectament = this.afegirUsuari(eMail, dto.getContrasenya(),
+                                this.generaAliesAleatori(idNouUsuari), (byte) 0);
 
             //GENERO EL TOKEN PER AL NOU USUARI REGISTRAT!
             String tokenJWTgenerat = this.generaTokenAccesPerUsuariParticular(eMail);
@@ -332,6 +340,29 @@ public class UsuariServeiImpl implements UsuariServei {
         return this.generaTokenAccesPerUsuariParticular(u.getCorreuElectronic());
     }
 
+
+
+    //PRE: id de l'usuari
+    //POST: un nom inferior o igual a 30 caràcters. Es composa d'un sintagma nominal amb un complement del nom
+    //      seguit del idUsuari (clau primaria) per evitar repetir mai un nom d'usuari. Nom i CN s'escullen aleatòriament.
+    //       exemples: "enamorado de la fruta", "amante de mercadona", "apasionado de las acelgas"..
+    //   NOTA: Si l'alies generat és 51 o superior en caràcters torna un alies generic informant error, perque no cabria
+    //       en el VARCHAR de la base de dades.
+    public String generaAliesAleatori(int idUsuari) {
+        String[] noms = {"Ferviente defensor", "Enamorado", "amante", "apasionado",
+                "devoto", "seguidor", "entusiasta", "fan"};
+        String[] CN = {"de las croquetas de jamón", "de la lechuga iceberg", "del pollo rebozado",
+                "de la fruta", "de mercadona"};  //complement del nom
+
+        Random r = new Random();
+
+        String alies = noms[r.nextInt(noms.length)] + " "+ CN[r.nextInt(CN.length)]+ " " + String.valueOf(idUsuari);
+        if (alies.length() < 51) {
+            return alies;
+        } else {
+            return "aliesMassaLlarg!";
+        }
+    }
 
 
 }
