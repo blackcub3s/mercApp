@@ -24,18 +24,20 @@ public class AppApplication {
 
 
 
-		//SpringApplication.run(AppApplication.class, args);
+		SpringApplication.run(AppApplication.class, args);
 
+		/*
 		ApplicationContext context = SpringApplication.run(AppApplication.class, args); //obtens context
 		UsuariServei usuariServei = context.getBean(UsuariServei.class); //obtens la bean del context per pillar classe usuariServei
-
+		*/
 
 
 		//TESTEJO AFEGIR USUARI (EL PRIMER TÉ ACCÉS A RECURSOS, EL SEGON NO TÉ ACCÉS -es un usuari que ha registrat nom pero mai ha arribat a guanyar permisos-)
-		boolean afegit = usuariServei.afegirUsuari("superacces@gmail.com",
+
+		/*boolean afegit = usuariServei.afegirUsuari("superacces@gmail.com",
 													"12345678Mm_",
 													"the protein kingdom",
-													(byte) 2); //ES ADMIN
+													(byte) 2); //ES ADMIN*/
 
 		/*boolean afegitDos = usuariServei.afegirUsuari("acces@gmail.com",
 													"12345678Mm_",
@@ -49,13 +51,13 @@ public class AppApplication {
 		*/
 
 		//OBTINC LA BEAN DE LES DUES CLASSES QUE FALTEN PER FER AQUEST TEST (EL USUARI AMPLIAT SERVEI I L'USUARI REPOSITORI)
-		UsuariAmpliatServei usuariAmpliatServei = context.getBean(UsuariAmpliatServei.class);
-		UsuariRepositori usuariRepositori = context.getBean(UsuariRepositori.class); //obtens la bean del context per pillar classe usuariServei
+		//UsuariAmpliatServei usuariAmpliatServei = context.getBean(UsuariAmpliatServei.class);
+		//UsuariRepositori usuariRepositori = context.getBean(UsuariRepositori.class); //obtens la bean del context per pillar classe usuariServei
 
-		Usuari u = usuariServei.trobaUsuariPerEmail("superacces@gmail.com");
+		//Usuari u = usuariServei.trobaUsuariPerEmail("superacces@gmail.com");
 		//Usuari usuariBis = usuariRepositori.findById(2).get(); //acces@gmail.com
 
-		usuariAmpliatServei.afegirNomIcognoms(u, "Santi", "Sánchez", "Sans");
+		//usuariAmpliatServei.afegirNomIcognoms(u, "Santi", "Sánchez", "Sans");
 		//usuariAmpliatServei.afegirNomIcognoms(usuariBis, "Emma", "Palausabulla", "Balluback");
 
 
