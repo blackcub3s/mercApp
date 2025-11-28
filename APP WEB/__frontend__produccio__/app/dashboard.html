@@ -65,6 +65,8 @@
     <script src="/js/dashboard/diagramaGastosPerCategoria.js"></script>
     <!-- FI ARXIUS PER ORDRE-->
 
+    <script src="/js/dashboard/extreuTickets.js"></script> <!-- carrego l'script per carregar tots els tickets de cop per fer la card de l'inflalizer i tot lo de l'infalyzer-->
+
     <!-- CARREGUEM 3 LLIBRERIES PER AL GRÀFIC DE chart.js (amb el que farem el gràfic d'inflació)-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!--LLIBRERIA BASE-->
     <script src="https://cdn.jsdelivr.net/npm/luxon"></script>                  <!--per a mostrar dates encompes de ms desde la epoch a les X-->
@@ -188,6 +190,21 @@
                     intervalo temporal</h1>
                 <img src="img/dashboard/GPT_dollar_noAlpha.png" alt="imagenNoCargo">
                 <h2>Tienes compras en <span id = "nreMesosOnShaFetCompra" class = "colorBlauSortidaDades">Y</span> meses distintos:</h2>
+
+                <section>
+                    <!--IMPLEMENTAR CSS: WRAPPER DIFUMINAT ESQUERRE:  --- INSPIREM DEL CODI JA FET EN id blurTopCards DE TICKETS.html -->
+                    <div id = "blurEsqCards"></div>  
+                    
+                    <!--CONTINDRÀ LES COLUMNES DELS GASTOS PER MESOS-->
+                    <section id = "wrapperBarres">
+                        <!--aqui carregarem les barres dels preus mensuals a partir de les dades que extraiem de /api/totsElsTickets. Endpoint inciialment només usat en subseccio tickets.-->
+                    </section>
+
+                    <!--IMPLEMENTAR CSS: WRAPPER DIFUMINAT DRET: --------- INSPIREM DEL CODI JA FET EN id blurBottomCards DE TICKETS.html -->
+                    <div id = "blurDreCards"></div>  <!--IMPLEMENTAR CSS: WRAPPER DIFUMINAT-->
+
+                </section>
+
             </article>
         </div>
     </section>
