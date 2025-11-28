@@ -125,22 +125,23 @@ function creaIrellenaBarresInflalyzer(llTickets) {
         ticket = llTickets[i];                                       //                                              aaaa-mm-dd --> aaaa-mm
         anyMesTicket = ticket.data.split("-").slice(0,2).join("-");  //canvio format data del ticket eiminant dia    2025-03-13 --> 2025-03
         
-        if (anyMesTicket == anyMesActual) { //TESTEJAT! OK!
+        //Si data (aaaa-mm) anyMesTicket coincideix amb la data (anyMesActual) 
+        // que cercquem amb la sliding window que conforma anyMesActual, aleshores anem agregant.
+        if (anyMesTicket == anyMesActual) {
             emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual);
-        } else if (anyMesTicket < anyMesActual) {
-            //Per evitar l'error de floating point que s'arrastra {2025-07: 60.480000000000004,} --> {2025-07: 60.48} hem d'usar toFixed
-            if (oMesos[anyMesActual] !== undefined) {
-                oMesos[anyMesActual] = Number(oMesos[anyMesActual].toFixed(2)); 
-            }
-            anyMesActual = generaAnyMes_mesAnterior(anyMesActual); //ARA MIRO EL MES ANTERIOR
-        } else { //cas en que anyMesTicket > anyMesActual
-            console.log(anyMesTicket);
+        } else if (anyMesTicket < anyMesActual) { 
+
+            //Si data no coincideix vaig tirant endarrera amb un while fins que coincideixi (i.e. trobem ticket al mes buscat)
+            do {
+                anyMesActual = generaAnyMes_mesAnterior(anyMesActual); //ARA MIRO EL MES ANTERIOR FINS QUE TROBI UN MES ACTUAL
+            } while (anyMesActual < anyMesTicket);
+            emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual);
+            
         }
-        
-        
-        //rellenaBarraMes(contenidorBarres, ticket, llTickets.length, i+1);
+        treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMesActual);
+        //AQUI CALDRAI FER ALGO AIXI COM ---> rellenaBarraMes(contenidorBarres);
     }
-    console.log(oMesos);
+    
     
 }
 
@@ -155,6 +156,16 @@ function emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual) {
     }
 }
 
+
+//PRE: oMesos, el diccionari pareus clau aaaa-mm amb valor (Total mes) on cada total mes pot tenir error de punt flotant (agergats decimals ficticis).
+//          exemple: oMesos = {2025-07: 60.480000000000004} 
+//POST: oMesos, es passa per referencia sense l'error de floating point
+//          exemple: oMesos = {2025-07: 60.48}
+function treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMesActual) {
+    if (oMesos[anyMesActual] !== undefined) {
+        oMesos[anyMesActual] = Number(oMesos[anyMesActual].toFixed(2));  // FET Per evitar l'error de floating point que s'arrastra, que es fa amb toFixed(2).
+    }
+}
 
 //PRE: res
 //POST: el mes actual d'avui amb format aaaa-mm
