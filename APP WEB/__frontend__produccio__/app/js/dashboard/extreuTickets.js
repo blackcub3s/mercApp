@@ -113,8 +113,18 @@ function creaIrellenaBarresInflalyzer(llTickets) {
     const contenidorBarres = document.getElementById("wrapperBarres");
     contenidorBarres.innerHTML = "FUNCIONO"; //buido barres de nesis en les cards, si en queden d'anteriors cerques (potser no cal)
 
+    let oMesos = computaAgregatPerMes_NONUL(llTickets); //a oMesos --> {"2025-3: 342, 2025-4: 212, etc.}". Mesos sense gasto NO APAREIXEN en CLAU ni en valor (0)-
+    console.log(oMesos);
+}
+
+//PRE: El mateix pre que funcio creaIrellenaBarresInflalyzer().
+//POST: Retorno "2025-04: 342, 2025-03: 212, ... etc.}". Es torna un parell clau : valor on les claus son els mesos en format aaaa-mm i els valors
+//      son el gasto total agregat per a cada mes.
+//      NOTA: Els mesos en els quals NO HI HA COMPRES son meso sque NO APAREIXEN NI en CLAU ni en valor (0).
+function computaAgregatPerMes_NONUL(llTickets) {
+    
     //OBTINC EL MES ACTUAL EN  ------------------------------------>  aaaa-mm            
-    let anyMesActual = "2025-11";//aux_gpt_getCurrentDateString();              //2025-11
+    let anyMesActual = aux_gpt_getCurrentDateString();              //2025-11  pots provar amb dates diferents per fer el filtre
     
     //RECORRO TICKETS I FAIG COMPARACIONS PER VEURE SI EL TICKET PERTANY AL MES ACTUAL O NO. SI HI PERTANY L'AFEGEIXO, SI NO 
     //RESTO anyMesActual UN MES I REPETEIXO. FAIG UNA SLIDING WINDOW EN QUE EM VAIG DESPLAÇANT ENDARRERA PER VEURE QUÈ INTRODUEIXO A L'OBJECTE
@@ -140,9 +150,11 @@ function creaIrellenaBarresInflalyzer(llTickets) {
         treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMesActual);
         //AQUI CALDRAI FER ALGO AIXI COM ---> rellenaBarraMes(contenidorBarres);
     }
-    console.log(oMesos);
-    
+    return oMesos;    
 }
+
+
+
 
 //PRE: oMesos es objecte que conté parells clau valor estil {"aaaa-mm" : 23.32, "aaaa-mm" : 342.03}
 //     anyMesTicket: aaaa-mm del mes al que pertany el ticket sent anaitzat
