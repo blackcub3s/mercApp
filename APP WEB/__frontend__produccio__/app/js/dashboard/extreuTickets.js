@@ -104,15 +104,87 @@ document.addEventListener("DOMContentLoaded", () => {
                 "hora": "19:58"
             },*/
 
-//POST: Es tindrà afegit un sistema de barres per a la card del front.
+//POST: Es tindrà afegit un sistema de barres per a la card del front on a la dreta tindrem 
+// la barra de la compra mes recent i a l'esquerra la barra de la compra menys recent.
 function creaIrellenaBarresInflalyzer(llTickets) {
     const contenidorBarres = document.getElementById("wrapperBarres");
     contenidorBarres.innerHTML = "FUNCIONO"; //buido barres de nesis en les cards, si en queden d'anteriors cerques (potser no cal)
     
-    /*
+    //COM QUE ELS ELEMENTS ESTAN ORDENATS PER MONGO DBPODEM ACOTAR EL MES RECENT A PARTIR DELS EXTREMS
+    let dataTicketMesRecent = llTickets[0].data;                    //2025-09-11
+    let dataTicketMesAntic = llTickets[llTickets.length-1].data;    //2023-09-25
+
+    //OBTINC EL MES ACTUAL EN  ------------------------------------>  aaaa-mm            
+    let anyMesActual = "2025-11";//aux_gpt_getCurrentDateString();              //2025-11
+    
+    //RECORRO TICKETS I FAIG COMPARACIONS PER VEURE SI EL TICKET PERTANY AL MES ACTUAL O NO. SI HI PERTANY L'AFEGEIXO, SI NO 
+    //RESTO anyMesActual UN MES I REPETEIXO. FAIG UNA SLIDING WINDOW EN QUE EM VAIG DESPLAÇANT ENDARRERA PER VEURE QUÈ INTRODUEIXO A L'OBJECTE
+    //I QUE NO
+    let oMesos = {}; 
     for (let i = 0; i < llTickets.length; ++i) {
-        ticket = llTickets[i];
-        rellenaBarraMes(contenidorBarres, ticket, llTickets.length, i+1);
+        ticket = llTickets[i];                                       //                                              aaaa-mm-dd --> aaaa-mm
+        anyMesTicket = ticket.data.split("-").slice(0,2).join("-");  //canvio format data del ticket eiminant dia    2025-03-13 --> 2025-03
+        
+        if (anyMesTicket == anyMesActual) { //TESTEJAT! OK!
+            emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual);
+        } else if (anyMesTicket < anyMesActual) {
+            //Per evitar l'error de floating point que s'arrastra {2025-07: 60.480000000000004,} --> {2025-07: 60.48} hem d'usar toFixed
+            if (oMesos[anyMesActual] !== undefined) {
+                oMesos[anyMesActual] = Number(oMesos[anyMesActual].toFixed(2)); 
+            }
+            anyMesActual = generaAnyMes_mesAnterior(anyMesActual); //ARA MIRO EL MES ANTERIOR
+        } else { //cas en que anyMesTicket > anyMesActual
+            console.log(anyMesTicket);
+        }
+        
+        
+        //rellenaBarraMes(contenidorBarres, ticket, llTickets.length, i+1);
     }
-    */
+    console.log(oMesos);
+    
+}
+
+//PRE: oMesos es objecte que conté parells clau valor estil {"aaaa-mm" : 23.32, "aaaa-mm" : 342.03}
+//     anyMesTicket: aaaa-mm del mes al que pertany el ticket sent anaitzat
+//     anyMesActyak: aaaa-mm del mes al que pertany el mes actual en la sliding window de present cap endarrera
+function emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual) {
+    if (anyMesTicket in oMesos) {
+        oMesos[anyMesTicket] = oMesos[anyMesTicket] + ticket.totalTicket;
+    } else {
+        oMesos[anyMesTicket] = ticket.totalTicket;
+    }
+}
+
+
+//PRE: res
+//POST: el mes actual d'avui amb format aaaa-mm
+function aux_gpt_getCurrentDateString() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  //const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}`;
+}
+
+
+
+
+//INSTRUCCIÓ DONADA A GPT: 
+// Fes-me una funcio que donat un string de format aaaa-mm que entri per paramtere retorni 
+// l'string que correspon al mes anetetior. Per exemple, 
+// Si entra 2025-03 tornara 2025-04. Si entra 2024-01 Sortira 2023-12.
+// RESULTAT:
+function generaAnyMes_mesAnterior(dataStr) {
+    
+    let [any, mes] = dataStr.split('-').map(Number); // Separem l'any i el mes
+    mes -= 1;     // Restem un al mes
+
+    // Si el mes queda 0, vol dir que passem a desembre de l'any anterior
+    if (mes === 0) {
+        mes = 12;
+        any -= 1;
+    }
+    // Afegim un 0 davant si el mes és d'un dígit
+    let mesStr = mes.toString().padStart(2, '0');
+    return `${any}-${mesStr}`;
 }
