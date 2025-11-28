@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //----------------------
             //--- MOLT IMPORTANT ---
             //----------------------
+            posaDatesMinimaImaximaTiket(tickets.llTickets);  //TO DO
             creaIrellenaBarresInflalyzer(tickets.llTickets);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ LES CARDS!
             localStorage.setItem("totsElsTickets", JSON.stringify(tickets.llTickets)); //GUARDO A LOCAL STORAGE LA LLISTA D'OBJECTS (LLISTA TICKETS) PASSO A STRING AMB STRINGIFY!
             //----------------------
@@ -47,7 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
     //CAS EN QUE ELS TICKETS DEL LOCAL STORAGE JA S'HAN CARREGAT DEL SERVIDOR (NO SERA NULL)
     else if (llTicketsLocalStorage != null) {
         console.log("TICKETS REEXTRETS DEL LOCAL STORAGE");
-        creaIrellenaBarresInflalyzer(JSON.parse(localStorage.getItem("totsElsTickets")));  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ L'INFLALYZER DEL LOCAL STORAGE (SERIALITZO AMB JSON.parse())
+        let ticketsss = JSON.parse(localStorage.getItem("totsElsTickets"));
+        posaDatesMinimaImaximaTiket(ticketsss);  //TO DO
+        creaIrellenaBarresInflalyzer(ticketsss);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ L'INFLALYZER DEL LOCAL STORAGE (SERIALITZO AMB JSON.parse())
     }
 });
 
@@ -109,10 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function creaIrellenaBarresInflalyzer(llTickets) {
     const contenidorBarres = document.getElementById("wrapperBarres");
     contenidorBarres.innerHTML = "FUNCIONO"; //buido barres de nesis en les cards, si en queden d'anteriors cerques (potser no cal)
-    
-    //COM QUE ELS ELEMENTS ESTAN ORDENATS PER MONGO DBPODEM ACOTAR EL MES RECENT A PARTIR DELS EXTREMS
-    let dataTicketMesRecent = llTickets[0].data;                    //2025-09-11
-    let dataTicketMesAntic = llTickets[llTickets.length-1].data;    //2023-09-25
 
     //OBTINC EL MES ACTUAL EN  ------------------------------------>  aaaa-mm            
     let anyMesActual = "2025-11";//aux_gpt_getCurrentDateString();              //2025-11
@@ -141,7 +140,7 @@ function creaIrellenaBarresInflalyzer(llTickets) {
         treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMesActual);
         //AQUI CALDRAI FER ALGO AIXI COM ---> rellenaBarraMes(contenidorBarres);
     }
-    
+    console.log(oMesos);
     
 }
 
@@ -198,4 +197,21 @@ function generaAnyMes_mesAnterior(dataStr) {
     // Afegim un 0 davant si el mes és d'un dígit
     let mesStr = mes.toString().padStart(2, '0');
     return `${any}-${mesStr}`;
+}
+
+
+
+
+
+
+
+function posaDatesMinimaImaximaTiket(llTickets) {
+    //COM QUE ELS ELEMENTS ESTAN ORDENATS PER MONGO DBPODEM ACOTAR EL MES RECENT A PARTIR DELS EXTREMS
+    let dataTicketMesRecent = llTickets[0].data;                    //2025-09-11
+    let dataTicketMesAntic = llTickets[llTickets.length-1].data;    //2023-09-25
+
+    console.log(dataTicketMesRecent);
+    console.log(dataTicketMesAntic);
+    //TO DO POSAR A DOM
+
 }
