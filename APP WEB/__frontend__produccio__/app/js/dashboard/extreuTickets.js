@@ -124,30 +124,30 @@ function creaIrellenaBarresInflalyzer(llTickets) {
 function computaAgregatPerMes_NONUL(llTickets) {
     
     //OBTINC EL MES ACTUAL EN  ------------------------------------>  aaaa-mm            
-    let anyMesActual = aux_gpt_getCurrentDateString();              //2025-11  pots provar amb dates diferents per fer el filtre
+    let anyMes_slidingWindow = aux_gpt_getCurrentDateString();       //2025-11  --> ara es LA DATA ACTUAL, inicialment.
     
     //RECORRO TICKETS I FAIG COMPARACIONS PER VEURE SI EL TICKET PERTANY AL MES ACTUAL O NO. SI HI PERTANY L'AFEGEIXO, SI NO 
-    //RESTO anyMesActual UN MES I REPETEIXO. FAIG UNA SLIDING WINDOW EN QUE EM VAIG DESPLAÇANT ENDARRERA PER VEURE QUÈ INTRODUEIXO A L'OBJECTE
+    //RESTO anyMes_slidingWindow UN MES I REPETEIXO. FAIG UNA SLIDING WINDOW EN QUE EM VAIG DESPLAÇANT ENDARRERA PER VEURE QUÈ INTRODUEIXO A L'OBJECTE
     //I QUE NO
     let oMesos = {}; 
     for (let i = 0; i < llTickets.length; ++i) {
         ticket = llTickets[i];                                       //                                              aaaa-mm-dd --> aaaa-mm
         anyMesTicket = ticket.data.split("-").slice(0,2).join("-");  //canvio format data del ticket eiminant dia    2025-03-13 --> 2025-03
         
-        //Si data (aaaa-mm) anyMesTicket coincideix amb la data (anyMesActual) 
-        // que cercquem amb la sliding window que conforma anyMesActual, aleshores anem agregant.
-        if (anyMesTicket == anyMesActual) {
-            emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual);
-        } else if (anyMesTicket < anyMesActual) { 
-
-            //Si data no coincideix vaig tirant endarrera amb un while fins que coincideixi (i.e. trobem ticket al mes buscat)
-            do {
-                anyMesActual = generaAnyMes_mesAnterior(anyMesActual); //ARA MIRO EL MES ANTERIOR FINS QUE TROBI UN MES ACTUAL
-            } while (anyMesActual < anyMesTicket);
-            emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual);
+        //Si data (aaaa-mm) anyMesTicket coincideix amb la data (anyMes_slidingWindow) 
+        //agreguem el gasto total del ticket trobat a una objecte oMesos.
+        if (anyMesTicket == anyMes_slidingWindow) {
+            emplenaTotalPerMes(oMesos, anyMesTicket, anyMes_slidingWindow);
+        } else { //que sera sempre quan anyMes_slidingWindow > anyMesTicket (i.e. trobem tiquets d'un mes diferent o el mes no té tickets comprats)
             
+            //Si data no coincideix vaig tirant endarrera amb un while fins que coincideixi (i.e. trobem ticket al mes buscat)
+             while (anyMes_slidingWindow > anyMesTicket) {
+                anyMes_slidingWindow = generaAnyMes_mesAnterior(anyMes_slidingWindow); //ARA MIRO EL MES ANTERIOR FINS QUE TROBI UN MES ACTUAL
+            }
+            emplenaTotalPerMes(oMesos, anyMesTicket, anyMes_slidingWindow);
         }
-        treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMesActual);
+        treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMes_slidingWindow);
+        
         //AQUI CALDRAI FER ALGO AIXI COM ---> rellenaBarraMes(contenidorBarres);
     }
     return oMesos;    
@@ -159,7 +159,7 @@ function computaAgregatPerMes_NONUL(llTickets) {
 //PRE: oMesos es objecte que conté parells clau valor estil {"aaaa-mm" : 23.32, "aaaa-mm" : 342.03}
 //     anyMesTicket: aaaa-mm del mes al que pertany el ticket sent anaitzat
 //     anyMesActyak: aaaa-mm del mes al que pertany el mes actual en la sliding window de present cap endarrera
-function emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual) {
+function emplenaTotalPerMes(oMesos, anyMesTicket, anyMes_slidingWindow) {
     if (anyMesTicket in oMesos) {
         oMesos[anyMesTicket] = oMesos[anyMesTicket] + ticket.totalTicket;
     } else {
@@ -172,9 +172,9 @@ function emplenaTotalPerMes(oMesos, anyMesTicket, anyMesActual) {
 //          exemple: oMesos = {2025-07: 60.480000000000004} 
 //POST: oMesos, es passa per referencia sense l'error de floating point
 //          exemple: oMesos = {2025-07: 60.48}
-function treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMesActual) {
-    if (oMesos[anyMesActual] !== undefined) {
-        oMesos[anyMesActual] = Number(oMesos[anyMesActual].toFixed(2));  // FET Per evitar l'error de floating point que s'arrastra, que es fa amb toFixed(2).
+function treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMes_slidingWindow) {
+    if (oMesos[anyMes_slidingWindow] !== undefined) {
+        oMesos[anyMes_slidingWindow] = Number(oMesos[anyMes_slidingWindow].toFixed(2));  // FET Per evitar l'error de floating point que s'arrastra, que es fa amb toFixed(2).
     }
 }
 
@@ -194,7 +194,7 @@ function aux_gpt_getCurrentDateString() {
 //INSTRUCCIÓ DONADA A GPT: 
 // Fes-me una funcio que donat un string de format aaaa-mm que entri per paramtere retorni 
 // l'string que correspon al mes anetetior. Per exemple, 
-// Si entra 2025-03 tornara 2025-04. Si entra 2024-01 Sortira 2023-12.
+// Si entra 2025-04 tornara 2025-03. Si entra 2024-01 Sortira 2023-12.
 // RESULTAT:
 function generaAnyMes_mesAnterior(dataStr) {
     
