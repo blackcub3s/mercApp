@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function creaIrellenaBarresInflalyzer(llTickets) {
     const contenidorBarres = document.getElementById("wrapperBarres");
     contenidorBarres.innerHTML = "FUNCIONO"; //buido barres de nesis en les cards, si en queden d'anteriors cerques (potser no cal)
-
+                                                        //               aaaa.mm : 
     let oMesos = computaAgregatPerMes_NONUL(llTickets); //a oMesos --> {"2025-3: 342, 2025-4: 212, etc.}". Mesos sense gasto NO APAREIXEN en CLAU ni en valor (0)-
     console.log(oMesos);
 }
