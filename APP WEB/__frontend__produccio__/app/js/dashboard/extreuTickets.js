@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //--- MOLT IMPORTANT ---
             //----------------------
             posaDatesMinimaImaximaTiket(tickets.llTickets);  //TO DO
-            creaIrellenaBarresInflalyzer(tickets.llTickets);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ LES CARDS!
+            creaIrellenaBarres_histograma_intervalizer(tickets.llTickets);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ LES CARDS!
             contaMesosOnShanFetCompres();
             localStorage.setItem("totsElsTickets", JSON.stringify(tickets.llTickets)); //GUARDO A LOCAL STORAGE LA LLISTA D'OBJECTS (LLISTA TICKETS) PASSO A STRING AMB STRINGIFY!
             //----------------------
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("TICKETS REEXTRETS DEL LOCAL STORAGE");
         let ticketsss = JSON.parse(localStorage.getItem("totsElsTickets"));
         posaDatesMinimaImaximaTiket(ticketsss);  //TO DO
-        creaIrellenaBarresInflalyzer(ticketsss);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ L'INFLALYZER DEL LOCAL STORAGE (SERIALITZO AMB JSON.parse())
+        creaIrellenaBarres_histograma_intervalizer(ticketsss);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ L'INFLALYZER DEL LOCAL STORAGE (SERIALITZO AMB JSON.parse())
         contaMesosOnShanFetCompres();
     }
 });
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //POST: Es tindrà afegit un sistema de barres per a la card del front on a la dreta tindrem 
 // la barra de la compra mes recent i a l'esquerra la barra de la compra menys recent. oMesos quedarà com a variable
 //global!
-function creaIrellenaBarresInflalyzer(llTickets) {
+function creaIrellenaBarres_histograma_intervalizer(llTickets) {
     const contenidorBarres = document.getElementById("wrapperBarres");
     contenidorBarres.innerHTML = "FUNCIONO"; //buido barres de nesis en les cards, si en queden d'anteriors cerques (potser no cal)
                                                         //               aaaa.mm : 
@@ -120,7 +120,7 @@ function creaIrellenaBarresInflalyzer(llTickets) {
     console.log(oMesos);
 }
 
-//PRE: la variable oMesos queda definida com a variable global (cal haver exectuat primer la funcio creaIrellenaBarresInflalyzer()).
+//PRE: la variable oMesos queda definida com a variable global (cal haver exectuat primer la funcio creaIrellenaBarres_histograma_intervalizer()).
 //POST: Passem per memoria la variable nreMesosAmbCompres.
 // NOTA: Aquesta ariable en memòria quedarà utilitzada per la funcio nreMesosCompra_a_DOM() de 
 //       extractorDadesPersistencia_enCarregarPagina.js
@@ -128,7 +128,7 @@ function contaMesosOnShanFetCompres() {
     nreMesosAmbCompres = Object.keys(oMesos).length;
 }
 
-//PRE: El mateix pre que funcio creaIrellenaBarresInflalyzer().
+//PRE: El mateix pre que funcio creaIrellenaBarres_histograma_intervalizer().
 //POST: Retorno "2025-04: 342, 2025-03: 212, ... etc.}". Es torna un parell clau : valor on les claus son els mesos en format aaaa-mm i els valors
 //      son el gasto total agregat per a cada mes.
 //      NOTA: Els mesos en els quals NO HI HA COMPRES son meso sque NO APAREIXEN NI en CLAU ni en valor (0).
