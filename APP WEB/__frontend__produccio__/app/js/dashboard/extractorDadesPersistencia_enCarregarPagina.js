@@ -52,8 +52,8 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
         //OBTENCIÓ DE DADES PER AL SUBTITOL QUE HI HA SOTA DE "Hola NOMBRE USUARIO" (NOMES EN CARREGAR DOM, UN COP)
         const dom_nreTicketsTotalUsuari = document.getElementById("nreTicketsTotalUsuari");
-        dom_nreTicketsTotalUsuari.innerHTML = ""; //XXX TICKETS
-
+        nreTicketsTrobatsAcorreu_a_DOM(dom_nreTicketsTotalUsuari);
+        
         const dom_dataInicialTickets = document.getElementById("dataInicialTickets");
         dataTicketMesAntic_a_DOM(dom_dataInicialTickets);
 
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
         obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html();
         
 
-        //--- TERCERCA CARD TOP ---
+        //--- TERCERA CARD TOP ---
         const dom_nrecompresMesosDiferents = document.getElementById("nreMesosOnShaFetCompra"); 
         nreMesosCompra_a_DOM(dom_nrecompresMesosDiferents);
 
@@ -139,6 +139,25 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 
 });
+
+
+//PRE: passo un element del dom que admet text
+//POST: pren la variable en memòria "nreTicketsTotal" i la posa a l'element del dom que li pertoca (Donat que la variable 
+// mencionada pot tardar un rato a estar disponible  fem servir setInterval)
+function nreTicketsTrobatsAcorreu_a_DOM(dom) {
+    const idIntervalNreTickets = setInterval(() => {
+        //COMPROVO SI LA VARIABLE nreTicketsTotal ja està definida en memoria 
+        // per l'altre script. En cas contrari segueixo mirant
+        if (typeof nreTicketsTotal !== "undefined") {
+            dom.innerHTML =  nreTicketsTotal; //nre entrer;  //ACCESSIBLE GRÀCIES A posaEnMemoriaTicketsTrobatsAcorreu() de extreuTickets.js
+            console.log("lectura nre tickets correcte");
+            clearInterval(idIntervalNreTickets);
+        } else {
+            console.log("caca");
+        }
+    }, 100)
+}
+
 
 //PRE: passo un element del dom que admet text
 //POST: pren la variable en memòria "dataTicketMesAntic" i la posa a l'element del dom. Donat que la variable mencionada pot 
