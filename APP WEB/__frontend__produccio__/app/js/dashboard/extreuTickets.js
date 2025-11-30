@@ -147,7 +147,7 @@ function computaAgregatPerMes_NONUL(llTickets) {
             emplenaTotalPerMes(oMesos, anyMesTicket, anyMes_slidingWindow);
         }
         treuErrorPuntFlotantDeAgregatMensual(oMesos, anyMes_slidingWindow);
-        
+
         //AQUI CALDRAI FER ALGO AIXI COM ---> rellenaBarraMes(contenidorBarres);
     }
     return oMesos;    
@@ -214,16 +214,23 @@ function generaAnyMes_mesAnterior(dataStr) {
 
 
 
-
-
-
+//PRE: llTickets
+//POST: data del ticket mes recent i data del ticket mes antic PASSEN A VARIABLES 
+// GLOBALS de l'aplicació per poder ser usades
 function posaDatesMinimaImaximaTiket(llTickets) {
     //COM QUE ELS ELEMENTS ESTAN ORDENATS PER MONGO DBPODEM ACOTAR EL MES RECENT A PARTIR DELS EXTREMS
-    let dataTicketMesRecent = llTickets[0].data;                    //2025-09-11
-    let dataTicketMesAntic = llTickets[llTickets.length-1].data;    //2023-09-25
-
-    console.log(dataTicketMesRecent);
-    console.log(dataTicketMesAntic);
+    dataTicketMesRecent = aaaammdd_a_ddmmaaaa(llTickets[0].data);                    //2025-09-11
+    dataTicketMesAntic = aaaammdd_a_ddmmaaaa(llTickets[llTickets.length-1].data);    //2023-09-25
     //TO DO POSAR A DOM
+}
 
+//PRE: strDataAnglo: una data string de format aaaa-mm-dd (exemple entrada: 2023-09-25)
+//POST: retorna la mateixa data en format dd/mm/aaaa (exemple sortida: 25/09/2023).
+function aaaammdd_a_ddmmaaaa(strDataAnglo) {
+    ll = strDataAnglo.split("-");
+    aux = ll[0];
+    ll[0] = ll[2];
+    ll[2] = aux;
+    strDataEspanyola = ll.join("/");
+    return strDataEspanyola;
 }

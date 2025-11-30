@@ -55,11 +55,13 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
         dom_nreTicketsTotalUsuari.innerHTML = ""; //XXX TICKETS
 
         const dom_dataInicialTickets = document.getElementById("dataInicialTickets");
-        dom_dataInicialTickets.innerHTML =  "";//"dd/mm/aa";
+        dataTicketMesAntic_a_DOM(dom_dataInicialTickets);
+
+
+                
 
         const dom_dataFinalTickets = document.getElementById("dataFinalTickets");
-        dom_dataFinalTickets.innerHTML =  "";//"DD/MM/AA";
-
+        dataTicketMesRecent_a_DOM(dom_dataFinalTickets);
 
 
         //--- PRIMERA CARD TOP ---
@@ -138,6 +140,38 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 
 });
+
+//PRE: passo un element del dom que admet text
+//POST: pren la variable en memòria "dataTicketMesAntic" i la posa a l'element del dom. Donat que la variable mencionada pot 
+// tardar un rato a estar disponible en arregar la pàgina privada per primer cop fem servir setInterval
+function dataTicketMesAntic_a_DOM(dom) {
+    const idIntervalCercaDataAntiga = setInterval(() => {
+        //COMPROVO SI LA VARIABLE dataTicketMesAntic ja està definida en memoria 
+        // per l'altre script. En cas contrari segueixo mirant
+        if (typeof dataTicketMesAntic !== "undefined") {
+            dom.innerHTML =  dataTicketMesAntic; //"dd/mm/aa";  //ACCESSIBLE GRÀCIES A posaDatesMinimaImaximaTiket() de extreuTickets.js
+            console.log("lectura data correcta");
+            clearInterval(idIntervalCercaDataAntiga);
+        }
+    }, 100)
+}
+
+//PRE: passo un element del dom que admet text
+//POST: pren la variable en memòria "dataTicketMesRecent" i la posa a l'element del dom. Donat que la variable mencionada pot 
+// tardar un rato a estar disponible en arregar la pàgina privada per primer cop fem servir setInterval
+function dataTicketMesRecent_a_DOM(dom) {
+    const idIntervalCercaDataAntiga = setInterval(() => {
+        //COMPROVO SI LA VARIABLE dataTicketMesRecent ja està definida en memoria 
+        //per l'altre script. En cas contrari segueixo mirant
+        if (typeof dataTicketMesRecent !== "undefined") {
+            dom.innerHTML =  dataTicketMesRecent;//"DD/MM/AA";    //dataTicketMesRecent ACCESSIBLE GRÀCIES A posaDatesMinimaImaximaTiket() de extreuTickets.js
+            console.log("lectura data correcta");
+            clearInterval(idIntervalCercaDataAntiga);
+        }
+    }, 100)
+}
+
+
 
 // PRE: rep un array d'objectes amb la forma {"x": data, "y": preu} on x és una data (string o Date) i y és un preu (número).
 // POST: retorna un array amb tres valors booleans: [puja, baixa]
