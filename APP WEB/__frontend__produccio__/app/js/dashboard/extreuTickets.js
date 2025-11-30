@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //----------------------
             posaDatesMinimaImaximaTiket(tickets.llTickets);  //TO DO
             creaIrellenaBarresInflalyzer(tickets.llTickets);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ LES CARDS!
+            contaMesosOnShanFetCompres();
             localStorage.setItem("totsElsTickets", JSON.stringify(tickets.llTickets)); //GUARDO A LOCAL STORAGE LA LLISTA D'OBJECTS (LLISTA TICKETS) PASSO A STRING AMB STRINGIFY!
             //----------------------
             //--- MOLT IMPORTANT ---
@@ -51,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let ticketsss = JSON.parse(localStorage.getItem("totsElsTickets"));
         posaDatesMinimaImaximaTiket(ticketsss);  //TO DO
         creaIrellenaBarresInflalyzer(ticketsss);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ L'INFLALYZER DEL LOCAL STORAGE (SERIALITZO AMB JSON.parse())
+        contaMesosOnShanFetCompres();
     }
 });
 
@@ -108,13 +110,22 @@ document.addEventListener("DOMContentLoaded", () => {
             },*/
 
 //POST: Es tindrà afegit un sistema de barres per a la card del front on a la dreta tindrem 
-// la barra de la compra mes recent i a l'esquerra la barra de la compra menys recent.
+// la barra de la compra mes recent i a l'esquerra la barra de la compra menys recent. oMesos quedarà com a variable
+//global!
 function creaIrellenaBarresInflalyzer(llTickets) {
     const contenidorBarres = document.getElementById("wrapperBarres");
     contenidorBarres.innerHTML = "FUNCIONO"; //buido barres de nesis en les cards, si en queden d'anteriors cerques (potser no cal)
                                                         //               aaaa.mm : 
-    let oMesos = computaAgregatPerMes_NONUL(llTickets); //a oMesos --> {"2025-3: 342, 2025-4: 212, etc.}". Mesos sense gasto NO APAREIXEN en CLAU ni en valor (0)-
+    oMesos = computaAgregatPerMes_NONUL(llTickets); //a oMesos --> {"2025-3: 342, 2025-4: 212, etc.}". Mesos sense gasto NO APAREIXEN en CLAU ni en valor (0)-
     console.log(oMesos);
+}
+
+//PRE: la variable oMesos queda definida com a variable global (cal haver exectuat primer la funcio creaIrellenaBarresInflalyzer()).
+//POST: Passem per memoria la variable nreMesosAmbCompres.
+// NOTA: Aquesta ariable en memòria quedarà utilitzada per la funcio nreMesosCompra_a_DOM() de 
+//       extractorDadesPersistencia_enCarregarPagina.js
+function contaMesosOnShanFetCompres() {
+    nreMesosAmbCompres = Object.keys(oMesos).length;
 }
 
 //PRE: El mateix pre que funcio creaIrellenaBarresInflalyzer().

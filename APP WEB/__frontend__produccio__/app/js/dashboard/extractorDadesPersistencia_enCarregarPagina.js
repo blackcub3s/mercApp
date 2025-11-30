@@ -57,9 +57,6 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
         const dom_dataInicialTickets = document.getElementById("dataInicialTickets");
         dataTicketMesAntic_a_DOM(dom_dataInicialTickets);
 
-
-                
-
         const dom_dataFinalTickets = document.getElementById("dataFinalTickets");
         dataTicketMesRecent_a_DOM(dom_dataFinalTickets);
 
@@ -72,7 +69,9 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
         obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html();
         
 
-
+        //--- TERCERCA CARD TOP ---
+        const dom_nrecompresMesosDiferents = document.getElementById("nreMesosOnShaFetCompra"); 
+        nreMesosCompra_a_DOM(dom_nrecompresMesosDiferents);
 
 
         // -------------------
@@ -160,13 +159,27 @@ function dataTicketMesAntic_a_DOM(dom) {
 //POST: pren la variable en memòria "dataTicketMesRecent" i la posa a l'element del dom. Donat que la variable mencionada pot 
 // tardar un rato a estar disponible en arregar la pàgina privada per primer cop fem servir setInterval
 function dataTicketMesRecent_a_DOM(dom) {
-    const idIntervalCercaDataAntiga = setInterval(() => {
+    const idIntervalCercaDataRecent = setInterval(() => {
         //COMPROVO SI LA VARIABLE dataTicketMesRecent ja està definida en memoria 
         //per l'altre script. En cas contrari segueixo mirant
         if (typeof dataTicketMesRecent !== "undefined") {
             dom.innerHTML =  dataTicketMesRecent;//"DD/MM/AA";    //dataTicketMesRecent ACCESSIBLE GRÀCIES A posaDatesMinimaImaximaTiket() de extreuTickets.js
             console.log("lectura data correcta");
-            clearInterval(idIntervalCercaDataAntiga);
+            clearInterval(idIntervalCercaDataRecent);
+        }
+    }, 100)
+}
+
+//PRE: passo un element del dom que admet text
+//POST: pren la variable en memòria "nreMesosAmbCompres" i la posa a l'element del dom. Donat que la variable mencionada pot 
+// tardar un rato a estar disponible en arregar la pàgina privada per primer copf, em servir setInterval amb cerques periodiques.
+function nreMesosCompra_a_DOM(dom) {
+    const idIntervalMesos = setInterval(() => {
+        //COMPROVO SI LA VARIABLE dataTicketMesRecent ja està definida en memoria 
+        //per l'altre script. En cas contrari segueixo mirant
+        if (typeof nreMesosAmbCompres !== "undefined") {
+            dom.innerHTML =  nreMesosAmbCompres;  //nreMesosAmbCompres ACCESSIBLE GRÀCIES A contaMesosOnShanFetCompres() de extreuTickets.js
+            clearInterval(idIntervalMesos);
         }
     }, 100)
 }
