@@ -101,9 +101,9 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
   -- IMAGEN (ESCALERA) ----- PRIMERA CARD de características*/
 #PRIV_caracteristicasDashboard div:last-child article:first-child > img {width: 70%; padding-top: 2.2em; padding-bottom: 2.2em;}
 /*-- IMAGEN (RAYO) --------- SEGUNDA CARD de características*/
-#PRIV_caracteristicasDashboard div:last-child article:nth-child(2) > img {width: 40%; padding-top: 2.2em; padding-bottom: 1.5em;}
+#PRIV_caracteristicasDashboard div:last-child article:nth-child(2) > img {width: 37%; padding-top: 2.2em; padding-bottom: 1.5em;}
 /*-- IMAGEN (DOLLAR) ---- TERCERA CARD de características*/
-#PRIV_caracteristicasDashboard div:last-child article:last-child > img {width: 63%; padding-top: 1.5em; padding-bottom: 1.7em;}
+#PRIV_caracteristicasDashboard div:last-child article:last-child > img {width: 56%; padding-top: 1.5em; padding-bottom: 1.7em;}
 
 /*-- IMAGEN INFERIOR CARD 2 (CATEGORIA DE PRODUCTE) --------- EXCLUSIVA A SEGUNDA CARD de características del dashboard*/
 #PRIV_caracteristicasDashboard #iconoSegonaCardCATEGORIA > img {width: 7.65em;}
@@ -114,35 +114,63 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 #PRIV_caracteristicasDashboard .cartaDashboard img:hover {transform: scale(var(--aumentoTamanyoEstandar));} /*aumenta de tamaño al pasar por encima de cualquier imagen de las cards*/
 
 /*CONTENIDOR DEL GRÀFIC DE BARRES DE LA TERCERA CARD: DRAFT INICIAL*/
-#PRIV_caracteristicasDashboard div:last-child article:last-child #contenidorGraficBarres {
-    /*background-color: red;*/
-    padding: 0em;
-    margin-top: 1em;
-    height: 6.5em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
-  
+
+/*
+####################################################
+INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP: 
+     - AMB PREUS
+     - BARRES AMB ALTURA DINÀMICA 
+     - AMB MESOS
+####################################################
+*/
+
+#contenidorGraficBarres #wrapperWrappers {
+    font-size: 1em;
 }
 
-/*versio antiga igual de funcional:*/
-/*#PRIV_caracteristicasDashboard div:last-child article:last-child #contenidorGraficBarres #wrapperBarres*/
+#contenidorGraficBarres #wrapperWrappers #wrapperMesets {
+    display: flex;
+    gap: 1em;
+    align-items: flex-end;   /* si quieres que crezcan desde abajo, como en tu gráfico */
+}
+
+
+#contenidorGraficBarres {
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+#contenidorGraficBarres #wrapperWrappers {
+    /*background-color: red;*/
+    
+    padding-top: 1em;
+    height: 4em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
+    
+}
+
 #contenidorGraficBarres #wrapperBarres {
     /*background-color: rgb(255, 255, 255);    */
     display: flex;
     gap: 1em;
     height: 6.5em;  /*IMPORTANT: ESPECIFICO UN ALTURA. QUE ES RELLENARÀ EN MÉS O MENYS PERCENTATGE PER LES COLUMNES .barra APLICADES AL wrapperBarres*/
     align-items: flex-end; /* AIXÒ FA QUE LES BARRES CREIXIN DES DE SOTA*/
-    overflow-x: auto;
+    
 
     scrollbar-width: none;  /* Amago la scroll bar! que nomes voldré mostrar en hover! */
 }
 
-/*#PRIV_caracteristicasDashboard div:last-child article:last-child #contenidorGraficBarres #wrapperBarres .barra*/
+/*VA EN TANDEM AMB padding 
+de barra! Ojo is modifiques
+ un toca l'altre!*/
+.mesBottomBarra {padding: 0em .083em; background-color: red;}
+
 .barra {
     background-color: #697dff5c;
     height: 100%; /*PROGRAMÀTICAMENT CANVIARÉ AQUEST VALOR*/
-    padding: 0em 1.4em;
+    padding: 0em 1.4em; /*Ojo que va en tandem amb mesBottomBarra*/
     border-radius: .5em;
 
-    overflow: hidden;
+    /*overflow: visible;*/
     
 }
 
