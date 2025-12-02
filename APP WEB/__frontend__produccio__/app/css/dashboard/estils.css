@@ -130,7 +130,7 @@ INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP:
 
 #contenidorGraficBarres #wrapperWrappers #wrapperMesets {
     display: flex;
-    gap: 1em;
+    
     align-items: flex-end;   /* si quieres que crezcan desde abajo, como en tu gráfico */
 }
 
@@ -162,7 +162,12 @@ INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP:
 /*VA EN TANDEM AMB padding 
 de barra! Ojo is modifiques
  un toca l'altre!*/
-.mesBottomBarra {padding: 0em .083em; background-color: red;}
+.mesBottomBarra {
+    flex-shrink: 0; /*Aixi faig que no funciini el display: flex i la propietat widht funcioni be!*/
+    width: 3.805em; /*no tocar-ho perquè sino l'etiqueta de mesos es desincronitza amb les barres*/
+    text-align: left;
+}
+
 
 .barra {
     background-color: #697dff5c;
