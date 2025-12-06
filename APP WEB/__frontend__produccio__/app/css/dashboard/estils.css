@@ -163,7 +163,7 @@ INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP:
     
 }
 
-#contenidorGraficBarres #wrapperBarres {
+#contenidorGraficBarres #wrapperWrappers #wrapperBarres {
     /*background-color: rgb(255, 255, 255);    */
     display: flex;
     gap: 1em;
@@ -184,7 +184,6 @@ i per a mesos */
     flex-shrink: 0; /*Aixi faig que no funciini el display: flex i la propietat widht funcioni be!*/
     width: 3.805em; /*no tocar-ho perquè sino l'etiqueta de mesos es desincronitza amb les barres*/
     text-align: left;
-    height: 0em; /*Arreglo l'altura vestigial*/
 }
 
 .ampladaPreus {
@@ -624,9 +623,10 @@ ben definit originariament al figma. El punt de tall és el [[A: PUNT DE TALL MO
     #contenidorGraficBarres #wrapperWrappers {
     /*background-color: red;*/
         position: relative;
-        top: -3em;  /*REGULO EL POSICIONAMENT DEL CONTENIDOR WRAPPER WRAPPERS DEL GRAFIC. IMPORTANT*/
+        top: -1.5em;  /*REGULO EL POSICIONAMENT DEL CONTENIDOR WRAPPER WRAPPERS DEL GRAFIC. IMPORTANT*/
         height: 6em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
     }
+
 
 
 }
