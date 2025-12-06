@@ -1,7 +1,9 @@
 .titulo {font-size: 2.1rem; margin-top: 1rem;}     
 .subtitolSalutacio {font-size: 1.7rem;} 
 
-
+:root {
+    --alturaWrapperBarres: 6.25em; /*MOLT IMPORTANT*/
+}
 
 
 /*######################################
@@ -85,7 +87,7 @@ de la página interna FrontEnd mediante la clase .cartaDashboard*/
     width: 300px; /* Hemos optado para definir las cards con ancho fijo por más control */
     aspect-ratio: 1/1.618; /* Proporción áurea --> 1:618 (ancho:alto) */
     border-radius: 1em;
-    padding: .85em 1.9em 1em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes. OJO: No passar paddding top de .85 o cards 1 i 2 aumenten massa per sota i queden desiguals*/
+    padding: .85em 1.9em 0em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes. OJO: No passar paddding top de .85 o cards 1 i 2 aumenten massa per sota i queden desiguals*/
     box-sizing: border-box; /* Para asegurarse de que el padding no afecte el tamaño */
     box-shadow: 0px 5px 4px rgba(143, 141, 141, 0.3); 
     background: linear-gradient(to bottom, var(--g), var(--r)); /* GRADIENTE YA ESTA HECHO BIEN, NO TOCAR */
@@ -124,7 +126,17 @@ INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP:
 ####################################################
 */
 
+
+
+
+
+
 #contenidorGraficBarres #wrapperWrappers {
+    font-size: 1em;
+}
+
+#contenidorGraficBarres #wrapperWrappers #wrapperPreus {
+    display: flex;
     font-size: 1em;
 }
 
@@ -137,14 +149,17 @@ INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP:
 
 #contenidorGraficBarres {
     overflow-x: auto;
+    /*SI ESTA BEN PROGRAMAT NO EL NECESSITARÀS*/
+    /*overflow-y: hidden; /*Perquè mno hi hagi moviment vertical del grafic (tipo diente suelto)*/
     scrollbar-width: none;
+    position: relative;
 }
 
 #contenidorGraficBarres #wrapperWrappers {
     /*background-color: red;*/
-    
-    padding-top: 1em;
-    height: 4em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
+    position: relative;
+    top: .2em;  /*REGULO EL POSICIONAMENT DEL CONTENIDOR WRAPPER WRAPPERS DEL GRAFIC. IMPORTANT*/
+    height: 6em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
     
 }
 
@@ -152,7 +167,7 @@ INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP:
     /*background-color: rgb(255, 255, 255);    */
     display: flex;
     gap: 1em;
-    height: 6.5em;  /*IMPORTANT: ESPECIFICO UN ALTURA. QUE ES RELLENARÀ EN MÉS O MENYS PERCENTATGE PER LES COLUMNES .barra APLICADES AL wrapperBarres*/
+    height: var(--alturaWrapperBarres);  /*IMPORTANT: ESPECIFICO UN ALTURA. QUE ES RELLENARÀ EN MÉS O MENYS PERCENTATGE PER LES COLUMNES .barra APLICADES AL wrapperBarres*/
     align-items: flex-end; /* AIXÒ FA QUE LES BARRES CREIXIN DES DE SOTA*/
     
 
@@ -161,13 +176,21 @@ INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP:
 
 /*VA EN TANDEM AMB padding 
 de barra! Ojo is modifiques
- un toca l'altre!*/
-.mesBottomBarra {
+ un toca l'altre!
+ 
+Amb això defineixes amplades equitatives per a preus (top de barra)
+i per a mesos */
+.mesBottomBarra, .ampladaPreus {
     flex-shrink: 0; /*Aixi faig que no funciini el display: flex i la propietat widht funcioni be!*/
     width: 3.805em; /*no tocar-ho perquè sino l'etiqueta de mesos es desincronitza amb les barres*/
     text-align: left;
+    height: 0em; /*Arreglo l'altura vestigial*/
 }
 
+.ampladaPreus {
+    position: relative;
+    height: 1.3em;
+}
 
 .barra {
     background-color: #697dff5c;
@@ -179,13 +202,17 @@ de barra! Ojo is modifiques
     
 }
 
-.barra:first-child{height: 100%;}
-.barra:nth-child(2){height: 30%;}
-.barra:nth-child(3){height: 60%;}
-.barra:nth-child(4){height: 90%;}
+/*INICI: ES GENERARÀ PROGRAMÀTICAMENT*/
+.barra:first-child{height: 100%;}    /*altura barra A*/
+.barra:nth-child(2){height: 30%;}    /*altura barra B*/
+.barra:nth-child(3){height: 60%;}    /*altura barra C*/
+.barra:nth-child(4){height: 90%;}    /*altura barra D*/
 
-
-
+.ampladaPreus:first-child {top: 0em;} 
+.ampladaPreus:nth-child(2) {top: calc(var(--alturaWrapperBarres)*(0.70));} /*1 - altura barra B*/
+.ampladaPreus:nth-child(3) {top: calc(var(--alturaWrapperBarres)*(0.40));} /*1 - altura barra C*/
+.ampladaPreus:nth-child(4) {top: calc(var(--alturaWrapperBarres)*(0.10));} /*1 - altura barra D*/
+/*FI HO GENERARÀS PROGRAMÀTICAMENT*/
 
 
 /*ANIMACIONES PARA LAS CARDS [A (hover) i B (animateStyle)]*/
@@ -592,6 +619,13 @@ ben definit originariament al figma. El punt de tall és el [[A: PUNT DE TALL MO
 
     #PRIV_caracteristicasDashboard>div:last-child article {
         margin-top: 2em;
+    }
+
+    #contenidorGraficBarres #wrapperWrappers {
+    /*background-color: red;*/
+        position: relative;
+        top: -3em;  /*REGULO EL POSICIONAMENT DEL CONTENIDOR WRAPPER WRAPPERS DEL GRAFIC. IMPORTANT*/
+        height: 6em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
     }
 
 
