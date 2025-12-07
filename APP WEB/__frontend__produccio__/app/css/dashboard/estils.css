@@ -663,7 +663,29 @@ ben definit originariament al figma. El punt de tall és el [[A: PUNT DE TALL MO
     #contenidorGraficBarres #wrapperWrappers #wrapperMesets {
         height: 1.4em; /*Important: defineixo la distància efectiva entre els mesos I les barres, que varia amb les transformacions de la media query*/
     }
-}
+
+    /*INICI ARREGLO PROBLEMA ESPAIAT DEL GRÀFIC 
+    EN QUERY PER A MÒBILS*/
+    #contenidorGraficBarres #wrapperWrappers #wrapperPreus {
+        height: 0em;
+        position: relative;
+        bottom: 3.3em;
+    }
+
+    #contenidorGraficBarres #wrapperWrappers {
+        position: relative;
+        top: 2em;
+    }
+
+    #contenidorGraficBarres {
+        position: relative;
+        top: -.5em;
+        overflow-y: hidden; /*Fas que no faci el moviment de "dent suelta" en la query de mobils petits*/
+    }
+
+    /*FINAL ARREGLO PROBLEMA ESPAIAT DEL GRÀFIC 
+    EN QUERY PER A MÒBILS*/
+}   
 
 /*MEDIA QUERY PER AL PARAGRAF P (MÒBIL)  */
 @media (max-width: 597px) {
