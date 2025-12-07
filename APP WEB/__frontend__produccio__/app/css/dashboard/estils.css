@@ -182,9 +182,9 @@ de barra! Ojo is modifiques
  
 Amb això defineixes amplades equitatives per a preus (top de barra)
 i per a mesos */
-.mesBottomBarra, .preu {
+.mesAA, .preu {
     flex-shrink: 0; /*Aixi faig que no funciini el display: flex i la propietat widht funcioni be!*/
-    width: 3.805em; /*no tocar-ho perquè sino l'etiqueta de mesos es desincronitza amb les barres*/
+    width: 3.805em; /*no tocar-ho perquè sino l'etiqueta de mesos i preus es desincronitza amb la de les barres*/
     text-align: left;
 }
 
@@ -196,9 +196,9 @@ i per a mesos */
 .barra {
     background-color: #697dff5c;
     height: 100%; /*PROGRAMÀTICAMENT CANVIARÉ AQUEST VALOR*/
-    padding: 0em 1.4em; /*Ojo que va en tandem amb mesBottomBarra*/
+    padding: 0em 1.4em; /*Ojo que va en tandem amb mesAA*/
     border-radius: .5em;
-    /*overflow: visible;*/
+    caret-color: transparent; /*Impedeix que surti el cursor a la barra!*/
     transition: background-color var(--tiempoTransicionEstandar) ease-in-out;
 }
 
