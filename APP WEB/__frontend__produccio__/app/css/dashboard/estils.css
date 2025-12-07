@@ -1,7 +1,9 @@
 .titulo {font-size: 2.1rem; margin-top: 1rem;}     
 .subtitolSalutacio {font-size: 1.7rem;} 
 
-
+:root {
+    --alturaWrapperBarres: 6.25em; /*MOLT IMPORTANT*/
+}
 
 
 /*######################################
@@ -85,7 +87,7 @@ de la página interna FrontEnd mediante la clase .cartaDashboard*/
     width: 300px; /* Hemos optado para definir las cards con ancho fijo por más control */
     aspect-ratio: 1/1.618; /* Proporción áurea --> 1:618 (ancho:alto) */
     border-radius: 1em;
-    padding: .85em 1.9em 1em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes. OJO: No passar paddding top de .85 o cards 1 i 2 aumenten massa per sota i queden desiguals*/
+    padding: .85em 1.9em 0em 1.9em; /*damos espacio entre borde card y su contenido. Con esto tambien empequeñecemos anchura del text e imagenes. OJO: No passar paddding top de .85 o cards 1 i 2 aumenten massa per sota i queden desiguals*/
     box-sizing: border-box; /* Para asegurarse de que el padding no afecte el tamaño */
     box-shadow: 0px 5px 4px rgba(143, 141, 141, 0.3); 
     background: linear-gradient(to bottom, var(--g), var(--r)); /* GRADIENTE YA ESTA HECHO BIEN, NO TOCAR */
@@ -101,9 +103,9 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
   -- IMAGEN (ESCALERA) ----- PRIMERA CARD de características*/
 #PRIV_caracteristicasDashboard div:last-child article:first-child > img {width: 70%; padding-top: 2.2em; padding-bottom: 2.2em;}
 /*-- IMAGEN (RAYO) --------- SEGUNDA CARD de características*/
-#PRIV_caracteristicasDashboard div:last-child article:nth-child(2) > img {width: 40%; padding-top: 2.2em; padding-bottom: 1.5em;}
+#PRIV_caracteristicasDashboard div:last-child article:nth-child(2) > img {width: 37%; padding-top: 2.2em; padding-bottom: 1.5em;}
 /*-- IMAGEN (DOLLAR) ---- TERCERA CARD de características*/
-#PRIV_caracteristicasDashboard div:last-child article:last-child > img {width: 63%; padding-top: 1.5em; padding-bottom: 1.7em;}
+#PRIV_caracteristicasDashboard div:last-child article:last-child > img {width: 56%; padding-top: 1.5em; padding-bottom: 1.7em;}
 
 /*-- IMAGEN INFERIOR CARD 2 (CATEGORIA DE PRODUCTE) --------- EXCLUSIVA A SEGUNDA CARD de características del dashboard*/
 #PRIV_caracteristicasDashboard #iconoSegonaCardCATEGORIA > img {width: 7.65em;}
@@ -112,6 +114,120 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 /*DEFINIMOS HOVERS PER LAS IMAGENES DE LAS CARDS DE CARACTERÍSTICAS DEL DASHBOARD*/
 #PRIV_caracteristicasDashboard .cartaDashboard img {transition: transform var(--tiempoTransicionEstandar) ease-in-out;/*para el hover*/}
 #PRIV_caracteristicasDashboard .cartaDashboard img:hover {transform: scale(var(--aumentoTamanyoEstandar));} /*aumenta de tamaño al pasar por encima de cualquier imagen de las cards*/
+
+/*CONTENIDOR DEL GRÀFIC DE BARRES DE LA TERCERA CARD: DRAFT INICIAL*/
+
+
+
+
+
+
+/*
+########################################################
+# INICI SISTEMA INTERVALYZER DE LA TERCERCA CARD TOP: 
+# QUE MOSTRA GASTOS TOTALS ACUMULATS PER MES EN UN 
+# GRAFIC AMB:
+#                                                        
+#     - BARRES AMB ALTURA VARIAble                     
+#     - AMB PREUS D'ALTURA EN FUNCIÓ DE L'ALTURA DE LES BARRES
+#     - AMB MESOS EN FORMAT mesAA                       
+########################################################*/
+
+#contenidorGraficBarres #wrapperWrappers {
+    font-size: 1em;
+}
+
+#contenidorGraficBarres #wrapperWrappers #wrapperPreus {
+    display: flex;
+    font-size: 1em;
+}
+
+#contenidorGraficBarres #wrapperWrappers #wrapperMesets {
+    display: flex;
+    
+    align-items: flex-end;   /* si quieres que crezcan desde abajo, como en tu gráfico */
+}
+
+
+#contenidorGraficBarres {
+    overflow-x: auto;
+    /*SI ESTA BEN PROGRAMAT NO EL NECESSITARÀS*/
+    /*overflow-y: hidden; /*Perquè mno hi hagi moviment vertical del grafic (tipo diente suelto)*/
+    scrollbar-width: none;
+    position: relative;
+}
+
+#contenidorGraficBarres #wrapperWrappers {
+    /*background-color: red;*/
+    position: relative;
+    top: .2em;  /*REGULO EL POSICIONAMENT DEL CONTENIDOR WRAPPER WRAPPERS DEL GRAFIC. IMPORTANT*/
+    height: 6em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
+    
+}
+
+#contenidorGraficBarres #wrapperWrappers #wrapperBarres {
+    /*background-color: rgb(255, 255, 255);    */
+    display: flex;
+    gap: 1em;
+    height: var(--alturaWrapperBarres);  /*IMPORTANT: ESPECIFICO UN ALTURA. QUE ES RELLENARÀ EN MÉS O MENYS PERCENTATGE PER LES COLUMNES .barra APLICADES AL wrapperBarres*/
+    align-items: flex-end; /* AIXÒ FA QUE LES BARRES CREIXIN DES DE SOTA*/
+    
+
+    scrollbar-width: none;  /* Amago la scroll bar! que nomes voldré mostrar en hover! */
+}
+
+/*VA EN TANDEM AMB padding 
+de barra! Ojo is modifiques
+ un toca l'altre!
+ 
+Amb això defineixes amplades equitatives per a preus (top de barra)
+i per a mesos */
+.mesAA, .preu {
+    flex-shrink: 0; /*Aixi faig que no funciini el display: flex i la propietat widht funcioni be!*/
+    width: 3.805em; /*no tocar-ho perquè sino l'etiqueta de mesos i preus es desincronitza amb la de les barres*/
+    text-align: left;
+}
+
+.preu {
+    position: relative;
+    height: 1.3em;
+}
+
+.barra {
+    background-color: #697dff5c;
+    height: 100%; /*PROGRAMÀTICAMENT CANVIARÉ AQUEST VALOR*/
+    padding: 0em 1.4em; /*Ojo que va en tandem amb mesAA*/
+    border-radius: .5em;
+    caret-color: transparent; /*Impedeix que surti el cursor a la barra!*/
+    transition: background-color var(--tiempoTransicionEstandar) ease-in-out;
+}
+
+.barra:hover {
+    background-color: #1932d55c;
+}
+
+/*INICI: ES GENERARÀ PROGRAMÀTICAMENT*/
+.barra:first-child{height: 100%;}    /*altura barra A*/
+.barra:nth-child(2){height: 30%;}    /*altura barra B*/
+.barra:nth-child(3){height: 60%;}    /*altura barra C*/
+.barra:nth-child(4){height: 90%;}    /*altura barra D*/
+
+.preu:first-child {top: 0em;} 
+.preu:nth-child(2) {top: calc(var(--alturaWrapperBarres)*(0.70));} /*1 - altura barra B*/
+.preu:nth-child(3) {top: calc(var(--alturaWrapperBarres)*(0.40));} /*1 - altura barra C*/
+.preu:nth-child(4) {top: calc(var(--alturaWrapperBarres)*(0.10));} /*1 - altura barra D*/
+/*FI HO GENERARÀS PROGRAMÀTICAMENT*/
+
+/*########################################################
+# FINAL SISTEMA INTERVALYZER DE LA TERCERCA CARD TOP: 
+# QUE MOSTRA GASTOS TOTALS ACUMULATS PER MES EN UN 
+# GRAFIC AMB:
+#                                                        
+#     - BARRES AMB ALTURA VARIAble                     
+#     - AMB PREUS D'ALTURA EN FUNCIÓ DE L'ALTURA DE LES BARRES
+#     - AMB MESOS EN FORMAT mesAA                       
+########################################################*/
+
 
 
 
@@ -521,6 +637,16 @@ ben definit originariament al figma. El punt de tall és el [[A: PUNT DE TALL MO
         margin-top: 2em;
     }
 
+    #contenidorGraficBarres #wrapperWrappers {
+    /*background-color: red;*/
+        position: relative;
+        top: -1.5em;  /*REGULO EL POSICIONAMENT DEL CONTENIDOR WRAPPER WRAPPERS DEL GRAFIC. IMPORTANT*/
+        height: 6em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
+    }
+
+    #contenidorGraficBarres #wrapperWrappers #wrapperMesets {
+        height: 1.4em; /*Important: defineixo la distància efectiva entre els mesos I les barres, que varia amb les transformacions de la media query*/
+    }
 
 }
 
@@ -537,7 +663,32 @@ ben definit originariament al figma. El punt de tall és el [[A: PUNT DE TALL MO
         margin-top: 2em;
     }
 
-}
+    #contenidorGraficBarres #wrapperWrappers #wrapperMesets {
+        height: 1.4em; /*Important: defineixo la distància efectiva entre els mesos I les barres, que varia amb les transformacions de la media query*/
+    }
+
+    /*INICI ARREGLO PROBLEMA ESPAIAT DEL GRÀFIC 
+    EN QUERY PER A MÒBILS*/
+    #contenidorGraficBarres #wrapperWrappers #wrapperPreus {
+        height: 0em;
+        position: relative;
+        bottom: 3.3em;
+    }
+
+    #contenidorGraficBarres #wrapperWrappers {
+        position: relative;
+        top: 2em;
+    }
+
+    #contenidorGraficBarres {
+        position: relative;
+        top: -.5em;
+        overflow-y: hidden; /*Fas que no faci el moviment de "dent suelta" en la query de mobils petits*/
+    }
+
+    /*FINAL ARREGLO PROBLEMA ESPAIAT DEL GRÀFIC 
+    EN QUERY PER A MÒBILS*/
+}   
 
 /*MEDIA QUERY PER AL PARAGRAF P (MÒBIL)  */
 @media (max-width: 597px) {

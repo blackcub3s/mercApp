@@ -32,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
             //----------------------
             //--- MOLT IMPORTANT ---
             //----------------------
-            posaDatesMinimaImaximaTiket(tickets.llTickets);  //TO DO
+            posaEnMemoriaTicketsTrobatsAcorreu(); //TO DO
+            posaDatesMinimaImaximaTiket(tickets.llTickets);
             creaIrellenaBarres_histograma_intervalizer(tickets.llTickets);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ LES CARDS!
             contaMesosOnShanFetCompres();
             localStorage.setItem("totsElsTickets", JSON.stringify(tickets.llTickets)); //GUARDO A LOCAL STORAGE LA LLISTA D'OBJECTS (LLISTA TICKETS) PASSO A STRING AMB STRINGIFY!
@@ -50,7 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (llTicketsLocalStorage != null) {
         console.log("TICKETS REEXTRETS DEL LOCAL STORAGE");
         let ticketsss = JSON.parse(localStorage.getItem("totsElsTickets"));
-        posaDatesMinimaImaximaTiket(ticketsss);  //TO DO
+        posaEnMemoriaTicketsTrobatsAcorreu(); //TO DO
+        posaDatesMinimaImaximaTiket(ticketsss);
         creaIrellenaBarres_histograma_intervalizer(ticketsss);  //AQUESTA FUNCIÓ ES LA QUE ENS RELLENARÀ L'INFLALYZER DEL LOCAL STORAGE (SERIALITZO AMB JSON.parse())
         contaMesosOnShanFetCompres();
     }
@@ -114,11 +116,36 @@ document.addEventListener("DOMContentLoaded", () => {
 //global!
 function creaIrellenaBarres_histograma_intervalizer(llTickets) {
     const contenidorBarres = document.getElementById("wrapperBarres");
-    contenidorBarres.innerHTML = "FUNCIONO"; //buido barres de nesis en les cards, si en queden d'anteriors cerques (potser no cal)
+    //contenidorBarres.innerHTML = "FUNCIONO"; //buido barres de nesis en les cards, si en queden d'anteriors cerques (potser no cal)
                                                         //               aaaa.mm : 
     oMesos = computaAgregatPerMes_NONUL(llTickets); //a oMesos --> {"2025-3: 342, 2025-4: 212, etc.}". Mesos sense gasto NO APAREIXEN en CLAU ni en valor (0)-
     console.log(oMesos);
 }
+
+
+//PRE: la variable de local storage totsElsTickets existeix (o s'espera que existeixi en un futur proper).
+//POST: nreTicketsJson passa a formar part de variable global i aquesta conté el nombre TOTAL de tickets (enter) que l'usuari ha pujat al sistema
+//    -   NOTA: Aquesta variable serà utilitzada per nreTicketsTrobatsAcorreu_a_DOM()  de 
+//    -   extractorDadesPersistencia_enCarregarPagina.js
+//NOTA: FUNCIO MILLORADA PER XAT GPT
+function posaEnMemoriaTicketsTrobatsAcorreu() {
+    const idInterval = setInterval(() => {
+        try {
+            const json = localStorage.getItem("totsElsTickets");
+
+            if (json !== null) {
+                const parsed = JSON.parse(json);
+                nreTicketsTotal = Array.isArray(parsed) ? parsed.length : 0;
+                clearInterval(idInterval);
+            }
+        } catch (e) {
+            // localStorage NO disponible — seguimos intentando
+            console.warn("localStorage no accesible todavía");
+        }
+    }, 100);
+}
+
+
 
 //PRE: la variable oMesos queda definida com a variable global (cal haver exectuat primer la funcio creaIrellenaBarres_histograma_intervalizer()).
 //POST: Passem per memoria la variable nreMesosAmbCompres.
