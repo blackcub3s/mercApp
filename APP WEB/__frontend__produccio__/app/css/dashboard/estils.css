@@ -198,9 +198,12 @@ i per a mesos */
     height: 100%; /*PROGRAMÀTICAMENT CANVIARÉ AQUEST VALOR*/
     padding: 0em 1.4em; /*Ojo que va en tandem amb mesBottomBarra*/
     border-radius: .5em;
-
     /*overflow: visible;*/
-    
+    transition: background-color var(--tiempoTransicionEstandar) ease-in-out;
+}
+
+.barra:hover {
+    background-color: #1932d55c;
 }
 
 /*INICI: ES GENERARÀ PROGRAMÀTICAMENT*/
