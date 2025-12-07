@@ -117,19 +117,21 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 
 /*CONTENIDOR DEL GRÀFIC DE BARRES DE LA TERCERA CARD: DRAFT INICIAL*/
 
+
+
+
+
+
 /*
-####################################################
-INICI SISTEMA INFLALYZER DE LA TERCERCA CARD TOP: 
-     - AMB PREUS
-     - BARRES AMB ALTURA DINÀMICA 
-     - AMB MESOS
-####################################################
-*/
-
-
-
-
-
+########################################################
+# INICI SISTEMA INTERVALYZER DE LA TERCERCA CARD TOP: 
+# QUE MOSTRA GASTOS TOTALS ACUMULATS PER MES EN UN 
+# GRAFIC AMB:
+#                                                        
+#     - BARRES AMB ALTURA VARIAble                     
+#     - AMB PREUS D'ALTURA EN FUNCIÓ DE L'ALTURA DE LES BARRES
+#     - AMB MESOS EN FORMAT mesAA                       
+########################################################*/
 
 #contenidorGraficBarres #wrapperWrappers {
     font-size: 1em;
@@ -212,6 +214,18 @@ i per a mesos */
 .preu:nth-child(3) {top: calc(var(--alturaWrapperBarres)*(0.40));} /*1 - altura barra C*/
 .preu:nth-child(4) {top: calc(var(--alturaWrapperBarres)*(0.10));} /*1 - altura barra D*/
 /*FI HO GENERARÀS PROGRAMÀTICAMENT*/
+
+/*########################################################
+# FINAL SISTEMA INTERVALYZER DE LA TERCERCA CARD TOP: 
+# QUE MOSTRA GASTOS TOTALS ACUMULATS PER MES EN UN 
+# GRAFIC AMB:
+#                                                        
+#     - BARRES AMB ALTURA VARIAble                     
+#     - AMB PREUS D'ALTURA EN FUNCIÓ DE L'ALTURA DE LES BARRES
+#     - AMB MESOS EN FORMAT mesAA                       
+########################################################*/
+
+
 
 
 /*ANIMACIONES PARA LAS CARDS [A (hover) i B (animateStyle)]*/
