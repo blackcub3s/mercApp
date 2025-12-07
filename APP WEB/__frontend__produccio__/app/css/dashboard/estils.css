@@ -180,13 +180,13 @@ de barra! Ojo is modifiques
  
 Amb això defineixes amplades equitatives per a preus (top de barra)
 i per a mesos */
-.mesBottomBarra, .ampladaPreus {
+.mesBottomBarra, .preu {
     flex-shrink: 0; /*Aixi faig que no funciini el display: flex i la propietat widht funcioni be!*/
     width: 3.805em; /*no tocar-ho perquè sino l'etiqueta de mesos es desincronitza amb les barres*/
     text-align: left;
 }
 
-.ampladaPreus {
+.preu {
     position: relative;
     height: 1.3em;
 }
@@ -207,10 +207,10 @@ i per a mesos */
 .barra:nth-child(3){height: 60%;}    /*altura barra C*/
 .barra:nth-child(4){height: 90%;}    /*altura barra D*/
 
-.ampladaPreus:first-child {top: 0em;} 
-.ampladaPreus:nth-child(2) {top: calc(var(--alturaWrapperBarres)*(0.70));} /*1 - altura barra B*/
-.ampladaPreus:nth-child(3) {top: calc(var(--alturaWrapperBarres)*(0.40));} /*1 - altura barra C*/
-.ampladaPreus:nth-child(4) {top: calc(var(--alturaWrapperBarres)*(0.10));} /*1 - altura barra D*/
+.preu:first-child {top: 0em;} 
+.preu:nth-child(2) {top: calc(var(--alturaWrapperBarres)*(0.70));} /*1 - altura barra B*/
+.preu:nth-child(3) {top: calc(var(--alturaWrapperBarres)*(0.40));} /*1 - altura barra C*/
+.preu:nth-child(4) {top: calc(var(--alturaWrapperBarres)*(0.10));} /*1 - altura barra D*/
 /*FI HO GENERARÀS PROGRAMÀTICAMENT*/
 
 
