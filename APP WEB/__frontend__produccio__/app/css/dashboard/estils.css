@@ -153,8 +153,13 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
     overflow-x: auto;
     /*SI ESTA BEN PROGRAMAT NO EL NECESSITARÀS*/
     /*overflow-y: hidden; /*Perquè mno hi hagi moviment vertical del grafic (tipo diente suelto)*/
-    scrollbar-width: none;
+    scrollbar-width: thin;
     position: relative;
+    scrollbar-color: rgba(0,0,0,0.5) transparent; /* aconsegueixo que el fons no surti de color blanc*/
+}
+
+#contenidorGraficBarres:not(:hover) {
+    scrollbar-color: rgba(0,0,0,0) transparent; /* hide scrollbar */
 }
 
 #contenidorGraficBarres #wrapperWrappers {
