@@ -34,21 +34,35 @@ document.addEventListener("DOMContentLoaded", () => {
 function oMesos_a_graficBarres_DOM(domPreus, domBarres, domMesets) {
     const idIntervalBarres = setInterval(() => {
         //COMPROVO SI LA VARIABLE oMesos ja està definida en memoria per l'altre script. En cas contrari segueixo mirant
-        if (typeof oMesos !== "undefined") {
-            console.log("lectura oMesos correcta");
-            afegeixMesosSenseGast(oMesos); //no caldria passar si no volgues perque es variable global
-
-
-
-
+        if (typeof oMesos !== "undefined") { //lectura oMesos correcta
+            auxiliar(oMesos, domPreus, domBarres, domMesets);
             clearInterval(idIntervalBarres);
-        } else {
-            console.log("no definida!");
         }
     }, 100)
 }
 
+//PRE: oMesos, el dict de mesos; domPreus, dom Barres, domMesets: els tres elements del dom corresponents.
+//POST: to do (les dades de oMesosNOU al dom)
+//NOTA: oMesos es variable global, no caldria passar-la per parametre. pero ho faig per claretat.
+function auxiliar(oMesos, domPreus, domBarres, domMesets) {
+    const oMesosNOU = afegeixMesosSenseGast(oMesos); //oMesosNOU és com oMesos pero amb els mesos sense gastos afegits en clau i valor.
+    const clausMesos = Object.keys(oMesosNOU).sort().reverse(); //m'asseguro que les claus estan ordenades (ojo amb els navegadors)
+    
+    console.log(oMesosNOU);
+    console.log(clausMesos);
+
+    // -----------------------
+    // to do aqui
+    // CONTINUAR TRACTANT oMesosNou i clusMesos. Recorre clausMesos
+    // i passa les claus a oMesosNOU per trobar els valors i ves enxufant
+    //al dom
+    //-------------------------
+
+
+}
+
 //PRE: oMesos conté el diccionari {2025-09: 79.47, 2025-08: 11.54, 2025-06: 93.48, 2025-04: 167.97, 2025-03: 174.12, …}
+//POST: RETORNA oMesosNOU conté el diccionari amb els mesos sense gast entre el primer i ultim mes de oMesos.
 function afegeixMesosSenseGast(oMesos) {
     const oMesosNOU = {}; //SERA UNA COPIA DE oMesos no un alias
     Object.assign(oMesosNOU, oMesos); //fem la copia
@@ -58,23 +72,18 @@ function afegeixMesosSenseGast(oMesos) {
     for (let i = 0; i < clausMesos.length - 1; ++i) {
 
         let mesActual = clausMesos[i];
-        let mesAnterior = obtenerMesAnterior(mesActual);
+        let mesAnterior = obtenirMesPrevi(mesActual);
         let mesSeguent = clausMesos[i+1];
 
-        
-        //AQUEST while recorre del mes més antic fins al mes més recent.
-        //posant els mesos faltant sense gasto a oMesosNOU (ja que a oMesos no hi eren).
-        //NOTA: condicio de finalitzacio es arribar al mes més recent i es depenent de l'ordenacio
-        //de oMesosNOU.
+        //AQUEST while recorre del mes més antic fins al mes més recent. posant els mesos 
+        //faltant sense gasto a oMesosNOU (ja que a oMesos no hi eren).
+        //NOTA: condicio de finalitzacio es arribar al mes més recent i es depenent de l'ordenacio de oMesosNOU.
         while (mesActual != mesMesRecent && mesSeguent !== mesAnterior) {
             oMesosNOU[mesAnterior] = 0;
-            mesAnterior = obtenerMesAnterior(mesAnterior);
+            mesAnterior = obtenirMesPrevi(mesAnterior);
         }
     }
-
-    console.log("#################");
-    console.log(oMesosNOU);
-    console.log("#################");
+    return oMesosNOU;
 }
 
 //FUNCIO CREADA AMB XAT GPT. PROMPT:
@@ -135,7 +144,7 @@ function aaaamm__a__mesAA(aaaamm) {
 
 //Hazme otra funcion que dado un mes con formato aaaa-mm 
 //me devuelva el mes con formato aaaa-mm inmediatamente anterior.
-function obtenerMesAnterior(aaaamm) {
+function obtenirMesPrevi(aaaamm) {
     // Separar año y mes
     let [anyo, mes] = aaaamm.split("-").map(Number);
 
