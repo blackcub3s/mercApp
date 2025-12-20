@@ -36,30 +36,7 @@ function oMesos_a_graficBarres_DOM(domPreus, domBarres, domMesets) {
         //COMPROVO SI LA VARIABLE oMesos ja està definida en memoria per l'altre script. En cas contrari segueixo mirant
         if (typeof oMesos !== "undefined") {
             console.log("lectura oMesos correcta");
-            
-            const oMesosNOU = {}; //SERA UNA COPIA DE oMesos no un alias
-            Object.assign(oMesosNOU, oMesos); //fem la copia
-
-            let clausMesos = Object.keys(oMesosNOU);
-            let i = 0;
-            let ultimMes = oMesosNOU[Object.keys(oMesosNOU).length - 1];
-            while (i < clausMesos.length - 1) {
-
-                let mesActual = clausMesos[i];
-                let mesAnterior = obtenerMesAnterior(mesActual);
-                let mesSeguent = clausMesos[i+1];
-
-                if (mesSeguent !== mesAnterior) {
-                    oMesosNOU[mesAnterior] = 0;
-                    //mesAnterior = obtenerMesAnterior(mesAnterior);
-                }
-
-                ++i;
-            }
-
-            console.log("#################");
-            console.log(oMesosNOU);
-            console.log("#################");
+            afegeixMesosSenseGast(oMesos); //no caldria passar si no volgues perque es variable global
 
 
 
@@ -71,6 +48,34 @@ function oMesos_a_graficBarres_DOM(domPreus, domBarres, domMesets) {
     }, 100)
 }
 
+//PRE: oMesos conté el diccionari {2025-09: 79.47, 2025-08: 11.54, 2025-06: 93.48, 2025-04: 167.97, 2025-03: 174.12, …}
+function afegeixMesosSenseGast(oMesos) {
+    const oMesosNOU = {}; //SERA UNA COPIA DE oMesos no un alias
+    Object.assign(oMesosNOU, oMesos); //fem la copia
+
+    let clausMesos = Object.keys(oMesosNOU).sort().reverse(); //me n'asseguro que les claus estan ordenades, pot canviar entre navegadors
+    let mesMesRecent = Object.keys(oMesos)[0]; //tallarà la iteracio del while aniuat (per això ho ordeno, per torbar exactament EL MÉS MES RECENT)
+    for (let i = 0; i < clausMesos.length - 1; ++i) {
+
+        let mesActual = clausMesos[i];
+        let mesAnterior = obtenerMesAnterior(mesActual);
+        let mesSeguent = clausMesos[i+1];
+
+        
+        //AQUEST while recorre del mes més antic fins al mes més recent.
+        //posant els mesos faltant sense gasto a oMesosNOU (ja que a oMesos no hi eren).
+        //NOTA: condicio de finalitzacio es arribar al mes més recent i es depenent de l'ordenacio
+        //de oMesosNOU.
+        while (mesActual != mesMesRecent && mesSeguent !== mesAnterior) {
+            oMesosNOU[mesAnterior] = 0;
+            mesAnterior = obtenerMesAnterior(mesAnterior);
+        }
+    }
+
+    console.log("#################");
+    console.log(oMesosNOU);
+    console.log("#################");
+}
 
 //FUNCIO CREADA AMB XAT GPT. PROMPT:
 
