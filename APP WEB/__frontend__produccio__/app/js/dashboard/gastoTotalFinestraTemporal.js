@@ -59,8 +59,8 @@ function auxiliar(oMesos, domPreus, domBarres, domMesets) {
     //-------------------------
 
     aux_cardIntervalizer__POSAMESOS(clausMesos, domMesets);
-    //aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres);  //TO DO
-    //aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domBarres, domPreus);  //PER ALTURES domPreus has d'agafar propietat de domBarres
+    let arrAlturesBarres = aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres);  //TO DO
+    //aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domPreus, arrAlturesBarres);  //PER ALTURES domPreus has d'agafar propietat de domBarres
 
     //-------------------------
     //FINAL to do aqui
@@ -111,6 +111,82 @@ function aux_cardIntervalizer__POSAMESOS(clausMesos, domMesets) {
         domMesets.appendChild(articleMes); //AFEGEIXO DINS EL SECTION "wrapperMesets" DEL DOM:
     }
 }
+
+//PRE:  - clausMesos: ùn array extret de les clasus de oMesosNOU --> exemple: ['2025-04', '2025-03', '2025-02', '2025-01', ... ,  '2023-09']
+//      - oMesosNOU : un object amb parells clau valor de mes i gastos per mes --> exemple: {2025-04: 167.97, 2025-03: 174.12, 2025-02: 244.35, 2025-01: 140.45, … ,  2023-09: 13.71} 
+//      - domBarres : l'element section del dom que té per id "wrapperBarres" i que contindrà les barres representades amb "articles" de més o menys altura segons el preu de cada mes
+//POST: 
+//     - arrAlturesBarres: 
+//          un array CORRELATIU ALS ELEMENTS DE clausMesos. Cada un dels seus elements és un valor de proporció p_i tal que 
+//          0 <= p_i <= 1, on p_i denota proporció d'altura assignada a cada valor de gast de oMesosNOU -->
+//          --> exemple:  [0.687, 0.712, 1, 0.574, ... , 0.056] 
+//          -------------------------------------------------------------------------------------------------------
+//          NOTA: el valor màxim de gast mensual té una p_i = 1. I valors de 0 euros gastats en un mes tindràn p_i = 0
+//ACCIONS: 
+//          AQUESTA FUNCIÓN Es defineixen les barres (articles) amb l'altura variable
+//          dins del section de id "wrapperBarres" de dashboard.html.
+//          Afegint tants articles amb class barra com a fills com elements hi hagi dins de clausMesos:
+//              <article class = "barra"></article>. 
+//          TAMBÉ es posen les altrues variables a partir dels càlculs de proporció explicats dins la funció.
+//          substituint les línes de CSS que ara funcionaràn de forma programàtica
+            /*
+                .barra:first-child{height: 100%;}
+                .barra:nth-child(2){height: 30%;}
+                .barra:nth-child(3){height: 60%;}
+                .barra:nth-child(4){height: 90%;}
+            */
+            
+function aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres) {
+
+    // TROBO EL GASTO DEL MES ES AMB MÉS GASTOS DINS 
+    // DE oMesosNOU. Es trobarà dins maxGast acabat el bucle
+    let maxGast = 0; 
+    for (const clauMes of clausMesos) {
+        if (oMesosNOU[clauMes] > maxGast) {
+            maxGast = oMesosNOU[clauMes];
+        }
+    }
+
+    // CREO UN ARRAY CORRELATIU A L'ARRAU clausMesos amb el percentatge d'altura. 
+    // Aquest array contindrà les altures de les barres.
+    // per definir l'altura de cada barra trobarem la proporció P ièssima P_i 
+    // en tant per 1 RESOLENT L'EQUACIÓ DE PRIMER GRAU on l'incògnita serà P_i:
+    //
+    //      (P_i/gast_i = 1/maxGast) --> P_i = gast_i*(1/maxGast)
+    //
+    //  on trobem:
+    //
+    //   - gast_i:  es el cost total del mes ièssim
+    //   - P_i:     es la proporció assignada a cada mes amb 0 <= P_i <= 100.
+    //   - maxGast: es el mes amb gasto màxim, que tindrà una proporció P_i = 1 (100% de height! La barra més alta)
+    arrAlturesBarres = [];
+    for (const clauMes of clausMesos) {
+        let gast_i = oMesosNOU[clauMes];
+        let P_i = gast_i*(1/maxGast);
+        arrAlturesBarres.push(P_i);
+    }
+    console.log(arrAlturesBarres);
+
+    //ARA POSO: A wrapperBarres els 
+    // <article class = "barra"></article> 
+    // necessaris, tants com claus hi hagi a clausMesos.
+    for (const clauMes of clausMesos) {
+        const articleBarra = document.createElement("article"); //CREO UN NODE ARTICLE
+        articleBarra.setAttribute("class","barra"); //defineixo les dues classes que vull
+        domBarres.appendChild(articleBarra); //AFEGEIXO DINS EL SECTION "wrapperMesets" DEL DOM:
+    }
+
+    //ACTE SEGUIT: defineixo l'altura dels articles (barres), un per un programàticament
+    // en substitució del CSS de estils.css -->  .barra:nth-child(i)
+    const articlesBarres = domBarres.children;
+    for (let i = 0; i < articlesBarres.length; ++i) {
+        articlesBarres[i].style.height = (arrAlturesBarres[i]*100)+"%";
+    }
+
+    return arrAlturesBarres;
+}
+
+
 
 //FUNCIO CREADA AMB XAT GPT. PROMPT:
 

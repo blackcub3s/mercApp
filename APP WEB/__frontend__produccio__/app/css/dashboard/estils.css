@@ -212,10 +212,11 @@ i per a mesos */
 }
 
 /*INICI: ES GENERARÀ PROGRAMÀTICAMENT*/
-.barra:first-child{height: 100%;}    /*altura barra A*/
-.barra:nth-child(2){height: 30%;}    /*altura barra B*/
-.barra:nth-child(3){height: 60%;}    /*altura barra C*/
-.barra:nth-child(4){height: 90%;}    /*altura barra D*/
+
+/*.barra:first-child{height: 100%;}*/    /*altura barra A*/
+/*.barra:nth-child(2){height: 30%;}*/    /*altura barra B*/
+/*.barra:nth-child(3){height: 60%;}*/    /*altura barra C*/
+/*.barra:nth-child(4){height: 90%;}*/    /*altura barra D*/
 
 .preu:first-child {top: 0em;} 
 .preu:nth-child(2) {top: calc(var(--alturaWrapperBarres)*(0.70));} /*1 - altura barra B*/
