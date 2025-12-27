@@ -75,7 +75,6 @@ function afegeixMesosSenseGast(oMesos) {
     Object.assign(oMesosNOU, oMesos); //fem la copia
 
     let clausMesos = Object.keys(oMesosNOU).sort().reverse(); //me n'asseguro que les claus estan ordenades, pot canviar entre navegadors
-    let mesMesRecent = Object.keys(oMesos)[0]; //tallarà la iteracio del while aniuat (per això ho ordeno, per torbar exactament EL MÉS MES RECENT)
     for (let i = 0; i < clausMesos.length - 1; ++i) {
 
         let mesActual = clausMesos[i];
