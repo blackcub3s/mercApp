@@ -58,6 +58,13 @@ function auxiliar(oMesos, domPreus, domBarres, domMesets) {
     //al dom
     //-------------------------
 
+    aux_cardIntervalizer__POSAMESOS(clausMesos, domMesets);
+    //aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres);  //TO DO
+    //aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domBarres, domPreus);  //PER ALTURES domPreus has d'agafar propietat de domBarres
+
+    //-------------------------
+    //FINAL to do aqui
+    //-------------------------
 
 }
 
@@ -78,12 +85,32 @@ function afegeixMesosSenseGast(oMesos) {
         //AQUEST while recorre del mes més antic fins al mes més recent. posant els mesos 
         //faltant sense gasto a oMesosNOU (ja que a oMesos no hi eren).
         //NOTA: condicio de finalitzacio es arribar al mes més recent i es depenent de l'ordenacio de oMesosNOU.
-        while (mesActual != mesMesRecent && mesSeguent !== mesAnterior) {
+        while (mesSeguent !== mesAnterior) {
             oMesosNOU[mesAnterior] = 0;
             mesAnterior = obtenirMesPrevi(mesAnterior);
         }
     }
     return oMesosNOU;
+}
+
+
+//funcio que posa al DOM els mesos que conté els mesos de la card a partir de un array "clausMesos" que conté les claus
+//ordenades per ordre cronològic invers de l'objecte oMesosNou. 
+// Ho farà rellenant programàticament <articles> dins el section del dashboard.html amb id wrapperMesets. En context rellenarà això ***
+/*
+    <section id = "wrapperMesets"> 
+        <article class = "mesAA colorBlauSortidaDades">feb25</article>     <---- relleno això ***
+        <article class = "mesAA colorBlauSortidaDades">mar25</article>     <---- relleno això ***
+        [...]
+    </section>
+*/
+function aux_cardIntervalizer__POSAMESOS(clausMesos, domMesets) {
+    for (const clauMes of clausMesos) {
+        const articleMes = document.createElement("article"); //CREO UN NODE ARTICLE
+        articleMes.setAttribute("class","mesAA colorBlauSortidaDades"); //defineixo les dues classes que vull
+        articleMes.textContent = aaaamm__a__mesAA(clauMes); //poso el mes feb25, per exemple:
+        domMesets.appendChild(articleMes); //AFEGEIXO DINS EL SECTION "wrapperMesets" DEL DOM:
+    }
 }
 
 //FUNCIO CREADA AMB XAT GPT. PROMPT:
