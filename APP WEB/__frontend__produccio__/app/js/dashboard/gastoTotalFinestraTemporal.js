@@ -60,7 +60,7 @@ function auxiliar(oMesos, domPreus, domBarres, domMesets) {
 
     aux_cardIntervalizer__POSAMESOS(clausMesos, domMesets);
     let arrAlturesBarres = aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres);  //TO DO
-    //aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domPreus, arrAlturesBarres);  //PER ALTURES domPreus has d'agafar propietat de domBarres
+    aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domPreus, arrAlturesBarres);  //PER ALTURES domPreus has d'agafar propietat de domBarres
 
     //-------------------------
     //FINAL to do aqui
@@ -184,6 +184,46 @@ function aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres) {
     }
 
     return arrAlturesBarres;
+}
+
+
+//PRE: - clausMesos: aux_cardIntervalizer__POSABARRES(), precondició en capçalera.
+//     - oMesosNOU: consultar aux_cardIntervalizer__POSABARRES(), precondició en capçalera.
+//     - domPreus: element section del dom amb id "wrapperPreus".   
+//     - arrAlturesBarres: consultar aux_cardIntervalizer__POSABARRES(), postcondició en capçalera.
+//POST:  els preus gastats mensuals son afegits a section "wrapperPreus"
+//       amb redondeig a l'enter més proxim
+// --- FUNCIONAMENT: ---------------------------------------------
+// - AQUESTA FUNCIÓ APLICA PROGRAMÀTICAMENT AMB JAVASCRIPT UN POSICIONAMENT RELATIU 
+// - QUE ABANS ES FEIA AMB CSS, DE MANERA QUE CADA GAST MENSUAL SORTIRÀ CENYIT A LES BARRES, abans era:
+// -    .preu:nth-child(i) {top: calc(var(--alturaWrapperBarres)*(0.70));}
+// ---------------------------------------------------------------
+function aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domPreus, arrAlturesBarres) {
+    //EMPLENARÉ L'ARRAY DE DESPLAÇAMENTS DE CADA PREU AMB 1 - p_i
+    let arr_AX_preus = [];
+
+    //PRIMER DEFINEIXO ELS PREUS EN EL TEXT CONTENT DE CADA ARTICLE
+    for (let i = 0; i < clausMesos.length; ++i) {
+        //AFEGEIXO AL SECTION "wrapperPreus" CADA ARTICLE I EL SEU TEXT CONTENT, PER EXEMPLE:  //   <article class = "preu colorBlauSortidaDades">123 €</article>
+        const articlePreu = document.createElement("article"); //CREO UN NODE ARTICLE
+        articlePreu.setAttribute("class","preu colorBlauSortidaDades"); //defineixo les dues classes que vull
+        articlePreu.textContent = Math.round(oMesosNOU[clausMesos[i]]) + " €"; //costMes
+        domPreus.appendChild(articlePreu); //AFEGEIXO DINS EL SECTION "wrapperPreus" DEL DOM:
+    
+        //HO USAREM DESPRÉS PER FER ELS DESPLAÇAMENTS VERTICALS CAP AVALL AMB EL POSICIONAMENT RELATIU 
+        let p_i = arrAlturesBarres[i];
+        arr_AX_preus.push(1 - p_i);  //ho faras servir a lseguent for
+    }
+
+    //DEFINEIXO ARA ELS DESPLAÇAMENTS DE CADA PREU MENSUAL PER AJUSTAR-LO A LA BARRA
+    const articlesPreus = domPreus.children;
+    for (let i = 0; i < articlesPreus.length; ++i) {
+        articlesPreus[i].style.top = `calc(var(--alturaWrapperBarres) * ${arr_AX_preus[i]})`;
+    }
+
+    return arrAlturesBarres;
+
+
 }
 
 
