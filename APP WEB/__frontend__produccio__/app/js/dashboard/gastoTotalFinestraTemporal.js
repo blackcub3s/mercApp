@@ -157,7 +157,7 @@ function aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres) {
     //  on trobem:
     //
     //   - gast_i:  es el cost total del mes ièssim
-    //   - P_i:     es la proporció assignada a cada mes amb 0 <= P_i <= 100.
+    //   - P_i:     es la proporció assignada a cada mes amb 0 <= P_i <= 1.
     //   - maxGast: es el mes amb gasto màxim, que tindrà una proporció P_i = 1 (100% de height! La barra més alta)
     arrAlturesBarres = [];
     for (const clauMes of clausMesos) {
