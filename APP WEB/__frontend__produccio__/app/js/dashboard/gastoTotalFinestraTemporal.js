@@ -177,7 +177,7 @@ function aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres) {
         
         if (arrAlturesBarres[i] == 1) {
             articlesBarres[i].classList.add("mesGastMaxim"); //Afegeixo classe de color pulsàtil a barra de mes de gast maxim
-            articlesBarres[i].setAttribute("title","¡Mes de gasto máximo!")
+            articlesBarres[i].setAttribute("title","¡Mes de gasto máximo!");
         }
     }
 
