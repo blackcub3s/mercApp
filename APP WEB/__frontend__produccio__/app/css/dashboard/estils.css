@@ -196,7 +196,11 @@ i per a mesos */
 .preu {
     position: relative;
     height: 1.3em;
+    cursor: help;
+    transition: color var(--tiempoTransicionEstandar) ease-in-out;
 }
+
+.preu:hover {color: #4c5cc1;} /*modifiquem el color de la classe colorBlauSortidaDades*/
 
 .barra {
     background-color: #697dff5c;

@@ -202,6 +202,8 @@ function aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domPreus, arrAlt
         articlePreu.textContent = Math.round(oMesosNOU[clausMesos[i]]) + " €"; //costMes
         domPreus.appendChild(articlePreu); //AFEGEIXO DINS EL SECTION "wrapperPreus" DEL DOM:
     
+        //Poso un title amb el preu exacte damunt de cada preu en euros per mes precisio
+        articlePreu.setAttribute("title",`Gasto exacto: ${oMesosNOU[clausMesos[i]]} €`);
         //HO USAREM DESPRÉS PER FER ELS DESPLAÇAMENTS VERTICALS CAP AVALL AMB EL POSICIONAMENT RELATIU 
         let p_i = arrAlturesBarres[i];
         arr_AX_preus.push(1 - p_i);  //ho faras servir a lseguent for
