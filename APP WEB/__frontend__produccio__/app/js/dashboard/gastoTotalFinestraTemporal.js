@@ -50,22 +50,14 @@ function auxiliar(oMesos, domPreus, domBarres, domMesets) {
     
     console.log(oMesosNOU);
     console.log(clausMesos);
-
-    // -----------------------
-    // to do aqui
-    // CONTINUAR TRACTANT oMesosNou i clusMesos. Recorre clausMesos
-    // i passa les claus a oMesosNOU per trobar els valors i ves enxufant
-    //al dom
-    //-------------------------
-
+    // -----------------------------------------------------------
+    // Enxufem a la card de l'intervalizer del DOM els gastos mensuals,
+    // els mesos (sep25, oct25...), i la barra en representacó gràfica entre els dos
+    //------------------------------------------------------------
     aux_cardIntervalizer__POSAMESOS(clausMesos, domMesets);
     let arrAlturesBarres = aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres);  //TO DO
     aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domPreus, arrAlturesBarres);  //PER ALTURES domPreus has d'agafar propietat de domBarres
-
     //-------------------------
-    //FINAL to do aqui
-    //-------------------------
-
 }
 
 //PRE: oMesos conté el diccionari {2025-09: 79.47, 2025-08: 11.54, 2025-06: 93.48, 2025-04: 167.97, 2025-03: 174.12, …}
