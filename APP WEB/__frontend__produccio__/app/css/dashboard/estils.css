@@ -228,6 +228,23 @@ i per a mesos */
 /*.preu:nth-child(4) {top: calc(var(--alturaWrapperBarres)*(0.10));}*/ /*1 - altura barra D*/
 /*FI HO GENERARÀS PROGRAMÀTICAMENT*/
 
+
+/*DEFINIM SISTEMA QUE VARIA DE FORMA PULSÀTIL I PERIÒDICA EL COLOR
+DE LA BARRA QUE TE EL GAST MÀXIM: DE BLAU ORDINARI DE LA BARRA A VERMELL*/
+.mesGastMaxim {
+    background-color: #697dff5c;
+    cursor: help;
+    animation: colorPulsatilMAXG 1s linear infinite alternate;
+}
+
+@keyframes colorPulsatilMAXG {
+    from { background-color: #697dff5c; }
+    to   { background-color: rgba(235, 23, 23, 0.556); }
+}
+
+
+
+
 /*########################################################
 # FINAL SISTEMA INTERVALYZER DE LA TERCERCA CARD TOP: 
 # QUE MOSTRA GASTOS TOTALS ACUMULATS PER MES EN UN 

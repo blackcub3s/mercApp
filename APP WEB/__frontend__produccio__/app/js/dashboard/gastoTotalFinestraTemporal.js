@@ -170,9 +170,15 @@ function aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres) {
 
     //ACTE SEGUIT: defineixo l'altura dels articles (barres), un per un programàticament
     // en substitució del CSS de estils.css -->  .barra:nth-child(i)
+    // NOTA: també defineixo color pulsàtil per la barra de màxima altura.
     const articlesBarres = domBarres.children;
     for (let i = 0; i < articlesBarres.length; ++i) {
         articlesBarres[i].style.height = (arrAlturesBarres[i]*100)+"%";
+        
+        if (arrAlturesBarres[i] == 1) {
+            articlesBarres[i].classList.add("mesGastMaxim"); //Afegeixo classe de color pulsàtil a barra de mes de gast maxim
+            articlesBarres[i].setAttribute("title","¡Mes de gasto máximo!")
+        }
     }
 
     return arrAlturesBarres;
