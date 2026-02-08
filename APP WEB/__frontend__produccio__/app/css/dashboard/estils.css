@@ -110,6 +110,23 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 /*-- IMAGEN INFERIOR CARD 2 (CATEGORIA DE PRODUCTE) --------- EXCLUSIVA A SEGUNDA CARD de características del dashboard*/
 #PRIV_caracteristicasDashboard #iconoSegonaCardCATEGORIA > img {width: 7.65em;}
 
+/*ESTILS DE LA i*/
+#PRIV_caracteristicasDashboard div:last-child article:last-child > h2 > span:nth-of-type(2) {
+    font-size: .7em;
+    border: 1px solid grey;
+    color: grey;
+    padding: .1em .55em;
+    border-radius: 1em;
+    cursor: help;
+    position: relative;
+    bottom: .05em;
+}
+
+/*
+#iEstadistiques {
+    display: none;
+}
+*/
 
 /*DEFINIMOS HOVERS PER LAS IMAGENES DE LAS CARDS DE CARACTERÍSTICAS DEL DASHBOARD*/
 #PRIV_caracteristicasDashboard .cartaDashboard img {transition: transform var(--tiempoTransicionEstandar) ease-in-out;/*para el hover*/}

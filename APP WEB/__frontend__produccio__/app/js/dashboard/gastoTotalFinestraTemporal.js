@@ -234,21 +234,41 @@ function aux_cardIntervalizer__POSA_AVG(oMesosNOU) {
     const gastosMensuals = Object.values(oMesosNOU);
 
     //CALCULO LA MITJANA ARITMÈTICA DELS VALORS NO NULS DE GASTO MENSUAL (AMB DOS DECIMALS) I TORNO A BUSCAR EL VALOR MAXIM
-    avg = 0;
-    max = -1; 
+    let avg = 0;
+    let max = -1; 
+    let min = 50000;
+    let suma = 0;
     gastosMensuals.forEach((valor) => {
-        avg += valor 
+        
+        suma += valor;
         if (valor > max) {
             max = valor;
         }
+
+        if (valor < min & valor !== 0) {
+            min = valor;
+        }
     });
-    avg = Math.round(avg*100/gastosMensuals.length, 2)/100;
+    avg = Math.round(suma*100/gastosMensuals.length, 2)/100;
+    suma = Math.round(suma*100, 2)/100;
 
     //POTSER CALCULAR MESURES DE DISPERSIÓ
 
 
-    //alert(avg);
-    //alert(max);
+    const iEstadistiques = document.getElementById("iEstadistiques");
+    let missatgeIestadistiques = 
+`
+gasto medio mensual (sin nulos): 
+    ${avg} €/mes.
+mes gasto máximo: 
+    ${max} €/mes;
+mes gasto mínimo (sin nulos): 
+    ${min} €/mes;
+suma total de gastos:
+    ${suma} €; 
+
+`
+    iEstadistiques.setAttribute("title", missatgeIestadistiques);
 }
 
 //FUNCIO CREADA AMB XAT GPT. PROMPT:
