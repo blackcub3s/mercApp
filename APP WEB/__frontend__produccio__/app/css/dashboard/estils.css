@@ -122,11 +122,20 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
     bottom: .05em;
 }
 
-/*
+/*posem invisible d'entrada el sistema per visualitzar les estadístiques. el mostrarem
+programàticament*/
 #iEstadistiques {
     display: none;
 }
-*/
+
+/* Hover del pare d'estadistiques -basicament 
+la tercera card- fara que mostri la i de estadistiques */
+.cartaDashboard:hover #iEstadistiques {
+    display: inline;
+}
+
+
+
 
 /*DEFINIMOS HOVERS PER LAS IMAGENES DE LAS CARDS DE CARACTERÍSTICAS DEL DASHBOARD*/
 #PRIV_caracteristicasDashboard .cartaDashboard img {transition: transform var(--tiempoTransicionEstandar) ease-in-out;/*para el hover*/}
