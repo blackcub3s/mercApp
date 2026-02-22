@@ -178,7 +178,7 @@ la tercera card- fara que mostri la i de estadistiques */
 #contenidorGraficBarres {
     overflow-x: auto;
     /*SI ESTA BEN PROGRAMAT NO EL NECESSITARÀS*/
-    /*overflow-y: hidden; /*Perquè mno hi hagi moviment vertical del grafic (tipo diente suelto)*/
+    overflow-y: hidden; /*Perquè mno hi hagi moviment vertical del grafic (tipo diente suelto)*/
     scrollbar-width: thin;
     position: relative;
     scrollbar-color: rgba(0,0,0,0.5) transparent; /* aconsegueixo que el fons no surti de color blanc*/
@@ -192,7 +192,7 @@ la tercera card- fara que mostri la i de estadistiques */
     /*background-color: red;*/
     position: relative;
     top: .2em;  /*REGULO EL POSICIONAMENT DEL CONTENIDOR WRAPPER WRAPPERS DEL GRAFIC. IMPORTANT*/
-    height: 5.3em;  /*NO PASSAR DE 5.3 o fa un overflow per sota*/
+    height: 5.4em;  /*NO PASSAR DE 5.3 o fa un overflow per sota pero a 5.3 apareix un scroll vertical merdós*/
 }
 
 #contenidorGraficBarres #wrapperWrappers #wrapperBarres {
