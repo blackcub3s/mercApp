@@ -21,7 +21,7 @@ import shutil
 #        EXEMPLE llJudicis --> {"archivo": "20231004 Mercadona 27,40 €.pdf", "estado": "Guardado correctamente", "tamany": 35.7}
 async def guardaTicketsAsistemaDarxius(llJudicis, idUsuari_enToken, arxius):
     
-    KB_MAXIM_TICKET_DIGITAL = 150 # empiricament el 2023 els tickets de mercadona pesaven 36KB (MODIFICACIO: n'acaben de sortir a catalunya uns que pesen 130kB pq han canvat el logo del numeor de tel)
+    KB_MAXIM_TICKET_DIGITAL = 220 # empiricament el 2023 els tickets de mercadona pesaven 36KB (MODIFICACIO: n'acaben de sortir a catalunya uns que pesen 130kB pq han canvat el logo del numeor de tel. 28.12.2025 tickets pesen 166KB)
     KB_MINIM_TICKET_DIGITAL = 15 # empiricament al 2025 els tickets pesaven 33KB (deixem marge)
     
     nRefusats = 0

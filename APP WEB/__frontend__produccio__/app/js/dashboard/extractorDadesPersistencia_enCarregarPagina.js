@@ -52,14 +52,13 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
         //OBTENCIÓ DE DADES PER AL SUBTITOL QUE HI HA SOTA DE "Hola NOMBRE USUARIO" (NOMES EN CARREGAR DOM, UN COP)
         const dom_nreTicketsTotalUsuari = document.getElementById("nreTicketsTotalUsuari");
-        dom_nreTicketsTotalUsuari.innerHTML = ""; //XXX TICKETS
-
+        nreTicketsTrobatsAcorreu_a_DOM(dom_nreTicketsTotalUsuari);
+        
         const dom_dataInicialTickets = document.getElementById("dataInicialTickets");
-        dom_dataInicialTickets.innerHTML =  "";//"dd/mm/aa";
+        dataTicketMesAntic_a_DOM(dom_dataInicialTickets);
 
         const dom_dataFinalTickets = document.getElementById("dataFinalTickets");
-        dom_dataFinalTickets.innerHTML =  "";//"DD/MM/AA";
-
+        dataTicketMesRecent_a_DOM(dom_dataFinalTickets);
 
 
         //--- PRIMERA CARD TOP ---
@@ -70,7 +69,9 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
         obtinguesIdCategoriaDeMesGasto_deBackEnd_i_carregaImatge_a_html();
         
 
-
+        //--- TERCERA CARD TOP ---
+        const dom_nrecompresMesosDiferents = document.getElementById("nreMesosOnShaFetCompra"); 
+        nreMesosCompra_a_DOM(dom_nrecompresMesosDiferents);
 
 
         // -------------------
@@ -138,6 +139,71 @@ document.addEventListener("DOMContentLoaded", (esdeveniment) => {
 
 
 });
+
+
+//PRE: passo un element del dom que admet text
+//POST: pren la variable en memòria "nreTicketsTotal" i la posa a l'element del dom que li pertoca (Donat que la variable 
+// mencionada pot tardar un rato a estar disponible  fem servir setInterval)
+function nreTicketsTrobatsAcorreu_a_DOM(dom) {
+    const idIntervalNreTickets = setInterval(() => {
+        //COMPROVO SI LA VARIABLE nreTicketsTotal ja està definida en memoria 
+        // per l'altre script. En cas contrari segueixo mirant
+        if (typeof nreTicketsTotal !== "undefined") {
+            dom.innerHTML =  nreTicketsTotal; //nre entrer;  //ACCESSIBLE GRÀCIES A posaEnMemoriaTicketsTrobatsAcorreu() de extreuTickets.js
+            console.log("lectura nre tickets correcte");
+            clearInterval(idIntervalNreTickets);
+        } else {
+            console.log("caca");
+        }
+    }, 100)
+}
+
+
+//PRE: passo un element del dom que admet text
+//POST: pren la variable en memòria "dataTicketMesAntic" i la posa a l'element del dom. Donat que la variable mencionada pot 
+// tardar un rato a estar disponible en arregar la pàgina privada per primer cop fem servir setInterval
+function dataTicketMesAntic_a_DOM(dom) {
+    const idIntervalCercaDataAntiga = setInterval(() => {
+        //COMPROVO SI LA VARIABLE dataTicketMesAntic ja està definida en memoria 
+        // per l'altre script. En cas contrari segueixo mirant
+        if (typeof dataTicketMesAntic !== "undefined") {
+            dom.innerHTML =  dataTicketMesAntic; //"dd/mm/aa";  //ACCESSIBLE GRÀCIES A posaDatesMinimaImaximaTiket() de extreuTickets.js
+            console.log("lectura data correcta");
+            clearInterval(idIntervalCercaDataAntiga);
+        }
+    }, 100)
+}
+
+//PRE: passo un element del dom que admet text
+//POST: pren la variable en memòria "dataTicketMesRecent" i la posa a l'element del dom. Donat que la variable mencionada pot 
+// tardar un rato a estar disponible en arregar la pàgina privada per primer cop fem servir setInterval
+function dataTicketMesRecent_a_DOM(dom) {
+    const idIntervalCercaDataRecent = setInterval(() => {
+        //COMPROVO SI LA VARIABLE dataTicketMesRecent ja està definida en memoria 
+        //per l'altre script. En cas contrari segueixo mirant
+        if (typeof dataTicketMesRecent !== "undefined") {
+            dom.innerHTML =  dataTicketMesRecent;//"DD/MM/AA";    //dataTicketMesRecent ACCESSIBLE GRÀCIES A posaDatesMinimaImaximaTiket() de extreuTickets.js
+            console.log("lectura data correcta");
+            clearInterval(idIntervalCercaDataRecent);
+        }
+    }, 100)
+}
+
+//PRE: passo un element del dom que admet text
+//POST: pren la variable en memòria "nreMesosAmbCompres" i la posa a l'element del dom. Donat que la variable mencionada pot 
+// tardar un rato a estar disponible en arregar la pàgina privada per primer copf, em servir setInterval amb cerques periodiques.
+function nreMesosCompra_a_DOM(dom) {
+    const idIntervalMesos = setInterval(() => {
+        //COMPROVO SI LA VARIABLE dataTicketMesRecent ja està definida en memoria 
+        //per l'altre script. En cas contrari segueixo mirant
+        if (typeof nreMesosAmbCompres !== "undefined") {
+            dom.innerHTML =  nreMesosAmbCompres;  //nreMesosAmbCompres ACCESSIBLE GRÀCIES A contaMesosOnShanFetCompres() de extreuTickets.js
+            clearInterval(idIntervalMesos);
+        }
+    }, 100)
+}
+
+
 
 // PRE: rep un array d'objectes amb la forma {"x": data, "y": preu} on x és una data (string o Date) i y és un preu (número).
 // POST: retorna un array amb tres valors booleans: [puja, baixa]
