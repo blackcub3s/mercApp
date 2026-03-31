@@ -42,7 +42,7 @@ function oMesos_a_graficBarres_DOM(domPreus, domBarres, domMesets) {
 }
 
 //PRE: oMesos, el dict de mesos; domPreus, dom Barres, domMesets: els tres elements del dom corresponents.
-//POST: to do (les dades de oMesosNOU al dom)
+//POST: to do (les dades de oMesosNOU al dom): tant preus, com mesos com representacions de barres com MITJANA ARITMETICA gastos excloent mesos nuls.
 //NOTA: oMesos es variable global, no caldria passar-la per parametre. pero ho faig per claretat.
 function auxiliar(oMesos, domPreus, domBarres, domMesets) {
     const oMesosNOU = afegeixMesosSenseGast(oMesos); //oMesosNOU és com oMesos pero amb els mesos sense gastos afegits en clau i valor.
@@ -57,6 +57,7 @@ function auxiliar(oMesos, domPreus, domBarres, domMesets) {
     aux_cardIntervalizer__POSAMESOS(clausMesos, domMesets);
     let arrAlturesBarres = aux_cardIntervalizer__POSABARRES(clausMesos, oMesosNOU, domBarres);  //TO DO
     aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domPreus, arrAlturesBarres);  //PER ALTURES domPreus has d'agafar propietat de domBarres
+    aux_cardIntervalizer__POSA_AVG(oMesosNOU);
     //-------------------------
 }
 
@@ -227,6 +228,48 @@ function aux_cardIntervalizer__POSAPREUS(clausMesos, oMesosNOU, domPreus, arrAlt
 }
 
 
+//PRE: diccionari claus valor amb claus els mesos de gasto no nul, i valors els gastos en els mesos de gasto no nul.
+//POST: TO DO.
+function aux_cardIntervalizer__POSA_AVG(oMesosNOU) {
+    const gastosMensuals = Object.values(oMesosNOU);
+
+    //CALCULO LA MITJANA ARITMÈTICA DELS VALORS NO NULS DE GASTO MENSUAL (AMB DOS DECIMALS) I TORNO A BUSCAR EL VALOR MAXIM
+    let avg = 0;
+    let max = -1; 
+    let min = 50000;
+    let suma = 0;
+    gastosMensuals.forEach((valor) => {
+        
+        suma += valor;
+        if (valor > max) {
+            max = valor;
+        }
+
+        if (valor < min & valor !== 0) {
+            min = valor;
+        }
+    });
+    avg = Math.round(suma*100/gastosMensuals.length, 2)/100;
+    suma = Math.round(suma*100, 2)/100;
+
+    //POTSER CALCULAR MESURES DE DISPERSIÓ
+
+
+    const iEstadistiques = document.getElementById("iEstadistiques");
+    let missatgeIestadistiques = 
+`
+gasto medio mensual (sin nulos): 
+    ${avg} €/mes.
+mes gasto máximo: 
+    ${max} €/mes;
+mes gasto mínimo (sin nulos): 
+    ${min} €/mes;
+suma total de gastos:
+    ${suma} €; 
+
+`
+    iEstadistiques.setAttribute("title", missatgeIestadistiques);
+}
 
 //FUNCIO CREADA AMB XAT GPT. PROMPT:
 

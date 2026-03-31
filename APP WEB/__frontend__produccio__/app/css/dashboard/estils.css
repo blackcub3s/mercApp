@@ -110,6 +110,32 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 /*-- IMAGEN INFERIOR CARD 2 (CATEGORIA DE PRODUCTE) --------- EXCLUSIVA A SEGUNDA CARD de características del dashboard*/
 #PRIV_caracteristicasDashboard #iconoSegonaCardCATEGORIA > img {width: 7.65em;}
 
+/*ESTILS DE LA i*/
+#PRIV_caracteristicasDashboard div:last-child article:last-child > h2 > span:nth-of-type(2) {
+    font-size: .7em;
+    border: 1px solid grey;
+    color: grey;
+    padding: .1em .55em;
+    border-radius: 1em;
+    cursor: help;
+    position: relative;
+    bottom: .05em;
+}
+
+/*posem invisible d'entrada el sistema per visualitzar les estadístiques. el mostrarem
+programàticament*/
+#iEstadistiques {
+    display: none;
+}
+
+/* Hover del pare d'estadistiques -basicament 
+la tercera card- fara que mostri la i de estadistiques */
+.cartaDashboard:hover #iEstadistiques {
+    display: inline;
+}
+
+
+
 
 /*DEFINIMOS HOVERS PER LAS IMAGENES DE LAS CARDS DE CARACTERÍSTICAS DEL DASHBOARD*/
 #PRIV_caracteristicasDashboard .cartaDashboard img {transition: transform var(--tiempoTransicionEstandar) ease-in-out;/*para el hover*/}
@@ -152,7 +178,7 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
 #contenidorGraficBarres {
     overflow-x: auto;
     /*SI ESTA BEN PROGRAMAT NO EL NECESSITARÀS*/
-    /*overflow-y: hidden; /*Perquè mno hi hagi moviment vertical del grafic (tipo diente suelto)*/
+    overflow-y: hidden; /*Perquè mno hi hagi moviment vertical del grafic (tipo diente suelto)*/
     scrollbar-width: thin;
     position: relative;
     scrollbar-color: rgba(0,0,0,0.5) transparent; /* aconsegueixo que el fons no surti de color blanc*/
@@ -166,8 +192,7 @@ TEXTOS DE LAS CARDS (USAMOS H1 Y H2):*/
     /*background-color: red;*/
     position: relative;
     top: .2em;  /*REGULO EL POSICIONAMENT DEL CONTENIDOR WRAPPER WRAPPERS DEL GRAFIC. IMPORTANT*/
-    height: 6em;  /*NO PASSAR DE 6.5 o car fa un overflow per sota*/
-    
+    height: 5.4em;  /*NO PASSAR DE 5.3 o fa un overflow per sota pero a 5.3 apareix un scroll vertical merdós*/
 }
 
 #contenidorGraficBarres #wrapperWrappers #wrapperBarres {
