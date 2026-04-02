@@ -42,10 +42,12 @@ function oMesos_a_graficBarres_DOM(domPreus, domBarres, domMesets) {
 }
 
 //PRE: oMesos, el dict de mesos; domPreus, dom Barres, domMesets: els tres elements del dom corresponents.
-//POST: to do (les dades de oMesosNOU al dom): tant preus, com mesos com representacions de barres com MITJANA ARITMETICA gastos excloent mesos nuls.
+//POST: les dades de oMesosNOU al dom: tant preus, com mesos com representacions de barres com MITJANA ARITMETICA gastos excloent mesos nuls.
+//      -oMesosNOU queda com a variable global per ser usada pel dropdown de l'intervalizer del pieChart.
 //NOTA: oMesos es variable global, no caldria passar-la per parametre. pero ho faig per claretat.
+
 function auxiliar(oMesos, domPreus, domBarres, domMesets) {
-    const oMesosNOU = afegeixMesosSenseGast(oMesos); //oMesosNOU és com oMesos pero amb els mesos sense gastos afegits en clau i valor.
+    oMesosNOU = afegeixMesosSenseGast(oMesos); //oMesosNOU és com oMesos pero amb els mesos sense gastos afegits en clau i valor. HO PASSO A VARIABLE GLOBAL.
     const clausMesos = Object.keys(oMesosNOU).sort().reverse(); //m'asseguro que les claus estan ordenades (ojo amb els navegadors)
     
     console.log(oMesosNOU);
