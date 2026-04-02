@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             });
-        });
+        
 
 
 
@@ -115,9 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('Error en paso3:', error);
     });
 
-
-
-
+});
 
 
 
