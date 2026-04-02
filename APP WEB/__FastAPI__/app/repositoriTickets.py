@@ -174,6 +174,59 @@ def obtenirGastPerCategoria_GLOBAL(id_usuari):
 
 
 
+#PRE: un id_usuari (enter).
+#        dataInicial: string aaaa-mm-dd, data inicial del filtre (INCLOSA)
+#        dataFinal: string aaaa-mm-dd, data final del filtre (INCLOSA)
+#POST: obtindrem un diccionari on les claus son les categories d'alimentacio i el preu es el total gastat desde dataInicial
+#      fins a dataFinal INCLOSA (la data final pot no existir: exemple 2024-02-21... pero no afecta per a la cerca i simplifica el comput a partir d'un sol mes)
+#
+#      E.G --> SI VULL VEURE EL GASTO DE TOT EL MES DE GENER DE 2024 per a l'usuari 2 faria:
+#             obtenirGastPerCategoria_GLOBAL_finestraDates(2, "2024-01-01", "2024-01-31") cap mes de mes de 31 dies aixi que no problem
+
+#   {"1": 598.31, "2": 399.44, "3": 460.55, "4": 240.0, ... , "13" : 32.3}
+def obtenirGastPerCategoria_GLOBAL_finestraDates(id_usuari, dataInicial, dataFinal):
+    colTickets = creaConexioAmongoDB_i_tornaTickets()
+
+    pipeline = [
+        {"$match": {
+            "idUsuari": id_usuari,
+            "data": {
+                "$gte": dataInicial,
+                "$lte": dataFinal
+            }
+        }},
+        {"$project": {
+            "productes": {"$objectToArray": "$productesAdquirits"}
+        }},
+        {"$unwind": "$productes"},
+        {"$group": {
+            "_id": "$productes.v.categoria",
+            "totalGastat": {"$sum": "$productes.v.import"}
+        }},
+        {"$sort": {"_id": 1}}  # Ordena per categoria ascendent (opcional)
+    ]
+
+    resultats = colTickets.aggregate(pipeline)
+
+    # Convertim a dict {categoria: total}
+    gast_per_categoria = {doc["_id"]: doc["totalGastat"] for doc in resultats}
+
+    # Assegurar que hi ha totes les categories de l'1 al 13 (amb 0 si no hi ha dades)
+    for cat in range(1, 14):
+        if cat not in gast_per_categoria:
+            gast_per_categoria[cat] = 0.0
+
+    return gast_per_categoria
+
+
+
+
+
+
+
+
+
+
 def producteEsGranel(nomProducte, idUsuari):
     colTickets = creaConexioAmongoDB_i_tornaTickets()
     pipeline = [
@@ -305,6 +358,9 @@ if __name__ == "__main__":
 
     #diccCategoriaGasto = obtenirGastPerCategoria_GLOBAL(2)
     #print(json.dumps(diccCategoriaGasto, indent=4, ensure_ascii=False))
+
+    diccCategoriaGastoMENSUAL = obtenirGastPerCategoria_GLOBAL_finestraDates(2, "2024-01-01", "2024-01-31") #obte el diccionari de tot el mes de gener de 2024
+    print(json.dumps(diccCategoriaGastoMENSUAL, indent=4, ensure_ascii=False))
 
 
 
