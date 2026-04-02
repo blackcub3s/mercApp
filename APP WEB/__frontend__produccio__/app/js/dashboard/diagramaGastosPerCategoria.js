@@ -115,6 +115,37 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('Error en paso3:', error);
     });
 
+
+
+
+
+
+    //ARA CARREGUEM LES OPTIONS DINS EL DROP DOWN DEL PIECHART
+    const temporitzadorDropDown_cheesePie = setInterval(() => {
+        if (typeof oMesosNOU === "undefined") {
+            console.log("encara no es pot agafar el oMesosNOU");
+        } else {
+            clearInterval(temporitzadorDropDown_cheesePie);
+            const dropDownFormatge = document.getElementById("filtradorFormatge");
+            emplenaDropDown(dropDownFormatge); 
+        }
+    }, 100);
+
+
+    //ARA CREEM L'ESDEVENIMENT QUE PERMETRÀ 
+    //ACTIVAR EL FETCH A L'ENDPOINT CORRESPONENT --> /api/gastosPerCategoria/{aaaa-mm}
+    const selectFiltradorFormatge = document.getElementById('filtradorFormatge');
+    
+    
+    selectFiltradorFormatge.addEventListener('change', (evento) => {
+        const oSeleccio= selectFiltradorFormatge.selectedOptions[0];  //opcio sel·leccionada
+        console.log(oSeleccio.value, oSeleccio.textContent, oSeleccio.getAttribute("gast-mensual-info"));
+        //FER EL FETCH AQUI
+    });
+
+
+
+
 });
 
 
@@ -122,6 +153,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+//PRE: dropDownFormatge: un drop down de tipus select
+//     oMesosNOU: objecte que viu com a variable global amb parells claus valor dels mesos que tenen gasto
+//        exemple {2025-07: 62.65, 2025-06: 93.48, 2025-05: 95.04, 2025-04: 167.97, ....
+//POST: el drop down es veu emplenat d'aquesta manera:
+
+//          <option value="2026-04" data-gastmes="323.3">abril 2026</option>
+//          <option value="2026-03" data-gastmes="313.3">marzo 2026</option>
+//          <option value="2026-02" data-gastmes="303.3">febrero 2026</option>
+function emplenaDropDown(dropDownFormatge) {
+
+    Object.entries(oMesosNOU).forEach(([clauMes, gastMensual]) => {
+        //console.log(`${clauMes}: ${gastMensual}`);
+        const optioneta = document.createElement("option");
+        optioneta.setAttribute("value", clauMes);
+        optioneta.setAttribute("gast-mensual-info", gastMensual); //info extar que usare mes endavant
+        optioneta.innerText = ` ${aaaamm__a__mesCompletAAAA(clauMes)}`;  //poso el mes i any visible en el dropdown
+        dropDownFormatge.appendChild(optioneta);
+        //SEGUIR AQUI! FER FETCH!
+    });
+        
+    
+}
+
+
+
+
+//PRE: un mes en format aaaa-mm.
+//POST: el mes en format gener 2026, o març 2021... etc en castewlla
+function aaaamm__a__mesCompletAAAA(aaaamm) {
+    // Array con los meses en español
+    const meses = [
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    ];
+    // Separar año y mes
+    const [anyo, mes] = aaaamm.split("-");
+
+    // Obtener el mes (restamos 1 porque el array empieza en 0)
+    const mesTexto = meses[parseInt(mes, 10) - 1];
+
+    // Obtener los dos últimos dígitos del año
+
+    // Concatenar resultado
+    const mesAnyoFormateados = mesTexto + " " + anyo;
+
+    return mesAnyoFormateados;
+}
 
 
 
