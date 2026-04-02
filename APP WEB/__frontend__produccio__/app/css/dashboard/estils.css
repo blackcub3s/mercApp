@@ -657,7 +657,7 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
     display: block;
     padding-bottom: .2em;
     font-weight: bold;
-    padding-left: 1.5em;
+    padding-left: 1em;
 }
 
 #filtradorGraficFormatge > select {
@@ -665,11 +665,17 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
     padding: .7em;
     border-radius: .4em;
     text-align: center;
-    transition: background-color var(--tiempoTransicionEstandar) ease-in-out; /*para el hover de cada carta*/
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.25); 
+    transition: 
+        background-color var(--tiempoTransicionEstandar) ease-in-out,
+        box-shadow var(--tiempoTransicionEstandar) ease-in-out,
+        transform var(--tiempoTransicionEstandar) ease-in-out;
 } 
 
 #filtradorGraficFormatge > select:hover {
-    background-color: #d8d9e7a2;
+    background-color: #9f9f9f49;
+    box-shadow: 4px 5px 2px rgba(0, 0, 0, 0.25);
+    transform: scale(1.02); /* salida vertical hacia arriba */ 
 } 
 
 
