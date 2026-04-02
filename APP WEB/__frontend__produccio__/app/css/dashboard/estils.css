@@ -657,12 +657,12 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
     display: block;
     padding-bottom: .2em;
     font-weight: bold;
-    padding-left: 1em;
+    padding-left: .7em; /*ajusta si canvies tamanys en el select*/
 }
 
 #filtradorGraficFormatge > select {
     font-size: 1.4em;
-    padding: .7em;
+    padding: .6em;
     border-radius: .4em;
     text-align: center;
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.25); 
