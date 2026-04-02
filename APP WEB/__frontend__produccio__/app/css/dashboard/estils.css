@@ -638,18 +638,48 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
     left: 15em;
 }
 
-/*Defineixo el dropdown que contindrà els mesos
-amb els que podré filtrar*/
+/*------------------------------*/
+/*INICI DE dropdown que contindrà els
+ mesos amb els que podré filtrar*/
+/*------------------------------*/
+
+
 #filtradorGraficFormatge {
     width: 35em;   
     margin: 0 auto;
     position: relative;
-    top: -98em;
-    left: 0em; 
+    top: -100em;
+    left: -5em;
 }
 
+#filtradorGraficFormatge > label {
+    font-size: 1.4em;
+    display: block;
+    padding-bottom: .2em;
+    font-weight: bold;
+    padding-left: 1.5em;
+}
+
+#filtradorGraficFormatge > select {
+    font-size: 1.4em;
+    padding: .7em;
+    border-radius: .4em;
+    text-align: center;
+    transition: background-color var(--tiempoTransicionEstandar) ease-in-out; /*para el hover de cada carta*/
+} 
+
+#filtradorGraficFormatge > select:hover {
+    background-color: #d8d9e7a2;
+} 
 
 
+
+
+
+/*------------------------------*/
+/*FI DE dropdown que contindrà els
+ mesos amb els que podré filtrar*/
+/*------------------------------*/
 
 
 
