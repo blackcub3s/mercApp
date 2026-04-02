@@ -405,7 +405,7 @@ def obtenirGastPerCategoria_GLOBAL(id_usuari):
 #PRE: strMes seria string format "aaaa-mm".
 #POST: retorna un diccionari amb els gastos per categoria NOMÉS per al mes referenciat en strMes.
 def obtenirGastPerCategoria_MENSUAL(id_usuari, strMes):
-    return repositoriTickets.obtenirGastPerCategoria_GLOBAL(id_usuari, strMes+"-01", strMes+"-31")
+    return repositoriTickets.obtenirGastPerCategoria_GLOBAL_finestraDates(id_usuari, strMes+"-01", strMes+"-31")
 
 def obtenirIndexCategoria_ONMESSHAGASTAT(id_usuari):
     dCatGasto = repositoriTickets.obtenirGastPerCategoria_GLOBAL(id_usuari) #reutilitzo aquesta funcio ja usada en la funcio obtenirGastPerCategoria_GLOBAL
