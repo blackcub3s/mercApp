@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             clearInterval(temporitzadorDropDown_cheesePie);
             const dropDownFormatge = document.getElementById("filtradorFormatge");
             emplenaDropDown(dropDownFormatge); 
+            posaInformacio_a_h2_topGrafic_formatge(dropDownFormatge.firstElementChild.textContent, dropDownFormatge.firstElementChild.getAttribute("gast-mensual-info"));
         }
     }, 100);
 
@@ -219,13 +220,24 @@ document.addEventListener("DOMContentLoaded", () => {
 //POST: el drop down es veu emplenat d'aquesta manera:
 //          <option value="2026-04" data-gastmes="323.3">abril 2026</option>
 function emplenaDropDown(dropDownFormatge) {
+    
+    let gastTotal = 0;
+    const optionetaInicial = document.getElementById("opcioSenseFiltre");
+    optionetaInicial.setAttribute("value", "");
+    
+
     Object.entries(oMesosNOU).forEach(([clauMes, gastMensual]) => {
         const optioneta = document.createElement("option");
         optioneta.setAttribute("value", clauMes);
         optioneta.setAttribute("gast-mensual-info", gastMensual);
         optioneta.innerText = ` ${aaaamm__a__mesCompletAAAA(clauMes)}`;
         dropDownFormatge.appendChild(optioneta);
+
+        gastTotal = gastTotal + gastMensual; //acumulo el gast mes a mes
     });
+
+    //relleno la opcio inicial per tal de poder mostrar el gast global al llarg de tots els mesos.
+    optionetaInicial.setAttribute("gast-mensual-info", gastTotal.toFixed(2));
 }
 
 

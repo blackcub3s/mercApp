@@ -648,7 +648,7 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
     width: 35em;   
     margin: 0 auto;
     position: relative;
-    top: -100em;
+    top: -96.5em;
     left: -5em;
 }
 
@@ -693,7 +693,7 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
 
 #gastoTotalPeriodeTemporal {
     position: absolute;
-    left: -0.5em;
+    left: -1em;
     top: 1em;
     text-align: center;
 }
