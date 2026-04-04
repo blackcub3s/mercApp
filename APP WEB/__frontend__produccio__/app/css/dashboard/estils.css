@@ -634,7 +634,7 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
     width: 35em;   
     margin: 0 auto;
     position: relative;
-    top: -80em;
+    top: -75em;
     left: 15em;
 }
 
@@ -687,7 +687,30 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
  mesos amb els que podré filtrar*/
 /*------------------------------*/
 
+/*----------------------------------------*/
+/* INICI GASTOS TOTALS EN GRAFIC FORMATGE */
+/*----------------------------------------*/
 
+#gastoTotalPeriodeTemporal {
+    position: absolute;
+    left: -0.5em;
+    top: 1em;
+    text-align: center;
+}
+
+/*Defineixo l'estil del (novembre 2025)*/
+#gastoTotalPeriodeTemporal span {
+     /*faig que l'span ocupi una nova linia!*/
+   
+    font-style: italic;
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
+}
+
+/*----------------------------------------*/
+/* FI GASTOS TOTALS EN GRAFIC FORMATGE */
+/*----------------------------------------*/
 
 
 #priv_categorizer  > h1 {

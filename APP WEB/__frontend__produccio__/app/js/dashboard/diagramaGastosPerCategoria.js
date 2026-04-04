@@ -110,8 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
     
     selectFiltradorFormatge.addEventListener('change', (evento) => {
         const oSeleccio = selectFiltradorFormatge.selectedOptions[0];
+
+        // ---------25-01 --------------Enero 2025 -----------140.45--------
         console.log(oSeleccio.value, oSeleccio.textContent, oSeleccio.getAttribute("gast-mensual-info"));
         
+        //RELLENEM EL TITOL DEL GRÀFIC
+        posaInformacio_a_h2_topGrafic_formatge(oSeleccio.textContent, oSeleccio.getAttribute("gast-mensual-info"));
+
+
+
         fetch(`http://localhost:8000/api/gastosPerCategoria/${oSeleccio.value}`, {
             method: "GET",
             headers: {
@@ -133,7 +140,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     arrCategoriaGastos.push(diccCategoriaCuartos[clauCategoria]);
                 }
             }
-            console.log("AQUIIIIII!!!!!!!!!!!!!!!!!!!!!!!");
+            
+            
             console.log(arrCategoriaGastos);
 
             // Destruir chart anterior si existe
@@ -232,4 +240,15 @@ function aaaamm__a__mesCompletAAAA(aaaamm) {
     const mesTexto = meses[parseInt(mes, 10) - 1];
     const mesAnyoFormateados = mesTexto + " " + anyo;
     return mesAnyoFormateados;
+}
+
+//PRE: mes --> strgnn format "Octubre 2025"
+//     gastMes --> quantitat amb gasto "333.45" o el que sigui.
+//
+function posaInformacio_a_h2_topGrafic_formatge(mes, gastMes) {
+    const h2SpanDATAMES = document.querySelector("#gastoTotalPeriodeTemporal span:first-child");
+    const h2SpanGASTMES = document.querySelector("#gastoTotalPeriodeTemporal span:nth-child(2)");
+    
+    h2SpanDATAMES.innerHTML = "("+mes.trim()+"):";
+    h2SpanGASTMES.innerHTML = " "+gastMes+ " €";
 }
