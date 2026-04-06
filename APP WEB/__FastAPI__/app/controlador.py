@@ -144,6 +144,24 @@ async def mostraGastosPerCategoria(payload_token: dict = Depends(verificar_token
     return serveiTickets.obtenirGastPerCategoria_GLOBAL(idUsuari_enToken)
 
 
+#PRECONDICIÓ: un token d'accés amb idUsuari i permisos a 1 (els que tenen acces al dashboard) i una variable "strMes"
+#             que passa com a variable a la solicitud get de format aaaa-mm.
+#POSTCONDICIÓ: obtindrem un diccionari on les claus son les categories d'alimentacio i el preu es 
+#            el total gastat EN EL MES QUE ESPECIFICA el parametre strMes
+#               {"1": 35.17, "2": 10.05, "3": 17.21, "12": 0.0}
+@app.get("/api/gastosPerCategoria/{strMes}")
+async def mostraGastosPerCategoria_mensual(
+    strMes: str, 
+    payload_token: dict = Depends(verificar_token)
+):
+    permisos_enToken = payload_token.get("permisos", "clauDesconeguda")
+    idUsuari_enToken = payload_token.get("idUsuari", "clauDesconeguda")
+    permetSolicitudsEntrantsNomesA([1], permisos_enToken)
+
+    return serveiTickets.obtenirGastPerCategoria_MENSUAL(idUsuari_enToken, strMes)
+
+
+
 
 @app.get("/api/categoriaAmbMesGasto")                                 
 async def trobaCategoriaOnMesShaGastat(payload_token: dict = Depends(verificar_token)):   # Valida el jwt amb la funcio verificar_token de jwtUtil.py (tant integritat secret com expired at) i n'agrafa el seu return.

@@ -634,12 +634,83 @@ extraidos de las BBDD de las cards, si requieren clarificación al usuario, etc.
     width: 35em;   
     margin: 0 auto;
     position: relative;
-    top: -80em;
+    top: -75em;
     left: 15em;
 }
 
+/*------------------------------*/
+/*INICI DE dropdown que contindrà els
+ mesos amb els que podré filtrar*/
+/*------------------------------*/
 
 
+#filtradorGraficFormatge {
+    width: 35em;   
+    margin: 0 auto;
+    position: relative;
+    top: -96.5em;
+    left: -5em;
+}
+
+#filtradorGraficFormatge > label {
+    font-size: 1.4em;
+    display: block;
+    padding-bottom: .2em;
+    font-weight: bold;
+    padding-left: .7em; /*ajusta si canvies tamanys en el select*/
+}
+
+#filtradorGraficFormatge > select {
+    font-size: 1.4em;
+    padding: .6em;
+    border-radius: .4em;
+    text-align: center;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.25); 
+    transition: 
+        background-color var(--tiempoTransicionEstandar) ease-in-out,
+        box-shadow var(--tiempoTransicionEstandar) ease-in-out,
+        transform var(--tiempoTransicionEstandar) ease-in-out;
+} 
+
+#filtradorGraficFormatge > select:hover {
+    background-color: #9f9f9f49;
+    box-shadow: 4px 5px 2px rgba(0, 0, 0, 0.25);
+    transform: scale(1.02); /* salida vertical hacia arriba */ 
+} 
+
+
+
+
+
+/*------------------------------*/
+/*FI DE dropdown que contindrà els
+ mesos amb els que podré filtrar*/
+/*------------------------------*/
+
+/*----------------------------------------*/
+/* INICI GASTOS TOTALS EN GRAFIC FORMATGE */
+/*----------------------------------------*/
+
+#gastoTotalPeriodeTemporal {
+    position: absolute;
+    left: -1em;
+    top: 1em;
+    text-align: center;
+}
+
+/*Defineixo l'estil del (novembre 2025)*/
+#gastoTotalPeriodeTemporal span {
+     /*faig que l'span ocupi una nova linia!*/
+   
+    font-style: italic;
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
+}
+
+/*----------------------------------------*/
+/* FI GASTOS TOTALS EN GRAFIC FORMATGE */
+/*----------------------------------------*/
 
 
 #priv_categorizer  > h1 {
