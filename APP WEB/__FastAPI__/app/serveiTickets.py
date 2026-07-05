@@ -301,8 +301,16 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
 
             #print(jsonTicket)
             #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
-
-
+            import time
+            correctaSumaPreus, stringDescriptiu = esCorrectaSumaPreus(jsonTicket)
+            if not correctaSumaPreus:
+                print("##############################\nAQUEST TICKET (de {})  ES CONFLICTIU: SUMA PREUS PRODUCTES NO QUADRA AMB AGREGAT TOTAL ({}) REVISAR:\n####\n".format(jsonTicket["data"], stringDescriptiu))
+                print(json.dumps(jsonTicket, indent=4))
+                print("##############################")
+                time.sleep(5)
+                
+            else:
+                print("AQUEST TICKET (de {}) SI QUADRA SUMA PREUS ({})".format(jsonTicket["data"], stringDescriptiu))
 
 
             nTicketsBenParsejats += 1 #sumo un tiket ben parsejat!
@@ -425,6 +433,57 @@ def obtinguesTotsElsTickets(id_usuari):
 
 
 
+
+
+
+# AFEGEIXO AQUI TESTS PER VEURE QUE TOT ESTÀ EN ORDRE I QUE NO HI HA DISCREPANCIES EN LA SUMA DE PREUS DELS PRODUCTES EN EL TICKET 
+# I EL PREU TOTAL
+
+
+"""
+#pre:          
+# jsonTicket = {
+                "_id": clauPrimaria,  # exemple --> #2423-026-567893_OP4083409 concatenant el amb numero d'operacio
+                "idUsuari": idUsuari_enToken,        # exemple --> 10
+                "productesAdquirits": diccProductes, # exemple --> UN DICCIONARI DE DICCIONARIS DE PRODUCTES, RELLENAT EN UN FOR QUE RECORRE CADA LINIA DE TICKET.
+                "totalTicket": preuTotalTicket,
+                "direccioSuper": direccioSuper,      #exemple --> "C/ VALENCIA, 46006 VALENCIA"
+                "data": data_ISO8601,                #exemple --> "YYYY-MM-DD" es la ISO 8601 (aixi chart.js ho llegeix directe)
+                "hora" : hora                        #exemple --> "21:03"
+            }
+
+
+            on tenim que previament s'ha definit diccProductes: 
+
+            diccProductes[nomProducte] = {
+                        "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
+                        "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
+                        "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
+                        "categoria": categoritzaProducte(nomProducte), # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
+                        "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
+                    } 
+
+#post:  True si l'import de la suma de claus "import" en llistat de producte dins diccProductes coincideix amb valor associat a "totalTicket" de jsonTicket. False altrament. I string explicatiu
+"""
+def esCorrectaSumaPreus(jsonTicket):
+    sumProds = 0
+    for prod in jsonTicket["productesAdquirits"].values():
+        sumProds += prod["import"]
+    
+    sumProds = round(sumProds, 2) #evito decimals per suma flotant tipo 23.849999999 que mostrarien que la suma no és igual quan sí ho és
+    return sumProds == jsonTicket["totalTicket"], "Suma: "+str(sumProds)+" || Total: "+str(jsonTicket["totalTicket"])
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     #MOSTRO L'HORA EN QUE S'HA EXECUTAT L'SCRIPT
     imprimeix_hora_espanyola()
@@ -447,22 +506,27 @@ if __name__ == "__main__":
         #print("---- UN DE LA DORADA (si hi ha error no sortira res) ----")
         #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)
 
-        document = "20250107 Mercadona 7,35 €" #EL TICKET ULTRA CONFLICTIU.
-        print("---- EL DE 2 OUS DE 12 UNITATS ----")
-        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)
+        #document = "20250107 Mercadona 7,35 €" #EL TICKET ULTRA CONFLICTIU.
+        #print("---- EL DE 2 OUS DE 12 UNITATS ----")
+        #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)
         
 
-        document = "20250507 Mercadona 7,05 €"
-        print("---- EL DE LA DEMO DE LA MEMORIA ----")
-        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)   
+        #document = "20250507 Mercadona 7,05 €"
+        #print("---- EL DE LA DEMO DE LA MEMORIA ----")
+        #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)   
         
         
         #PARSEJO TOTS ELS TICKETS DE L'USUARI DE ID PASSAT PER PARAMETRE
         #parsejaTicketsIguardaEnMONGODB(3)
-        document = "20250207 Mercadona 23,01 €"
-        print("---- EL DE LA DEMO DEL BEAMER ----")
-        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
+        #document = "20250207 Mercadona 23,01 €"
+        #print("---- EL DE LA DEMO DEL BEAMER ----")
+        #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
+
+        #PARSEJO EL TICKET CONFLICTIU
+        document = "20230925 Mercadona 13,71 €"
+        print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
+        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
     #A FUTUR, ESBORAR PDFS (NO USAT)
     #esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)

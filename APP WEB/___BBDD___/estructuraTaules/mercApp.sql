@@ -40,9 +40,5 @@ SELECT max(id_usuari) FROM usuari;
 
 UPDATE usuari
 SET permisos = 0
-WHERE correu_electronic = "noacces@gmail.com";
-
-UPDATE usuari
-SET permisos = 1
-WHERE correu_electronic = "acces@gmail.com";
+WHERE correu_electronic = "acces2@gmail.com";
 
