@@ -523,10 +523,17 @@ if __name__ == "__main__":
         #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
 
-        #PARSEJO EL TICKET CONFLICTIU
+        #  PARSEJO EL TICKET CONFLICTIU (causa aparent: repeticio carabassó verd i no programat
+        #  per tenir en compte en el diccionari la repetició d'una clau)
         document = "20230925 Mercadona 13,71 €"
+        #print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
+        #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
+
+        #  PARSEJO EL TICKET CONFLICTIU (causa aparent: ?? noto que nata per cuinar surt a 1.45 mentre que al ticket es 1,75. hi ha d haver mes coses)
+        document = "20250617 Mercadona 44,06 €"
         print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
         fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
+
 
     #A FUTUR, ESBORAR PDFS (NO USAT)
     #esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
