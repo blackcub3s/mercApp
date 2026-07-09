@@ -228,7 +228,6 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                     #ll_liniaP es una llista de línia que inclou SEMPRE un producte que NO és a granel.
                     ll_liniaP = liniaP.split()
                     importProducte = float(ll_liniaP[-1].replace(",",".")) #import de producte sempre s'obte de l'últim element de la llista
-                    
                     #miro si es tracta del cas (MULTIPLE) -compra de 2 o més productes o compra (UNICA) -una sola unitat de producte-
                     casCompra_MULTIPLE = esUnPreu(ll_liniaP[-2][-4:]) #
                     if casCompra_MULTIPLE:
@@ -523,13 +522,14 @@ if __name__ == "__main__":
         #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
 
-        #  PARSEJO EL TICKET CONFLICTIU (causa aparent: repeticio carabassó verd i no programat
+        #  PARSEJO EL TICKET CONFLICTIU (causa: repeticio carabassó verd: cas identic al que es pot veure en linies 531 i 532.
         #  per tenir en compte en el diccionari la repetició d'una clau)
         document = "20230925 Mercadona 13,71 €"
         #print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
         #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
-        #  PARSEJO EL TICKET CONFLICTIU (causa aparent: ?? noto que nata per cuinar surt a 1.45 mentre que al ticket es 1,75. hi ha d haver mes coses)
+        #  PARSEJO EL TICKET CONFLICTIU (causa: "NATA PER CUINAR" apareix dos cops, amb preus diferents, i només s'agafa l'últim perquè no s'havia tingut
+        #  en compte què fer si es repeteix una clau del diccionari on emmagatzemem la llista de productes
         document = "20250617 Mercadona 44,06 €"
         print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
         fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
