@@ -8,6 +8,7 @@ from serveiValidacions import ticketValidat
 import repositoriTickets
 import json
 import shutil
+import time
         
 #PRE: - llJudicis: una llista buida (passada per referència)
 #     - idUsuari_enToken: un int que conté l'idUsuari obtingut del payload del token entrant.
@@ -300,16 +301,10 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
 
             #print(jsonTicket)
             #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
-            import time
-            correctaSumaPreus, stringDescriptiu = esCorrectaSumaPreus(jsonTicket)
-            if not correctaSumaPreus:
-                print("##############################\nAQUEST TICKET (de {})  ES CONFLICTIU: SUMA PREUS PRODUCTES NO QUADRA AMB AGREGAT TOTAL ({}) REVISAR:\n####\n".format(jsonTicket["data"], stringDescriptiu))
-                print(json.dumps(jsonTicket, indent=4))
-                print("##############################")
-                time.sleep(5)
-                
-            else:
-                print("AQUEST TICKET (de {}) SI QUADRA SUMA PREUS ({})".format(jsonTicket["data"], stringDescriptiu))
+            #####
+            #COMPTE AMB AQUSTA LINIA: NOMES ES PER TESTS. SI LA DESCOMENTES, NO ES CREEN BÉ ELS TICKETS QUE PUJEN, MANTENEN I BAIXEN A MONGO DB NO SE PQ
+            #TEST_comprovaSumesDiscrepants(jsonTicket=jsonTicket, imprimirJSONticket_siPreusIncorrectes=False)
+            #####
 
 
             nTicketsBenParsejats += 1 #sumo un tiket ben parsejat!
@@ -473,7 +468,16 @@ def esCorrectaSumaPreus(jsonTicket):
     return sumProds == jsonTicket["totalTicket"], "Suma: "+str(sumProds)+" || Total: "+str(jsonTicket["totalTicket"])
 
 
-
+#pre: un json ticket i un booleà que diu si imprimeixes tot el ticket o no
+#post: imprimeix si el ticket és conflictiu (i.e. la suma dels preus guardats en el diccionari no és coincident amb el camp de "import
+# total") o no (si coincideixen). Nota que si és no coincident és perquè mercadona té dos productes amb el mateix nom en el mateix ticket,
+# a vegades amb PREUS DIFERENTS, cosa que és un error del supermercat de no tenir noms que designin unívocament els productes.
+def TEST_comprovaSumesDiscrepants(jsonTicket, imprimirJSONticket_siPreusIncorrectes):       
+    correctaSumaPreus, stringDescriptiu = esCorrectaSumaPreus(jsonTicket)
+    if not correctaSumaPreus:
+        print("AQUEST TICKET (de {})  ES CONFLICTIU: SUMA PREUS PRODUCTES NO QUADRA AMB AGREGAT TOTAL ({}) REVISAR: \n".format(jsonTicket["data"], stringDescriptiu))
+        if imprimirJSONticket_siPreusIncorrectes:
+            print(json.dumps(jsonTicket, indent=4))
 
 
 
@@ -525,8 +529,8 @@ if __name__ == "__main__":
         #  PARSEJO EL TICKET CONFLICTIU (causa: repeticio carabassó verd: cas identic al que es pot veure en linies 531 i 532.
         #  per tenir en compte en el diccionari la repetició d'una clau)
         document = "20230925 Mercadona 13,71 €"
-        #print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
-        #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
+        print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
+        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
         #  PARSEJO EL TICKET CONFLICTIU (causa: "NATA PER CUINAR" apareix dos cops, amb preus diferents, i només s'agafa l'últim perquè no s'havia tingut
         #  en compte què fer si es repeteix una clau del diccionari on emmagatzemem la llista de productes
