@@ -218,7 +218,9 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                 if "PÀRQUING" in liniaP or "PARKING" in liniaP or "APARCAMIENTO" in liniaP:
                     i = i + 1
                 elif esUnPreu(liniaP[-4:]):#Si els últims quatre caràcters de la linia son un preu (d,dd), aleshoes NO ES GRANEL.
-                    #CAS PRODUCTES QUE NO SON A GRANEL AQUÍ
+                    #----------------------------------------------
+                    #--> CAS PRODUCTES QUE NO SON A GRANEL AQUÍ <--
+                    #----------------------------------------------
                     esGranel = False 
 
                     #la liniaP després de l'split    _______________________________________________
@@ -260,7 +262,9 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                     #FI TO DO
 
                 else:
+                    #---------------------------------------
                     #CAS PRODUCTES QUE SÍ SON A GRANEL AQUÍ!
+                    #---------------------------------------
                     esGranel = True
 
                     nomProducte = liniaP[1:].strip() #si és un producte granel, SEMPRE té una sola unitat. De l'estil "1PEBROT FREGIR" o "1CALABACIN BLANCO"
@@ -273,7 +277,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                        
                     #print("     "+str(ll_Granel))
                     diccProductes[nomProducte] = {
-                        "esGranel": esGranel,        # exemple --> 0 (no granel) o 1 (sí és granel)
+                        "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
                         "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
                         "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
                         "categoria": categoritzaProducte(nomProducte),  # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
