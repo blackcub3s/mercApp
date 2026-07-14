@@ -303,7 +303,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
             #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
             #####
             #COMPTE AMB AQUSTA LINIA: NOMES ES PER TESTS. SI LA DESCOMENTES, NO ES CREEN BÉ ELS TICKETS QUE PUJEN, MANTENEN I BAIXEN A MONGO DB NO SE PQ
-            #TEST_comprovaSumesDiscrepants(jsonTicket=jsonTicket, imprimirJSONticket_siPreusIncorrectes=False)
+            TEST_comprovaSumesDiscrepants(jsonTicket=jsonTicket, imprimirJSONticket_siPreusIncorrectes=True)
             #####
 
 
@@ -526,19 +526,40 @@ if __name__ == "__main__":
         #fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
 
-        #  PARSEJO EL TICKET CONFLICTIU (causa: repeticio carabassó verd: cas identic al que es pot veure en linies 531 i 532.
-        #  per tenir en compte en el diccionari la repetició d'una clau)
+        #############################################
+        #############################################
+        ## CONFLICTES DE REPETICIONS DE CLAUS DE PRODUCTE: IMPRECISIÓ SISTEMA MERCADONA HA FET QUE L'ARQUITECTURA DEL MEU PROGRAMA
+        ## DE CONSIDERAR QUE ELS NOMS DE PRODUCTE NO ES PODEN REPETIR EN UN MATEIX TICKET, UTILITZANT-LOS PER TANT COM A CLAUS DE diccProducte, HA FET QUE ES
+        ## PERDIN PRODUCTES REPETITS, QUEDANT NOMÉS L'ÚLTIM QUE SURT AL LLISTAT.
+        #############################################
+        #############################################
+
+        #  PARSEJO EL TICKET CONFLICTIU (causa: repeticio no producte "CARBASSÓ VERD", que fa que es perdin els productes
+        #  REPETITS MENYS L'ÚLTIMA OCURRÈNCIA. Això passa per l'ús de diccionari com a estructura de dades, que no admet dues claus
+        #  IGUALS I NOMÉS ES QUEDA LA ÚLTIMA)
         document = "20230925 Mercadona 13,71 €"
         print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
         fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
-        #  PARSEJO EL TICKET CONFLICTIU (causa: "NATA PER CUINAR" apareix dos cops, amb preus diferents, i només s'agafa l'últim perquè no s'havia tingut
-        #  en compte què fer si es repeteix una clau del diccionari on emmagatzemem la llista de productes
+        #  PARSEJO EL TICKET CONFLICTIU (causa: "NATA PER CUINAR", producte NO a granel, apareix dos cops amb preus 
+        #  diferents, i només s'agafa l'últim perquè no s'havia tingut
+        #  en compte què fer si es repeteix una clau del diccionari on emmagatzemema la llista de productes
         document = "20250617 Mercadona 44,06 €"
         print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
         fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
 
 
+        #  PARSEJO EL TICKET CONFLICTIU (causa idem a previ: "NATA PARA COCINAR", producte NO a granel, apareix dos cops amb preus 
+        #  diferents, i només s'agafa l'últim perquè no s'havia tingut en compte què fer si es repeteix una clau del 
+        #   diccionari on emmagatzemema la llista de productes
+        document = "20250227 Mercadona 17,40 €"
+        print("---- EL QUE NO TENIA BÉ LA SUMA AGREGADA D'IMPORTS DELS PRODUCTES AMB LA TOTAL ----")
+        fesScrapTicketMercadona(f"./tickets/{idUsuari}/{document}.pdf", [], 0, idUsuari)  
+
+
+        #             FI INCIDÈNCIA PRODUCTES       #
+        #############################################
+        #############################################
     #A FUTUR, ESBORAR PDFS (NO USAT)
     #esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
     
