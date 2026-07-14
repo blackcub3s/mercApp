@@ -132,6 +132,20 @@ def categoritzaProducte(nomProducte):
     except KeyError:
         return 13
 
+#PRE: diccProductes: diccionari buit o parcialment emplenat. Es passa per referencia.
+#     rsta params: consultar la funció d'on prové si s'escaiu
+#POST: el diccProductes té un producte més afegit (retornar per referència)
+def afegeixProducte_a_diccProductes(diccProductes, esGranel, preuUnitari, quantitat, nomProducte, importProducte):
+    diccProductes[nomProducte] = {
+        "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
+        "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
+        "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
+        "categoria": categoritzaProducte(nomProducte), # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
+        "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
+    } 
+
+
+
 
 # PRE: -doc:                  es un string amb el path al nom del ticket en pdf que vull processar 
 #                             aspecte com aquest --> ./tickets/{idUsuari_enToken}/{nom arxiu}
@@ -234,32 +248,21 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                     #miro si es tracta del cas (MULTIPLE) -compra de 2 o més productes o compra (UNICA) -una sola unitat de producte-
                     casCompra_MULTIPLE = esUnPreu(ll_liniaP[-2][-4:]) #
                     if casCompra_MULTIPLE:
-                        #print("        ES MULTIPLE")
+
                         preuUnitari = float(ll_liniaP[-2].replace(",","."))
                         quantitat = round(importProducte/preuUnitari) #redondeig a enter mes proxim (per si tinguessim problemes de precissió amb coma flotant)
                         nreDigits_PerLesquerra_Aesborrar = len(str(quantitat))
                         nomProducte = " ".join(ll_liniaP[:-2])[nreDigits_PerLesquerra_Aesborrar:] #treieme els digits vestigials a partir del calcul de la longitud de nombre d'unitats
-                        
-
                     else:
-                        #print("        UNIC")
+                        
                         quantitat = 1
                         preuUnitari = importProducte
                         nomProducte =  " ".join(ll_liniaP[:-1])[1:]   #elimino últim element de la llista (import) ajunto els restants i trec el 1 vestigial del principi
                         
 
+                    afegeixProducte_a_diccProductes(diccProductes, esGranel, preuUnitari, quantitat, nomProducte, importProducte)
                     
-                    diccProductes[nomProducte] = {
-                        "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
-                        "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
-                        "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
-                        "categoria": categoritzaProducte(nomProducte), # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
-                        "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
-                    } 
-                    
-                    #print("        ",diccProductes)
-                    
-                    #FI TO DO
+
 
                 else:
                     #---------------------------------------
@@ -276,20 +279,14 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                   
                        
                     #print("     "+str(ll_Granel))
-                    diccProductes[nomProducte] = {
-                        "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
-                        "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
-                        "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
-                        "categoria": categoritzaProducte(nomProducte),  # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
-                        "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
-                    } 
+                    afegeixProducte_a_diccProductes(diccProductes, esGranel, preuUnitari, quantitat, nomProducte, importProducte)
                     
 
                 
 
 
                 i = i + 1
-            print("\n")
+            
             
         
             jsonTicket = {
@@ -307,7 +304,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
             #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
             #####
             #COMPTE AMB AQUSTA LINIA: NOMES ES PER TESTS. SI LA DESCOMENTES, NO ES CREEN BÉ ELS TICKETS QUE PUJEN, MANTENEN I BAIXEN A MONGO DB NO SE PQ
-            TEST_comprovaSumesDiscrepants(jsonTicket=jsonTicket, imprimirJSONticket_siPreusIncorrectes=True)
+            #TEST_comprovaSumesDiscrepants(jsonTicket=jsonTicket, imprimirJSONticket_siPreusIncorrectes=False)
             #####
 
 
