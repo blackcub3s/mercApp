@@ -132,17 +132,27 @@ def categoritzaProducte(nomProducte):
     except KeyError:
         return 13
 
-#PRE: diccProductes: diccionari buit o parcialment emplenat. Es passa per referencia.
-#     rsta params: consultar els comentaris dins la funció a l costat de cada parell clau valor.
-#POST: el diccProductes té un producte més afegit (retornar per referència)
-def afegeixProducte_a_diccProductes(diccProductes, esGranel, preuUnitari, quantitat, nomProducte, importProducte):
-    diccProductes[nomProducte] = {
-        "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
-        "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
-        "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
-        "categoria": categoritzaProducte(nomProducte), # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
-        "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
-    } 
+#PRE: - diccProductes:  Es passa per referència. És un diccionari buit o parcialment emplenat amb el llistat de productes del ticket.
+#     - llRepetits: Es passa per referència. És una llista que conté els productes que en molt molts pocs tickets 
+#                   es repeteixen de nom i no es poden guardar en el diccProductes (mala decisió de mercadona). Pot ser buida si no s'ha trobat cap nom de producte
+#                   ,dins un mateix ticket, que estigui repetit; o tenir ja elements dins, cas en que ja s'ha trobat algun altre producte repetit dins el mateix
+#                   ticket.
+#     - resta params: consultar els comentaris dins la funció a l costat de cada parell clau valor.
+#POST: el diccProductes té un producte més afegit (retornar per referència), si el nomProducte no està guardat com a clau dins diccProductes; altrament, si sí que està guardat,
+#      aleshores llRepetits tindrà un producte més afegit (retornat també per referència).
+def afegeixProducte_a_diccProductes(diccProductes, llRepetits, esGranel, preuUnitari, quantitat, nomProducte, importProducte):
+    if nomProducte not in diccProductes:
+        diccProductes[nomProducte] = {
+            "esGranel": esGranel,        # exemple --> False (no granel) o True (sí és granel)
+            "preuUnitari": preuUnitari,  # exemple --> Si no ésgranel --> €/unitat | Si sí es granel --> €/kg --> 1.28, 0.76...
+            "quantitat": quantitat,      # exemple --> 1, 2, 3... n (unitats comprades si no es granel) o 0.33 kg (nombre de kilos, si SÍ es granel)
+            "categoria": categoritzaProducte(nomProducte), # exemple --> 1 fins a 13 (diccionari de categories mapejat aqui)
+            "import" : importProducte    # NOVETAT! --> S'HA AFEGIT FINALMENT ---> Idem a preuUnitari * quantitat redondejat a 2 (s'ha guardat per comoditat en cerques posteriors)
+        } 
+    else:
+        llRepetits += [(nomProducte, esGranel, preuUnitari, quantitat, categoritzaProducte(nomProducte), importProducte)]
+        
+
 
 
 
@@ -223,6 +233,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
             print("-------------\n"+data+"\n------------")
             i = 0
             diccProductes = {}
+            llRepetits = [] #si existeixen productes amb etiqueta repetida CAL guardar-los a part (raro però ocorre! si no es perden tots menys l'últim)
             while i < len(taulaProductes):
                 liniaP = taulaProductes[i] #liniaProducte (una de les linies de la taula de productes que pots visualitzar descomentant les linies anteriors)
                 
@@ -260,7 +271,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                         nomProducte =  " ".join(ll_liniaP[:-1])[1:]   #elimino últim element de la llista (import) ajunto els restants i trec el 1 vestigial del principi
                         
 
-                    afegeixProducte_a_diccProductes(diccProductes, esGranel, preuUnitari, quantitat, nomProducte, importProducte)
+                    afegeixProducte_a_diccProductes(diccProductes, llRepetits, esGranel, preuUnitari, quantitat, nomProducte, importProducte)
                     
 
 
@@ -279,7 +290,7 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                   
                        
                     #print("     "+str(ll_Granel))
-                    afegeixProducte_a_diccProductes(diccProductes, esGranel, preuUnitari, quantitat, nomProducte, importProducte)
+                    afegeixProducte_a_diccProductes(diccProductes, llRepetits, esGranel, preuUnitari, quantitat, nomProducte, importProducte)
                     
 
                 
@@ -298,13 +309,20 @@ def fesScrapTicketMercadona(doc, llErrors, nTicketsBenParsejats, idUsuari_enToke
                 "data": data_ISO8601,                #exemple --> "YYYY-MM-DD" es la ISO 8601 (aixi chart.js ho llegeix directe)
                 "hora" : hora                        #exemple --> "21:03"
             }
+
+            #En el cas improvable que dins un mateix ticket existeixin productes repetits, els que ja s'han repetit els guarderm a part. NOTA: ara dins el sonTicket, 
+            #, per ara, hi queda només el primer producte, no l'últim.
+            if len(llRepetits) > 0:
+                jsonTicket["compteProductesRepetits"] = ["nomProducte", "esGranel", "preuUnitari", "quantitat", "categoriaAliment", "importProd"] + llRepetits
+
+            
             
 
             #print(jsonTicket)
             #print(json.dumps(jsonTicket, indent=4, ensure_ascii=False))
             #####
             #COMPTE AMB AQUSTA LINIA: NOMES ES PER TESTS. SI LA DESCOMENTES, NO ES CREEN BÉ ELS TICKETS QUE PUJEN, MANTENEN I BAIXEN A MONGO DB NO SE PQ
-            #TEST_comprovaSumesDiscrepants(jsonTicket=jsonTicket, imprimirJSONticket_siPreusIncorrectes=False)
+            #TEST_comprovaSumesDiscrepants(jsonTicket=jsonTicket, imprimirJSONticket_siPreusIncorrectes=True)
             #####
 
 
