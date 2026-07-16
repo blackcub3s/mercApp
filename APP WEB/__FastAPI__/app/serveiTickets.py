@@ -133,7 +133,7 @@ def categoritzaProducte(nomProducte):
         return 13
 
 #PRE: diccProductes: diccionari buit o parcialment emplenat. Es passa per referencia.
-#     rsta params: consultar la funció d'on prové si s'escaiu
+#     rsta params: consultar els comentaris dins la funció a l costat de cada parell clau valor.
 #POST: el diccProductes té un producte més afegit (retornar per referència)
 def afegeixProducte_a_diccProductes(diccProductes, esGranel, preuUnitari, quantitat, nomProducte, importProducte):
     diccProductes[nomProducte] = {
